@@ -21,7 +21,7 @@ namespace NBL.DAL
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Division> GetAll()
+        public ICollection<Division> GetAll()
         {
             try
             {
@@ -72,10 +72,7 @@ namespace NBL.DAL
             throw new NotImplementedException();
         }
 
-        ICollection<Division> IGateway<Division>.GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        
 
         private List<Region> GetRegionListByDivisionId(int divisionId)  
         {

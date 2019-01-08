@@ -42,7 +42,8 @@ namespace NBL.DAL
                         EmployeeImage = reader["EmployeeImage"].ToString(),
                         EmployeeSignature = reader["EmployeeSignature"].ToString(),
                         JoiningDate = Convert.ToDateTime(reader["JoiningDate"]),
-                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        EmployeeNo = reader["EmployeeNo"].ToString()
 
                     });
                 }

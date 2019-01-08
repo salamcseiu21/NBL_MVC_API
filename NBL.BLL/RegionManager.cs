@@ -41,10 +41,11 @@ namespace NBL.BLL
             return _iRegionGateway.GetUnAssignedRegionList();
         }
 
-        public int AssignRegionToBranch(Branch branch, User user)
+        public int AssignRegionToBranch(Branch branch, ViewUser user)
         {
-            return _iRegionGateway.AssignRegionToBranch(branch, user);
+           return  _iRegionGateway.AssignRegionToBranch(branch, user);
         }
+
 
         public List<Region> GetAssignedRegionListToBranchByBranchId(int branchId)
         {

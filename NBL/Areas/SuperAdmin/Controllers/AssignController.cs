@@ -42,7 +42,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         [HttpPost]
         public ActionResult AssignRegionToBranch(FormCollection collection)
         {
-            User user = (User)Session["user"];
+            var user = (ViewUser)Session["user"];
             Branch branch = new Branch {BranchId = Convert.ToInt32(collection["BranchId"])};
 
             List<Region> regionList = new List<Region>();

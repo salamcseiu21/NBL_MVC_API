@@ -3,6 +3,7 @@ using System;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.Models;
+using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Editor.Controllers
 {
@@ -38,7 +39,7 @@ namespace NBL.Areas.Editor.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    User user = (User)Session["user"];
+                    var user = (ViewUser)Session["user"];
                     model.AddedByUserId = user.UserId;
                     var result = _iTerritoryManager.Add(model);
                     if (result)

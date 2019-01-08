@@ -168,7 +168,7 @@ namespace NBL.DAL
             }
         }
 
-        public int AssignRegionToBranch(Branch branch,User user)
+        public int AssignRegionToBranch(Branch branch, ViewUser user)
         {
             ConnectionObj.Open();
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();

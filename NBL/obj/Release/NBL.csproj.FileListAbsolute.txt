@@ -112,3 +112,6 @@ E:\API\NBL\NBL\obj\Release\RdlCompile.cache
 E:\API\NBL\NBL\obj\Release\RdlCompile.compiled
 E:\API\NBL\NBL\obj\Release\NBL.dll
 E:\API\NBL\NBL\obj\Release\NBL.pdb
+E:\API\NBL\NBL\bin\System.Web.Cors.dll
+E:\API\NBL\NBL\bin\System.Web.Http.Cors.dll
+E:\API\NBL\NBL\bin\System.Web.Http.Cors.xml

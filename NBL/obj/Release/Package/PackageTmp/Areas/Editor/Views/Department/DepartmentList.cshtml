@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NBL.Models.Department>
+﻿
 @{
     ViewBag.Title = "Department List";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
@@ -22,20 +22,6 @@
 
         <tbody>
 
-            @foreach (var item in Model)
-            {
-                <tr>
-
-                    <td>@item.DepartmentCode</td>
-                    <td>@item.DepartmentName</td>
-                    
-                    <td class="text-center">
-                        @Html.ActionLink(" Edit", "Edit", new { id = item.DepartmentId }, new { @class = "fa fa-edit" })
-                       
-                    </td>
-                </tr>
-            }
-
         </tbody>
         <tfoot>
             <tr>
@@ -49,12 +35,5 @@
 </section>
 @section Scripts
 {
-    <script>
-
-        $('#table_Department_list').DataTable({
-            "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]]
-        });
-
-    </script>
-
+    <script src="@Url.Content("~/Scripts/Department/ViewDepartmentList.js")"></script>
 }
