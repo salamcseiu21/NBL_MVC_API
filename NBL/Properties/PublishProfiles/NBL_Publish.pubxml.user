@@ -22801,34 +22801,34 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/08/2019 09:19:03</publishTime>
     </File>
     <File Include="Views/Account/ExternalLoginConfirmation.cshtml">
-      <publishTime>01/08/2019 09:19:03</publishTime>
+      <publishTime>01/09/2019 09:31:28</publishTime>
     </File>
     <File Include="Views/Account/ExternalLoginFailure.cshtml">
       <publishTime>01/08/2019 09:19:03</publishTime>
     </File>
     <File Include="Views/Account/ForgotPassword.cshtml">
-      <publishTime>01/08/2019 09:19:03</publishTime>
+      <publishTime>01/09/2019 09:31:28</publishTime>
     </File>
     <File Include="Views/Account/ForgotPasswordConfirmation.cshtml">
       <publishTime>01/08/2019 09:19:03</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>01/08/2019 11:05:05</publishTime>
+      <publishTime>01/09/2019 09:30:41</publishTime>
     </File>
     <File Include="Views/Account/Register.cshtml">
-      <publishTime>01/08/2019 09:19:04</publishTime>
+      <publishTime>01/09/2019 09:31:29</publishTime>
     </File>
     <File Include="Views/Account/ResetPassword.cshtml">
-      <publishTime>01/08/2019 09:19:04</publishTime>
+      <publishTime>01/09/2019 09:31:28</publishTime>
     </File>
     <File Include="Views/Account/ResetPasswordConfirmation.cshtml">
       <publishTime>01/08/2019 09:19:04</publishTime>
     </File>
     <File Include="Views/Account/SendCode.cshtml">
-      <publishTime>01/08/2019 09:19:04</publishTime>
+      <publishTime>01/09/2019 09:31:28</publishTime>
     </File>
     <File Include="Views/Account/VerifyCode.cshtml">
-      <publishTime>01/08/2019 09:19:04</publishTime>
+      <publishTime>01/09/2019 09:31:28</publishTime>
     </File>
     <File Include="Views/Account/_ExternalLoginsListPartial.cshtml">
       <publishTime>01/08/2019 09:19:03</publishTime>
