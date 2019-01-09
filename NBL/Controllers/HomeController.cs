@@ -1,4 +1,6 @@
 ﻿using System.Web.Mvc;
+using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
+
 namespace NBL.Controllers
 {
     public class HomeController : Controller

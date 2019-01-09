@@ -115,3 +115,5 @@ E:\API\NBL\NBL\obj\Release\NBL.pdb
 E:\API\NBL\NBL\bin\System.Web.Cors.dll
 E:\API\NBL\NBL\bin\System.Web.Http.Cors.dll
 E:\API\NBL\NBL\bin\System.Web.Http.Cors.xml
+E:\API\NBL\NBL\bin\WebApiContrib.Formatting.Jsonp.dll
+E:\API\NBL\NBL\bin\WebApiContrib.Formatting.Jsonp.pdb

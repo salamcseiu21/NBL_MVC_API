@@ -1,8 +1,8 @@
 ﻿
 $.ajax({
-    url: RootUrl + "api/Employees",
-    type: "GET",
-    datatype: "JSON",
+    type: 'GET',
+    url: "http://localhost/nbl/api/employees",
+    dataType: 'jsonp',
     success: function (data) {
         $('#table_employee_list').dataTable({
             data: data,
