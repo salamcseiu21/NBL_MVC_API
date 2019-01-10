@@ -54,6 +54,14 @@
       <HintPath>..\packages\Unity.5.2.0\lib\net45\CommonServiceLocator.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="JQDT, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\jQDataTables.ServerSide.MVC5.1.1.1\lib\JQDTServerSide\MVC\JQDT.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JQDT.MVC, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\jQDataTables.ServerSide.MVC5.1.1.1\lib\JQDTServerSide\MVC\JQDT.MVC.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="LowercaseRoutesMVC, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LowercaseRoutesMVC.1.0.3\lib\LowercaseRoutesMVC.dll</HintPath>
       <Private>True</Private>
@@ -7870,6 +7878,9 @@
     <Content Include="Areas\SuperAdmin\Views\SuperReport\SuperSalesReport.cshtml" />
     <Content Include="Areas\SuperAdmin\Views\Voucher\ViewJournal.cshtml" />
     <Content Include="Areas\SuperAdmin\Views\web.config" />
+    <Content Include="Areas\Corporate\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Corporate\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Corporate\Views\Home\Test.cshtml" />
     <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Department\ViewDepartmentList.js" />

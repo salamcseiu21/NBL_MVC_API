@@ -303,6 +303,11 @@ namespace NBL.BLL
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Order> GetOrder(SearchCriteriaModel searchCriteria)
+        {
+            return _iOrderGateway.GetOrder(searchCriteria);
+        }
     }
 
 

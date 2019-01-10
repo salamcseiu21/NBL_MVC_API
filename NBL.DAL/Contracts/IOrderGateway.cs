@@ -44,5 +44,7 @@ namespace NBL.DAL.Contracts
        IEnumerable<ViewOrder> GetDelayedOrdersToAdminByBranchAndCompanyId(int branchId, int companyId);
        int UpdateVerificationStatus(int orderId, string verificationNote, int userUserId);
        IEnumerable<ViewVerifiedOrderModel> GetVerifiedOrdersByBranchAndCompanyId(int branchId, int companyId);
+
+       IEnumerable<Order> GetOrder(SearchCriteriaModel searchCriteria);
    }
 }

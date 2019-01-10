@@ -2161,5 +2161,51 @@ ConnectionObj.Close();
                 ConnectionObj.Close();
             }
         }
+
+        public IEnumerable<Order> GetOrder(SearchCriteriaModel searchCriteria)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_RptGetAllOrders";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@DisplayLength", searchCriteria.DisplayLength);
+                CommandObj.Parameters.AddWithValue("@DisplayStart", searchCriteria.DisplayStart);
+                CommandObj.Parameters.AddWithValue("@SortCol", searchCriteria.SortColomnIndex);
+                CommandObj.Parameters.AddWithValue("@SortDir", searchCriteria.SortDirection);
+                CommandObj.Parameters.AddWithValue("@Search", searchCriteria.Search);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<Order> orders = new List<Order>();
+                while (reader.Read())
+                {
+
+                    orders.Add(new Order
+                    {
+                        OrderId = Convert.ToInt32(reader["OrderId"]),
+                        OrderDate = Convert.ToDateTime(reader["OrderDate"]),
+                        Amounts = Convert.ToDecimal(reader["Amounts"]),
+                        OrederRef = reader["OrderRef"].ToString()
+
+                    });
+                }
+
+                reader.Close();
+                return orders;
+            }
+            catch (SqlException exception)
+            {
+                throw new Exception("Could not Collect Orders due to Db Exception", exception);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not Collect Orders by Search Creteria", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
     }
 }

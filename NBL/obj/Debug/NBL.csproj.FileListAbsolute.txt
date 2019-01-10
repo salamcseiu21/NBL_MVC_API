@@ -18,6 +18,8 @@ E:\API\NBL\NBL\bin\AutoMapper.dll
 E:\API\NBL\NBL\bin\CommonServiceLocator.dll
 E:\API\NBL\NBL\bin\EntityFramework.dll
 E:\API\NBL\NBL\bin\EntityFramework.SqlServer.dll
+E:\API\NBL\NBL\bin\JQDT.dll
+E:\API\NBL\NBL\bin\JQDT.MVC.dll
 E:\API\NBL\NBL\bin\LowercaseRoutesMVC.dll
 E:\API\NBL\NBL\bin\Microsoft.AspNet.Identity.Core.dll
 E:\API\NBL\NBL\bin\Microsoft.AspNet.Identity.EntityFramework.dll

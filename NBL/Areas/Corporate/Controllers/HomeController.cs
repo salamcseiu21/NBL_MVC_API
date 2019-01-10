@@ -323,7 +323,39 @@ namespace NBL.Areas.Corporate.Controllers
                 branch.RegionList = _iRegionManager.GetAssignedRegionListToBranchByBranchId(branch.BranchId);
             }
             return View(branches);
+
+
         }
 
+
+        public ActionResult Test()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult LoadData()
+        {
+
+            var draw = Request.Form.GetValues("draw").FirstOrDefault();
+            var start = Request.Form.GetValues("start").FirstOrDefault();
+            var length = Request.Form.GetValues("length").FirstOrDefault();
+            var search = Request["search[value]"];
+            var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+            int colIndex = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault().IndexOf(sortColumn);
+            var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+
+            SearchCriteriaModel aCriteriaModel=new SearchCriteriaModel
+            {
+                DisplayLength = Convert.ToInt32(length),
+                DisplayStart = Convert.ToInt32(start),
+                Search = search,
+                SortColomnIndex = colIndex,
+                SortDirection = sortColumnDir
+            };
+            var v=_iOrderManager.GetOrder(aCriteriaModel);
+            int recordsTotal = _iOrderManager.GetAll().Count();
+            return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = v }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

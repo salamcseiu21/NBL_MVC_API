@@ -118,6 +118,6 @@ namespace NBL.BLL.Contracts
         
 
         IEnumerable<ViewVerifiedOrderModel> GetVerifiedOrdersByBranchAndCompanyId(int branchId, int companyId);
-
+        IEnumerable<Order> GetOrder(SearchCriteriaModel searchCriteria);
     }
 }
