@@ -27,12 +27,13 @@ $.ajax({
                 },
                 {
                     'data': 'JoiningDate',
-                    className: "text-center",
                     'render': function (jsonDate) {
-                        var date = new Date(parseInt(jsonDate.substr(6)));
-                        var month = date.getMonth() + 1;
-                        return date.getDate() + "-" + month + "-" + date.getFullYear();
-                    }
+                        var date = jsonDate.substr(8,2);
+                        var month = jsonDate.substr(5, 2);
+                        var year = jsonDate.substr(0, 4);
+                        return date + "-" + month + "-" + year;
+                    },
+                    className: "text-center"
                 }
             ]
         });

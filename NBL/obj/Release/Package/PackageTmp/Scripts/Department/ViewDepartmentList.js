@@ -1,7 +1,7 @@
 ﻿$.ajax({
-    url: RootUrl + "api/Departments",
-    type: "GET",
-    datatype: "JSON",
+    type: 'GET',
+    url: "http://localhost/nbl/api/departments",
+    dataType: 'jsonp',
     success: function (data) {
         $('#table_Department_list').dataTable({
             data: data,
