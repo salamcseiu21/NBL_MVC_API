@@ -1,10 +1,16 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
+using NBL.DAL;
+using NBL.Models;
 
 namespace NBL.Controllers
 {
     public class HomeController : Controller
     {
+        OrderGateway orderGateway=new OrderGateway();
         // GET: Home
         public ActionResult Index()
         {
@@ -25,5 +31,7 @@ namespace NBL.Controllers
             ViewBag.Message = "This can be viewed only by users in Admin role only";
             return View();
         }
+
+
     }
 }
