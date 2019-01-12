@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using NBL.Models.Branches;
+using NBL.Models.Orders;
 
 namespace NBL.Models.ViewModels
 {

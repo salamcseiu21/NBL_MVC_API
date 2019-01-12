@@ -1,6 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using NBL.Models.Addresses;
+using NBL.Models.Branches;
+using NBL.Models.Clients;
+using NBL.Models.Companies;
+using NBL.Models.Locations;
+using NBL.Models.Masters;
+using NBL.Models.Orders;
 
 namespace NBL.Models.ViewModels
 {

@@ -4,6 +4,7 @@ using System.Linq;
 using NBL.BLL.Contracts;
 using NBL.DAL.Contracts;
 using NBL.Models;
+using NBL.Models.Clients;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL

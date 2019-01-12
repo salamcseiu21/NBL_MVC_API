@@ -4,6 +4,10 @@ using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.Models;
+using NBL.Models.Identities;
+using NBL.Models.Orders;
+using NBL.Models.Products;
+using NBL.Models.TransferProducts;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Sales.Controllers

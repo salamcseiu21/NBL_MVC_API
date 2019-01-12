@@ -1,6 +1,8 @@
 ﻿
 using System.Collections.Generic;
 using NBL.Models;
+using NBL.Models.Invoices;
+using NBL.Models.Orders;
 
 namespace NBL.Areas.Admin.BLL.Contracts
 {

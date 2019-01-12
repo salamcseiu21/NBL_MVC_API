@@ -1,4 +1,8 @@
 ﻿using AutoMapper;
+using NBL.Models.Branches;
+using NBL.Models.Clients;
+using NBL.Models.Orders;
+using NBL.Models.Productions;
 using NBL.Models.ViewModels;
 
 namespace NBL.Models.AutoMapper

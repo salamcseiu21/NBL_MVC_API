@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL;
 using NBL.Models;
+using NBL.Models.Branches;
+using NBL.Models.Identities;
 
 namespace NBL.Areas.SuperAdmin.DAL
 {

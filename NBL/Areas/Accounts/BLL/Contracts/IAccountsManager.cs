@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using NBL.Areas.Accounts.Models;
 using NBL.Models;
+using NBL.Models.Clients;
+using NBL.Models.VatDiscounts;
 
 namespace NBL.Areas.Accounts.BLL.Contracts
 {

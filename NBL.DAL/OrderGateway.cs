@@ -4,6 +4,12 @@ using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL.Contracts;
 using NBL.Models;
+using NBL.Models.Clients;
+using NBL.Models.Identities;
+using NBL.Models.Masters;
+using NBL.Models.Orders;
+using NBL.Models.Products;
+using NBL.Models.Searchs;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL

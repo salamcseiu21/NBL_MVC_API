@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using NBL.Models;
+using NBL.Models.Designations;
 
 namespace NBL.DAL.Contracts
 {

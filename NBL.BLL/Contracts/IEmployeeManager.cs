@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using NBL.Models;
+using NBL.Models.Employees;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL.Contracts

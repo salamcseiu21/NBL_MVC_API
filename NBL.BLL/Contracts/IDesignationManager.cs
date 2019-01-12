@@ -1,5 +1,6 @@
 ﻿
 using NBL.Models;
+using NBL.Models.Designations;
 
 namespace NBL.BLL.Contracts
 {

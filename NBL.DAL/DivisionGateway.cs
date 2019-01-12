@@ -5,6 +5,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using NBL.DAL.Contracts;
 using NBL.Models;
+using NBL.Models.Locations;
+
 namespace NBL.DAL
 {
     public class DivisionGateway:DbGateway,IDivisionGateway

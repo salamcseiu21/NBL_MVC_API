@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL.Contracts;
+using NBL.Models.Branches;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL

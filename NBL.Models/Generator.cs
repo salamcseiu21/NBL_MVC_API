@@ -1,4 +1,6 @@
-﻿namespace NBL.Models
+﻿using NBL.Models.Employees;
+
+namespace NBL.Models
 {
     public static class Generator
     {

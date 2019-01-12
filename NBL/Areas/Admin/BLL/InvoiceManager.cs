@@ -6,6 +6,8 @@ using NBL.Areas.Admin.BLL.Contracts;
 using NBL.Areas.Admin.DAL.Contracts;
 using NBL.DAL.Contracts;
 using NBL.Models;
+using NBL.Models.Invoices;
+using NBL.Models.Orders;
 
 namespace NBL.Areas.Admin.BLL
 {

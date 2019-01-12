@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
+using NBL.Models.Clients;
 using NBL.Models.ViewModels;
 
 

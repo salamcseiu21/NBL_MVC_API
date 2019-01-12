@@ -4,6 +4,9 @@ using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL.Contracts;
 using NBL.Models;
+using NBL.Models.Deliveries;
+using NBL.Models.Invoices;
+using NBL.Models.TransferProducts;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL

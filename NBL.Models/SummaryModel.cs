@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using NBL.Models.Departments;
+using NBL.Models.Invoices;
+using NBL.Models.Locations;
 using NBL.Models.ViewModels;
 
 namespace NBL.Models

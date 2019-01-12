@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NBL.Models;
+using NBL.Models.Locations;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL.Contracts

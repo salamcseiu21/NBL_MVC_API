@@ -1,4 +1,5 @@
 ﻿using System;
+using NBL.Models.Products;
 
 namespace NBL.Models.ViewModels
 {

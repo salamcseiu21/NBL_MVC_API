@@ -1,4 +1,7 @@
 ﻿using System;
+using NBL.Models.Clients;
+using NBL.Models.Payments;
+
 namespace NBL.Models
 {
     public class ChequeDetails:Payment

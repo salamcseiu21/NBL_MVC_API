@@ -4,6 +4,9 @@ using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL.Contracts;
 using NBL.Models;
+using NBL.Models.Departments;
+using NBL.Models.Designations;
+using NBL.Models.Identities;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL

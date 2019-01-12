@@ -4,6 +4,7 @@ using NBL.BLL.Contracts;
 
 using NBL.DAL.Contracts;
 using NBL.Models;
+using NBL.Models.VatDiscounts;
 
 namespace NBL.BLL
 {

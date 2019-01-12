@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using NBL.Models;
+using NBL.Models.Orders;
+using NBL.Models.Products;
+using NBL.Models.Searchs;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL.Contracts

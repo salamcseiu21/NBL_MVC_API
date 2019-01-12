@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL.Contracts;
 using NBL.Models;
+using NBL.Models.Masters;
 
 namespace NBL.DAL
 {

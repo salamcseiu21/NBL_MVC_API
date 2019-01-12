@@ -6,6 +6,7 @@ using NBL.BLL.Contracts;
 using NBL.Models.ViewModels;
 using NBL.DAL.Contracts;
 using System;
+using NBL.Models.Branches;
 
 namespace NBL.BLL
 {

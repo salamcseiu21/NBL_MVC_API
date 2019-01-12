@@ -4,6 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NBL.Models;
+using NBL.Models.Banks;
+using NBL.Models.Branches;
+using NBL.Models.Identities;
+using NBL.Models.Masters;
+using NBL.Models.MobileBankings;
+using NBL.Models.Suppliers;
+using NBL.Models.VatDiscounts;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL.Contracts

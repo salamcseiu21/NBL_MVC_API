@@ -9,6 +9,8 @@ using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
+using NBL.Models.Clients;
+using NBL.Models.VatDiscounts;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.AccountExecutive.Controllers

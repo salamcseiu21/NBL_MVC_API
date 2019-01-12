@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using NBL.Models.Invoices;
+using NBL.Models.Orders;
 
 namespace NBL.Models.ViewModels
 {

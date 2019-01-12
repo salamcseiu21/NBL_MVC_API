@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
+using NBL.Models.Deliveries;
+using NBL.Models.Orders;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Manager.BLL

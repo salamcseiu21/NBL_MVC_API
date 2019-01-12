@@ -6,6 +6,8 @@ using NBL.Areas.Factory.BLL;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
+using NBL.Models.Deliveries;
+using NBL.Models.TransferProducts;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Factory.Controllers

@@ -1,6 +1,6 @@
 ﻿
 $.ajax({
-    url: '/factory/product/GetAllProductionNotes',
+    url:RootUrl+ 'factory/product/GetAllProductionNotes',
     type: "GET",
     datatype: "JSON",
     success: function (data) {

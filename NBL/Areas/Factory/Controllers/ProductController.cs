@@ -7,6 +7,10 @@ using Microsoft.Ajax.Utilities;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
+using NBL.Models.Identities;
+using NBL.Models.Orders;
+using NBL.Models.Productions;
+using NBL.Models.TransferProducts;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Factory.Controllers

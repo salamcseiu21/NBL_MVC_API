@@ -5,6 +5,10 @@ using System.Data.SqlClient;
 using NBL.Areas.Admin.DAL.Contracts;
 using NBL.DAL;
 using NBL.Models;
+using NBL.Models.Clients;
+using NBL.Models.Invoices;
+using NBL.Models.Masters;
+using NBL.Models.Orders;
 
 namespace NBL.Areas.Admin.DAL
 {

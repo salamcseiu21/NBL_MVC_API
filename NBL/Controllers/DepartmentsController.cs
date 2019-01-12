@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Http;
 using NBL.DAL;
 using NBL.Models;
+using NBL.Models.Departments;
 
 namespace NBL.Controllers
 {

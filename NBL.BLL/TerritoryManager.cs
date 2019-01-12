@@ -4,6 +4,7 @@ using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.DAL.Contracts;
 using NBL.Models;
+using NBL.Models.Locations;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL

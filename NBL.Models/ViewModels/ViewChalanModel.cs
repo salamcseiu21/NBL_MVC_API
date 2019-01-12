@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using NBL.Models.Deliveries;
+
 namespace NBL.Models.ViewModels
 {
     public class ViewChalanModel

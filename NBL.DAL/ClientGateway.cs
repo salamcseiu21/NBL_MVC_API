@@ -5,6 +5,9 @@ using System.Data.SqlClient;
 using System.Linq;
 using NBL.DAL.Contracts;
 using NBL.Models;
+using NBL.Models.Clients;
+using NBL.Models.Locations;
+using NBL.Models.Masters;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL

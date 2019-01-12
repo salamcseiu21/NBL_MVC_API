@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
+using NBL.Models.VatDiscounts;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Editor.Controllers

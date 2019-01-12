@@ -1,4 +1,5 @@
 ﻿using System;
+using NBL.Models.Locations;
 
 namespace NBL.Models.ViewModels
 {

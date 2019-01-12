@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NBL.Models.Masters;
 
 namespace NBL.Models.ViewModels
 {

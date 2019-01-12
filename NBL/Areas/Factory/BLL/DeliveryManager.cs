@@ -4,6 +4,8 @@ using System.Linq;
 using NBL.Areas.Factory.DAL;
 using NBL.DAL;
 using NBL.Models;
+using NBL.Models.Deliveries;
+using NBL.Models.TransferProducts;
 
 namespace NBL.Areas.Factory.BLL
 {

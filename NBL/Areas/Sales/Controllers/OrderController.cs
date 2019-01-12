@@ -5,6 +5,9 @@ using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.Models;
+using NBL.Models.Clients;
+using NBL.Models.Orders;
+using NBL.Models.Products;
 using NBL.Models.ViewModels;
 namespace NBL.Areas.Sales.Controllers
 {

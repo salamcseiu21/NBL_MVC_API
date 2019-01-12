@@ -8,6 +8,9 @@ using System.Data;
 using NBL.Areas.Accounts.DAL.Contracts;
 using NBL.DAL;
 using NBL.Models;
+using NBL.Models.Clients;
+using NBL.Models.Payments;
+using NBL.Models.VatDiscounts;
 
 namespace NBL.Areas.Accounts.DAL
 {

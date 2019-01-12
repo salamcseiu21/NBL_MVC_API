@@ -2,6 +2,7 @@
 using NBL.BLL.Contracts;
 using NBL.DAL.Contracts;
 using NBL.Models;
+using NBL.Models.Designations;
 
 namespace NBL.BLL
 {
