@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Web.Mvc;
 using NBL.Areas.Accounts.BLL.Contracts;
+using NBL.Areas.Accounts.Models.ViewModels;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
@@ -164,7 +165,13 @@ namespace NBL.Areas.AccountExecutive.Controllers
         public ActionResult VoucherDetails(int id)
         {
             var voucher = _iAccountsManager.GetVoucherByVoucherId(id);
-            return View(voucher);
+            var details= _iAccountsManager.GetVoucherDetailsByVoucherId(voucher.VoucherId);
+            ViewVoucherModel model=new ViewVoucherModel
+            {
+                Voucher = voucher,
+                VoucherDetails = details.ToList()
+            };
+            return View(model);
         }
 
         [HttpPost]

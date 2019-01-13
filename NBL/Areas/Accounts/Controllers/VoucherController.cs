@@ -1,15 +1,11 @@
-﻿
-using NBL.Areas.Accounts.BLL;
-using NBL.Areas.Accounts.Models;
+﻿using NBL.Areas.Accounts.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Microsoft.Office.Interop.Excel;
 using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.Areas.Accounts.Models.ViewModels;
 using NBL.BLL.Contracts;
-using NBL.DAL;
 using NBL.Models;
 using NBL.Models.Payments;
 using NBL.Models.ViewModels;
@@ -650,8 +646,8 @@ namespace NBL.Areas.Accounts.Controllers
             var model=new ViewVoucherModel
              {
                 Voucher = voucher,
-                VoucherDetails = _iAccountsManager.GetVoucherDetailsByVoucherId(voucher.VoucherId)
-             } ;
+                VoucherDetails = _iAccountsManager.GetVoucherDetailsByVoucherId(voucher.VoucherId).ToList()
+             };
 
            
             return View(model);

@@ -30,12 +30,9 @@ namespace NBL.Models.Branches
         [Display(Name = "E-mail")]
         [Required]
         public string BranchEmail { get; set; }
-        //[Display(Name = "Region")]
-        //[Required]
-        //public int RegionId { get; set; }
-        public  List<Region> RegionList { get; set; }
-        public List<Client> Clients { get; set; }
-        public List<Order> Orders { get; set; } 
+        public  ICollection<Region> RegionList { get; set; }
+        public  ICollection<Client> Clients { get; set; }
+        public  ICollection<Order> Orders { get; set; } 
 
         public Branch()
         {

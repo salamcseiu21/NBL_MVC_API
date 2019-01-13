@@ -341,12 +341,15 @@ CommandObj.Parameters.Clear();
                 {
                     bankBranchList.Add(new BankBranch
                     {
-                        BankId = Convert.ToInt32(reader["BankId"]),
-                        BankName = reader["BankName"].ToString(),
-                        BankAccountCode = reader["BankAccountCode"].ToString(),
                         BankBranchId = Convert.ToInt32(reader["BankBranchId"]),
                         BankBranchName = reader["BankBranchName"].ToString(),
-                        BankBranchAccountCode = reader["BankBranchAccountCode"].ToString()
+                        BankBranchAccountCode = reader["BankBranchAccountCode"].ToString(),
+                        BankId = Convert.ToInt32(reader["BankId"]),
+                        Bank =new Bank {
+                            BankId = Convert.ToInt32(reader["BankId"]),
+                            BankName = reader["BankName"].ToString(),
+                            BankAccountCode = reader["BankAccountCode"].ToString()
+                        }
                     });
                 }
                 reader.Close();
