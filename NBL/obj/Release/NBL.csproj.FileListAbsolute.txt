@@ -38,7 +38,6 @@ E:\API\NBL\NBL\bin\Microsoft.ReportViewer.ProcessingObjectModel.dll
 E:\API\NBL\NBL\bin\Microsoft.ReportViewer.WebForms.dll
 E:\API\NBL\NBL\bin\Microsoft.Web.Infrastructure.dll
 E:\API\NBL\NBL\bin\NBL.BLL.dll
-E:\API\NBL\NBL\bin\NBL.Contracts.dll
 E:\API\NBL\NBL\bin\NBL.DAL.dll
 E:\API\NBL\NBL\bin\NBL.Models.dll
 E:\API\NBL\NBL\bin\Newtonsoft.Json.dll
@@ -64,7 +63,6 @@ E:\API\NBL\NBL\bin\Unity.RegistrationByConvention.dll
 E:\API\NBL\NBL\bin\Unity.ServiceLocation.dll
 E:\API\NBL\NBL\bin\WebGrease.dll
 E:\API\NBL\NBL\bin\NBL.BLL.pdb
-E:\API\NBL\NBL\bin\NBL.Contracts.pdb
 E:\API\NBL\NBL\bin\NBL.DAL.pdb
 E:\API\NBL\NBL\bin\NBL.Models.pdb
 E:\API\NBL\NBL\bin\AutoMapper.pdb

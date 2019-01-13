@@ -1,21 +1,15 @@
 ﻿
 @using System.Globalization
 @using NBL.BLL
+@using NBL.BLL.Contracts
 @using NBL.Models
+@using NBL.Models.Identities
+@using NBL.Models.Orders
 @model IEnumerable<Order>
 
 @{
     ViewBag.Title = "Report";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    var user = (User)Session["User"];
-    EmployeeManager anEmployee = new EmployeeManager();
-    var branchId = Convert.ToInt32(Session["BranchId"]);
-    var emp = anEmployee.GetEmployeeById(user.EmployeeId);
-    BranchManager aBranch = new BranchManager();
-    var branch = aBranch.GetBranchById(branchId);
-    var companyId = Convert.ToInt32(Session["CompanyId"]);
-    CompanyManager aCompany = new CompanyManager();
-    var company = aCompany.GetCompanyById(companyId);
 }
 <section class="content">
     <p>
@@ -40,14 +34,9 @@
     <div id="ManagerGrid">
 
 
-        <table cellpadding="5" cellspacing="0" style="border: 1px solid black; font-size: 10pt;" width="100%">
+        <table cellpadding="5" cellspacing="0" style="border: 1px solid black; font-size: 10pt;">
 
-            <caption class="text-center" hidden>
-                <h2>@company.CompanyName</h2>
-                <h3 style="margin: 0; padding: 0;">@branch.BranchName</h3>
-                <p>@branch.BranchAddress</p>
-                <p>Phone :@branch.BranchPhone,E-mail: @branch.BranchEmail</p>
-            </caption>
+           
             <tr>
                 <th style="background-color: #B8DBFD; border: 1px solid #ccc;text-align: center">Order No</th>
                 <th style="background-color: #B8DBFD; border: 1px solid #ccc;text-align: center">Date</th>

@@ -381,14 +381,14 @@
     <script>
     $("#TransactionTypeId").change(function () {
         var ptId = parseInt($("#TransactionTypeId").val());
-        if (ptId == 1) {
+        if (ptId === 1) {
             $("#BankName").val('Cash');
             $('#BankName').prop('readonly', true);
             $('#BankBranchId').prop('readonly', true);
             $('#AccountCode').val('3308011');
 
         }
-        else if (ptId == 3) {
+        else if (ptId === 3) {
             $("#SourceBankName").val('DBBL Mobile Banking (Rocket)');
             $("#BankAccountNo").val('');
             $("#ChequeNo").val('');

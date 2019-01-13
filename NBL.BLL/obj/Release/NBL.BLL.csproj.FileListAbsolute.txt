@@ -31,7 +31,6 @@ E:\API\NBL\NBL.BLL\bin\Release\NBL.BLL.dll
 E:\API\NBL\NBL.BLL\bin\Release\NBL.BLL.pdb
 E:\API\NBL\NBL.BLL\bin\Release\AutoMapper.dll
 E:\API\NBL\NBL.BLL\bin\Release\Microsoft.Web.Infrastructure.dll
-E:\API\NBL\NBL.BLL\bin\Release\NBL.Contracts.dll
 E:\API\NBL\NBL.BLL\bin\Release\NBL.DAL.dll
 E:\API\NBL\NBL.BLL\bin\Release\NBL.Models.dll
 E:\API\NBL\NBL.BLL\bin\Release\System.ValueTuple.dll
@@ -41,7 +40,6 @@ E:\API\NBL\NBL.BLL\bin\Release\System.Web.Razor.dll
 E:\API\NBL\NBL.BLL\bin\Release\System.Web.WebPages.Deployment.dll
 E:\API\NBL\NBL.BLL\bin\Release\System.Web.WebPages.dll
 E:\API\NBL\NBL.BLL\bin\Release\System.Web.WebPages.Razor.dll
-E:\API\NBL\NBL.BLL\bin\Release\NBL.Contracts.pdb
 E:\API\NBL\NBL.BLL\bin\Release\NBL.DAL.pdb
 E:\API\NBL\NBL.BLL\bin\Release\NBL.Models.pdb
 E:\API\NBL\NBL.BLL\bin\Release\AutoMapper.pdb
