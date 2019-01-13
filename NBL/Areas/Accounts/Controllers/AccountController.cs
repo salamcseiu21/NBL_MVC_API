@@ -7,7 +7,7 @@ using NBL.Areas.Accounts.Models;
 using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.BLL.Contracts;
 using NBL.Models;
-using NBL.Models.Payments;
+using NBL.Models.EntityModels.Payments;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Accounts.Controllers

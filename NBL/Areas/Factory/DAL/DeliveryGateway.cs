@@ -5,8 +5,8 @@ using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL;
 using NBL.Models;
-using NBL.Models.Deliveries;
-using NBL.Models.TransferProducts;
+using NBL.Models.EntityModels.Deliveries;
+using NBL.Models.EntityModels.TransferProducts;
 
 namespace NBL.Areas.Factory.DAL
 {

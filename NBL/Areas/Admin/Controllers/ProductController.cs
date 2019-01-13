@@ -5,9 +5,9 @@ using System.Web.Mvc;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
-using NBL.Models.Identities;
-using NBL.Models.Orders;
-using NBL.Models.TransferProducts;
+using NBL.Models.EntityModels.Identities;
+using NBL.Models.EntityModels.Orders;
+using NBL.Models.EntityModels.TransferProducts;
 
 namespace NBL.Areas.Admin.Controllers
 {

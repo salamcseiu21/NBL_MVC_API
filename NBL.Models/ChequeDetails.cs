@@ -1,6 +1,6 @@
 ﻿using System;
-using NBL.Models.Clients;
-using NBL.Models.Payments;
+using NBL.Models.EntityModels.Clients;
+using NBL.Models.EntityModels.Payments;
 
 namespace NBL.Models
 {

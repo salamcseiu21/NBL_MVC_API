@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using NBL.DAL;
-using NBL.Models.Employees;
+using NBL.Models.EntityModels.Employees;
 using NBL.Models.ViewModels;
 
 namespace NBL.Controllers

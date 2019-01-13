@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
-using NBL.Models;
-using NBL.Models.Identities;
-using NBL.Models.Orders;
-using NBL.Models.Products;
-using NBL.Models.TransferProducts;
+using NBL.Models.EntityModels.Identities;
+using NBL.Models.EntityModels.Orders;
+using NBL.Models.EntityModels.Products;
+using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Sales.Controllers

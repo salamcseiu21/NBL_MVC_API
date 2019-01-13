@@ -2,7 +2,7 @@
 using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
-using NBL.Models.Identities;
+using NBL.Models.EntityModels.Identities;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL

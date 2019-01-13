@@ -1,6 +1,6 @@
 ﻿
 using NBL.Models;
-using NBL.Models.Companies;
+using NBL.Models.EntityModels.Companies;
 
 namespace NBL.DAL.Contracts
 {

@@ -10,9 +10,9 @@ using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.DAL.Contracts;
 using NBL.Models;
-using NBL.Models.Banks;
-using NBL.Models.Designations;
-using NBL.Models.Locations;
+using NBL.Models.EntityModels.Banks;
+using NBL.Models.EntityModels.Designations;
+using NBL.Models.EntityModels.Locations;
 using NBL.Models.Searchs;
 using NBL.Models.ViewModels;
 

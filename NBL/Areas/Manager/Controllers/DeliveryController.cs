@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using NBL.Areas.Admin.BLL.Contracts;
 using NBL.BLL.Contracts;
 using NBL.Models;
-using NBL.Models.Deliveries;
-using NBL.Models.Invoices;
-using NBL.Models.Products;
+using NBL.Models.EntityModels.Deliveries;
+using NBL.Models.EntityModels.Invoices;
+using NBL.Models.EntityModels.Products;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Manager.Controllers

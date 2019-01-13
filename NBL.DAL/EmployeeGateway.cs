@@ -4,11 +4,11 @@ using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL.Contracts;
 using NBL.Models;
-using NBL.Models.Branches;
-using NBL.Models.Departments;
-using NBL.Models.Designations;
-using NBL.Models.Employees;
-using NBL.Models.Masters;
+using NBL.Models.EntityModels.Branches;
+using NBL.Models.EntityModels.Departments;
+using NBL.Models.EntityModels.Designations;
+using NBL.Models.EntityModels.Employees;
+using NBL.Models.EntityModels.Masters;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL

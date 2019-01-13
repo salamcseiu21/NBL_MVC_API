@@ -1,8 +1,8 @@
 ﻿
 using System.Collections.Generic;
 using NBL.Models;
-using NBL.Models.Branches;
-using NBL.Models.Locations;
+using NBL.Models.EntityModels.Branches;
+using NBL.Models.EntityModels.Locations;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL.Contracts

@@ -2,8 +2,8 @@
 using System.Linq;
 using NBL.Areas.SuperAdmin.DAL;
 using NBL.Models;
-using NBL.Models.Branches;
-using NBL.Models.Identities;
+using NBL.Models.EntityModels.Branches;
+using NBL.Models.EntityModels.Identities;
 
 namespace NBL.Areas.SuperAdmin.BLL
 {

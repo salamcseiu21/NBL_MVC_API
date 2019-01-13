@@ -1,4 +1,4 @@
-﻿using NBL.Models.Employees;
+﻿using NBL.Models.EntityModels.Employees;
 
 namespace NBL.Models
 {

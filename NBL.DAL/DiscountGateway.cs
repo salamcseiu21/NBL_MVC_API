@@ -4,8 +4,8 @@ using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL.Contracts;
 using NBL.Models;
-using NBL.Models.Masters;
-using NBL.Models.VatDiscounts;
+using NBL.Models.EntityModels.Masters;
+using NBL.Models.EntityModels.VatDiscounts;
 
 namespace NBL.DAL
 {

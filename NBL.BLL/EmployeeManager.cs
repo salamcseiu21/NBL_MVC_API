@@ -6,7 +6,7 @@ using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.DAL.Contracts;
 using NBL.Models;
-using NBL.Models.Employees;
+using NBL.Models.EntityModels.Employees;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL

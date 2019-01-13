@@ -8,9 +8,9 @@ using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.DAL.Contracts;
 using NBL.Models;
-using NBL.Models.Branches;
-using NBL.Models.Clients;
-using NBL.Models.Locations;
+using NBL.Models.EntityModels.Branches;
+using NBL.Models.EntityModels.Clients;
+using NBL.Models.EntityModels.Locations;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Editor.Controllers

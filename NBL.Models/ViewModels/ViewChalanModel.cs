@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using NBL.Models.Deliveries;
+using NBL.Models.EntityModels.Deliveries;
 
 namespace NBL.Models.ViewModels
 {

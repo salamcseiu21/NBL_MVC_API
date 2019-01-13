@@ -4,9 +4,9 @@ using System.Linq;
 using NBL.BLL.Contracts;
 using NBL.DAL.Contracts;
 using NBL.Models;
-using NBL.Models.Productions;
-using NBL.Models.Products;
-using NBL.Models.TransferProducts;
+using NBL.Models.EntityModels.Productions;
+using NBL.Models.EntityModels.Products;
+using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NBL.Models;
-using NBL.Models.Locations;
+using NBL.Models.EntityModels.Locations;
 
 namespace NBL.DAL.Contracts
 {

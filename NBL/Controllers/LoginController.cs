@@ -9,7 +9,7 @@ using System.Web.Security;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
-using NBL.Models.Identities;
+using NBL.Models.EntityModels.Identities;
 using NBL.Models.ViewModels;
 
 namespace NBL.Controllers

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NBL.Models;
-using NBL.Models.Orders;
-using NBL.Models.Products;
+using NBL.Models.EntityModels.Orders;
+using NBL.Models.EntityModels.Products;
 using NBL.Models.Searchs;
 using NBL.Models.ViewModels;
 

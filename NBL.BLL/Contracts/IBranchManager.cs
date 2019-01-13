@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using NBL.Models;
-using NBL.Models.Branches;
+using NBL.Models.EntityModels.Branches;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL.Contracts

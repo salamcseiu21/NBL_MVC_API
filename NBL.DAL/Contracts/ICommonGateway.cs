@@ -1,13 +1,13 @@
 ﻿
 using System.Collections.Generic;
 using NBL.Models;
-using NBL.Models.Banks;
-using NBL.Models.Branches;
-using NBL.Models.Identities;
-using NBL.Models.Masters;
-using NBL.Models.MobileBankings;
-using NBL.Models.Suppliers;
-using NBL.Models.VatDiscounts;
+using NBL.Models.EntityModels.Banks;
+using NBL.Models.EntityModels.Branches;
+using NBL.Models.EntityModels.Identities;
+using NBL.Models.EntityModels.Masters;
+using NBL.Models.EntityModels.MobileBankings;
+using NBL.Models.EntityModels.Suppliers;
+using NBL.Models.EntityModels.VatDiscounts;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL.Contracts

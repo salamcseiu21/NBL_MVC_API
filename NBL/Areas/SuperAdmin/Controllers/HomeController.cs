@@ -10,9 +10,9 @@ using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.DAL.Contracts;
 using NBL.Models;
-using NBL.Models.Identities;
-using NBL.Models.Orders;
-using NBL.Models.VatDiscounts;
+using NBL.Models.EntityModels.Identities;
+using NBL.Models.EntityModels.Orders;
+using NBL.Models.EntityModels.VatDiscounts;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.SuperAdmin.Controllers

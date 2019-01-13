@@ -1,5 +1,5 @@
 ﻿using System;
-using NBL.Models.Locations;
+using NBL.Models.EntityModels.Locations;
 
 namespace NBL.Models.ViewModels
 {

@@ -259,7 +259,7 @@
 
     <script>
         $("form").bind("keypress", function (e) {
-            if (e.keyCode == 13) {
+            if (e.keyCode === 13) {
                 return false;
             }
         });
@@ -519,10 +519,10 @@
 
         function SubmitOrderDetails(id) {
 
-            if ($("#ClientName").val() == "") {
+            if ($("#ClientName").val() === "") {
                 alert("Please Enter Client name");
             }
-            else if ($("#Total").val() == 0) {
+            else if ($("#Total").val() === 0) {
                 alert("There is no product to this order !!. You can't submit an order without product.");
             }
             else {
@@ -570,7 +570,7 @@
 
             var inputs = document.getElementsByTagName('input');
             for (var i = 0; i < inputs.length; i++) {
-                if (inputs[i].type == "text" && inputs[i].value == '') {
+                if (inputs[i].type === "text" && inputs[i].value === '') {
                     allFilled = false;
                     break;
                 }
@@ -582,7 +582,7 @@
         window.onload = function () {
             var inputs = document.getElementsByTagName('input');
             for (var i = 0; i < inputs.length; i++) {
-                if (inputs[i].type == "text") {
+                if (inputs[i].type === "text") {
                     inputs[i].onkeyup = doCheck;
                     inputs[i].onblur = doCheck;
                 }

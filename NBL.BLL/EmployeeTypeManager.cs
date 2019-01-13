@@ -3,7 +3,7 @@ using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.DAL.Contracts;
 using NBL.Models;
-using NBL.Models.Masters;
+using NBL.Models.EntityModels.Masters;
 
 namespace NBL.BLL
 {

@@ -4,10 +4,10 @@ using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL.Contracts;
 using NBL.Models;
-using NBL.Models.Masters;
-using NBL.Models.Productions;
-using NBL.Models.Products;
-using NBL.Models.TransferProducts;
+using NBL.Models.EntityModels.Masters;
+using NBL.Models.EntityModels.Productions;
+using NBL.Models.EntityModels.Products;
+using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL

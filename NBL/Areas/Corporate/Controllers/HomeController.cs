@@ -10,9 +10,9 @@ using NBL.BLL.Contracts;
 using NBL.Controllers;
 using NBL.DAL.Contracts;
 using NBL.Models;
-using NBL.Models.Orders;
+using NBL.Models.EntityModels.Orders;
+using NBL.Models.EntityModels.VatDiscounts;
 using NBL.Models.Searchs;
-using NBL.Models.VatDiscounts;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Corporate.Controllers

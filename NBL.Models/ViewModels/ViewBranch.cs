@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NBL.Models.Clients;
-using NBL.Models.Locations;
-using NBL.Models.Orders;
+using NBL.Models.EntityModels.Clients;
+using NBL.Models.EntityModels.Locations;
+using NBL.Models.EntityModels.Orders;
 
 namespace NBL.Models.ViewModels
 {

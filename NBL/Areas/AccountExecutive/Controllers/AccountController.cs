@@ -10,8 +10,8 @@ using NBL.Areas.Accounts.Models.ViewModels;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
-using NBL.Models.Clients;
-using NBL.Models.VatDiscounts;
+using NBL.Models.EntityModels.Clients;
+using NBL.Models.EntityModels.VatDiscounts;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.AccountExecutive.Controllers

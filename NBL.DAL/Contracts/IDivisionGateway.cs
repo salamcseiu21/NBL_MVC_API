@@ -1,7 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using NBL.Models;
-using NBL.Models.Locations;
+using NBL.Models.EntityModels.Locations;
 
 namespace NBL.DAL.Contracts
 {

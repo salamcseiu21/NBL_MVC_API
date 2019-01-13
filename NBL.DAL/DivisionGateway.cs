@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using NBL.DAL.Contracts;
 using NBL.Models;
-using NBL.Models.Locations;
+using NBL.Models.EntityModels.Locations;
 
 namespace NBL.DAL
 {

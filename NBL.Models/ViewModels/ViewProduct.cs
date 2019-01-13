@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using NBL.Models.Masters;
-using NBL.Models.VatDiscounts;
+using NBL.Models.EntityModels.Masters;
+using NBL.Models.EntityModels.VatDiscounts;
 
 namespace NBL.Models.ViewModels
 {

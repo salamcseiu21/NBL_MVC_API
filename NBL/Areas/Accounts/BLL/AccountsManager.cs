@@ -8,8 +8,8 @@ using NBL.Areas.Admin.DAL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Areas.Accounts.DAL.Contracts;
-using NBL.Models.Clients;
-using NBL.Models.VatDiscounts;
+using NBL.Models.EntityModels.Clients;
+using NBL.Models.EntityModels.VatDiscounts;
 
 namespace NBL.Areas.Accounts.BLL
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NBL.BLL.Contracts;
 using NBL.DAL.Contracts;
-using NBL.Models.Locations;
+using NBL.Models.EntityModels.Locations;
 
 namespace NBL.BLL
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-using NBL.Models.Products;
+using NBL.Models.EntityModels.Products;
 
 namespace NBL.Models.ViewModels
 {

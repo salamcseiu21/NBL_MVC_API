@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
-using NBL.Models.TransferProducts;
+using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Factory.Controllers

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NBL.Models;
-using NBL.Models.Deliveries;
-using NBL.Models.Invoices;
-using NBL.Models.TransferProducts;
+using NBL.Models.EntityModels.Deliveries;
+using NBL.Models.EntityModels.Invoices;
+using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL.Contracts

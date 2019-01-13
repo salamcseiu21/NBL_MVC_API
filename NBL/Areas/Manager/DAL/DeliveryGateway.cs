@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using NBL.DAL;
 using NBL.Models;
-using NBL.Models.Deliveries;
-using NBL.Models.Orders;
-using NBL.Models.Transports;
+using NBL.Models.EntityModels.Deliveries;
+using NBL.Models.EntityModels.Orders;
+using NBL.Models.EntityModels.Transports;
 
 namespace NBL.Areas.Manager.DAL
 {

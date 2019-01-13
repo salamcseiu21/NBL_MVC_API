@@ -4,8 +4,8 @@ using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL.Contracts;
 using NBL.Models;
-using NBL.Models.Departments;
-using NBL.Models.Designations;
+using NBL.Models.EntityModels.Departments;
+using NBL.Models.EntityModels.Designations;
 
 namespace NBL.DAL
 {

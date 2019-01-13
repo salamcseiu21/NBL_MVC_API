@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Reporting.WebForms;
 using NBL.Models;
-using NBL.Models.Orders;
+using NBL.Models.EntityModels.Orders;
 
 namespace NBL.Areas.SuperAdmin.Reports
 {

@@ -1,6 +1,6 @@
 ﻿
 using NBL.Models;
-using NBL.Models.Designations;
+using NBL.Models.EntityModels.Designations;
 
 namespace NBL.BLL.Contracts
 {

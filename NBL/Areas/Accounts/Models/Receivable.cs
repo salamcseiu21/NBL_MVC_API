@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NBL.Models;
-using NBL.Models.Payments;
+using NBL.Models.EntityModels.Payments;
 
 namespace NBL.Areas.Accounts.Models
 {

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NBL.Models;
-using NBL.Models.Departments;
-using NBL.Models.Designations;
+using NBL.Models.EntityModels.Departments;
+using NBL.Models.EntityModels.Designations;
 
 namespace NBL.DAL.Contracts
 {

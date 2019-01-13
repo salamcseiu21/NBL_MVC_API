@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using NBL.Models.Branches;
-using NBL.Models.Departments;
-using NBL.Models.Designations;
-using NBL.Models.Masters;
+using NBL.Models.EntityModels.Branches;
+using NBL.Models.EntityModels.Departments;
+using NBL.Models.EntityModels.Designations;
+using NBL.Models.EntityModels.Masters;
 
 namespace NBL.Models.ViewModels
 {

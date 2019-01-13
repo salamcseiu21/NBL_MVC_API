@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.Models;
-using NBL.Models.Orders;
+using NBL.Models.EntityModels.Orders;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Nsm.Controllers
