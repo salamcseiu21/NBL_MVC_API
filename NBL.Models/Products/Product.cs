@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using NBL.Contracts;
+using NBL.Models.Contracts;
 using NBL.Models.Masters;
 using NBL.Models.VatDiscounts;
 

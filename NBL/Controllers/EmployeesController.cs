@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using NBL.DAL;
-using NBL.Models;
 using NBL.Models.Employees;
+using NBL.Models.ViewModels;
 
 namespace NBL.Controllers
 {
@@ -27,9 +27,10 @@ namespace NBL.Controllers
         }
 
         // GET: api/Employees/5
-        public string Get(int id)
+        
+        public ViewEmployee Get(int id,string name)
         {
-            return "value";
+            return _employeeGateway.GetEmployeeById(id);
         }
 
         // POST: api/Employees
@@ -46,5 +47,6 @@ namespace NBL.Controllers
         public void Delete(int id)
         {
         }
+
     }
 }

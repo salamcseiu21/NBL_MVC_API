@@ -89,10 +89,6 @@
     <Compile Include="VatGateway.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NBL.Contracts\NBL.Contracts.csproj">
-      <Project>{DF0062EA-9576-45DA-B78A-1CF256CA96FC}</Project>
-      <Name>NBL.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NBL.Models\NBL.Models.csproj">
       <Project>{572727b4-5ab4-4a58-a9c4-d3168bc93465}</Project>
       <Name>NBL.Models</Name>

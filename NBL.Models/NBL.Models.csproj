@@ -60,6 +60,8 @@
     <Compile Include="ChequeDetails.cs" />
     <Compile Include="Clients\Client.cs" />
     <Compile Include="Clients\ClientAttachment.cs" />
+    <Compile Include="Contracts\ICommonProperty.cs" />
+    <Compile Include="Contracts\IGetInformation.cs" />
     <Compile Include="Masters\ClientType.cs" />
     <Compile Include="Companies\Company.cs" />
     <Compile Include="Deliveries\Delivery.cs" />
@@ -109,7 +111,7 @@
     <Compile Include="Identities\User.cs" />
     <Compile Include="Identities\UserRole.cs" />
     <Compile Include="VatDiscounts\Vat.cs" />
-    <Compile Include="ViewModels\SearchCriteria.cs" />
+    <Compile Include="Searchs\SearchCriteria.cs" />
     <Compile Include="ViewModels\ViewAssignedRegion.cs" />
     <Compile Include="ViewModels\ViewAssignedUpazilla.cs" />
     <Compile Include="ViewModels\ViewBranch.cs" />
@@ -137,12 +139,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NBL.Contracts\NBL.Contracts.csproj">
-      <Project>{DF0062EA-9576-45DA-B78A-1CF256CA96FC}</Project>
-      <Name>NBL.Contracts</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

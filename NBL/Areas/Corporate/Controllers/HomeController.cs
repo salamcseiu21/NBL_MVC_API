@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.Areas.Admin.BLL.Contracts;
 using NBL.BLL.Contracts;
+using NBL.Controllers;
 using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.Orders;
@@ -58,9 +59,9 @@ namespace NBL.Areas.Corporate.Controllers
         }
 
         // GET: Corporate/Home
-        public ActionResult Home() 
+        public ActionResult Home()
         {
-           
+
             Session["BranchId"] = null;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var branches = _iBranchManager.GetAllBranches();
@@ -341,9 +342,9 @@ namespace NBL.Areas.Corporate.Controllers
         {
 
             var draw = Request.Form.GetValues("draw").FirstOrDefault();
-            var start = Request.Form.GetValues("start").FirstOrDefault();
-            var length = Request.Form.GetValues("length").FirstOrDefault();
-            var search = Request["search[value]"];
+             var start = Request.Form.GetValues("start").FirstOrDefault();
+             var length = Request.Form.GetValues("length").FirstOrDefault();
+              var search = Request["search[value]"];
             var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
             int colIndex = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault().IndexOf(sortColumn);
             var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
@@ -356,6 +357,7 @@ namespace NBL.Areas.Corporate.Controllers
                 SortColomnIndex = colIndex,
                 SortDirection = sortColumnDir
             };
+
             var v=_iOrderManager.GetOrder(aCriteriaModel);
             int recordsTotal = _iOrderManager.GetAll().Count();
             return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = v }, JsonRequestBehavior.AllowGet);

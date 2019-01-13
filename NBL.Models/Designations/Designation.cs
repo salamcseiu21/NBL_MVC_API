@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using NBL.Contracts;
+using NBL.Models.Contracts;
 using NBL.Models.Departments;
 
 namespace NBL.Models.Designations

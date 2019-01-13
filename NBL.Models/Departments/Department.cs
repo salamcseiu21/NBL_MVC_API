@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NBL.Contracts;
+using NBL.Models.Contracts;
 using NBL.Models.Designations;
 using NBL.Models.Employees;
 

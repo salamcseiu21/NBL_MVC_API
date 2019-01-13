@@ -8027,10 +8027,6 @@
       <Project>{70384179-FD36-4FCB-93E5-64E3E4B331EF}</Project>
       <Name>NBL.BLL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NBL.Contracts\NBL.Contracts.csproj">
-      <Project>{c2652370-20ae-45db-8ad0-80ce33d8a124}</Project>
-      <Name>NBL.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NBL.DAL\NBL.DAL.csproj">
       <Project>{C9AFFD73-668D-41E4-9771-15E084E5FEF6}</Project>
       <Name>NBL.DAL</Name>

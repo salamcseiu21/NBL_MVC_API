@@ -3,7 +3,6 @@ using System.Linq;
 using System.Web.Mvc;
 using NBL.Models;
 using NBL.BLL.Contracts;
-using NBL.Contracts;
 using NBL.Models.Branches;
 
 namespace NBL.Areas.Editor.Controllers

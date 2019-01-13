@@ -14,11 +14,9 @@ E:\Abdus Salam\NBL\NBL.DAL\obj\Debug\NBL.DAL.dll
 E:\Abdus Salam\NBL\NBL.DAL\obj\Debug\NBL.DAL.pdb
 E:\API\NBL\NBL.DAL\bin\Debug\NBL.DAL.dll
 E:\API\NBL\NBL.DAL\bin\Debug\NBL.DAL.pdb
-E:\API\NBL\NBL.DAL\bin\Debug\NBL.Contracts.dll
 E:\API\NBL\NBL.DAL\bin\Debug\NBL.Models.dll
 E:\API\NBL\NBL.DAL\bin\Debug\AutoMapper.dll
 E:\API\NBL\NBL.DAL\bin\Debug\System.ValueTuple.dll
-E:\API\NBL\NBL.DAL\bin\Debug\NBL.Contracts.pdb
 E:\API\NBL\NBL.DAL\bin\Debug\NBL.Models.pdb
 E:\API\NBL\NBL.DAL\bin\Debug\AutoMapper.pdb
 E:\API\NBL\NBL.DAL\bin\Debug\AutoMapper.xml

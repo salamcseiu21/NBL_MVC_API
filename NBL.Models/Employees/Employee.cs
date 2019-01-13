@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using NBL.Contracts;
 using NBL.Models.Branches;
+using NBL.Models.Contracts;
 using NBL.Models.Departments;
 using NBL.Models.Designations;
 using NBL.Models.Masters;

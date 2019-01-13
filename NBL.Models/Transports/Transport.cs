@@ -1,5 +1,4 @@
-﻿
-using NBL.Contracts;
+﻿using NBL.Models.Contracts;
 
 namespace NBL.Models.Transports
 {

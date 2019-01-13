@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NBL.Models.ViewModels
+namespace NBL.Models.Searchs
 {
   public class SearchCriteria
     {

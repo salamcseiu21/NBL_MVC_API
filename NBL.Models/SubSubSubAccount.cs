@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using NBL.Contracts;
+using NBL.Models.Contracts;
 
 namespace NBL.Models
 {

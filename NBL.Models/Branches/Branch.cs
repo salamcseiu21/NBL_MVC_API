@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NBL.Contracts;
 using NBL.Models.Clients;
+using NBL.Models.Contracts;
 using NBL.Models.Locations;
 using NBL.Models.Orders;
 namespace NBL.Models.Branches

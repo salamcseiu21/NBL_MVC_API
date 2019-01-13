@@ -13,6 +13,7 @@ using NBL.Models;
 using NBL.Models.Banks;
 using NBL.Models.Designations;
 using NBL.Models.Locations;
+using NBL.Models.Searchs;
 using NBL.Models.ViewModels;
 
 namespace NBL.Controllers
