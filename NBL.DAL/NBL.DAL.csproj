@@ -50,6 +50,7 @@
     <Compile Include="Contracts\IClientGateway.cs" />
     <Compile Include="Contracts\ICommonGateway.cs" />
     <Compile Include="Contracts\ICompanyGateway.cs" />
+    <Compile Include="Contracts\IDeliveryGateway.cs" />
     <Compile Include="Contracts\IDepartmentGateway.cs" />
     <Compile Include="Contracts\IDesignationGateway.cs" />
     <Compile Include="Contracts\IDiscountGateway.cs" />

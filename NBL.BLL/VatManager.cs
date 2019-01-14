@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using NBL.BLL.Contracts;
-using NBL.DAL;
 using NBL.DAL.Contracts;
-using NBL.Models;
 using NBL.Models.EntityModels.VatDiscounts;
 
 namespace NBL.BLL
@@ -11,7 +9,7 @@ namespace NBL.BLL
     public class VatManager:IVatManager
     {
 
-        readonly  IVatGateway _iVatGateway;
+       private readonly  IVatGateway _iVatGateway;
 
         public VatManager(IVatGateway iVatGateway)
         {

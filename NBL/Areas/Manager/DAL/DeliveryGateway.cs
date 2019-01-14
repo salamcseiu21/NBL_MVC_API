@@ -3,14 +3,14 @@ using System.Data;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using NBL.DAL;
-using NBL.Models;
+using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Transports;
 
 namespace NBL.Areas.Manager.DAL
 {
-    public class DeliveryGateway:DbGateway
+    public class DeliveryGateway:DbGateway,IDeliveryGateway
     {
         public int ChangeOrderStatusByManager(Order aModel)
         {
@@ -386,6 +386,31 @@ namespace NBL.Areas.Manager.DAL
                 CommandObj.Dispose();
                 ConnectionObj.Close();
             }
+        }
+
+        public int Add(Delivery model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update(Delivery model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete(Delivery model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Delivery GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<Delivery> GetAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }

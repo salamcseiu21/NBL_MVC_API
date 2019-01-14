@@ -50,19 +50,22 @@ namespace NBL.Areas.Accounts.Controllers
             try
             {
                 
-                Payment aPayment = new Payment();
+               
                 int paymentTypeId = Convert.ToInt32(collection["PaymentTypeId"]);
                 var bankBranchName = collection["SourceBankName"];
                 var chequeNo = collection["ChequeNo"];
                 var amount = Convert.ToDecimal(collection["Amount"]);
                 var date = Convert.ToDateTime(collection["Date"]);
-                aPayment.ChequeAmount = amount;
-                aPayment.BankBranchName = bankBranchName;
-                aPayment.ChequeNo = chequeNo;
-                aPayment.ChequeDate = date;
-                aPayment.PaymentTypeId = paymentTypeId;
-                aPayment.BankAccountNo = collection["BankAccountNo"];
-                aPayment.SourceBankName = collection["SourceBankName"];
+                Payment aPayment = new Payment
+                {
+                    ChequeAmount = amount,
+                    BankBranchName = bankBranchName,
+                    ChequeNo = chequeNo,
+                    ChequeDate = date,
+                    PaymentTypeId = paymentTypeId,
+                    BankAccountNo = collection["BankAccountNo"],
+                    SourceBankName = collection["SourceBankName"]
+                };
                 List<Payment> payments = (List<Payment>)Session["Payments"];
                 if(payments!=null)
                 {
@@ -92,15 +95,18 @@ namespace NBL.Areas.Accounts.Controllers
             {
                 
                 var anUser = (ViewUser)Session["user"];
-                Receivable receivable = new Receivable();
+             
                 List<Payment> payments = (List<Payment>)Session["Payments"];
-                receivable.Payments = payments;
-                receivable.ReceivableDateTime = DateTime.Now;
-                receivable.UserId = anUser.UserId;
-                receivable.ClientId = Convert.ToInt32(collection["ClientId"]);
-                receivable.BranchId = Convert.ToInt32(Session["BranchId"]);
-                receivable.CompanyId = Convert.ToInt32(Session["CompanyId"]);
-                receivable.TransactionTypeId = Convert.ToInt32(collection["TransactionTypeId"]);
+                Receivable receivable = new Receivable
+                {
+                    Payments = payments,
+                    ReceivableDateTime = DateTime.Now,
+                    UserId = anUser.UserId,
+                    ClientId = Convert.ToInt32(collection["ClientId"]),
+                    BranchId = Convert.ToInt32(Session["BranchId"]),
+                    CompanyId = Convert.ToInt32(Session["CompanyId"]),
+                    TransactionTypeId = Convert.ToInt32(collection["TransactionTypeId"])
+                };
                 string inRef= collection["InvoiceRef"];
                
                 if (inRef.StartsWith("IN00")){

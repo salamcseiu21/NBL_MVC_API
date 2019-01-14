@@ -82,10 +82,17 @@ namespace NBL
             container.RegisterType<IInvoiceManager, InvoiceManager>();
             container.RegisterType<IInvoiceGateway, InvoiceGateway>();
 
+
+            container.RegisterType<IDeliveryManager, Areas.Manager.BLL.DeliveryManager>();
+            container.RegisterType<IDeliveryGateway, Areas.Manager.DAL.DeliveryGateway>();
+
+
             container.RegisterType<DbContext, ApplicationDbContext>(new HierarchicalLifetimeManager());
             container.RegisterType<UserManager<ApplicationUser>>(new HierarchicalLifetimeManager());
             container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(new HierarchicalLifetimeManager());
             container.RegisterType<AccountController>(new InjectionConstructor());
+
+
 
         }
     }

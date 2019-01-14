@@ -1,8 +1,6 @@
-﻿using NBL.Areas.Manager.DAL;
-using System.Collections.Generic;
-using NBL.BLL;
+﻿using System.Collections.Generic;
 using NBL.BLL.Contracts;
-using NBL.Models;
+using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.ViewModels;
@@ -11,34 +9,35 @@ namespace NBL.Areas.Manager.BLL
 {
     public class DeliveryManager:IDeliveryManager
     {
-        readonly DeliveryGateway _deliveryGateway=new DeliveryGateway();
-        readonly IOrderManager _iOrderManager;
-        readonly IClientManager _iClientManager;
+        private readonly IDeliveryGateway _iDeliveryGateway;
+        private readonly IOrderManager _iOrderManager;
+        private readonly IClientManager _iClientManager;
 
-        public DeliveryManager(IOrderManager iOrderManager,IClientManager iClientManager)
+        public DeliveryManager(IOrderManager iOrderManager,IClientManager iClientManager,IDeliveryGateway iDeliveryGateway)
         {
             _iOrderManager = iOrderManager;
             _iClientManager = iClientManager;
+            _iDeliveryGateway = iDeliveryGateway;
         }
         public int ChangeOrderStatusByManager(Order aModel) 
         {
-            int rowAffected = _deliveryGateway.ChangeOrderStatusByManager(aModel);  
+            int rowAffected = _iDeliveryGateway.ChangeOrderStatusByManager(aModel);  
             return rowAffected;
         }
 
         public IEnumerable<Delivery> GetAllDeliveredOrders() 
         {
-            return _deliveryGateway.GetAllDeliveredOrders();
+            return _iDeliveryGateway.GetAllDeliveredOrders();
         }
         public IEnumerable<Delivery> GetAllDeliveredOrdersByBranchAndCompanyId(int branchId, int companyId)
         {
-            return _deliveryGateway.GetAllDeliveredOrdersByBranchAndCompanyId(branchId,companyId);
+            return _iDeliveryGateway.GetAllDeliveredOrdersByBranchAndCompanyId(branchId,companyId);
         }
 
         public IEnumerable<Delivery> GetAllDeliveredOrdersByBranchCompanyAndUserId(int branchId, int companyId,int deliveredByUserId)
         {
             var deliveredOrders =
-                _deliveryGateway.GetAllDeliveredOrdersByBranchCompanyAndUserId(branchId, companyId, deliveredByUserId);
+                _iDeliveryGateway.GetAllDeliveredOrdersByBranchCompanyAndUserId(branchId, companyId, deliveredByUserId);
             foreach (Delivery delivery in deliveredOrders)
             {
                 var order = _iOrderManager.GetOrderInfoByTransactionRef(delivery.TransactionRef);
@@ -49,21 +48,21 @@ namespace NBL.Areas.Manager.BLL
         }
         public IEnumerable<Delivery> GetAllDeliveredOrdersByInvoiceRef(string invoiceRef)
         {
-            return _deliveryGateway.GetAllDeliveredOrdersByInvoiceRef(invoiceRef);
+            return _iDeliveryGateway.GetAllDeliveredOrdersByInvoiceRef(invoiceRef);
         }
         public Delivery GetOrderByDeliveryId(int deliveryId) 
         {
-            return _deliveryGateway.GetOrderByDeliveryId(deliveryId);
+            return _iDeliveryGateway.GetOrderByDeliveryId(deliveryId);
         }
 
         public IEnumerable<DeliveryDetails> GetDeliveredOrderDetailsByDeliveryId(int deliveryId) 
         {
-            return _deliveryGateway.GetDeliveredOrderDetailsByDeliveryId(deliveryId);
+            return _iDeliveryGateway.GetDeliveredOrderDetailsByDeliveryId(deliveryId);
         }
 
         public IEnumerable<DeliveryModel> GetAllInvoiceOrderListByBranchId(int branchId)
         {
-            return _deliveryGateway.GetAllInvoiceOrderListByBranchId(branchId);
+            return _iDeliveryGateway.GetAllInvoiceOrderListByBranchId(branchId);
         }
 
         public ViewChalanModel GetChalanByDeliveryId(int deliveryId) 

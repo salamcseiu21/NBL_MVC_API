@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using NBL.DAL.Contracts;
-using NBL.Models;
 using NBL.Models.EntityModels.Clients;
 using NBL.Models.EntityModels.Locations;
 using NBL.Models.EntityModels.Masters;
@@ -475,8 +474,6 @@ namespace NBL.DAL
             }
 
         }
-
-       
 
         public IEnumerable<ViewClient> GetAllClientDetails()
         {
