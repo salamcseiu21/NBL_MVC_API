@@ -115,6 +115,8 @@
     <Compile Include="EntityModels\VatDiscounts\Vat.cs" />
     <Compile Include="Searchs\SearchCriteria.cs" />
     <Compile Include="ViewModels\Orders\CreateOrderViewModel.cs" />
+    <Compile Include="ViewModels\TransferProducts\ViewTransferIssueDetailsModel.cs" />
+    <Compile Include="ViewModels\TransferProducts\ViewTransferIssueModel.cs" />
     <Compile Include="ViewModels\ViewAssignedRegion.cs" />
     <Compile Include="ViewModels\ViewAssignedUpazilla.cs" />
     <Compile Include="ViewModels\ViewBranch.cs" />

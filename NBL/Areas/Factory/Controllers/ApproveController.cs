@@ -2,11 +2,10 @@
 using System;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
-using NBL.Models;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.TransferProducts;
 
 namespace NBL.Areas.Factory.Controllers
 {
@@ -15,22 +14,39 @@ namespace NBL.Areas.Factory.Controllers
     {
 
         private readonly IProductManager _iProductManager;
+        private readonly IBranchManager _iBranchManager;
         // GET: Factory/Approve
 
-        public ApproveController(IProductManager iProductManager)
+        public ApproveController(IProductManager iProductManager,IBranchManager iBranchManager)
         {
             _iProductManager = iProductManager;
+            _iBranchManager = iBranchManager;
         }
         public ActionResult PendingTransferIssueList()
         {
+            ViewTransferIssueModel model=new ViewTransferIssueModel();
             var issuedProducts = _iProductManager.GetTransferIssueList();
-            return View(issuedProducts);
+            model.TransferIssues = issuedProducts.ToList();
+            foreach (var issue in issuedProducts)
+            {
+                model.FromBranch = _iBranchManager.GetById(issue.FromBranchId);
+                model.ToBranch = _iBranchManager.GetById(issue.ToBranchId);
+            }
+            return View(model);
         }
         public ActionResult ApproveTransferIssue(int id)
         {
-            ViewBag.Transfer = _iProductManager.GetTransferIssueList().ToList().Find(n => n.TransferIssueId == id);
+            var issue = _iProductManager.GetTransferIssueById(id);
             var issueDetails = _iProductManager.GetTransferIssueDetailsById(id);
-            return View(issueDetails);
+            ViewTransferIssueDetailsModel model=new ViewTransferIssueDetailsModel
+            {
+                FromBranch = _iBranchManager.GetById(issue.FromBranchId),
+                ToBranch = _iBranchManager.GetById(issue.ToBranchId),
+                TransferIssue = issue,
+                TransferIssueDetailses = issueDetails.ToList()
+            };
+          
+            return View(model);
         }
         [HttpPost]
         public ActionResult ApproveTransferIssue(FormCollection collection,int id)

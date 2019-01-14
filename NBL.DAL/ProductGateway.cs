@@ -365,6 +365,95 @@ namespace NBL.DAL
             }
         }
 
+        public TransferIssue GetTransferIssueById(int transferIssueId) 
+        {
+            try
+            {
+                CommandObj.CommandText = "spGetTransferIssueById";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@TransferIssueId", transferIssueId);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                TransferIssue issue=new TransferIssue();
+                if (reader.Read())
+                {
+                    issue = new TransferIssue
+                    {
+                        TransferIssueId =transferIssueId,
+                        TransferIssueDate = Convert.ToDateTime(reader["TransferIssueDate"]),
+                        TransferIssueRef = reader["TransferIssueRef"].ToString(),
+                        ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
+                        FromBranchId = Convert.ToInt32(reader["FromBranchId"]),
+                        IssueByUserId = Convert.ToInt32(reader["IssueByUserId"]),
+                        Status = Convert.ToInt16(reader["Status"]),
+                        Cancel = Convert.ToChar(reader["Cancel"]),
+                        EntryStatus = Convert.ToChar(reader["EntryStatus"]),
+                        SysDateTime = Convert.ToDateTime(reader["SysDateTime"]),
+                        ApproveByUserId = Convert.ToInt32(reader["ApproveByUserId"]),
+                        ApproveDateTime = Convert.ToDateTime(reader["ApproveDateTime"])
+                    };
+                }
+                reader.Close();
+                return issue;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Colud not collect transfer issue by id", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+
+        }
+
+        public TransferIssue GetDeliverableTransferIssueById(int transerIssueId)
+        {
+
+            try
+            {
+                CommandObj.CommandText = "spGetDeliverableTransferIssueById";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@TransferIssueId", transerIssueId);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                TransferIssue issue=new TransferIssue();
+                if (reader.Read())
+                {
+                    issue = new TransferIssue
+                    {
+                        TransferIssueId = transerIssueId,
+                        TransferIssueDate = Convert.ToDateTime(reader["TransferIssueDate"]),
+                        TransferIssueRef = reader["TransferIssueRef"].ToString(),
+                        ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
+                        FromBranchId = Convert.ToInt32(reader["FromBranchId"]),
+                        IssueByUserId = Convert.ToInt32(reader["IssueByUserId"]),
+                        Status = Convert.ToInt16(reader["Status"]),
+                        Cancel = Convert.ToChar(reader["Cancel"]),
+                        EntryStatus = Convert.ToChar(reader["EntryStatus"]),
+                        SysDateTime = Convert.ToDateTime(reader["SysDateTime"]),
+                        ApproveByUserId = Convert.ToInt32(reader["ApproveByUserId"]),
+                        ApproveDateTime = Convert.ToDateTime(reader["ApproveDateTime"])
+                    };
+                }
+
+                reader.Close();
+                return issue;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Colud not collect transfer issue by id", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
         public int SaveTransferIssueDetails(List<Product> products, int transferIssueId)
         {
             int i = 0;

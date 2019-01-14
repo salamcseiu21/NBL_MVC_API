@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.TransferProducts;
 
 namespace NBL.Areas.Factory.Controllers
 {
@@ -15,34 +15,58 @@ namespace NBL.Areas.Factory.Controllers
     {
 
         private readonly IProductManager _iProductManager;
-        private readonly FactoryDeliveryManager _factoryDeliveryManager = new FactoryDeliveryManager();
+        private readonly IFactoryDeliveryManager _iFactoryDeliveryManager;
+        private readonly IBranchManager _iBranchManager;
         // GET: Factory/Delivery
-        public DeliveryController(IProductManager iProductManager)
+        public DeliveryController(IProductManager iProductManager,IFactoryDeliveryManager iFactoryDeliveryManager,IBranchManager iBranchManager)
         {
             _iProductManager = iProductManager;
+            _iFactoryDeliveryManager = iFactoryDeliveryManager;
+            _iBranchManager = iBranchManager;
         }
         public ActionResult DeliverableTransferIssueList() 
         {
             IEnumerable<TransferIssue> issueList = _iProductManager.GetDeliverableTransferIssueList();
-            return View(issueList);
+            ViewTransferIssueModel model=new ViewTransferIssueModel();
+            foreach (var issue in issueList)
+            {
+                model.FromBranch = _iBranchManager.GetById(issue.FromBranchId);
+                model.ToBranch = _iBranchManager.GetById(issue.ToBranchId);
+                model.TransferIssues = issueList.ToList();
+            }
+            return View(model);
         }
 
         public ActionResult Delivery(int id)
         {
-            var deliverable = _iProductManager.GetDeliverableTransferIssueList().ToList().Find(n => n.TransferIssueId == id);
-            ViewBag.Deliverable = deliverable;
+          
+            var deliverable = _iProductManager.GetDeliverableTransferIssueById(id);
             IEnumerable<TransferIssueDetails> issueDetails = _iProductManager.GetTransferIssueDetailsById(id);
-            return View(issueDetails);
+            ViewTransferIssueDetailsModel model =
+                new ViewTransferIssueDetailsModel
+                {
+                    FromBranch = _iBranchManager.GetById(deliverable.FromBranchId),
+                    ToBranch = _iBranchManager.GetById(deliverable.ToBranchId),
+                    TransferIssue = deliverable,
+                    TransferIssueDetailses = issueDetails.ToList()
+                };
+            return View(model);
         }
 
         [HttpPost]
         public ActionResult Delivery(int id,FormCollection collection)
         {
             int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
-            int transferIssueId = id;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            TransferIssue transferIssue = _iProductManager.GetDeliverableTransferIssueList().ToList().Find(n => n.TransferIssueId == transferIssueId);
+            TransferIssue transferIssue = _iProductManager.GetDeliverableTransferIssueById(id);
             IEnumerable<TransferIssueDetails> issueDetails = _iProductManager.GetTransferIssueDetailsById(id);
+            ViewTransferIssueDetailsModel model = new ViewTransferIssueDetailsModel
+            {
+                TransferIssue = transferIssue,
+                TransferIssueDetailses = issueDetails.ToList(),
+                FromBranch = _iBranchManager.GetById(transferIssue.FromBranchId),
+                ToBranch = _iBranchManager.GetById(transferIssue.ToBranchId)
+            };
             Delivery aDelivery = new Delivery
             {
                 TransactionRef = transferIssue.TransferIssueRef,
@@ -57,7 +81,7 @@ namespace NBL.Areas.Factory.Controllers
                 FromBranchId = transferIssue.FromBranchId
             };
 
-            string result = _factoryDeliveryManager.SaveDeliveryInformation(aDelivery, issueDetails);
+            string result = _iFactoryDeliveryManager.SaveDeliveryInformation(aDelivery, issueDetails);
             if (result.StartsWith("Sa"))
             {
                 //---------------Send mail to branch before redirect--------------
@@ -65,7 +89,7 @@ namespace NBL.Areas.Factory.Controllers
             }
 
             ViewBag.Deliverable = transferIssue;
-            return View(issueDetails);
+            return View(model);
         }
     }
 }

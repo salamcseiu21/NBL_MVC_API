@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
 
 namespace NBL.DAL
 {
-    public class FactoryDeliveryGateway : DbGateway
+    public class FactoryDeliveryGateway : DbGateway,IFactoryDeliveryGateway
     {
         public int SaveDeliveryInformation(Delivery aDelivery, IEnumerable<TransferIssueDetails> issueDetails)
         {
@@ -55,6 +56,11 @@ namespace NBL.DAL
             }
         }
 
+        int IFactoryDeliveryGateway.SaveDeliveryInformationDetails(IEnumerable<TransferIssueDetails> issueDetails, int deliveryId)
+        {
+            return SaveDeliveryInformationDetails(issueDetails, deliveryId);
+        }
+
         private int SaveDeliveryInformationDetails(IEnumerable<TransferIssueDetails> issueDetails, int deliveryId)
         {
             int i = 0;
@@ -73,6 +79,31 @@ namespace NBL.DAL
             }
 
             return i;
+        }
+
+        public int Add(Delivery model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update(Delivery model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete(Delivery model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Delivery GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<Delivery> GetAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }

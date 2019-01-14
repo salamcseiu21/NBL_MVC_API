@@ -85,7 +85,8 @@ namespace NBL
 
             container.RegisterType<IDeliveryManager, DeliveryManager>();
             container.RegisterType<IDeliveryGateway, DeliveryGateway>();
-
+            container.RegisterType<IFactoryDeliveryManager, FactoryDeliveryManager>();
+            container.RegisterType<IFactoryDeliveryGateway, FactoryDeliveryGateway>();
 
             container.RegisterType<DbContext, ApplicationDbContext>(new HierarchicalLifetimeManager());
             container.RegisterType<UserManager<ApplicationUser>>(new HierarchicalLifetimeManager());

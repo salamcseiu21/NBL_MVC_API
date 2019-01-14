@@ -41,6 +41,7 @@ namespace NBL.BLL
             return _iProductGateway.GetDeliverableTransferIssueList();
         }
 
+
         public IEnumerable<ViewProduct> GetAllProductsByProductCategoryId(int productCategoryId)
         {
             
@@ -112,6 +113,16 @@ namespace NBL.BLL
         public IEnumerable<TransferIssue> GetTransferIssueList() 
         {
             return _iProductGateway.GetTransferIssueList();
+        }
+
+        public TransferIssue GetTransferIssueById(int transferIssueId) 
+        {
+            return _iProductGateway.GetTransferIssueById(transferIssueId);
+        }
+
+        public TransferIssue GetDeliverableTransferIssueById(int transerIssueId)
+        {
+           return _iProductGateway.GetDeliverableTransferIssueById(transerIssueId);
         }
 
         public IEnumerable<TransferIssueDetails> GetTransferIssueDetailsById(int id)

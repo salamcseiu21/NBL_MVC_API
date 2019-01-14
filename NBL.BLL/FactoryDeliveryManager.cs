@@ -1,22 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NBL.BLL.Contracts;
 using NBL.DAL;
+using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
 
 namespace NBL.BLL
 {
-    public class FactoryDeliveryManager
+    public class FactoryDeliveryManager:IFactoryDeliveryManager
     {
-        readonly FactoryDeliveryGateway _factoryDeliveryGateway = new FactoryDeliveryGateway();
+        private readonly IFactoryDeliveryGateway _iFactoryDeliveryGateway;
         readonly InventoryGateway _inventoryGateway = new InventoryGateway();
         readonly CommonGateway _commonGateway = new CommonGateway();
+
+        public FactoryDeliveryManager(IFactoryDeliveryGateway iFactoryDeliveryGateway)
+        {
+            _iFactoryDeliveryGateway = iFactoryDeliveryGateway;
+        }
         public string SaveDeliveryInformation(Delivery aDelivery, IEnumerable<TransferIssueDetails> issueDetails)
         {
             int maxDeliveryNo = _inventoryGateway.GetMaxDeliveryRefNoOfCurrentYear();
             aDelivery.DeliveryRef = GenerateDeliveryReference(maxDeliveryNo);
-            int rowAffected = _factoryDeliveryGateway.SaveDeliveryInformation(aDelivery, issueDetails);
+            int rowAffected = _iFactoryDeliveryGateway.SaveDeliveryInformation(aDelivery, issueDetails);
             if (rowAffected > 0)
                 return "Saved Successfully!";
             return "Failed to Save";
@@ -32,6 +39,31 @@ namespace NBL.BLL
             string temp = (maxDeliveryNo + 1).ToString();
             string reference = DateTime.Now.Year.ToString().Substring(2, 2) + refCode + temp;
             return reference;
+        }
+
+        public bool Add(Delivery model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Update(Delivery model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(Delivery model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Delivery GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<Delivery> GetAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }

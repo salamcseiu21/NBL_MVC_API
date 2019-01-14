@@ -33,5 +33,7 @@ namespace NBL.DAL.Contracts
         int GetMaxProductionNoteNoByYear(int year);
         int SaveProductionNote(ProductionNote productionNote);
         IEnumerable<ViewProductionNoteModel> PendingProductionNote();
+        TransferIssue GetTransferIssueById(int transerIssueId);
+        TransferIssue GetDeliverableTransferIssueById(int transerIssueId);
     }
 }

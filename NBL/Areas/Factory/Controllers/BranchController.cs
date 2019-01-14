@@ -19,8 +19,8 @@ namespace NBL.Areas.Factory.Controllers
 
         public JsonResult BranchAutoComplete(string prefix)
         {
-            int corporateBarachIndex = _iBranchManager.GetAll().ToList().FindIndex(n => n.BranchName.Contains("Corporate"));
-            var branches = _iBranchManager.GetAll().ToList();
+            int corporateBarachIndex = _iBranchManager.GetAllBranches().ToList().FindIndex(n => n.BranchName.Contains("Corporate"));
+            var branches = _iBranchManager.GetAllBranches().ToList();
             branches.RemoveAt(corporateBarachIndex);
             var branchList = (from c in branches.ToList()
                 where c.BranchName.ToLower().Contains(prefix.ToLower())

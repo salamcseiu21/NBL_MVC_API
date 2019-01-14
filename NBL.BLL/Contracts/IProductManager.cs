@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NBL.Models;
+﻿using System.Collections.Generic;
 using NBL.Models.EntityModels.Productions;
 using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
@@ -29,5 +24,7 @@ namespace NBL.BLL.Contracts
         Product GetProductByProductId(int productId);
         bool SaveProductionNote(ProductionNote productionNote);
         IEnumerable<ViewProductionNoteModel> PendingProductionNote();
+        TransferIssue GetTransferIssueById(int transerIssueId);
+        TransferIssue GetDeliverableTransferIssueById(int transerIssueId);
     }
 }
