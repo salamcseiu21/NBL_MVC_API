@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Data;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using NBL.DAL;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Transports;
 
-namespace NBL.Areas.Manager.DAL
+namespace NBL.DAL
 {
     public class DeliveryGateway:DbGateway,IDeliveryGateway
     {

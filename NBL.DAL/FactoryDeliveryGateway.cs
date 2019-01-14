@@ -1,16 +1,13 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using NBL.DAL;
-using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
 
-namespace NBL.Areas.Factory.DAL
+namespace NBL.DAL
 {
-    public class DeliveryGateway:DbGateway
+    public class FactoryDeliveryGateway : DbGateway
     {
         public int SaveDeliveryInformation(Delivery aDelivery, IEnumerable<TransferIssueDetails> issueDetails)
         {

@@ -8,7 +8,6 @@ using NBL.Areas.Admin.BLL;
 using NBL.Areas.Admin.BLL.Contracts;
 using NBL.Areas.Admin.DAL;
 using NBL.Areas.Admin.DAL.Contracts;
-using NBL.Areas.Factory.BLL;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Controllers;
@@ -21,6 +20,7 @@ using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
 using Unity.Mvc5;
+using DeliveryManager = NBL.BLL.Contracts.DeliveryManager;
 
 namespace NBL
 {
@@ -83,8 +83,8 @@ namespace NBL
             container.RegisterType<IInvoiceGateway, InvoiceGateway>();
 
 
-            container.RegisterType<IDeliveryManager, Areas.Manager.BLL.DeliveryManager>();
-            container.RegisterType<IDeliveryGateway, Areas.Manager.DAL.DeliveryGateway>();
+            container.RegisterType<IDeliveryManager, DeliveryManager>();
+            container.RegisterType<IDeliveryGateway, DeliveryGateway>();
 
 
             container.RegisterType<DbContext, ApplicationDbContext>(new HierarchicalLifetimeManager());

@@ -70,6 +70,7 @@
     <Compile Include="Contracts\IUserGateway.cs" />
     <Compile Include="Contracts\IVatGateway.cs" />
     <Compile Include="DbGateway.cs" />
+    <Compile Include="DeliveryGateway.cs" />
     <Compile Include="DepartmentGateway.cs" />
     <Compile Include="DesignationGateway.cs" />
     <Compile Include="DiscountGateway.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="DivisionGateway.cs" />
     <Compile Include="EmployeeGateway.cs" />
     <Compile Include="EmployeeTypeGateway.cs" />
+    <Compile Include="FactoryDeliveryGateway.cs" />
     <Compile Include="InventoryGateway.cs" />
     <Compile Include="OrderGateway.cs" />
     <Compile Include="PostOfficeGateway.cs" />

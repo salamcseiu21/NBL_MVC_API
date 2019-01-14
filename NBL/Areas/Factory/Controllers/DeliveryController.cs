@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.Areas.Factory.BLL;
 using NBL.BLL;
 using NBL.BLL.Contracts;
-using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
@@ -17,7 +15,7 @@ namespace NBL.Areas.Factory.Controllers
     {
 
         private readonly IProductManager _iProductManager;
-        private readonly DeliveryManager _deliveryManager = new DeliveryManager();
+        private readonly FactoryDeliveryManager _factoryDeliveryManager = new FactoryDeliveryManager();
         // GET: Factory/Delivery
         public DeliveryController(IProductManager iProductManager)
         {
@@ -59,7 +57,7 @@ namespace NBL.Areas.Factory.Controllers
                 FromBranchId = transferIssue.FromBranchId
             };
 
-            string result = _deliveryManager.SaveDeliveryInformation(aDelivery, issueDetails);
+            string result = _factoryDeliveryManager.SaveDeliveryInformation(aDelivery, issueDetails);
             if (result.StartsWith("Sa"))
             {
                 //---------------Send mail to branch before redirect--------------

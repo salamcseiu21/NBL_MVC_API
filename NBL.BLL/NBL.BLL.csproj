@@ -81,6 +81,7 @@
     <Compile Include="ClientManager.cs" />
     <Compile Include="CommonManager.cs" />
     <Compile Include="CompanyManager.cs" />
+    <Compile Include="Contracts\DeliveryManager.cs" />
     <Compile Include="Contracts\IBranchManager.cs" />
     <Compile Include="Contracts\IClientManager.cs" />
     <Compile Include="Contracts\ICommonManager.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="DistrictManager.cs" />
     <Compile Include="EmployeeManager.cs" />
     <Compile Include="EmployeeTypeManager.cs" />
+    <Compile Include="FactoryDeliveryManager.cs" />
     <Compile Include="InventoryManager.cs" />
     <Compile Include="OrderManager.cs" />
     <Compile Include="ProductManager.cs" />

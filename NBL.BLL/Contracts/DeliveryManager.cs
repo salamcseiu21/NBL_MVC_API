@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using NBL.BLL.Contracts;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.ViewModels;
 
-namespace NBL.Areas.Manager.BLL
+namespace NBL.BLL.Contracts
 {
     public class DeliveryManager:IDeliveryManager
     {
