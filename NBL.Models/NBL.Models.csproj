@@ -114,6 +114,7 @@
     <Compile Include="EntityModels\Identities\UserRole.cs" />
     <Compile Include="EntityModels\VatDiscounts\Vat.cs" />
     <Compile Include="Searchs\SearchCriteria.cs" />
+    <Compile Include="SummaryModels\AccountSummary.cs" />
     <Compile Include="ViewModels\Deliveries\ViewDeliveryModel.cs" />
     <Compile Include="ViewModels\Orders\CreateOrderViewModel.cs" />
     <Compile Include="ViewModels\TransferProducts\ViewTransferIssueDetailsModel.cs" />

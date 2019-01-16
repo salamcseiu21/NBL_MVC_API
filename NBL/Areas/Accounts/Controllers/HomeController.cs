@@ -38,9 +38,7 @@ namespace NBL.Areas.Accounts.Controllers
             var clients = _iReportManager.GetTopClients().ToList();
             var batteries = _iReportManager.GetPopularBatteries().ToList();
             ViewTotalOrder totalOrder = _iReportManager.GetTotalOrderByBranchIdCompanyIdAndYear(branchId, companyId, DateTime.Now.Year);
-            var sales = _iAccountsManager.GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(branchId, companyId) * -1;
-            var collection = _iAccountsManager.GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
-            var orderedAmount = _iAccountsManager.GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
+            var accountSummary =_iAccountsManager.GetAccountSummaryofCurrentMonthByBranchAndCompanyId(branchId, companyId);
             var branches = _iBranchManager.GetAllBranches();
             SummaryModel aModel = new SummaryModel
             {
@@ -48,9 +46,7 @@ namespace NBL.Areas.Accounts.Controllers
                 BranchId = branchId,
                 CompanyId = companyId,
                 TotalOrder = totalOrder,
-                TotalSale = sales,
-                TotalCollection = collection,
-                OrderedAmount = orderedAmount,
+                AccountSummary = accountSummary,
                 Clients = clients,
                 Products = batteries
 

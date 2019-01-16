@@ -3,6 +3,7 @@ using NBL.Areas.Accounts.Models;
 using NBL.Models;
 using NBL.Models.EntityModels.Clients;
 using NBL.Models.EntityModels.VatDiscounts;
+using NBL.Models.SummaryModels;
 
 namespace NBL.Areas.Accounts.BLL.Contracts
 {
@@ -33,15 +34,12 @@ namespace NBL.Areas.Accounts.BLL.Contracts
        bool ApproveJournalVoucher(JournalVoucher aVoucher, List<JournalDetails> voucherDetails, int userId);
        bool ApproveVat(Vat vat);
        bool ApproveDiscount(Discount discount);
-       decimal GetTotalSaleValueOfCurrentMonth();
-       decimal GetTotalSaleValueOfCurrentMonthByCompanyId(int companyId);
-       decimal GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(int branchId, int companyId);
-       decimal GetTotalCollectionOfCurrentMonth();
-       decimal GetTotalCollectionOfCurrentMonthByCompanyId(int companyId);
-       decimal GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(int branchId, int companyId);
-       decimal GetTotalOrderedAmountOfCurrentMonth();
-       decimal GetTotalOrderedAmountOfCurrentMonthByCompanyId(int companyId);
-       decimal GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(int branchId, int companyId);
+
+
+       AccountSummary GetAccountSummaryOfCurrentMonth();
+       AccountSummary GetAccountSummaryofCurrentMonthByCompanyId(int companyId);
+       AccountSummary GetAccountSummaryofCurrentMonthByBranchAndCompanyId(int branchId, int companyId);
+
        bool ActiveReceivableCheque(ChequeDetails chequeDetails, Receivable aReceivable, Client aClient);
    }
 }

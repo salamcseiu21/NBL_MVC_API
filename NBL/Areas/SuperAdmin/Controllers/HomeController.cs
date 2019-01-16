@@ -58,9 +58,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var branches = _iBranchManager.GetAllBranches();
             ViewTotalOrder totalOrder = _iReportManager.GetTotalOrdersByCompanyIdAndYear(companyId,DateTime.Now.Year);
-            var sales = _iAccountsManager.GetTotalSaleValueOfCurrentMonthByCompanyId(companyId)* -1;
-            var collection = _iAccountsManager.GetTotalCollectionOfCurrentMonthByCompanyId(companyId);
-            var orderedAmount = _iAccountsManager.GetTotalOrderedAmountOfCurrentMonthByCompanyId(companyId);
+            var accountSummary = _iAccountsManager.GetAccountSummaryofCurrentMonthByCompanyId(companyId);
             var clients = _iReportManager.GetTopClients().ToList();
             var batteries = _iReportManager.GetPopularBatteries().ToList();
 
@@ -69,11 +67,9 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 Branches = branches.ToList(),
                 CompanyId = companyId,
                 TotalOrder = totalOrder,
-                TotalSale = sales,
-                TotalCollection = collection,
-                OrderedAmount = orderedAmount,
                 Clients = clients,
-                Products = batteries
+                Products = batteries,
+                AccountSummary = accountSummary
 
             };
             return View(summary); 

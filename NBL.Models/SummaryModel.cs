@@ -2,6 +2,7 @@
 using NBL.Models.EntityModels.Departments;
 using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.Locations;
+using NBL.Models.SummaryModels;
 using NBL.Models.ViewModels;
 
 namespace NBL.Models
@@ -12,6 +13,7 @@ namespace NBL.Models
         public decimal TotalCollection { get; set; }
         public decimal OrderedAmount { get; set; }
         public ViewTotalOrder TotalOrder { get; set; }
+        public AccountSummary AccountSummary { get; set; }  
         public int CompanyId { get; set; }
         public int BranchId { get; set; }
 

@@ -55,9 +55,7 @@ namespace NBL.Areas.Management.Controllers
             var topClients = _iReportManager.GetTopClientsByBranchIdAndYear(branchId,DateTime.Now.Year).ToList();
             var topProducts = _iReportManager.GetPopularBatteriesByBranchIdCompanyIdAndYear(branchId,companyId,DateTime.Now.Year).ToList();
             ViewTotalOrder totalOrder = _iReportManager.GetTotalOrderByBranchIdCompanyIdAndYear(branchId,companyId,DateTime.Now.Year);
-            var sales = _iAccountsManager.GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(branchId, companyId) * -1;
-            var collection = _iAccountsManager.GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
-            var orderedAmount = _iAccountsManager.GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
+            var accountSummary = _iAccountsManager.GetAccountSummaryofCurrentMonthByBranchAndCompanyId(branchId, companyId);
             var clients = _iClientManager.GetAllClientDetailsByBranchId(branchId);
             var orders = _iOrderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
             var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId);
@@ -70,16 +68,14 @@ namespace NBL.Areas.Management.Controllers
                 BranchId = branchId,
                 CompanyId = companyId,
                 TotalOrder = totalOrder,
-                TotalSale = sales,
-                TotalCollection = collection,
-                OrderedAmount = orderedAmount,
                 TopClients = topClients,
                 TopProducts = topProducts,
                 Clients = clients,
                 Products = products,
                 Orders = orders,
                 PendingOrders = pendingOrders,
-                Employees = employees
+                Employees = employees,
+                AccountSummary = accountSummary
 
             };
             return View(aModel);

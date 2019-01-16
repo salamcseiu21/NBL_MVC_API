@@ -10,6 +10,7 @@ using NBL.Models;
 using NBL.Areas.Accounts.DAL.Contracts;
 using NBL.Models.EntityModels.Clients;
 using NBL.Models.EntityModels.VatDiscounts;
+using NBL.Models.SummaryModels;
 
 namespace NBL.Areas.Accounts.BLL
 {
@@ -224,41 +225,19 @@ namespace NBL.Areas.Accounts.BLL
             return _iAccountGateway.ApproveDiscount(discount) > 0;
         }
 
-        public decimal GetTotalSaleValueOfCurrentMonth()
+        public AccountSummary GetAccountSummaryOfCurrentMonth()
         {
-            return _iAccountGateway.GetTotalSaleValueOfCurrentMonth();
+            return _iAccountGateway.GetAccountSummaryOfCurrentMonth();
         }
-        public decimal GetTotalSaleValueOfCurrentMonthByCompanyId(int companyId)
+
+        public AccountSummary GetAccountSummaryofCurrentMonthByCompanyId(int companyId)
         {
-            return _iAccountGateway.GetTotalSaleValueOfCurrentMonthByCompanyId(companyId);
+            return _iAccountGateway.GetAccountSummaryofCurrentMonthByCompanyId(companyId);
         }
-        public decimal GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(int branchId,int companyId)
+
+        public  AccountSummary GetAccountSummaryofCurrentMonthByBranchAndCompanyId(int branchId, int companyId)
         {
-            return _iAccountGateway.GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(branchId,companyId);
-        }
-        public decimal GetTotalCollectionOfCurrentMonth()
-        {
-            return _iAccountGateway.GetTotalCollectionOfCurrentMonth();
-        }
-        public decimal GetTotalCollectionOfCurrentMonthByCompanyId(int companyId)
-        {
-            return _iAccountGateway.GetTotalCollectionOfCurrentMonthByCompanyId(companyId);
-        }
-        public decimal GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(int branchId,int companyId)
-        {
-            return _iAccountGateway.GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(branchId,companyId);
-        }
-        public decimal GetTotalOrderedAmountOfCurrentMonth() 
-        {
-            return _iAccountGateway.GetTotalOrderedAmountOfCurrentMonth();
-        }
-        public decimal GetTotalOrderedAmountOfCurrentMonthByCompanyId(int companyId)
-        {
-            return _iAccountGateway.GetTotalOrderedAmountOfCurrentMonthByCompanyId(companyId);
-        }
-        public decimal GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(int branchId,int companyId) 
-        {
-            return _iAccountGateway.GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(branchId,companyId);
+            return _iAccountGateway.GetAccountSummaryofCurrentMonthByBranchAndCompanyId(branchId, companyId);
         }
     }
 }

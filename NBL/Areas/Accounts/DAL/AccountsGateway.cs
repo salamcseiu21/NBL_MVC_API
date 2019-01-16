@@ -11,6 +11,7 @@ using NBL.Models;
 using NBL.Models.EntityModels.Clients;
 using NBL.Models.EntityModels.Payments;
 using NBL.Models.EntityModels.VatDiscounts;
+using NBL.Models.SummaryModels;
 
 namespace NBL.Areas.Accounts.DAL
 {
@@ -1388,83 +1389,28 @@ namespace NBL.Areas.Accounts.DAL
             }
         }
 
-        public decimal GetTotalSaleValueOfCurrentMonth()
+        public AccountSummary GetAccountSummaryOfCurrentMonth()
         {
             try
             {
-                decimal totalSaleValue = 0;
-                CommandObj.CommandText = "UDSP_GetTotalSaleValueofCurrentMonth";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                ConnectionObj.Open();
-                SqlDataReader reader = CommandObj.ExecuteReader();
-                if (reader.Read())
-                {
-                    totalSaleValue = Convert.ToDecimal(reader["TotalSaleValue"]);
-                }
-                reader.Close();
-                return totalSaleValue;
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Could not collect Total Sale value of Current Month",exception);
-            }
-            finally
-            {
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-                ConnectionObj.Close();
-            }
-        }
-        public decimal GetTotalSaleValueOfCurrentMonthByCompanyId(int companyId)
-        {
-            try
-            {
-                decimal totalSaleValue = 0;
-                CommandObj.CommandText = "UDSP_GetTotalSaleValueofCurrentMonthByCompanyId";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
-                ConnectionObj.Open();
-                SqlDataReader reader = CommandObj.ExecuteReader();
-                if (reader.Read())
-                {
-                    totalSaleValue = Convert.ToDecimal(reader["TotalSaleValue"]);
-                }
-                reader.Close();
-                return totalSaleValue;
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Could not collect Total Sale value of Current Month by Company Id", exception);
-            }
-            finally
-            {
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-                ConnectionObj.Close();
-            }
 
-        }
-        public decimal GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(int branchId, int companyId)
-        {
-            try
-            {
-                decimal totalSaleValue = 0;
-                CommandObj.CommandText = "UDSP_GetTotalSaleValueofCurrentMonthByBranchAndCompanyId";
+                CommandObj.CommandText = "UDSP_RptGetAccountSummaryOfCurrentMonth";
                 CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@BranchId", branchId);
-                CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
+                var accountSummary = new AccountSummary();
                 if (reader.Read())
                 {
-                    totalSaleValue = Convert.ToDecimal(reader["TotalSaleValue"]);
+                    accountSummary.TotalSaleValue = Convert.ToDecimal(reader["TotalSaleValue"]) * -1;
+                    accountSummary.TotalCollection = Convert.ToDecimal(reader["TotalCollection"]);
+                    accountSummary.TotalOrderedAmount = Convert.ToDecimal(reader["OrderedAmount"]);
                 }
                 reader.Close();
-                return totalSaleValue;
+                return accountSummary;
             }
             catch (Exception exception)
             {
-                throw new Exception("Could not collect Total Sale value of Current Month by branch and Company Id", exception);
+                throw new Exception("Could not account summary", exception);
             }
             finally
             {
@@ -1474,83 +1420,61 @@ namespace NBL.Areas.Accounts.DAL
             }
         }
 
+        public AccountSummary GetAccountSummaryofCurrentMonthByCompanyId(int companyId)
+        {
+            try
+            {
+                
+                CommandObj.CommandText = "UDSP_RptGetAccountSummaryOfCourrentMonthByCompanyId";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                var accountSummary=new AccountSummary();
+                if (reader.Read())
+                {
+                    accountSummary.TotalSaleValue = Convert.ToDecimal(reader["TotalSaleValue"])*-1;
+                    accountSummary.TotalCollection = Convert.ToDecimal(reader["TotalCollection"]);
+                    accountSummary.TotalOrderedAmount = Convert.ToDecimal(reader["OrderedAmount"]);
+                }
+                reader.Close();
+                return accountSummary;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not account summary of Current Month by Company Id", exception);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                ConnectionObj.Close();
+            }
+        }
+        public AccountSummary GetAccountSummaryofCurrentMonthByBranchAndCompanyId(int branchId,int companyId)
+        {
+            try
+            {
 
-        public decimal GetTotalCollectionOfCurrentMonth()
-        {
-            try
-            {
-                decimal totalCollection = 0;
-                CommandObj.CommandText = "UDSP_GetTotalCollectionOfCurrentMonth";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                ConnectionObj.Open();
-                SqlDataReader reader = CommandObj.ExecuteReader();
-                if (reader.Read())
-                {
-                    totalCollection = Convert.ToDecimal(reader["TotalCollection"]);
-                }
-                reader.Close();
-                return totalCollection;
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Could not collect Total Collection  of Current Month", exception);
-            }
-            finally
-            {
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-                ConnectionObj.Close();
-            }
-        }
-        public decimal GetTotalCollectionOfCurrentMonthByCompanyId(int companyId)
-        {
-            try
-            {
-                decimal totalCollection = 0;
-                CommandObj.CommandText = "UDSP_GetTotalCollectionOfCurrentMonthByCompanyId";
+                CommandObj.CommandText = "UDSP_RptGetAccountSummaryOfCourrentMonthByBranchAndCompanyId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
-                ConnectionObj.Open();
-                SqlDataReader reader = CommandObj.ExecuteReader();
-                if (reader.Read())
-                {
-                    totalCollection = Convert.ToDecimal(reader["TotalCollection"]);
-                }
-                reader.Close();
-                return totalCollection;
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Could not collect Total Collection  of Current Month by Branch Id", exception);
-            }
-            finally
-            {
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-                ConnectionObj.Close();
-            }
-        }
-        public decimal GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(int branchId,int companyId)
-        {
-            try
-            {
-                decimal totalCollection = 0;
-                CommandObj.CommandText = "UDSP_GetTotalCollectionOfCurrentMonthByBranchAndCompanyId";
-                CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@BranchId", branchId);
-                CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
+                var accountSummary = new AccountSummary();
                 if (reader.Read())
                 {
-                    totalCollection = Convert.ToDecimal(reader["TotalCollection"]);
+                    accountSummary.TotalSaleValue = Convert.ToDecimal(reader["TotalSaleValue"]) * -1;
+                    accountSummary.TotalCollection = Convert.ToDecimal(reader["TotalCollection"]);
+                    accountSummary.TotalOrderedAmount = Convert.ToDecimal(reader["OrderedAmount"]);
                 }
                 reader.Close();
-                return totalCollection;
+                return accountSummary;
             }
             catch (Exception exception)
             {
-                throw new Exception("Could not collect Total Collection  of Current Month", exception);
+                throw new Exception("Could not account summary of Current Month by branch & Company Id", exception);
             }
             finally
             {
@@ -1559,90 +1483,7 @@ namespace NBL.Areas.Accounts.DAL
                 ConnectionObj.Close();
             }
         }
-        public decimal GetTotalOrderedAmountOfCurrentMonth()
-        {
-            try
-            {
-                decimal orderedAmount = 0;
-                CommandObj.CommandText = "UDSP_GetTotalOrderedAmountOfCurrentMonth";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                ConnectionObj.Open();
-                SqlDataReader reader = CommandObj.ExecuteReader();
-                if (reader.Read())
-                {
-                    orderedAmount = Convert.ToDecimal(reader["OrderedAmount"]); 
-                }
-                reader.Close();
-                return orderedAmount;
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Could not collect Total Ordered Amount  of Current Month", exception);
-            }
-            finally
-            {
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-                ConnectionObj.Close();
-            }
-        }
-        public decimal GetTotalOrderedAmountOfCurrentMonthByCompanyId(int companyId)
-        {
-            try
-            {
-                decimal orderedAmount = 0;
-                CommandObj.CommandText = "UDSP_GetTotalOrderedAmountOfCurrentMonthByCompanyId";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
-                ConnectionObj.Open();
-                SqlDataReader reader = CommandObj.ExecuteReader();
-                if (reader.Read())
-                {
-                    orderedAmount = Convert.ToDecimal(reader["OrderedAmount"]);
-                }
-                reader.Close();
-                return orderedAmount;
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Could not collect Total Ordered Amount  of Current Month", exception);
-            }
-            finally
-            {
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-                ConnectionObj.Close();
-            }
-        }
-        public decimal GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(int branchId, int companyId)
-        {
-            try
-            {
-                decimal orderedAmount = 0;
-                CommandObj.CommandText = "UDSP_GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@BranchId", branchId);
-                CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
-                ConnectionObj.Open();
-                SqlDataReader reader = CommandObj.ExecuteReader();
-                if (reader.Read())
-                {
-                    orderedAmount = Convert.ToDecimal(reader["OrderedAmount"]);
-                }
-                reader.Close();
-                return orderedAmount;
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Could not collect Total Ordered Amount  of Current Month", exception);
-            }
-            finally
-            {
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-                ConnectionObj.Close();
-            }
-        }
+
 
     }
 }

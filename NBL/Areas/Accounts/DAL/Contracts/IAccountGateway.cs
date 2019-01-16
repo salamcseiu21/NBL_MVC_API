@@ -4,6 +4,7 @@ using NBL.Areas.Accounts.Models;
 using NBL.Models;
 using NBL.Models.EntityModels.Clients;
 using NBL.Models.EntityModels.VatDiscounts;
+using NBL.Models.SummaryModels;
 
 namespace NBL.Areas.Accounts.DAL.Contracts
 {
@@ -75,25 +76,10 @@ namespace NBL.Areas.Accounts.DAL.Contracts
 
        int ApproveDiscount(Discount discount);
 
+        AccountSummary GetAccountSummaryOfCurrentMonth(); 
+        AccountSummary GetAccountSummaryofCurrentMonthByCompanyId(int companyId);
+        AccountSummary GetAccountSummaryofCurrentMonthByBranchAndCompanyId(int branchId, int companyId);
 
-       decimal GetTotalSaleValueOfCurrentMonth();
-
-       decimal GetTotalSaleValueOfCurrentMonthByCompanyId(int companyId);
-
-       decimal GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(int branchId, int companyId);
-
-
-       decimal GetTotalCollectionOfCurrentMonth();
-
-       decimal GetTotalCollectionOfCurrentMonthByCompanyId(int companyId);
-
-       decimal GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(int branchId, int companyId);
-
-       decimal GetTotalOrderedAmountOfCurrentMonth();
-
-       decimal GetTotalOrderedAmountOfCurrentMonthByCompanyId(int companyId);
-
-       decimal GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(int branchId, int companyId);
 
    }
 }
