@@ -364,8 +364,6 @@ namespace NBL.Controllers
         //---Load all Invoice Ref  by client Id
         public JsonResult GetInvoiceRefByClientId(int clientId)
         {
-            int branchId = Convert.ToInt32(Session["BranchId"]);
-            int companyId = Convert.ToInt32(Session["CompanyId"]);
             var invoiceList= _iInvoiceManager.GetInvoicedRefferencesByClientId(clientId).ToList();
             return Json(invoiceList, JsonRequestBehavior.AllowGet);
         }

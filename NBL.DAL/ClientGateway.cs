@@ -679,7 +679,6 @@ namespace NBL.DAL
                         MaxCreditDay = Convert.ToInt32(reader["MaxCreditDay"]),
                         TerritoryId = Convert.ToInt32(reader["TerritoryId"]),
                         RegionId = Convert.ToInt32(reader["RegionId"]),
-                      
                         ClientType = _iCommonGateway.GetAllClientType().ToList().Find(n =>
                             n.ClientTypeId == Convert.ToInt32(reader["ClientTypeId"]))
                     });

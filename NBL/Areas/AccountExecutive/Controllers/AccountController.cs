@@ -1,5 +1,4 @@
-﻿using NBL.Areas.Accounts.BLL;
-using NBL.Areas.Accounts.Models;
+﻿using NBL.Areas.Accounts.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +6,6 @@ using System.Net.Mail;
 using System.Web.Mvc;
 using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.Areas.Accounts.Models.ViewModels;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Clients;
@@ -41,6 +39,10 @@ namespace NBL.Areas.AccountExecutive.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var receivableCheques = _iAccountsManager.GetAllReceivableChequeByBranchAndCompanyId(branchId, companyId);
+            foreach (ChequeDetails cheque in receivableCheques)
+            {
+                cheque.Client = _iClientManager.GetById(cheque.ClientId);
+            }
             return View(receivableCheques);
         }
         [HttpGet]
@@ -76,22 +78,22 @@ namespace NBL.Areas.AccountExecutive.Controllers
                 };
 
                 bool result = _iAccountsManager.ActiveReceivableCheque(chequeDetails, aReceivable, aClient);
-                if (result)
-                {
-                    //---------Send Mail ----------------
-                    var body = $"Dear {aClient.ClientName}, your receivalbe amount is receive by NBL. thanks and regards Accounts Departments NBL.";
-                    var subject = $"Receiable Confirm at {DateTime.Now}";
-                    var message = new MailMessage();
-                    message.To.Add(new MailAddress(aClient.Email));  // replace with valid value 
-                    message.Subject = subject;
-                    message.Body = string.Format(body);
-                    message.IsBodyHtml = true;
-                    using (var smtp = new SmtpClient())
-                    {
-                        smtp.Send(message);
-                    }
-                    //------------End Send Mail-------------
-                }
+                //if (result)
+                //{
+                //    //---------Send Mail ----------------
+                //    var body = $"Dear {aClient.ClientName}, your receivalbe amount is receive by NBL. thanks and regards Accounts Departments NBL.";
+                //    var subject = $"Receiable Confirm at {DateTime.Now}";
+                //    var message = new MailMessage();
+                //    message.To.Add(new MailAddress(aClient.Email));  // replace with valid value 
+                //    message.Subject = subject;
+                //    message.Body = string.Format(body);
+                //    message.IsBodyHtml = true;
+                //    using (var smtp = new SmtpClient())
+                //    {
+                //        smtp.Send(message);
+                //    }
+                //    //------------End Send Mail-------------
+                //}
                 return RedirectToAction("ActiveReceivable");
             }
             catch (Exception exception)
@@ -129,22 +131,22 @@ namespace NBL.Areas.AccountExecutive.Controllers
                     Remarks = "Active receivable by " + anUser.UserId
                 };
                 bool result = _iAccountsManager.ActiveReceivableCheque(chequeDetails, aReceivable, aClient);
-                if (result)
-                {
-                    //---------Send Mail ----------------
-                    var body = $"Dear {aClient.ClientName}, your receivalbe amount is receive by NBL. thanks and regards Accounts Departments NBL.";
-                    var subject = $"Receiable Confirm at {DateTime.Now}";
-                    var message = new MailMessage();
-                    message.To.Add(new MailAddress(aClient.Email));  // replace with valid value 
-                    message.Subject = subject;
-                    message.Body = string.Format(body);
-                    message.IsBodyHtml = true;
-                    using (var smtp = new SmtpClient())
-                    {
-                        smtp.Send(message);
-                    }
-                    //------------End Send Mail-------------
-                }
+                //if (result)
+                //{
+                //    //---------Send Mail ----------------
+                //    var body = $"Dear {aClient.ClientName}, your receivalbe amount is receive by NBL. thanks and regards Accounts Departments NBL.";
+                //    var subject = $"Receiable Confirm at {DateTime.Now}";
+                //    var message = new MailMessage();
+                //    message.To.Add(new MailAddress(aClient.Email));  // replace with valid value 
+                //    message.Subject = subject;
+                //    message.Body = string.Format(body);
+                //    message.IsBodyHtml = true;
+                //    using (var smtp = new SmtpClient())
+                //    {
+                //        smtp.Send(message);
+                //    }
+                //    //------------End Send Mail-------------
+                //}
                 aModel.Message = result ? "<p class='text-green'> Cash Amount Approved Successfully!</p>" : "<p class='text-danger'> Failed to  Approve Cash Amount! </p>";
             }
             catch (Exception exception)

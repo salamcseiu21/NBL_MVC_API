@@ -308,7 +308,6 @@ namespace NBL.Areas.Accounts.DAL
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
             try
             {
-                int rowAffected = 0;
                 int accountAffected = 0;
                 CommandObj.Transaction = sqlTransaction;
                 CommandObj.CommandText = "spSaveActiveReceivable";
@@ -324,11 +323,11 @@ namespace NBL.Areas.Accounts.DAL
                 CommandObj.Parameters["@AccountMasterId"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
                 int accountMasterId = Convert.ToInt32(CommandObj.Parameters["@AccountMasterId"].Value);
-                rowAffected = ActiveCheque(chequeDetails.ChequeDetailsId);
+                var rowAffected = ActiveCheque(chequeDetails.ChequeDetailsId); 
                 if (rowAffected > 0)
                 {
                     string subSubSubAccountCode = aReceivable.SubSubSubAccountCode;
-                    for (int i = 1; i <= 2; i++)
+                    for (var i = 1; i <= 2; i++)
                     {
                         if (i == 1)
                         {
@@ -368,8 +367,6 @@ namespace NBL.Areas.Accounts.DAL
 
         private int SaveReceivableDetailsToAccountsDetails(Receivable aReceivable, int accountMasterId,int chequeDetailsId)
         {
-
-            int i;
             CommandObj.CommandText = "spSaveInvoiceDetailsToAccountsDetails";
             CommandObj.CommandType = CommandType.StoredProcedure;
             CommandObj.Parameters.Clear();
@@ -382,7 +379,7 @@ namespace NBL.Areas.Accounts.DAL
             CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
             CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
             CommandObj.ExecuteNonQuery();
-            i = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+            var i = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
             return i;
 
 

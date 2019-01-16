@@ -94,7 +94,7 @@ namespace NBL.Models.EntityModels.Clients
         public int TerritoryId { get; set; }
         public bool EmailInUse { get; set; }
         public int SerialNo { get; set; }
-
+        public int TotalOrder { get; set; } 
         public List<Order> Orders { get; set; }
         public List<ClientAttachment> ClientAttachments { set; get; }
         public ClientType ClientType { get; set; }

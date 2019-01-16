@@ -481,7 +481,6 @@ namespace NBL.Areas.Admin.DAL
                 {
                     Invoice invoice = new Invoice
                     {
-
                         Amounts = Convert.ToDecimal(reader["Amount"]),
                         InvoiceRef = reader["InvoiceRef"].ToString(),
                         InvoiceId = Convert.ToInt32(reader["InvoiceId"]),
@@ -494,7 +493,7 @@ namespace NBL.Areas.Admin.DAL
             }
             catch (Exception exception)
             {
-                throw new Exception("Could not get Invoiced orders by branch , company and client id", exception);
+                throw new Exception("Could not get Invoice reference by client id", exception);
             }
             finally
             {

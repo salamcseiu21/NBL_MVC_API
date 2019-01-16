@@ -124,20 +124,20 @@ namespace NBL.Areas.Accounts.Controllers
                 if (rowAffected > 0)
                 {
                     Session["Payments"] = null;
-                    //---------Send Mail ----------------
-                    var aClient = _iClientManager.GetById(Convert.ToInt32(collection["ClientId"]));
-                    var body = $"Dear {aClient.ClientName}, a receivable is create to your account! thanks and regards Accounts Departments NBL.";
-                    var subject = $"New Receiable Create at {DateTime.Now}";
-                    var message = new MailMessage();
-                    message.To.Add(new MailAddress(aClient.Email));  // replace with valid value 
-                    message.Subject = subject;
-                    message.Body = string.Format(body);
-                    message.IsBodyHtml = true;
-                    using (var smtp = new SmtpClient())
-                    {
-                        smtp.Send(message);
-                    }
-                    //------------End Send Mail-------------
+                    ////---------Send Mail ----------------
+                    //var aClient = _iClientManager.GetById(Convert.ToInt32(collection["ClientId"]));
+                    //var body = $"Dear {aClient.ClientName}, a receivable is create to your account! thanks and regards Accounts Departments NBL.";
+                    //var subject = $"New Receiable Create at {DateTime.Now}";
+                    //var message = new MailMessage();
+                    //message.To.Add(new MailAddress(aClient.Email));  // replace with valid value 
+                    //message.Subject = subject;
+                    //message.Body = string.Format(body);
+                    //message.IsBodyHtml = true;
+                    //using (var smtp = new SmtpClient())
+                    //{
+                    //    smtp.Send(message);
+                    //}
+                    ////------------End Send Mail-------------
                     aModel.Message = "<p class='text-green'>Saved receivable successfully!</p>";
                 }
                 else
