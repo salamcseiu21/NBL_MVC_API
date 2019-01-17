@@ -1,16 +1,14 @@
 ﻿@using NBL.BLL
-@using NBL.Models
-@using NBL.Models.Invoices
-@model IEnumerable<InvoiceDetails>
+@model NBL.Models.ViewModels.Deliveries.ViewDeliveryModel
 
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
     UserManager userManager = new UserManager();
-    var invoice = (Invoice)ViewBag.Invoice;
     var date = DateTime.Now.Date.ToString("dd-MMMM-yyyy");
-    var invoicedBy = userManager.GetUserInformationByUserId(invoice.InvoiceByUserId);
-    var aClient = invoice.Client;
+    var invoicedBy = userManager.GetUserInformationByUserId(Model.Invoice.InvoiceByUserId);
+    var aClient = Model.Client;
+    var invoice = Model.Invoice;
 }
 
 
@@ -60,7 +58,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
+                            @foreach (var item in Model.InvoiceDetailses)
                             {
                                 <tr>
                                     <td style="border: 1px solid gray">

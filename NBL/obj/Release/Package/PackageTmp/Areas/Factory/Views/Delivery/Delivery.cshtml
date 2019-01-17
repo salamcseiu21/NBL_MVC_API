@@ -1,12 +1,7 @@
-﻿@model IEnumerable<TransferIssueDetails>
-@using NBL.BLL
-@using NBL.Models
-@using NBL.Models.TransferProducts
+﻿@model NBL.Models.ViewModels.TransferProducts.ViewTransferIssueDetailsModel
 @{
     ViewBag.Title = "Delivery";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    TransferIssue transfer = (TransferIssue)ViewBag.Deliverable;
-    BranchManager branchManager = new BranchManager();
     var date = DateTime.Now.Date.ToString("dd-MMMM-yyyy");
 }
 
@@ -20,7 +15,7 @@
                 <h3> From :</h3>
                 <div>
                     @{
-                        var fBranch = branchManager.GetBranchById(transfer.FromBranchId);
+                        var fBranch =Model.FromBranch;
                         <h4>@fBranch.BranchName</h4>
                         <p>@fBranch.BranchAddress</p>
                     }
@@ -31,7 +26,7 @@
                 <h3>  To :</h3>
                 <div>
                     @{
-                        var tBranch = branchManager.GetBranchById(transfer.ToBranchId);
+                        var tBranch =Model.ToBranch;
                         <h4>@tBranch.BranchName</h4>
                         <p>@tBranch.BranchAddress</p>
                     }
@@ -55,7 +50,7 @@
 
             <tbody>
 
-                @foreach (var item in Model)
+                @foreach (var item in Model.TransferIssueDetailses)
                 {
                     <tr>
                         <td>@item.ProductName</td>
@@ -66,7 +61,7 @@
                 }
                 <tr>
                     <td style="text-align:right"><label>Total :</label></td>
-                    <td><label>@Model.Sum(n => n.Quantity)</label></td>
+                    <td><label>@Model.TransferIssueDetailses.Sum(n => n.Quantity)</label></td>
                 </tr>
             </tbody>
         </table>

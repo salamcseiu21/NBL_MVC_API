@@ -13,7 +13,7 @@
             <!-- small box -->
             <div class="small-box bg-aqua">
                 <div class="inner">
-                    <h3 style="font-size: 20px">&#2547; @Model.TotalSale.ToString("N")</h3>
+                    <h3 style="font-size: 20px">&#2547; @Model.AccountSummary.TotalSaleValue.ToString("N")</h3>
                     <p>TOTAL SALE AMOUNT</p>
                 </div>
                 <div class="icon">
@@ -27,7 +27,7 @@
             <!-- small box -->
             <div class="small-box bg-green">
                 <div class="inner">
-                    <h3 style="font-size: 20px">&#2547; @Model.TotalCollection.ToString("N")</h3>
+                    <h3 style="font-size: 20px">&#2547; @Model.AccountSummary.TotalCollection.ToString("N")</h3>
                     <p>TOTAL COLLECTION AMOUNT</p>
                 </div>
                 <div class="icon">
@@ -42,7 +42,7 @@
             <div class="small-box bg-aqua">
                 <div class="inner">
 
-                    <h3 style="font-size: 20px">&#2547; @Model.OrderedAmount.ToString("N")</h3>
+                    <h3 style="font-size: 20px">&#2547; @Model.AccountSummary.TotalOrderedAmount.ToString("N")</h3>
                     <p>TOTAL ORDERED AMOUNT</p>
                 </div>
                 <div class="icon">
@@ -56,7 +56,7 @@
             <!-- small box -->
             <div class="small-box bg-green">
                 <div class="inner">
-                    <h3 style="font-size: 20px">@Model.CollectionPercentageOfSale.ToString("N") (%)</h3>
+                    <h3 style="font-size: 20px">@Model.AccountSummary.CollectionPercentageOfSale.ToString("N") (%)</h3>
                     <p>COLLECTION</p>
                 </div>
                 <div class="icon">

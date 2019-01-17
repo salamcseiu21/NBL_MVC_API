@@ -10,19 +10,24 @@
     <table id="myTable" class="display table table-bordered responsive" style="border:1px solid black">
         <thead>
         <tr>
-            <th>OrderId</th>
+           
             <th>Order Ref</th>
+            <th>Client</th>
+            <th>Quantity</th>
             <th>Amounts</th>
             <th>Order Date</th>
+            <th>Status</th>
             <th>Details</th>
         </tr>
         </thead>
         <tfoot>
         <tr>
-            <th>OrderId</th>
             <th>Order Ref</th>
+            <th>Client</th>
+            <th>Quantity</th>
             <th>Amounts</th>
             <th>Order Date</th>
+            <th>Status</th>
             <th>Details</th>
         </tr>
         </tfoot>
@@ -45,16 +50,18 @@
                 "filter": true, // this is for enable filter (search box)
                 "orderMulti": false, // for disable multiple column at once
                 "ajax": {
-                    "url": "/corporate/home/LoadData",
+                    "url":RootUrl+"/corporate/home/LoadData",
                     "type": "POST",
                     "datatype": "json"
                 },
                 "columns": [
-                    { "data": "OrderId", "name": "OrderId", "autoWidth": true },
                     {
                         "data": "OrederRef", "name": "OrederRef", "autoWidth": true,
                         
                     },
+                    { "data": "Client.CommercialName", "name": "CommercialName", "autoWidth": true },
+                    { "data": "Quantity", "name": "Quantity", "autoWidth": true },
+
                     { "data": "Amounts", "name": "Amounts", "autoWidth": true },
                    
                     {
@@ -67,6 +74,9 @@
                             return date.getDate() + "-" + month + "-" + date.getFullYear();
                         }
                     },
+                  
+                   
+                    { "data": "StatusDescription", "name": "StatusDescription", "autoWidth": true },
                     {
                         data: null,
                         className: "text-center",
