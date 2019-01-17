@@ -11,6 +11,7 @@ using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Products;
 using NBL.Models.Searchs;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Orders;
 
 namespace NBL.DAL
 {
@@ -2168,7 +2169,7 @@ ConnectionObj.Close();
             }
         }
 
-        public IEnumerable<Order> GetOrder(SearchCriteriaModel searchCriteria)
+        public IEnumerable<ViewOrder> GetOrder(SearchCriteriaModel searchCriteria)
         {
             try
             {
@@ -2181,16 +2182,23 @@ ConnectionObj.Close();
                 CommandObj.Parameters.AddWithValue("@Search", searchCriteria.Search);
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
-                List<Order> orders = new List<Order>();
+                List<ViewOrder> orders = new List<ViewOrder>();
                 while (reader.Read())
                 {
 
-                    orders.Add(new Order
+                    orders.Add(new ViewOrder
                     {
                         OrderId = Convert.ToInt32(reader["OrderId"]),
                         OrderDate = Convert.ToDateTime(reader["OrderDate"]),
                         Amounts = Convert.ToDecimal(reader["Amounts"]),
-                        OrederRef = reader["OrderRef"].ToString()
+                        OrederRef = reader["OrderRef"].ToString(),
+                        Status = Convert.ToInt32(reader["OrderStatus"]),
+                        StatusDescription = reader["StatusDescription"].ToString(),
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        Client = new Client
+                        {
+                            CommercialName = reader["CommercialName"].ToString()
+                        }
 
                     });
                 }

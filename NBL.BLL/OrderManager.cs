@@ -8,6 +8,7 @@ using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Products;
 using NBL.Models.Searchs;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Orders;
 
 namespace NBL.BLL
 {
@@ -307,7 +308,7 @@ namespace NBL.BLL
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Order> GetOrder(SearchCriteriaModel searchCriteria)
+        public IEnumerable<ViewOrder> GetOrder(SearchCriteriaModel searchCriteria)
         {
             return _iOrderGateway.GetOrder(searchCriteria);
         }

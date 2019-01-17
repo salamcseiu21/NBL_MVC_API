@@ -15,6 +15,7 @@ using NBL.Models.EntityModels.Designations;
 using NBL.Models.EntityModels.Locations;
 using NBL.Models.Searchs;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Orders;
 
 namespace NBL.Controllers
 {

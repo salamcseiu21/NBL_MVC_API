@@ -5,6 +5,7 @@ using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.DAL.Contracts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Orders;
 
 namespace NBL.BLL
 {

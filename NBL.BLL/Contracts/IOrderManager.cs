@@ -8,6 +8,7 @@ using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Products;
 using NBL.Models.Searchs;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Orders;
 
 namespace NBL.BLL.Contracts
 {
@@ -121,6 +122,6 @@ namespace NBL.BLL.Contracts
         
 
         IEnumerable<ViewVerifiedOrderModel> GetVerifiedOrdersByBranchAndCompanyId(int branchId, int companyId);
-        IEnumerable<Order> GetOrder(SearchCriteriaModel searchCriteria);
+        IEnumerable<ViewOrder> GetOrder(SearchCriteriaModel searchCriteria);
     }
 }

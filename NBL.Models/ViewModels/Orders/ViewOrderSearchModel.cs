@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using NBL.Models.EntityModels.Branches;
 using NBL.Models.EntityModels.Orders;
 
-namespace NBL.Models.ViewModels
+namespace NBL.Models.ViewModels.Orders
 {
    public class ViewOrderSearchModel
     {

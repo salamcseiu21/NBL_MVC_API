@@ -132,17 +132,17 @@
     <Compile Include="ViewModels\ViewEmployeeCreateModel.cs" />
     <Compile Include="ViewModels\ViewInvoicedOrder.cs" />
     <Compile Include="ViewModels\ViewInvoiceModel.cs" />
-    <Compile Include="ViewModels\ViewOrder.cs" />
-    <Compile Include="ViewModels\ViewOrderSearchModel.cs" />
-    <Compile Include="ViewModels\ViewOrderSlipModel.cs" />
+    <Compile Include="ViewModels\Orders\ViewOrder.cs" />
+    <Compile Include="ViewModels\Orders\ViewOrderSearchModel.cs" />
+    <Compile Include="ViewModels\Orders\ViewOrderSlipModel.cs" />
     <Compile Include="ViewModels\ViewProduct.cs" />
     <Compile Include="ViewModels\ViewProductionNoteModel.cs" />
     <Compile Include="ViewModels\ViewReceivableCreateModel.cs" />
     <Compile Include="ViewModels\ViewReferenceAccountModel.cs" />
     <Compile Include="ViewModels\ViewRegion.cs" />
-    <Compile Include="ViewModels\ViewTotalOrder.cs" />
+    <Compile Include="ViewModels\Orders\ViewTotalOrder.cs" />
     <Compile Include="ViewModels\ViewUser.cs" />
-    <Compile Include="ViewModels\ViewVerifiedOrderModel.cs" />
+    <Compile Include="ViewModels\Orders\ViewVerifiedOrderModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

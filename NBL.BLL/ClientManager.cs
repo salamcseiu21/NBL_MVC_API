@@ -90,10 +90,10 @@ namespace NBL.BLL
         public IEnumerable<Client> GetClientByBranchId(int branchId)
         {
             var clients = _iClientGateway.GetClientByBranchId(branchId);
-            foreach (Client client in clients)
-            {
-                client.Orders = _iOrderManager.GetOrdersByClientId(client.ClientId).ToList();
-            }
+            //foreach (Client client in clients)
+            //{
+            //    client.Orders = _iOrderManager.GetOrdersByClientId(client.ClientId).ToList();
+            //}
             return clients;
         }
 
@@ -104,7 +104,7 @@ namespace NBL.BLL
 
         public Client GetById(int clientId)
         {
-           var client= _iClientGateway.GetById(clientId);
+            var client= _iClientGateway.GetById(clientId);
             client.Outstanding =GetClientOustandingBalanceBySubSubSubAccountCode(client.SubSubSubAccountCode);
             return client;
 

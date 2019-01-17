@@ -4,6 +4,7 @@ using NBL.Models.EntityModels.Clients;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Productions;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Orders;
 
 namespace NBL.Models.AutoMapper
 {

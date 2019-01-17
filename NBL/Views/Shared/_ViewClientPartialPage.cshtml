@@ -32,7 +32,7 @@
                     @Html.Raw(item.GetBasicInformation())
                 </td>
                 <td>@Html.Raw(item.GetContactInformation())</td>
-                <td class="text-center">@item.GetTotalOrder()</td>
+                <td class="text-center">@item.TotalOrder</td>
                 <td class="text-center">
                     @Html.ActionLink(" Profile", "ViewClientProfile", null, new { id = item.ClientId }, new { @class = "fa fa-eye" })
                 </td>

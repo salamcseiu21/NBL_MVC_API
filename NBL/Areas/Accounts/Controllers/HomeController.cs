@@ -2,11 +2,11 @@
 using System;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.Areas.Accounts.BLL;
 using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Orders;
 
 namespace NBL.Areas.Accounts.Controllers
 {

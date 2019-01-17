@@ -1,5 +1,5 @@
 ﻿
-namespace NBL.Models.ViewModels
+namespace NBL.Models.ViewModels.Orders
 {
     public class ViewTotalOrder
     {
