@@ -107,7 +107,7 @@ namespace NBL.Areas.Editor.Controllers
                     TerritoryId = Convert.ToInt32(collection["TerritoryId"]),
                     RegionId = regionId,
                     CompanyId = companyId,
-                    //Branch = branch
+                    Branch = branch
 
                 };
                 if (ClientImage != null)
@@ -139,13 +139,16 @@ namespace NBL.Areas.Editor.Controllers
                     client.ClientSignature = "";
                 }
                 bool result = _iClientManager.Add(client);
+                if (result)
+                {
+                    ViewBag.Message = "Saved Successfully!";
+                }
                 ViewBag.RegionId = new SelectList(_iRegionManager.GetAll(), "RegionId", "RegionName");
                 ViewBag.ClientTypeId = new SelectList(_iCommonManager.GetAllClientType(), "ClientTypeId", "ClientTypeName");
                 ViewBag.DistrictId = new SelectList(new List<District>(), "DistrictId", "DistrictName");
                 ViewBag.UpazillaId = new SelectList(new List<Upazilla>(), "UpazillaId", "UpzillaName");
                 ViewBag.PostOfficeId = new SelectList(new List<PostOffice>(), "PostOfficeId", "PostOfficeName");
                 ViewBag.TerritoryId = new SelectList(new List<Territory>(), "TerritoryId", "TerritoryName");
-                ViewBag.Message = result;
                 return View();
 
             }
