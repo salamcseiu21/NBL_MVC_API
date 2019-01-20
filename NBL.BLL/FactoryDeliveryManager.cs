@@ -6,6 +6,7 @@ using NBL.DAL;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
+using NBL.Models.Enums;
 
 namespace NBL.BLL
 {
@@ -35,7 +36,7 @@ namespace NBL.BLL
         /// <returns></returns>
         private string GenerateDeliveryReference(int maxDeliveryNo)
         {
-            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == 4).Code;
+            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == Convert.ToInt32(ReferenceType.Delivery)).Code;
             string temp = (maxDeliveryNo + 1).ToString();
             string reference = DateTime.Now.Year.ToString().Substring(2, 2) + refCode + temp;
             return reference;

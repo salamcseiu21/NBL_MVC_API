@@ -78,7 +78,7 @@ namespace NBL.Areas.Accounts.BLL
         public int SaveJournalVoucher(JournalVoucher aJournal, List<JournalVoucher> journals)
         {
             int maxSl = GetMaxJournalVoucherNoOfCurrentYear();
-            string refCode = _iCommonManager.GetAllReferenceAccounts().ToList()
+            string refCode = _iCommonManager.GetAllSubReferenceAccounts().ToList()
                 .Find(n => n.Id == Convert.ToInt32(ReferenceType.JournalVoucher)).Code;
             aJournal.VoucherRef = DateTime.Now.Year.ToString().Substring(2, 2) + refCode + (maxSl + 1);
             aJournal.VoucherNo = maxSl + 1;

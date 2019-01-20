@@ -7,6 +7,7 @@ using NBL.Models;
 using NBL.Models.EntityModels.Productions;
 using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
+using NBL.Models.Enums;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL
@@ -99,7 +100,7 @@ namespace NBL.BLL
         private string GenerateTransferIssueRef(int maxTrNo)
         {
 
-            string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == 3).Code;
+            string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == Convert.ToInt32(ReferenceType.Transfer)).Code;
             string temp = (maxTrNo + 1).ToString();
             string reference=DateTime.Now.Year.ToString().Substring(2,2)+ refCode+temp;
             return reference;
@@ -152,7 +153,7 @@ namespace NBL.BLL
         private string GenerateProductNoteRef(int year)
         {
             int maxNoteNo = _iProductGateway.GetMaxProductionNoteNoByYear(year);
-            string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == 7).Code;
+            string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == Convert.ToInt32(ReferenceType.ProductionNote)).Code;
             return $"{year.ToString().Substring(2, 2)}{refCode}{maxNoteNo+1}";
         }
 

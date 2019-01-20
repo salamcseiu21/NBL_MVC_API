@@ -170,7 +170,6 @@ namespace NBL.Areas.Factory.Controllers
                     }
                 }
 
-
             }
             catch (Exception e)
             {
