@@ -9,6 +9,8 @@ using NBL.Models.EntityModels.Clients;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Products;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Orders;
+
 namespace NBL.Areas.Sales.Controllers
 {
     [Authorize(Roles ="User")]
@@ -51,7 +53,8 @@ namespace NBL.Areas.Sales.Controllers
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
-            return View(products);
+            CreateOrderViewModel model = new CreateOrderViewModel {Products = products};
+            return View(model);
         }
 
         [HttpPost]
@@ -84,8 +87,9 @@ namespace NBL.Areas.Sales.Controllers
                 }
 
                 var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+                CreateOrderViewModel model = new CreateOrderViewModel { Products = products };
                 ViewBag.Total = productList.Sum(n => n.SubTotal);
-                return View(products);
+                return View(model);
             }
             catch (Exception e)
             {
@@ -182,9 +186,8 @@ namespace NBL.Areas.Sales.Controllers
                 Discount = productList.Sum(n => n.Quantity * n.DiscountAmount),
                 Products = productList,
                 SpecialDiscount = Convert.ToDecimal(collection["SD"]),
-                Vat = vat,
-                
-            };
+                Vat = vat
+              };
                 order.Amounts = amount + order.Discount;
                 var result = _iOrderManager.Save(order);
                 if (result > 0)

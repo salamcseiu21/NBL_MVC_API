@@ -26,7 +26,7 @@ namespace NBL.Areas.Admin.BLL
         public string Save(IEnumerable<OrderItem> orderItems, Invoice anInvoice)
         {
             //------------- Id==1 means order ref....
-            string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == 1).Code;
+            string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.ReferenceAccountCode=="1").Code;
             int maxSl = _iInvoiceGateway.GetMaxInvoiceNoOfCurrentYear();
             anInvoice.InvoiceNo = _iInvoiceGateway.GetMaxInvoiceNo() + 1;
             anInvoice.InvoiceRef = GenerateInvoiceRef(maxSl);
