@@ -4,10 +4,10 @@ using System.Linq;
 using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.DAL.Contracts;
-using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.TransferProducts;
+using NBL.Models.Enums;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL
@@ -42,7 +42,6 @@ namespace NBL.BLL
             return _iInventoryGateway.ReceiveProduct(receiveProductList, model);
         }
 
-
         public IEnumerable<TransactionModel> GetAllReceiveableProductToBranchByDeliveryRef(string deliveryRef)
         {
             return _iInventoryGateway.GetAllReceiveableProductToBranchByDeliveryRef(deliveryRef);
@@ -63,8 +62,8 @@ namespace NBL.BLL
 
         public string GenerateDeliveryReference(int maxRefNo)
         {
-            //---------Id=4 means delivery for sales 
-            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id.Equals(5)).Code;
+
+            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id.Equals(Convert.ToInt32(ReferenceType.Distribution))).Code;
             string temp = (maxRefNo + 1).ToString();
             string reference =DateTime.Now.Year.ToString().Substring(2,2)+refCode+ temp;
             return reference;

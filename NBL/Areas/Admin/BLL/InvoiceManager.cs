@@ -5,9 +5,9 @@ using System.Linq;
 using NBL.Areas.Admin.BLL.Contracts;
 using NBL.Areas.Admin.DAL.Contracts;
 using NBL.DAL.Contracts;
-using NBL.Models;
 using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.Orders;
+using NBL.Models.Enums;
 
 namespace NBL.Areas.Admin.BLL
 {
@@ -25,8 +25,8 @@ namespace NBL.Areas.Admin.BLL
         //-----------13-Sep-2018-----------
         public string Save(IEnumerable<OrderItem> orderItems, Invoice anInvoice)
         {
-            //------------- Id==1 means order ref....
-            string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.ReferenceAccountCode=="1").Code;
+            
+            string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id==Convert.ToInt32(ReferenceType.Invoice)).Code;
             int maxSl = _iInvoiceGateway.GetMaxInvoiceNoOfCurrentYear();
             anInvoice.InvoiceNo = _iInvoiceGateway.GetMaxInvoiceNo() + 1;
             anInvoice.InvoiceRef = GenerateInvoiceRef(maxSl);
@@ -46,8 +46,7 @@ namespace NBL.Areas.Admin.BLL
 
         private string GenerateInvoiceRef(int maxSl)
         {
-            //------------- Id==2 means invoice ref....
-            string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == 2).Code;
+            string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id== Convert.ToInt32(ReferenceType.Invoice)).Code;
             int sN = 1 + maxSl;
             string invoiceRef = DateTime.Now.Date.Year.ToString().Substring(2, 2) + refCode + sN;
             return invoiceRef;

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Web.Mvc;
 using System.Collections.Generic;
-using System.Net.Mail;
 using NBL.Areas.Accounts.Models;
 using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.BLL.Contracts;

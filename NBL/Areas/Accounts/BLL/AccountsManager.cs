@@ -10,6 +10,7 @@ using NBL.Models;
 using NBL.Areas.Accounts.DAL.Contracts;
 using NBL.Models.EntityModels.Clients;
 using NBL.Models.EntityModels.VatDiscounts;
+using NBL.Models.Enums;
 using NBL.Models.SummaryModels;
 
 namespace NBL.Areas.Accounts.BLL
@@ -52,7 +53,7 @@ namespace NBL.Areas.Accounts.BLL
 
         private string GenerateReceivableRef(int maxSl)
         {
-            var refCode = _iCommonManager.GetAllSubReferenceAccounts().ToList().Find(n=>n.Id==6).Code;
+            var refCode = _iCommonManager.GetAllSubReferenceAccounts().ToList().Find(n=>n.Id==Convert.ToInt32(ReferenceType.AccountReceiveable)).Code;
             string reference = $"{DateTime.Now.Year.ToString().Substring(2, 2)}{refCode}{maxSl + 1}";
             return reference;
         }
@@ -77,7 +78,9 @@ namespace NBL.Areas.Accounts.BLL
         public int SaveJournalVoucher(JournalVoucher aJournal, List<JournalVoucher> journals)
         {
             int maxSl = GetMaxJournalVoucherNoOfCurrentYear();
-            aJournal.VoucherRef = DateTime.Now.Year.ToString().Substring(2, 2) + "106" + (maxSl + 1);
+            string refCode = _iCommonManager.GetAllReferenceAccounts().ToList()
+                .Find(n => n.Id == Convert.ToInt32(ReferenceType.JournalVoucher)).Code;
+            aJournal.VoucherRef = DateTime.Now.Year.ToString().Substring(2, 2) + refCode + (maxSl + 1);
             aJournal.VoucherNo = maxSl + 1;
             return _iAccountGateway.SaveJournalVoucher(aJournal,journals);
         }
@@ -114,17 +117,28 @@ namespace NBL.Areas.Accounts.BLL
             string infix = "";
             switch (voucherType)
             {
-                case 1:infix = "102";
-                    break;
+                case 1:
+                   
+                    {
+                      infix = _iCommonManager.GetAllSubReferenceAccounts().ToList().Find(n=>n.Id==Convert.ToInt32(ReferenceType.CreditVoucher)).Code;
+                      break;
+                    }
+
                 case 2:
-                    infix = "103";
+                {
+                    infix = _iCommonManager.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == Convert.ToInt32(ReferenceType.DebitVoucher)).Code;
                     break;
+                    }
                 case 3:
-                    infix = "104";
+                {
+                    infix = _iCommonManager.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == Convert.ToInt32(ReferenceType.ChequePaymentVoucher)).Code;
                     break;
+                    }
                 case 4:
-                    infix = "105";
+                {
+                    infix = _iCommonManager.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == Convert.ToInt32(ReferenceType.ChequeReceiveVoucher)).Code;
                     break;
+                    }
             }
             string reference = DateTime.Now.Year.ToString().Substring(2, 2) + infix + (maxSl + 1);
             return reference;

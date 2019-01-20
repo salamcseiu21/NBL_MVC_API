@@ -6,6 +6,7 @@ using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Products;
+using NBL.Models.Enums;
 using NBL.Models.Searchs;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Orders;
@@ -108,7 +109,7 @@ namespace NBL.BLL
 
         private string GenerateOrderRefNo(int maxsl)
         {
-            string refCode = GetReferenceAccountCodeById(1);
+            string refCode = GetReferenceAccountCodeById(Convert.ToInt32(ReferenceType.Sales));
             int sN =maxsl+1;
             string reference = DateTime.Now.Date.Year.ToString().Substring(2, 2) + refCode + sN;
             return reference;
@@ -116,7 +117,7 @@ namespace NBL.BLL
 
         private string GenerateOrderSlipNo(int maxSl)
         {
-            string refCode = GetReferenceAccountCodeById(1);
+            string refCode = GetReferenceAccountCodeById(Convert.ToInt32(ReferenceType.Sales));
             int sN=1+maxSl;
             string ordSlipNo = DateTime.Now.Date.Year.ToString().Substring(2, 2)+refCode+sN;
             return ordSlipNo;

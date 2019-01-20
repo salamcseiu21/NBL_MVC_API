@@ -76,6 +76,7 @@
     <Compile Include="EntityModels\Locations\Division.cs" />
     <Compile Include="EntityModels\Employees\Employee.cs" />
     <Compile Include="EntityModels\Masters\EmployeeType.cs" />
+    <Compile Include="Enums\ReferenceType.cs" />
     <Compile Include="ErrorModel.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="EntityModels\Invoices\Invoice.cs" />

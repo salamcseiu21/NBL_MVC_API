@@ -71,6 +71,7 @@ namespace NBL.Areas.Nsm.Controllers
             try
             {
                 var ord = _iOrderManager.GetOrderByOrderId(orderId);
+                ord.Client=_iClientManager.GetById(ord.ClientId);
                 int productId = Convert.ToInt32(collection["ProductId"]);
                 var aProduct = _iProductManager.GetProductByProductAndClientTypeId(productId, ord.Client.ClientType.ClientTypeId);
                 aProduct.Quantity = Convert.ToInt32(collection["Quantity"]);
@@ -110,7 +111,7 @@ namespace NBL.Areas.Nsm.Controllers
             order.Client = _iClientManager.GetById(order.ClientId);
             var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             ViewBag.Products = products;
-            Session["TOrders"] = order.OrderItems;
+            Session["TOrders"] = order.OrderItems.ToList();
             return View(order);
 
         }
