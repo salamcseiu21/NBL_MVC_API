@@ -338,11 +338,38 @@ namespace NBL.Areas.Corporate.Controllers
         {
 
             var draw = Request.Form.GetValues("draw").FirstOrDefault();
-             var start = Request.Form.GetValues("start").FirstOrDefault();
-             var length = Request.Form.GetValues("length").FirstOrDefault();
-              var search = Request["search[value]"];
-            var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
-            int colIndex = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault().IndexOf(sortColumn);
+            var start = Request.Form.GetValues("start").FirstOrDefault();
+            var length = Request.Form.GetValues("length").FirstOrDefault();
+            var search = Request["search[value]"];
+            var colIndex = Convert.ToInt32(Request.Form.GetValues("order[0][column]").First());
+          //  var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+          //  int colIndex = 0;
+            
+          //  if (sortColumn != null && sortColumn.Equals("OrederRef"))
+          //  {
+          //      colIndex = 0;
+          //  }
+          // else if (sortColumn != null && sortColumn.Equals("CommercialName"))
+          //  {
+          //      colIndex = 1;
+          //  }
+          //else  if (sortColumn != null && sortColumn.Equals("Quantity"))
+          //  {
+          //      colIndex = 2;
+          //  }
+          //else  if (sortColumn != null && sortColumn.Equals("Amounts"))
+          //  {
+          //      colIndex = 3;
+          //  }
+          //else  if (sortColumn != null && sortColumn.Equals("OrderDate"))
+          //  {
+          //      colIndex = 4;
+          //  }
+          // else if (sortColumn != null && sortColumn.Equals("StatusDescription"))
+          //  {
+          //      colIndex = 5;
+          //  }
+
             var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
 
             SearchCriteriaModel aCriteriaModel=new SearchCriteriaModel

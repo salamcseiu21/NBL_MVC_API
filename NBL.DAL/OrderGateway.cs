@@ -2192,7 +2192,6 @@ ConnectionObj.Close();
                         OrderDate = Convert.ToDateTime(reader["OrderDate"]),
                         Amounts = Convert.ToDecimal(reader["Amounts"]),
                         OrederRef = reader["OrderRef"].ToString(),
-                        Status = Convert.ToInt32(reader["OrderStatus"]),
                         StatusDescription = reader["StatusDescription"].ToString(),
                         Quantity = Convert.ToInt32(reader["Quantity"]),
                         Client = new Client

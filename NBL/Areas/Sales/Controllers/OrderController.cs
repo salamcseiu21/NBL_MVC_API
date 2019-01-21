@@ -8,6 +8,7 @@ using NBL.Models;
 using NBL.Models.EntityModels.Clients;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Products;
+using NBL.Models.Enums;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Orders;
 
@@ -237,15 +238,13 @@ namespace NBL.Areas.Sales.Controllers
         public ActionResult Cancel(FormCollection collection)
         {
 
-            //---------Status=5 means order cancel by sales person------------------
-
             var user = (ViewUser)Session["user"];
             int orderId = Convert.ToInt32(collection["OrderId"]);
             var order = _iOrderManager.GetOrderByOrderId(orderId);
             order.Client = _iClientManager.GetById(order.ClientId);
             order.ResonOfCancel = collection["Reason"];
             order.CancelByUserId = user.UserId;
-            order.Status = 5;
+            order.Status = Convert.ToInt32(OrderStatus.CancelledbySalesPerson);
             bool status = _iOrderManager.CancelOrder(order);
             return status ? RedirectToAction("All") : RedirectToAction("Cancel",orderId);
         }
@@ -274,7 +273,7 @@ namespace NBL.Areas.Sales.Controllers
                 var dicount = Convert.ToDecimal(collection["Discount"]);
                 var order = _iOrderManager.GetOrderByOrderId(id);
                 order.Client = _iClientManager.GetById(order.ClientId);
-                order.Status = 0;
+                order.Status = Convert.ToInt32(OrderStatus.Pending);
                 var orderItems = (IEnumerable<OrderItem>) Session["TOrders"];
                 order.SpecialDiscount = dicount;
                 order.Discount = orderItems.ToList().Sum(n=>n.Quantity*n.DeletionStatus);
@@ -434,10 +433,10 @@ namespace NBL.Areas.Sales.Controllers
 
         public ActionResult PendingOrders() 
         {
-            //------------- Status=0 means the order is at initial stage----------
+    
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _iOrderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId, companyId, 0).ToList().OrderByDescending(n => n.OrderId).ToList();
+            var orders = _iOrderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId, companyId, Convert.ToInt32(OrderStatus.Pending)).ToList().OrderByDescending(n => n.OrderId).ToList();
             return View(orders);
         }
 

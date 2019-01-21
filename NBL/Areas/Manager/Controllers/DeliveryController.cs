@@ -8,6 +8,7 @@ using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.Products;
+using NBL.Models.Enums;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Deliveries;
 
@@ -90,12 +91,12 @@ namespace NBL.Areas.Manager.Controllers
 
                 }
                 int diliveryQty =invoicedOrders.Sum(n=>n.DeliveredQuantity)+invoiceList.Sum(n => n.Quantity);
-                int invoiceStatus = 1;
-                int orderStatus = 3;
+                int invoiceStatus = Convert.ToInt32(InvoiceStatus.PartiallyDelivered);
+                int orderStatus = Convert.ToInt32(OrderStatus.PartiallyDelivered);
                 if (invoiceQty == diliveryQty)
                 {
-                    invoiceStatus = 2;
-                    orderStatus = 4;
+                    invoiceStatus = Convert.ToInt32(InvoiceStatus.Delivered);
+                    orderStatus = Convert.ToInt32(OrderStatus.Delivered);
                 }
                 
 

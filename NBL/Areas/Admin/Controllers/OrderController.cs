@@ -8,6 +8,7 @@ using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Invoices;
+using NBL.Models.Enums;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Admin.Controllers
@@ -46,10 +47,9 @@ namespace NBL.Areas.Admin.Controllers
         }
         public ActionResult PendingOrder()
         {
-            //------------- Status=1 means the order is approved by NSM and it is pending at admin  stage----------
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _iOrderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId, companyId, 1).ToList();
+            var orders = _iOrderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId, companyId, Convert.ToInt32(OrderStatus.ApprovedbyNsm)).ToList();
             return View(orders);
 
         }
@@ -98,8 +98,7 @@ namespace NBL.Areas.Admin.Controllers
                     DiscountAccountCode = _iOrderManager.GetDiscountAccountCodeByClintTypeId(order.Client.ClientTypeId)
                 };
                 string invoice = _iInvoiceManager.Save(order.OrderItems, anInvoice);
-                //---------- Status=2 means approved by Admin
-                order.Status = 2;
+                order.Status = Convert.ToInt32(OrderStatus.InvoicedOrApprovedbyAdmin);
                 order.SpecialDiscount = specialDiscount;
                 order.AdminUserId = anUser.UserId;
                 string result = _iOrderManager.ApproveOrderByAdmin(order);
@@ -179,7 +178,7 @@ namespace NBL.Areas.Admin.Controllers
         public ActionResult Cancel(FormCollection collection)
         {
 
-            //---------Status=7 means order cancel by Admin------------------
+           
 
             var user = (ViewUser)Session["user"];
             int orderId = Convert.ToInt32(collection["OrderId"]);
@@ -187,7 +186,7 @@ namespace NBL.Areas.Admin.Controllers
             order.Client = _iClientManager.GetById(order.ClientId);
             order.ResonOfCancel = collection["Reason"];
             order.CancelByUserId = user.UserId;
-            order.Status = 7;
+            order.Status = Convert.ToInt32(OrderStatus.CancelledbyAdmin);
             var status = _iOrderManager.CancelOrder(order);
             return status ? RedirectToAction("All") : RedirectToAction("Cancel", new {id= orderId });
 

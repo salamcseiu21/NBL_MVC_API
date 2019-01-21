@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper.Mappers;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Orders;
+using NBL.Models.Enums;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Nsm.Controllers
@@ -47,11 +49,10 @@ namespace NBL.Areas.Nsm.Controllers
         }
         public ActionResult PendingOrder()
         {
-            //------------- Status=0 means the order is at initial stage----------
-
+            
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _iOrderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId,companyId,0).ToList();
+            var orders = _iOrderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId,companyId,Convert.ToInt32(OrderStatus.Pending)).ToList();
             return View(orders);
 
         }
@@ -131,7 +132,7 @@ namespace NBL.Areas.Nsm.Controllers
                 order.Discount = orderItems.Sum(n => n.Quantity * n.DiscountAmount);
                 order.Vat = orderItems.Sum(n=>n.Vat * n.Quantity);
                 order.Amounts = amount + order.Discount;
-                order.Status = 1; //----- Status=1 means approve by NSM
+                order.Status = Convert.ToInt32(OrderStatus.ApprovedbyNsm);
                 order.SpecialDiscount = dicount;
                 order.ApprovedByNsmDateTime = DateTime.Now;
                 string r = _iOrderManager.UpdateOrderDetails(orderItems);
@@ -231,13 +232,12 @@ namespace NBL.Areas.Nsm.Controllers
         public ActionResult Cancel(FormCollection collection)
         {
 
-            //---------Status=6 means order cancel by NSM------------------
             var user = (ViewUser)Session["user"];
             int orderId = Convert.ToInt32(collection["OrderId"]);
             var order = _iOrderManager.GetOrderByOrderId(orderId);
             order.CancelByUserId = user.UserId;
             order.ResonOfCancel = collection["Reason"];
-            order.Status = 6;
+            order.Status =Convert.ToInt32(OrderStatus.CancelledbyNsm);
             var status = _iOrderManager.CancelOrder(order);
             return status? RedirectToAction("PendingOrder"):RedirectToAction("Cancel",new {id=orderId});
 
@@ -247,7 +247,7 @@ namespace NBL.Areas.Nsm.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var user = (ViewUser) Session["user"];
-            var orders = _iOrderManager.GetOrdersByBranchCompanyAndNsmUserId(branchId,companyId,user.UserId).ToList().OrderByDescending(n => n.OrderId).ToList().FindAll(n => n.Status < 2).ToList();
+            var orders = _iOrderManager.GetOrdersByBranchCompanyAndNsmUserId(branchId,companyId,user.UserId).ToList().OrderByDescending(n => n.OrderId).ToList().FindAll(n => n.Status < Convert.ToInt32(OrderStatus.InvoicedOrApprovedbyAdmin)).ToList();
             return View(orders);
         }
 
@@ -264,7 +264,7 @@ namespace NBL.Areas.Nsm.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var stock = _iOrderManager.GetOrdersByBranchAndCompnayId(branchId,companyId).ToList().FindAll(n => n.Status == 0).ToList().Count();
+            var stock = _iOrderManager.GetOrdersByBranchAndCompnayId(branchId,companyId).ToList().FindAll(n => n.Status == Convert.ToInt32(OrderStatus.Pending)).ToList().Count;
             return Json(stock, JsonRequestBehavior.AllowGet);
         }
 
