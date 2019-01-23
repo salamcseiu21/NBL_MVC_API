@@ -10,8 +10,10 @@ using NBL.Models;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Productions;
+using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Productions;
 
 namespace NBL.Areas.Factory.Controllers
 {
@@ -241,6 +243,59 @@ namespace NBL.Areas.Factory.Controllers
         public ActionResult GetAllProductionNotes()
         {
             return Json(_iProductManager.PendingProductionNote(), JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult AddProductToTempFile() 
+        {
+            ScanProductViewModel model=new ScanProductViewModel();
+            string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
+            var filePath = Server.MapPath("~/Files/" + fileName);
+            if (System.IO.File.Exists(filePath))
+            {
+                //if the file is exists read the file
+                model.Products = _iProductManager.GetProductsFromTextFile(filePath).ToList();
+            }
+
+            else
+            {
+                //if the file does not exists create the file
+                System.IO.File.Create(filePath).Close();
+            }
+
+            return View(model);
+           
+        }
+        [HttpPost]
+
+        public ActionResult AddProductToTempFile(ScanProductViewModel model)
+        {
+        
+            int productId= Convert.ToInt32(model.ProductCode.Substring(0, 3));
+            Product product= _iProductManager.GetProductByProductId(productId);
+            if (product!=null)
+            {
+                string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
+                var filePath = Server.MapPath("~/Files/" + fileName);
+                var result = _iProductManager.AddProductToTextFile(model.ProductCode, filePath);
+                return RedirectToAction("AddProductToTempFile");
+            }
+            ViewBag.Error = "Product Id is invalid!";
+            return RedirectToAction("AddProductToTempFile");
+        }
+
+        public ActionResult SaveProductToFactoryInventory()
+        {
+            string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
+            var filePath = Server.MapPath("~/Files/" + fileName);
+            var products = _iProductManager.GetProductsFromTextFile(filePath).ToList();
+            bool result = _iProductManager.AddProductToInventory(products);
+            if (result)
+            {
+
+                System.IO.File.Create(filePath).Close();
+            }
+            return RedirectToAction("AddProductToTempFile");
         }
     }
 }

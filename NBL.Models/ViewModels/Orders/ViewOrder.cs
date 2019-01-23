@@ -37,7 +37,6 @@ namespace NBL.Models.ViewModels.Orders
         public decimal SpecialDiscount { get; set; }
         public int Status { get; set; }
         public string StatusDescription { get; set; }
-
         public DateTime SysDate { get; set; }
         [Display(Name = "Order Date")]
         public DateTime OrderDate { get; set; }
@@ -47,7 +46,6 @@ namespace NBL.Models.ViewModels.Orders
         public int AdminUserId { get; set; }
         [Display(Name = "Approved By Admin")]
         public DateTime ApprovedByAdminDateTime { get; set; }
-
         [Display(Name = "Delivery Date")]
         public DateTime DeliveryDateTime { get; set; }
         public int DeliveredByUserId { get; set; }

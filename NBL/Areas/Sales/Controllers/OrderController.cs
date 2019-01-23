@@ -380,7 +380,7 @@ namespace NBL.Areas.Sales.Controllers
                     
                 }
 
-                return RedirectToAction("Edit",orderId);
+                return RedirectToAction("Edit", new { id = orderId } );
 
             }
             catch (Exception e)
@@ -388,7 +388,7 @@ namespace NBL.Areas.Sales.Controllers
 
                 if (e.InnerException != null)
                     ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException.Message;
-                return RedirectToAction("Edit",orderId);
+                return RedirectToAction("Edit", new { id = orderId });
             }
         }
 

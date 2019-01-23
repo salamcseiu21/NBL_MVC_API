@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Masters;
@@ -813,6 +814,94 @@ namespace NBL.DAL
             catch (Exception exception)
             {
                 throw new Exception("Could not collect pending production notes", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+       
+        public ICollection<Product> GetProductsFromTextFile(string filePath) 
+        {
+
+            try
+            {
+
+
+                List<Product> products = new List<Product>();
+                // Read a text file using StreamReader
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+
+                        products.Add(new Product
+                        {
+                            ProductCode = line
+                        });
+                    }
+                    sr.Close();
+                }
+
+                return products;
+            }
+            catch(Exception exception)
+            {
+                throw new Exception("Unable to read product text file",exception);
+            }
+        }
+
+        public bool AddProductToTextFile(string productCode,string filePath)
+        {
+            try
+            {
+                using (StreamWriter w = File.AppendText(filePath))
+                {
+                    w.WriteLine(productCode);
+                    w.Flush();
+                    return true;
+                }
+            }
+            catch (Exception exception)
+            {
+
+                throw new Exception("Could not add product to text file",exception);
+            }
+
+        }
+
+        public bool AddProductToInventory(List<Product> products)
+        {
+            try
+            {
+                long rowAffected = 0;
+                foreach (Product product in products)
+                {
+                    CommandObj.Parameters.Clear();
+                    CommandObj.CommandText = "UDSP_SaveProductToInventory";
+                    CommandObj.CommandType = CommandType.StoredProcedure;
+                    CommandObj.Parameters.AddWithValue("@ProductCode", product.ProductCode);
+                    CommandObj.Parameters.Add("@RowAffected", SqlDbType.BigInt);
+                    CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                    ConnectionObj.Open();
+                    CommandObj.ExecuteNonQuery();
+                    rowAffected += Convert.ToInt64(CommandObj.Parameters["@RowAffected"].Value);
+                    ConnectionObj.Close();
+                    CommandObj.Dispose();
+                }
+
+
+                return rowAffected > 0;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not save product to inventory", exception);
             }
             finally
             {

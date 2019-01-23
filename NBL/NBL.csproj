@@ -355,6 +355,7 @@
     </Compile>
     <Compile Include="Areas\SuperAdmin\SuperAdminAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\API\ProductsController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
@@ -451,8 +452,15 @@
     <Content Include="Areas\Editor\Images\Signature\e4e3da2e91d04f7197f6bba0afe58057.png" />
     <Content Include="Areas\Editor\Images\Signature\f021ab04335947ce863010696ae091b7.png" />
     <Content Include="Areas\Editor\Images\Signature\signature.png" />
+    <Content Include="Areas\Sales\Scripts\addNewItemToList.js" />
+    <Content Include="Areas\Sales\Scripts\cancelOrder.js" />
     <Content Include="Areas\Sales\Scripts\clientNameAutoComplete.js" />
+    <Content Include="Areas\Sales\Scripts\loadOrderDetails.js" />
+    <Content Include="Areas\Sales\Scripts\loadTempOrders.js" />
     <Content Include="Areas\Sales\Scripts\orders.js" />
+    <Content Include="Areas\Sales\Scripts\productNameAutoComplete.js" />
+    <Content Include="Areas\Sales\Scripts\removeProduct.js" />
+    <Content Include="Areas\Sales\Scripts\updateOrder.js" />
     <Content Include="Areas\SuperAdmin\Reports\ViewReport.aspx" />
     <Content Include="Assets\.gitignore" />
     <Content Include="Assets\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.css" />
@@ -6916,6 +6924,7 @@
     <Content Include="Content\editor.dataTables.min.css" />
     <Content Include="Content\myStyle.css" />
     <Content Include="favicon.ico" />
+    <Content Include="Files\product_code.txt" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -7879,6 +7888,7 @@
     <Content Include="Areas\Corporate\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Corporate\Views\Home\Test.cshtml" />
     <Content Include="Areas\Sales\Views\Shared\_ClientDetailsPartialPage.cshtml" />
+    <Content Include="Areas\Factory\Views\Product\AddProductToTempFile.cshtml" />
     <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

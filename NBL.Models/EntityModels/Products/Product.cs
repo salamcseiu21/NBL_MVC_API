@@ -12,6 +12,8 @@ namespace NBL.Models.EntityModels.Products
         [Required]
         [Display(Name = "Product Name")]
         public string ProductName { get; set; }
+
+        public string ProductCode { get; set; } 
         [Required]
         public int ProductTypeId { get; set; }
         public int CategoryId { get; set; }

@@ -704,8 +704,6 @@ namespace NBL.DAL
             }
         }
 
-        
-
         public int ApproveClient(Client aClient, ViewUser anUser)
         {
             try

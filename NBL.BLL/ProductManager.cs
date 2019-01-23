@@ -126,6 +126,21 @@ namespace NBL.BLL
            return _iProductGateway.GetDeliverableTransferIssueById(transerIssueId);
         }
 
+        public ICollection<Product> GetProductsFromTextFile(string filePath)
+        {
+           return _iProductGateway.GetProductsFromTextFile(filePath);
+        }
+
+        public bool AddProductToTextFile(string productCode, string filePath)
+        {
+            return _iProductGateway.AddProductToTextFile(productCode, filePath);
+        }
+
+        public bool AddProductToInventory(List<Product> products)
+        {
+            return _iProductGateway.AddProductToInventory(products);
+        }
+
         public IEnumerable<TransferIssueDetails> GetTransferIssueDetailsById(int id)
         {
             return _iProductGateway.GetTransferIssueDetailsById(id); 

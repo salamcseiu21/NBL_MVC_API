@@ -68,5 +68,7 @@ namespace NBL.BLL
             string reference =DateTime.Now.Year.ToString().Substring(2,2)+refCode+ temp;
             return reference;
         }
+
+        
     }
 }
