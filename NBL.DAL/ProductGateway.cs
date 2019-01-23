@@ -886,6 +886,7 @@ namespace NBL.DAL
                     CommandObj.CommandText = "UDSP_SaveProductToInventory";
                     CommandObj.CommandType = CommandType.StoredProcedure;
                     CommandObj.Parameters.AddWithValue("@ProductCode", product.ProductCode);
+                    CommandObj.Parameters.AddWithValue("@ProductId", Convert.ToInt32(product.ProductCode.Substring(0,3)));
                     CommandObj.Parameters.Add("@RowAffected", SqlDbType.BigInt);
                     CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                     ConnectionObj.Open();

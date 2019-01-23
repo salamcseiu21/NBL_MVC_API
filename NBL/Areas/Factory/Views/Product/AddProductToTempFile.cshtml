@@ -11,11 +11,11 @@
         @using (Html.BeginForm())
         {
             <div class="form-horizontal">
-                <h2 class="text-center">Scan Battery Barcode</h2>
+                <h2 class="text-center">Scan Product</h2>
                 <div class="form-group">
                     @Html.LabelFor(m => m.ProductCode, new {@class = "control-label col-md-2"})
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control", placeholder = "Alwasy keep pointer here..!!" })
+                        @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control", placeholder = "Alwasy keep pointer here..!!", autofocus = "" })
                         @Html.ValidationMessageFor(m => m.ProductCode, "", new { @class = "text-danger" })
                     </div>
 
@@ -31,7 +31,7 @@
        
         <table class="display table-responsive table-bordered table-hover" id="production_list" style="border: 1px solid">
             <caption class="text-center">
-                Data from text file
+                Scaned Product List 
             </caption>
             <thead>
            
