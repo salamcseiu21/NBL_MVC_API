@@ -8004,6 +8004,7 @@
     <Content Include="Views\Shared\_ViewAllSalesPartialPage.cshtml" />
     <Content Include="Views\Shared\_ViewBranchPartialPage.cshtml" />
     <Content Include="Views\Shared\_ViewDeliveryModalPartialPage.cshtml" />
+    <Content Include="Views\Shared\_ModalDeliveryPartialPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

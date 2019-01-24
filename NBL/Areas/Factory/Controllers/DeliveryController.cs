@@ -42,7 +42,7 @@ namespace NBL.Areas.Factory.Controllers
         public ActionResult Delivery(int id)
         {
 
-            List<ViewScannedBarCode> barcodeList = new List<ViewScannedBarCode>();
+            List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
             string fileName = "Deliverd_Issued_Product_For_" + id;
             var filePath = Server.MapPath("~/Files/" + fileName);
             if (System.IO.File.Exists(filePath))
@@ -58,8 +58,6 @@ namespace NBL.Areas.Factory.Controllers
 
             var transferIssue = _iProductManager.GetDeliverableTransferIssueById(id);
             transferIssue.Products = _iProductManager.GetIssuedProductListById(id);
-           
-           // var issueDetails = _iProductManager.GetTransferIssueDetailsById(id);
              var model = new ViewTransferIssueModel
                 {
                     FromBranch = _iBranchManager.GetById(transferIssue.FromBranchId),
@@ -75,7 +73,7 @@ namespace NBL.Areas.Factory.Controllers
         {
 
             string code = collection["ProductCode"];
-            List<ViewScannedBarCode> barcodeList = new List<ViewScannedBarCode>();
+            List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
             string fileName = "Deliverd_Issued_Product_For_" + id;
             var filePath = Server.MapPath("~/Files/" + fileName);
             if (System.IO.File.Exists(filePath))
@@ -105,8 +103,6 @@ namespace NBL.Areas.Factory.Controllers
                 var result = _iProductManager.AddProductToTextFile(code, filePath);
                 return RedirectToAction("Delivery",new {id=id});
             }
-
-            ViewBag.Deliverable = transferIssue;
             return View(model);
         }
 
@@ -118,7 +114,6 @@ namespace NBL.Areas.Factory.Controllers
             string fileName = "Deliverd_Issued_Product_For_" + transferIssueId;
             var filePath = Server.MapPath("~/Files/" + fileName);
             var products = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
-
             int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             TransferIssue transferIssue = _iProductManager.GetDeliverableTransferIssueById(transferIssueId);
@@ -126,7 +121,8 @@ namespace NBL.Areas.Factory.Controllers
 
             foreach (var detail in issueDetails)
             {
-
+                detail.BarCodes = products.ToList()
+                    .FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == detail.ProductId).ToList();
                 foreach (var product in products.ToList().FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3)) == detail.ProductId).ToList())
                 {
                     detail.ProductBarCodes += product.ProductCode + ",";

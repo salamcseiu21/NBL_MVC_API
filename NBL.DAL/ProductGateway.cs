@@ -825,12 +825,12 @@ namespace NBL.DAL
         }
 
        
-        public ICollection<ViewScannedBarCode> GetScannedBarcodeListFromTextFile(string filePath) 
+        public ICollection<ScannedBarCode> GetScannedBarcodeListFromTextFile(string filePath) 
         {
 
             try
             {
-                List<ViewScannedBarCode> barCodes = new List<ViewScannedBarCode>(); 
+                List<ScannedBarCode> barCodes = new List<ScannedBarCode>(); 
                 // Read a text file using StreamReader
                 using (StreamReader sr = new StreamReader(filePath))
                 {
@@ -839,7 +839,7 @@ namespace NBL.DAL
                     while ((line = sr.ReadLine()) != null)
                     {
 
-                        barCodes.Add(new ViewScannedBarCode {ProductCode = line});
+                        barCodes.Add(new ScannedBarCode {ProductCode = line});
                     }
                     sr.Close();
                 }

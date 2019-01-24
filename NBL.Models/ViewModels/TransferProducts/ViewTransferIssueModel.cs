@@ -19,6 +19,6 @@ namespace NBL.Models.ViewModels.TransferProducts
         public TransferIssue TransferIssue { get; set; }
         public ICollection<TransferIssue> TransferIssues { get; set; } 
         public ICollection<TransferIssueDetails> TransferIssueDetailses { get; set; }
-        public ICollection<ViewScannedBarCode> ScannedBarCodes { get; set; }  
+        public ICollection<ScannedBarCode> ScannedBarCodes { get; set; }  
     }
 }

@@ -127,7 +127,7 @@ namespace NBL.BLL
            return _iProductGateway.GetDeliverableTransferIssueById(transerIssueId);
         }
 
-        public ICollection<ViewScannedBarCode> GetScannedBarcodeListFromTextFile(string filePath)
+        public ICollection<ScannedBarCode> GetScannedBarcodeListFromTextFile(string filePath)
         {
            return _iProductGateway.GetScannedBarcodeListFromTextFile(filePath);
         }

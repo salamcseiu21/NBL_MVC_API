@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace NBL.Models.ViewModels.Productions
 {
-    public class ViewScannedBarCode
-    {
+    public class ScannedBarCode
+    { 
         public string ProductCode { get; set; } 
     }
 }

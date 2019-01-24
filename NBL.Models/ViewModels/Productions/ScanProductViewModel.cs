@@ -11,7 +11,7 @@ namespace NBL.Models.ViewModels.Productions
         [StringLength(13,MinimumLength = 13,ErrorMessage = "Barcode must be exact 13 character long.")]
         [Display(Name = "Product Barcode")]
         public string ProductCode { get; set; }
-        public ICollection<ViewScannedBarCode> Products { get; set; }
+        public ICollection<ScannedBarCode> BarCodes { get; set; } 
        
     }
 }

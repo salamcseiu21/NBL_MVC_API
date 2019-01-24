@@ -101,7 +101,7 @@
       
 
     </div>
-    @Html.Partial("_ModalPartialPage")
+    @Html.Partial("_ModalDeliveryPartialPage")
 
 </section>
 
@@ -146,7 +146,7 @@
                 data: { transferIssueId: transferIssueId.value },
                 success: function (response) {
                     $('#modalBody').html(response);
-                    $('#showOrderDetailsModal').modal('show');
+                    $('#showDeliveryModal').modal('show');
                 }
             });
         }

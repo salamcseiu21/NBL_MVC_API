@@ -27,7 +27,7 @@ namespace NBL.BLL.Contracts
         IEnumerable<ViewProductionNoteModel> PendingProductionNote();
         TransferIssue GetTransferIssueById(int transerIssueId);
         TransferIssue GetDeliverableTransferIssueById(int transerIssueId);
-        ICollection<ViewScannedBarCode> GetScannedBarcodeListFromTextFile(string filePath);
+        ICollection<ScannedBarCode> GetScannedBarcodeListFromTextFile(string filePath);
         bool AddProductToTextFile(string productCode, string filePath);
         bool AddProductToInventory(List<Product> products);
         List<Product> GetIssuedProductListById(int id);

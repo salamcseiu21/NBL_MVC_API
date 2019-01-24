@@ -254,7 +254,7 @@ namespace NBL.Areas.Factory.Controllers
             if (System.IO.File.Exists(filePath))
             {
                 //if the file is exists read the file
-                model.Products = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+                model.BarCodes = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
             }
 
             else

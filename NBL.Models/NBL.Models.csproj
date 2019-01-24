@@ -121,7 +121,7 @@
     <Compile Include="ViewModels\Deliveries\ViewDeliveryModel.cs" />
     <Compile Include="ViewModels\Orders\CreateOrderViewModel.cs" />
     <Compile Include="ViewModels\Productions\ScanProductViewModel.cs" />
-    <Compile Include="ViewModels\Productions\ViewScannedBarCode.cs" />
+    <Compile Include="ViewModels\Productions\ScannedBarCode.cs" />
     <Compile Include="ViewModels\Sales\ProductReceiveViewModel.cs" />
     <Compile Include="ViewModels\TransferProducts\ViewTransferIssueDetailsModel.cs" />
     <Compile Include="ViewModels\TransferProducts\ViewTransferIssueModel.cs" />

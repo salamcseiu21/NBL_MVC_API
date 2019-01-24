@@ -4,7 +4,9 @@ using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
+using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
+using NBL.Models.ViewModels.Productions;
 
 namespace NBL.DAL
 {
@@ -56,14 +58,11 @@ namespace NBL.DAL
             }
         }
 
-        int IFactoryDeliveryGateway.SaveDeliveryInformationDetails(IEnumerable<TransferIssueDetails> issueDetails, int deliveryId)
+        
+        public int SaveDeliveryInformationDetails(IEnumerable<TransferIssueDetails> issueDetails, int deliveryId)
         {
-            return SaveDeliveryInformationDetails(issueDetails, deliveryId);
-        }
-
-        private int SaveDeliveryInformationDetails(IEnumerable<TransferIssueDetails> issueDetails, int deliveryId)
-        {
-            int i = 0;
+            int i;
+            int n = 0;
             foreach (TransferIssueDetails tr in issueDetails)
             {
                 CommandObj.CommandText = "spSaveDeliveryInformationDetails";
@@ -76,10 +75,32 @@ namespace NBL.DAL
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
-                i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                i=Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                if (i > 0)
+                {
+                    n += SaveDeliveredProductsBarcode(tr.BarCodes, tr.TransferIssueId);
+                }
             }
 
-            return i;
+            return n;
+        }
+
+        private int SaveDeliveredProductsBarcode(ICollection<ScannedBarCode> trBarCodes, int transferIssueId)
+        {
+            int rowAffected = 0;
+            foreach (var product in trBarCodes)
+            {
+                CommandObj.CommandText = "UDSP_SaveProductToFactoryInventory";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.Clear();
+                CommandObj.Parameters.AddWithValue("@ProductCode", product.ProductCode);
+                CommandObj.Parameters.AddWithValue("@IssueId", transferIssueId);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.BigInt);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                rowAffected += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+            }
+            return rowAffected;
         }
 
         public int Add(Delivery model)
