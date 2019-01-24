@@ -20,5 +20,6 @@ namespace NBL.Models.EntityModels.TransferProducts
         public DateTime SysDateTime { get; set; }
         public List<Product> Products { get; set; }
 
+
     }
 }

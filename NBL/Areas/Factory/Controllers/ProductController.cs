@@ -254,7 +254,7 @@ namespace NBL.Areas.Factory.Controllers
             if (System.IO.File.Exists(filePath))
             {
                 //if the file is exists read the file
-                model.Products = _iProductManager.GetProductsFromTextFile(filePath).ToList();
+                model.Products = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
             }
 
             else
@@ -284,18 +284,5 @@ namespace NBL.Areas.Factory.Controllers
             return RedirectToAction("AddProductToTempFile");
         }
 
-        public ActionResult SaveProductToFactoryInventory()
-        {
-            string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
-            var filePath = Server.MapPath("~/Files/" + fileName);
-            var products = _iProductManager.GetProductsFromTextFile(filePath).ToList();
-            bool result = _iProductManager.AddProductToInventory(products);
-            if (result)
-            {
-
-                System.IO.File.Create(filePath).Close();
-            }
-            return RedirectToAction("AddProductToTempFile");
-        }
     }
 }

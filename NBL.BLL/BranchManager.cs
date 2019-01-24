@@ -77,7 +77,7 @@ namespace NBL.BLL
 
         public ICollection<Branch> GetAll()
         {
-            throw new NotImplementedException();
+            return _iBranchGateway.GetAll();
         }
     }
 }

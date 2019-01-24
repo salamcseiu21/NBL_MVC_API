@@ -8003,6 +8003,7 @@
     <Content Include="Views\Shared\_UserLayoutPage.cshtml" />
     <Content Include="Views\Shared\_ViewAllSalesPartialPage.cshtml" />
     <Content Include="Views\Shared\_ViewBranchPartialPage.cshtml" />
+    <Content Include="Views\Shared\_ViewDeliveryModalPartialPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

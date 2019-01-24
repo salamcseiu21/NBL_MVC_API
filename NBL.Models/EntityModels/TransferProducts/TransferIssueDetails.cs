@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using NBL.Models.EntityModels.Products;
 
 namespace NBL.Models.EntityModels.TransferProducts
 {
@@ -22,6 +24,9 @@ namespace NBL.Models.EntityModels.TransferProducts
         [Display(Name = "Product Name")]
         public string ProductName { get; set; }
         public int Quantity { get; set; }
+        public ICollection<Product> Products { get; set; }
+        public string ProductBarCodes { get; set; }
+
        
     }
 }

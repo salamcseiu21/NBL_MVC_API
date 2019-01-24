@@ -1,16 +1,12 @@
 ﻿
-@using NBL.BLL
-@using NBL.Models
 @using NBL.Models.EntityModels.TransferProducts
-@model IEnumerable<NBL.Models.EntityModels.TransferProducts.TransactionModel>
+@model IEnumerable<TransactionModel>
 
 @{
     ViewBag.Title = "Receive";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    BranchManager aBranch = new BranchManager();
 
 }
-
 
 <style>
     table, thead, tr, th, tbody, td {
@@ -31,7 +27,7 @@
                     <div class="panel-heading">
                         <div class="text-center" style="font-weight: bolder">
 
-                            From Branch: @aBranch.GetBranchById(transactionModels.Key).BranchName
+                            From Branch: @transactionModels.ToList().Find(n=>n.FromBranchId.Equals(transactionModels.Key)).FromBranch.BranchName
                         </div>
                     </div>
                     <div class="panel-body">

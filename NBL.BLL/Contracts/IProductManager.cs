@@ -3,6 +3,7 @@ using NBL.Models.EntityModels.Productions;
 using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Productions;
 
 namespace NBL.BLL.Contracts
 {
@@ -26,9 +27,9 @@ namespace NBL.BLL.Contracts
         IEnumerable<ViewProductionNoteModel> PendingProductionNote();
         TransferIssue GetTransferIssueById(int transerIssueId);
         TransferIssue GetDeliverableTransferIssueById(int transerIssueId);
-
-        ICollection<Product> GetProductsFromTextFile(string filePath);
+        ICollection<ViewScannedBarCode> GetScannedBarcodeListFromTextFile(string filePath);
         bool AddProductToTextFile(string productCode, string filePath);
         bool AddProductToInventory(List<Product> products);
+        List<Product> GetIssuedProductListById(int id);
     }
 }

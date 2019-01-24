@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL.Contracts;
+using NBL.Models.EntityModels.Branches;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.TransferProducts;
@@ -175,7 +176,6 @@ namespace NBL.DAL
                 CommandObj.Parameters.AddWithValue("@CompanyId",companyId);
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
-
                 List<TransactionModel> list = new List<TransactionModel>();
                 while (reader.Read())
                 {
@@ -193,7 +193,17 @@ namespace NBL.DAL
                         TransportationCost = Convert.ToDecimal(reader["TransportationCost"]),
                         DriverName = reader["DriverName"].ToString(),
                         VehicleNo = reader["VehicleNo"].ToString(),
-                        DeliveryId = Convert.ToInt32(reader["DeliveryId"])
+                        DeliveryId = Convert.ToInt32(reader["DeliveryId"]),
+                        FromBranch = new Branch
+                        {
+                          BranchName  = reader["FBranchName"].ToString(),
+                          BranchAddress = reader["FBranchAddress"].ToString(),
+                        },
+                        ToBranch = new Branch
+                        {
+                            BranchName = reader["ToBranchName"].ToString(),
+                            BranchAddress = reader["ToBranchAddress"].ToString(),
+                        }
                     });
                 }
 

@@ -10,6 +10,7 @@ using NBL.Models.EntityModels.Productions;
 using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Productions;
 
 namespace NBL.DAL
 {
@@ -824,14 +825,12 @@ namespace NBL.DAL
         }
 
        
-        public ICollection<Product> GetProductsFromTextFile(string filePath) 
+        public ICollection<ViewScannedBarCode> GetScannedBarcodeListFromTextFile(string filePath) 
         {
 
             try
             {
-
-
-                List<Product> products = new List<Product>();
+                List<ViewScannedBarCode> barCodes = new List<ViewScannedBarCode>(); 
                 // Read a text file using StreamReader
                 using (StreamReader sr = new StreamReader(filePath))
                 {
@@ -840,15 +839,12 @@ namespace NBL.DAL
                     while ((line = sr.ReadLine()) != null)
                     {
 
-                        products.Add(new Product
-                        {
-                            ProductCode = line
-                        });
+                        barCodes.Add(new ViewScannedBarCode {ProductCode = line});
                     }
                     sr.Close();
                 }
 
-                return products;
+                return barCodes;
             }
             catch(Exception exception)
             {
@@ -883,10 +879,9 @@ namespace NBL.DAL
                 foreach (Product product in products)
                 {
                     CommandObj.Parameters.Clear();
-                    CommandObj.CommandText = "UDSP_SaveProductToInventory";
+                    CommandObj.CommandText = "UDSP_SaveProductToFactoryInventory";
                     CommandObj.CommandType = CommandType.StoredProcedure;
                     CommandObj.Parameters.AddWithValue("@ProductCode", product.ProductCode);
-                    CommandObj.Parameters.AddWithValue("@ProductId", Convert.ToInt32(product.ProductCode.Substring(0,3)));
                     CommandObj.Parameters.Add("@RowAffected", SqlDbType.BigInt);
                     CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                     ConnectionObj.Open();
@@ -903,6 +898,44 @@ namespace NBL.DAL
             catch (Exception exception)
             {
                 throw new Exception("Could not save product to inventory", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public List<Product> GetIssuedProductListById(int id)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetIssuedProductListById";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@TransferIssueId", id);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<Product> products = new List<Product>();
+                while (reader.Read())
+                {
+                    products.Add(new Product
+                    {
+                        ProductName = reader["ProductName"].ToString(),
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                        ProductTypeId = Convert.ToInt32(reader["ProductTypeId"])
+
+                    });
+                }
+
+                reader.Close();
+                return products;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect issued  product list by id", exception);
             }
             finally
             {

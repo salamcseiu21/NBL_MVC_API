@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using NBL.Models.EntityModels.Branches;
 
 namespace NBL.Models.EntityModels.TransferProducts
 {
@@ -27,6 +28,7 @@ namespace NBL.Models.EntityModels.TransferProducts
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal DealerPrice { get; set; }
-
+        public Branch FromBranch { get; set; }
+        public Branch ToBranch { get; set; }
     }
 }

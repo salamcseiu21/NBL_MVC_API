@@ -9,6 +9,7 @@ using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Enums;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Productions;
 
 namespace NBL.BLL
 {
@@ -126,9 +127,9 @@ namespace NBL.BLL
            return _iProductGateway.GetDeliverableTransferIssueById(transerIssueId);
         }
 
-        public ICollection<Product> GetProductsFromTextFile(string filePath)
+        public ICollection<ViewScannedBarCode> GetScannedBarcodeListFromTextFile(string filePath)
         {
-           return _iProductGateway.GetProductsFromTextFile(filePath);
+           return _iProductGateway.GetScannedBarcodeListFromTextFile(filePath);
         }
 
         public bool AddProductToTextFile(string productCode, string filePath)
@@ -139,6 +140,11 @@ namespace NBL.BLL
         public bool AddProductToInventory(List<Product> products)
         {
             return _iProductGateway.AddProductToInventory(products);
+        }
+
+        public List<Product> GetIssuedProductListById(int id)
+        {
+            return _iProductGateway.GetIssuedProductListById(id);
         }
 
         public IEnumerable<TransferIssueDetails> GetTransferIssueDetailsById(int id)
