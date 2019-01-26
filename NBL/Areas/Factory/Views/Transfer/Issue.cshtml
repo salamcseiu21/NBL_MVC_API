@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="col-md-6">
 
-                                    <input type="button" value="Add Item" onclick="AddProduct(this)" class="btn btn-primary btn-block" />
+                                    <input type="button" value="Add Item"  onclick="AddProduct(this)" class="btn btn-primary btn-block" />
                                 </div>
                                 <br />
                             </div>
@@ -184,7 +184,7 @@
                 var json = { productId: pId };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("GetProductQuantityInStockById", "Sales")',
+                    url: '@Url.Action("GetProductQuantityInStockById", "Common",new {area=""})',
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(json),
                     success: function (data) {
@@ -253,7 +253,7 @@
 
         var inputs = document.getElementsByTagName('input');
         for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].type == "text" && inputs[i].value == '') {
+            if (inputs[i].type === "text" && inputs[i].value === '') {
                 allFilled = false;
                 break;
             }
@@ -265,7 +265,7 @@
     window.onload = function () {
         var inputs = document.getElementsByTagName('input');
         for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].type == "text") {
+            if (inputs[i].type === "text") {
                 inputs[i].onkeyup = doCheck;
                 inputs[i].onblur = doCheck;
             }
@@ -321,11 +321,13 @@
         $("#productIdToRemove").val(0);
         var $form = $(btnClicked).parents('form');
         //var quantiy = btnClicked.id;
+        //alert(quantiy);
         //var oldQty = btnClicked.value;
-        var oq = 5000;
-        var q = oq - btnClicked.value;
+        //alert(oldQty);
+        var stock = 5000;
+        var q = stock - btnClicked.value;
         if (q>=0) {
-            //alert("OK");
+           // alert("OK");
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("Update")',

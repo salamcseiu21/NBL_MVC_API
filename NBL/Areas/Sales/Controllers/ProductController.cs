@@ -178,7 +178,7 @@ namespace NBL.Areas.Sales.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var result = _iInventoryManager.GetAllReceiveableProductByBranchAndCompanyId(branchId,companyId).ToList(); 
+            var result = _iInventoryManager.GetAllReceiveableListByBranchAndCompanyId(branchId,companyId).ToList(); 
             ViewBag.ProductList = result;
             return View(result);
         }
@@ -208,15 +208,22 @@ namespace NBL.Areas.Sales.Controllers
             var model = receivesProductList.ToList().First();
             model.TransactionRef = deliveryRef;
             int rowAffected = _iInventoryManager.ReceiveProduct(receivesProductList.ToList(), model);
-            var result = _iInventoryManager.GetAllReceiveableProductByBranchAndCompanyId(branchId,companyId).ToList();
+            var result = _iInventoryManager.GetAllReceiveableListByBranchAndCompanyId(branchId,companyId).ToList();
             ViewBag.ProductList = result;
             return View(result);
 
         }
 
+
+        public ActionResult ReceiveableDetails(int id)
+        {
+            List<TransactionModel> receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id).ToList();
+            return View(receivesProductList);
+        }
+
         public JsonResult GetTempTransaction()
         {
-            if (Session["transactions"] != null)
+            if(Session["transactions"] != null)
             {
                 IEnumerable<TransactionModel> transactions = ((List<TransactionModel>)Session["transactions"]).ToList();
                 return Json(transactions, JsonRequestBehavior.AllowGet);

@@ -166,14 +166,13 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public IEnumerable<TransactionModel> GetAllReceiveableProductByBranchAndCompanyId(int branchId,int companyId) 
+        public ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(int id)
         {
             try
             {
-                CommandObj.CommandText = "spGetReceiveableProductByBranchAndCompanyId";
+                CommandObj.CommandText = "spGetReceiveableProductToBranchByDeliveryId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@ToBranchId", branchId);
-                CommandObj.Parameters.AddWithValue("@CompanyId",companyId);
+                CommandObj.Parameters.AddWithValue("@DeliveryId", id);
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
                 List<TransactionModel> list = new List<TransactionModel>();
@@ -188,6 +187,56 @@ namespace NBL.DAL
                         Quantity = Convert.ToInt32(reader["Quantity"]),
                         TransactionDate = Convert.ToDateTime(reader["SysDateTime"]),
                         ProductName = reader["ProductName"].ToString(),
+                        DeliveryRef = reader["DeliveryRef"].ToString(),
+                        Transportation = reader["Transportation"].ToString(),
+                        TransportationCost = Convert.ToDecimal(reader["TransportationCost"]),
+                        DriverName = reader["DriverName"].ToString(),
+                        VehicleNo = reader["VehicleNo"].ToString(),
+                        DeliveryId = Convert.ToInt32(reader["DeliveryId"]),
+                        CompanyId = Convert.ToInt32(reader["CompanyId"]),
+                        ProductBarCodes = reader["ProductBarCodes"].ToString()
+                    });
+                }
+
+                reader.Close();
+                return list;
+
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect receivable product to barnch by delivery id", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
+
+
+        public IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId,int companyId) 
+        {
+            try
+            {
+                CommandObj.CommandText = "spGetReceiveableListByBranchAndCompanyId";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@ToBranchId", branchId);
+                CommandObj.Parameters.AddWithValue("@CompanyId",companyId);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<TransactionModel> list = new List<TransactionModel>();
+                while (reader.Read())
+                {
+                    list.Add(new TransactionModel
+                    {
+                        FromBranchId = Convert.ToInt32(reader["FromBranchId"]),
+                        ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
+                        UserId = Convert.ToInt32(reader["DeliveredByUserId"]),
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        TransactionDate = Convert.ToDateTime(reader["SysDateTime"]),
                         DeliveryRef = reader["DeliveryRef"].ToString(),
                         Transportation = reader["Transportation"].ToString(),
                         TransportationCost = Convert.ToDecimal(reader["TransportationCost"]),
@@ -273,7 +322,6 @@ namespace NBL.DAL
                 CommandObj.Parameters.AddWithValue("@ProductId", item.ProductId);
                 CommandObj.Parameters.AddWithValue("@Quantity", item.Quantity);
                 CommandObj.Parameters.AddWithValue("@StockQuantity", item.StockQuantity);
-                CommandObj.Parameters.AddWithValue("@CostPrice", item.CostPrice);
                 CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
@@ -387,5 +435,6 @@ namespace NBL.DAL
 
             return i;
         }
+
     }
 }

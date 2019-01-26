@@ -15,11 +15,12 @@ namespace NBL.BLL.Contracts
    {
        IEnumerable<ViewProduct> GetStockProductByBranchAndCompanyId(int branchId, int companyId);
        IEnumerable<ViewProduct> GetStockProductByCompanyId(int companyId);
-       IEnumerable<TransactionModel> GetAllReceiveableProductByBranchAndCompanyId(int branchId, int companyId);
+       IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId, int companyId);
        int ReceiveProduct(List<TransactionModel> receiveProductList, TransactionModel model);
        IEnumerable<TransactionModel> GetAllReceiveableProductToBranchByDeliveryRef(string deliveryRef);
        int GetStockQtyByBranchAndProductId(int branchId, int productId);
        string Save(List<InvoiceDetails> invoicedOrders, Delivery aDelivery, int invoiceStatus, int orderStatus);
        string GenerateDeliveryReference(int maxRefNo);
+       ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(int id);
    }
 }

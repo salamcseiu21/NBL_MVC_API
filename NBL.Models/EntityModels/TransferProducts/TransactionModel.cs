@@ -24,6 +24,7 @@ namespace NBL.Models.EntityModels.TransferProducts
         [Required]
         [Display(Name = "Product Name")]
         public string ProductName { get; set; }
+        public string ProductBarCodes { get; set; } 
         public int CompanyId { get; set; }
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }

@@ -31,9 +31,9 @@ namespace NBL.BLL
             return _iInventoryGateway.GetStockProductByCompanyId(companyId);
         }
 
-        public IEnumerable<TransactionModel> GetAllReceiveableProductByBranchAndCompanyId(int branchId,int companyId)
+        public IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId,int companyId)
         {
-            return _iInventoryGateway.GetAllReceiveableProductByBranchAndCompanyId(branchId,companyId); 
+            return _iInventoryGateway.GetAllReceiveableListByBranchAndCompanyId(branchId,companyId); 
         }
 
         public int ReceiveProduct(List<TransactionModel> receiveProductList,TransactionModel model)
@@ -69,6 +69,9 @@ namespace NBL.BLL
             return reference;
         }
 
-        
+        public ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(int id)
+        {
+            return _iInventoryGateway.GetAllReceiveableProductToBranchByDeliveryId(id);
+        }
     }
 }

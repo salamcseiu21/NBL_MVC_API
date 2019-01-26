@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using NBL.BLL.Contracts;
-using NBL.Models;
 using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
@@ -113,7 +112,7 @@ namespace NBL.Areas.Factory.Controllers
                     foreach (string s in productIdList)
                     {
                         var value = s.Replace("NewQuantity_", "");
-                        int productIdToUpdate = Convert.ToInt32(collection["product_Id_" + value]);
+                        int productIdToUpdate = Convert.ToInt32(value);
                         int qty = Convert.ToInt32(collection["NewQuantity_" + value]);
                         var product = productList.Find(n => n.ProductId == productIdToUpdate); 
 
