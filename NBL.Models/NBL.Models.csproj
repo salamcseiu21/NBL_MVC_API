@@ -64,6 +64,7 @@
     <Compile Include="Contracts\ICommonProperty.cs" />
     <Compile Include="Contracts\IGetInformation.cs" />
     <Compile Include="Contracts\IMasterEntity.cs" />
+    <Compile Include="EntityModels\Deliveries\ReceiveProductViewModel.cs" />
     <Compile Include="EntityModels\Masters\ClientType.cs" />
     <Compile Include="EntityModels\Companies\Company.cs" />
     <Compile Include="EntityModels\Deliveries\Delivery.cs" />

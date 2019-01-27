@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="col-md-6">
 
-                                    <input type="button" value="Add Item" onclick="AddProduct(this)" class="btn btn-primary btn-block" />
+                                    <input type="button" value="Add Item"  onclick="AddProduct(this)" class="btn btn-primary btn-block" />
                                 </div>
                                 <br />
                             </div>
@@ -82,8 +82,6 @@
                 <tr>
                     <th style="border: 1px solid black;" class="text-center">Product Name</th>
                     <th style="border: 1px solid black; width: 10%" class="text-center">Quantity</th>
-                    <th style="border: 1px solid black;" class="text-center">Unit Price (&#2547;)</th>
-                    <th style="border: 1px solid black;" class="text-center">Sub Total (&#2547;)</th>
                     <th style="border: 1px solid black;" class="text-center">Action</th>
                 </tr>
             </thead>
@@ -95,48 +93,30 @@
     {
         <div class="form-horizontal">
             <div class="row">
-                <div class="col-md-6">
+              
+                <div class="col-md-9">
+                    
+                   
+
+                   
+
+                </div>
+                <div class="col-md-3">
                     <div class="form-group">
                         <input type="hidden" id="ToBranchId" name="ToBranchId" />
-                        <label for="Total" class="control-label col-md-3"> Quantity :</label>
+                        <label for="TotalQty" class="control-label col-md-3"> Quantity :</label>
                         <div class="col-md-9">
                             <input type="number" id="TotalQty" name="TotalQty" class="form-control" value="0" readonly="readonly" />
 
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="Total" class="control-label col-md-3">Total (&#2547;) :</label>
-                        <div class="col-md-9">
-                            <input type="number" id="Total" name="Total" class="form-control" value="0" readonly="readonly" />
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    
-                    <div class="form-group">
-                        <label for="SpecialComision" class="control-label col-md-3">Special Discount (&#2547;) : </label>
-                        <div class="col-md-9">
-
-                            <input type="number" id="SpecialComision" name="SpecialComision" class="form-control" min="0" value="0" onkeyup="CalculateNetAmount(this)" />
-
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="Net" class="control-label col-md-3">Net Amount (&#2547;) :</label>
-                        <div class="col-md-9">
-
-                            <input type="number" id="Net" name="Net" class="form-control" readonly="readonly" />
-
-                        </div>
-                    </div>
+                   
                     <div class="form-group">
                         <label for="TransactionDate" class="control-label col-md-3">Date</label>
                         <div class="col-md-9">
                             <input type="text" id="TransactionDate" name="TransactionDate" value="@tdate" class="form-control" />
                         </div>
                     </div>
-
                     <div class="form-group">
 
 
@@ -155,8 +135,8 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
+
             </div>
         </div>
     }
@@ -204,7 +184,7 @@
                 var json = { productId: pId };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("GetProductQuantityInStockById", "Sales")',
+                    url: '@Url.Action("GetProductQuantityInStockById", "Common",new {area=""})',
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(json),
                     success: function (data) {
@@ -273,7 +253,7 @@
 
         var inputs = document.getElementsByTagName('input');
         for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].type == "text" && inputs[i].value == '') {
+            if (inputs[i].type === "text" && inputs[i].value === '') {
                 allFilled = false;
                 break;
             }
@@ -285,7 +265,7 @@
     window.onload = function () {
         var inputs = document.getElementsByTagName('input');
         for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].type == "text") {
+            if (inputs[i].type === "text") {
                 inputs[i].onkeyup = doCheck;
                 inputs[i].onblur = doCheck;
             }
@@ -341,11 +321,13 @@
         $("#productIdToRemove").val(0);
         var $form = $(btnClicked).parents('form');
         //var quantiy = btnClicked.id;
+        //alert(quantiy);
         //var oldQty = btnClicked.value;
-        var oq = 5000;
-        var q = oq - btnClicked.value;
+        //alert(oldQty);
+        var stock = 5000;
+        var q = stock - btnClicked.value;
         if (q>=0) {
-            //alert("OK");
+           // alert("OK");
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("Update")',
@@ -423,7 +405,7 @@
                     //total =+ value.SubTotal;
                     //alert(key);
                     //$("#orders").append('<option value=' + value.ClientId + '>' + value.ProductId + '</option>');
-                    var row = $("<tr><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ProductName + "</td><td style='border: 1px solid black; padding: 5px 10px;'>  <input type='number' min='1' value='" + value.Quantity + "' class='form-control text-right' id='" + value.ProductId + "' name='NewQuantity_" + value.ProductId + "'  onchange='Update(this)'/>" + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-right'>" + value.UnitPrice + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-right'><input type='hidden' name='product_Id_" + value.ProductId + "' value='" + value.ProductId + "'> " + value.SubTotal + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-center'><button id='" + value.ProductId + "' type='button' onclick='RemoveProduct(this)' class='btn btn-default btn-sm'><i class='fa fa-times' style='color:red;'></i></button>" + "</td></tr>");
+                    var row = $("<tr><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ProductName + "</td><td style='border: 1px solid black; padding: 5px 10px;'>  <input type='number' min='1' value='" + value.Quantity + "' class='form-control text-right' id='" + value.ProductId + "' name='NewQuantity_" + value.ProductId + "'  onchange='Update(this)'/>" + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-center'><button id='" + value.ProductId + "' type='button' onclick='RemoveProduct(this)' class='btn btn-default btn-sm'><i class='fa fa-times' style='color:red;'></i></button>" + "</td></tr>");
 
                     $("#transfers").append(row);
                 });

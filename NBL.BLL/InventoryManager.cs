@@ -69,9 +69,14 @@ namespace NBL.BLL
             return reference;
         }
 
-        public ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(int id)
+        public ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(long id)
         {
             return _iInventoryGateway.GetAllReceiveableProductToBranchByDeliveryId(id);
+        }
+
+        public TransactionModel GetTransactionModelById(long id)
+        {
+            return _iInventoryGateway.GetTransactionModelById(id);
         }
     }
 }

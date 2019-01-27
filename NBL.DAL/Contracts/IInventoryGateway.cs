@@ -23,6 +23,7 @@ namespace NBL.DAL.Contracts
        int GetStockQtyByBranchAndProductId(int branchId, int productId);
        int Save(List<InvoiceDetails> invoicedOrders, Delivery aDelivery, int invoiceStatus, int orderStatus);
        int SaveDeliveredOrderDetails(List<InvoiceDetails> invoicedOrders, int inventoryId, int deliveryId);
-       ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(int id);
+       ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(long id);
+       TransactionModel GetTransactionModelById(long id);
     }
 }

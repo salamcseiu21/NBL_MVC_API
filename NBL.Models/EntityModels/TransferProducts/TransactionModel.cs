@@ -31,5 +31,6 @@ namespace NBL.Models.EntityModels.TransferProducts
         public decimal DealerPrice { get; set; }
         public Branch FromBranch { get; set; }
         public Branch ToBranch { get; set; }
+
     }
 }

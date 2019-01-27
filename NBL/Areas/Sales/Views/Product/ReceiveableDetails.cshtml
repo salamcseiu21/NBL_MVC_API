@@ -1,64 +1,77 @@
-﻿@model IEnumerable<NBL.Models.EntityModels.TransferProducts.TransactionModel>
+﻿@model NBL.Models.EntityModels.Deliveries.ReceiveProductViewModel
 @{
     ViewBag.Title = "Receiveable Details";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+    var transactionInfo = Model.TransactionModel;
 }
 
 <section class="content">
-    <h3 class="text-center" style="margin-top: 0; text-transform: uppercase;color: green">Product List to Receive</h3>
-    <table class="display table-bordered table-hover responsive" id="table_receivable_list" style="border: 1px solid black">
-        <thead>
-        <tr>
-           
-            <th>
-                Product Name
-            </th>
-            <th>
-                Qty
-            </th>
-            <th>
-                Product Codes
-            </th>
-            <th class="text-center">
-                Action
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model)
-        {
+   
+    
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            @using (Html.BeginForm("ReceiveProduct","Product",FormMethod.Post))
+            {
+                <div class="form-horizontal">
+                    <h2 class="text-center">Scan Product</h2>
+                    <div class="form-group">
+                    <label for="ProductCode" class="control-label col-md-2"></label>
+                        <div class="col-md-10">
+                            @Html.HiddenFor(m=>m.DeliveryId)
+                            <input type="text" id="ProductCode" name="ProductCode" class="form-control"placeholder="Always keep pointer here..!!" autofocus/>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Receive" class="btn btn-info"/>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <h3 class="text-center" style="margin-top: 0; text-transform: uppercase; color: green">Product List to Receive</h3>
+        <table id="tbl_receivable_list" class="display table table-bordered table-responsive" style="border:1px solid black">
+            <thead>
             <tr>
-                
-                <td>@item.ProductName</td>
-                <td>@item.Quantity</td>
-                <td>@item.ProductBarCodes.Remove(item.ProductBarCodes.Length-1,1)</td>
-                <td class="text-center">@Html.ActionLink("Receive","ReceiveableDetails",new {id=item.DeliveryId},new {@class="btn btn-info"})</td>
+
+                <th>Product Name</th>
+                <th> Qty </th>
+                <th>Sent Product Codes</th>
+            
             </tr>
-        }
-        </tbody>
-        
-        <tfoot>
-        <tr>
-            <th>
-                Product Name
-            </th>
-            <th>
-                Qty
-            </th>
-            <th>
-                Product Codes
-            </th>
-            <th class="text-center">
-                Action
-            </th>
-        </tr>
-        </tfoot>
-    </table>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.TransactionModels.ToList())
+            {
+                <tr>
+
+                    <td>@item.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.ProductBarCodes.Remove(item.ProductBarCodes.Length - 1, 1)</td>
+                
+                </tr>
+            }
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <th>Product Name</th>
+                <th> Qty </th>
+                <th>Sent Product Codes</th>
+            
+            </tr>
+            </tfoot>
+        </table>
+
 </section>
 
 @section Scripts
 {
     <script>
-        $("#table_receivable_list").DataTable()
+        $("#tbl_receivable_list").DataTable();
+
     </script>
+
 }

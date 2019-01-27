@@ -1,0 +1,64 @@
+﻿@model IEnumerable<NBL.Models.EntityModels.TransferProducts.TransactionModel>
+@{
+    ViewBag.Title = "Receiveable Details";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+}
+
+<section class="content">
+    <h3 class="text-center" style="margin-top: 0; text-transform: uppercase;color: green">Product List to Receive</h3>
+    <table class="display table-bordered table-hover responsive" id="table_receivable_list" style="border: 1px solid black">
+        <thead>
+        <tr>
+           
+            <th>
+                Product Name
+            </th>
+            <th>
+                Qty
+            </th>
+            <th>
+                Product Codes
+            </th>
+            <th class="text-center">
+                Action
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.ProductBarCodes.Remove(item.ProductBarCodes.Length-1,1)</td>
+                <td class="text-center">@Html.ActionLink("Receive","ReceiveableDetails",new {id=item.DeliveryId},new {@class="btn btn-info"})</td>
+            </tr>
+        }
+        </tbody>
+        
+        <tfoot>
+        <tr>
+            <th>
+                Product Name
+            </th>
+            <th>
+                Qty
+            </th>
+            <th>
+                Product Codes
+            </th>
+            <th class="text-center">
+                Action
+            </th>
+        </tr>
+        </tfoot>
+    </table>
+</section>
+
+@section Scripts
+{
+    <script>
+        $("#table_receivable_list").DataTable()
+    </script>
+}

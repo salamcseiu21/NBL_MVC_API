@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
+using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Products;
@@ -215,12 +216,36 @@ namespace NBL.Areas.Sales.Controllers
         }
 
 
-        public ActionResult ReceiveableDetails(int id)
+        public ActionResult ReceiveableDetails(long id)
         {
+            ReceiveProductViewModel aModel=new ReceiveProductViewModel();
+            var model = _iInventoryManager.GetTransactionModelById(id);
+            aModel.DeliveryId = id;
+            aModel.TransactionModel = model;
             List<TransactionModel> receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id).ToList();
-            return View(receivesProductList);
-        }
+            aModel.TransactionModels = receivesProductList;
 
+            return View(aModel);
+        }
+        [HttpPost]
+        public ActionResult ReceiveProduct(ReceiveProductViewModel model)
+        {
+            int branchId = Convert.ToInt32(Session["BranchId"]);
+            int companyId = Convert.ToInt32(Session["CompanyId"]);
+            var transactionModel = _iInventoryManager.GetTransactionModelById(model.DeliveryId);
+            List<TransactionModel> receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(model.DeliveryId).ToList();
+            foreach (var item in receivesProductList)
+            {
+                int oldQty = _iInventoryManager.GetStockQtyByBranchAndProductId(branchId, item.ProductId);
+                item.StockQuantity = oldQty + item.Quantity;
+
+            }
+           
+            int rowAffected = _iInventoryManager.ReceiveProduct(receivesProductList.ToList(), transactionModel);
+            var result = _iInventoryManager.GetAllReceiveableListByBranchAndCompanyId(branchId, companyId).ToList();
+            ViewBag.ProductList = result;
+            return RedirectToAction("Receive");
+        }
         public JsonResult GetTempTransaction()
         {
             if(Session["transactions"] != null)

@@ -166,7 +166,7 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(int id)
+        public ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(long id)
         {
             try
             {
@@ -215,7 +215,60 @@ namespace NBL.DAL
             }
         }
 
+        public TransactionModel GetTransactionModelById(long id)
+        {
+            try
+            {
+                CommandObj.CommandText = "spGetTransactionModelById";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@DeliveryId", id);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                TransactionModel model =null;
+                if(reader.Read())
+                {
+                   model=new TransactionModel
+                    {
+                        FromBranchId = Convert.ToInt32(reader["FromBranchId"]),
+                        ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
+                        UserId = Convert.ToInt32(reader["DeliveredByUserId"]),
+                        TransactionDate = Convert.ToDateTime(reader["SysDateTime"]),
+                        DeliveryRef = reader["DeliveryRef"].ToString(),
+                        Transportation = reader["Transportation"].ToString(),
+                        TransportationCost = Convert.ToDecimal(reader["TransportationCost"]),
+                        DriverName = reader["DriverName"].ToString(),
+                        VehicleNo = reader["VehicleNo"].ToString(),
+                        DeliveryId = Convert.ToInt32(reader["DeliveryId"]),
+                        CompanyId = Convert.ToInt32(reader["CompanyId"]),
+                        FromBranch = new Branch
+                        {
+                            BranchName = reader["FromBranchName"].ToString(),
+                            BranchAddress = reader["FromBranchAddress"].ToString(),
+                        },
+                        ToBranch = new Branch
+                        {
+                            BranchName = reader["ToBranchName"].ToString(),
+                            BranchAddress = reader["ToBranchAddress"].ToString(),
+                        }
+                   };
+                }
 
+                reader.Close();
+                return model;
+
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect transaction  to barnch by delivery id", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
 
         public IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId,int companyId) 
         {
@@ -314,6 +367,7 @@ namespace NBL.DAL
         public int SaveReceiveProductDetails(List<TransactionModel> receiveProductList, int inventoryId)
         {
             int i = 0;
+            int n = 0;
             foreach (var item in receiveProductList) 
             {
                 CommandObj.CommandText = "spSaveReceiveProduct";
@@ -326,11 +380,34 @@ namespace NBL.DAL
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
+
                 i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                n += SaveReceivedProductBarCodes(item.ProductBarCodes,inventoryId);
             }
 
+            return n;
+        }
+
+        private int SaveReceivedProductBarCodes(string itemProductBarCodes,int inventoryId)
+        {
+            int i = 0;
+            var codes=itemProductBarCodes.Remove(itemProductBarCodes.Length-1,1).Split(',');
+            foreach (string code in codes)
+            {
+                CommandObj.CommandText = "spSaveReceivedProductBarCodes";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.Clear();
+                CommandObj.Parameters.AddWithValue("@ProductBarcode", code);
+                CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+
+                i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+            }
             return i;
         }
+
         public int GetStockQtyByBranchAndProductId(int branchId, int productId)
         {
             try
