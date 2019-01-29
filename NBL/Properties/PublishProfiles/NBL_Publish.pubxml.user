@@ -307,7 +307,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/17/2019 11:00:44</publishTime>
     </File>
     <File Include="Areas/Corporate/Views/Home/Test.cshtml">
-      <publishTime>01/27/2019 15:41:59</publishTime>
+      <publishTime>01/27/2019 15:45:21</publishTime>
     </File>
     <File Include="Areas/Corporate/Views/Home/ViewDepartment.cshtml">
       <publishTime>01/13/2019 14:54:41</publishTime>
@@ -475,7 +475,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/13/2019 14:54:41</publishTime>
     </File>
     <File Include="Areas/Editor/Views/Department/DepartmentList.cshtml">
-      <publishTime>01/08/2019 13:23:54</publishTime>
+      <publishTime>01/29/2019 10:47:03</publishTime>
     </File>
     <File Include="Areas/Editor/Views/Department/Edit.cshtml">
       <publishTime>01/13/2019 14:54:41</publishTime>
@@ -552,8 +552,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Areas/Editor/Views/_ViewStart.cshtml">
       <publishTime>09/27/2018 12:46:26</publishTime>
     </File>
+    <File Include="Areas/Factory/Scripts/loadAllDeliverableProducts.js">
+      <publishTime>01/29/2019 15:36:24</publishTime>
+    </File>
     <File Include="Areas/Factory/Views/Approve/ApproveTransferIssue.cshtml">
-      <publishTime>01/14/2019 12:31:51</publishTime>
+      <publishTime>01/29/2019 16:48:40</publishTime>
     </File>
     <File Include="Areas/Factory/Views/Approve/PendingTransferIssueList.cshtml">
       <publishTime>01/14/2019 12:04:45</publishTime>
@@ -565,7 +568,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/14/2019 12:59:41</publishTime>
     </File>
     <File Include="Areas/Factory/Views/Delivery/Delivery.cshtml">
-      <publishTime>01/27/2019 14:36:30</publishTime>
+      <publishTime>01/29/2019 15:23:57</publishTime>
     </File>
     <File Include="Areas/Factory/Views/Home/Home.cshtml">
       <publishTime>09/27/2018 12:46:26</publishTime>
@@ -583,7 +586,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/23/2018 10:47:34</publishTime>
     </File>
     <File Include="Areas/Factory/Views/Shared/_MenuPartialPage.cshtml">
-      <publishTime>01/23/2019 15:17:38</publishTime>
+      <publishTime>01/29/2019 17:09:51</publishTime>
     </File>
     <File Include="Areas/Factory/Views/Shared/_ViewProductNotePartialPage.cshtml">
       <publishTime>12/13/2018 12:16:44</publishTime>
@@ -708,6 +711,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Areas/Sales/Scripts/productNameAutoComplete.js">
       <publishTime>01/21/2019 14:36:43</publishTime>
     </File>
+    <File Include="Areas/Sales/Scripts/ReceiveProduct/loadAllReceivableProducts.js">
+      <publishTime>01/29/2019 12:33:55</publishTime>
+    </File>
     <File Include="Areas/Sales/Scripts/removeProduct.js">
       <publishTime>01/21/2019 15:16:06</publishTime>
     </File>
@@ -760,7 +766,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/26/2019 12:47:35</publishTime>
     </File>
     <File Include="Areas/Sales/Views/Product/ReceiveableDetails.cshtml">
-      <publishTime>01/27/2019 14:39:01</publishTime>
+      <publishTime>01/29/2019 15:48:39</publishTime>
     </File>
     <File Include="Areas/Sales/Views/Product/Transaction.cshtml">
       <publishTime>01/13/2019 15:01:30</publishTime>
@@ -22111,19 +22117,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/23/2012 15:23:58</publishTime>
     </File>
     <File Include="bin/NBL.BLL.dll">
-      <publishTime>01/27/2019 15:39:35</publishTime>
+      <publishTime>01/29/2019 17:20:26</publishTime>
     </File>
     <File Include="bin/NBL.Contracts.dll">
       <publishTime>01/10/2019 09:41:31</publishTime>
     </File>
     <File Include="bin/NBL.DAL.dll">
-      <publishTime>01/27/2019 15:28:12</publishTime>
+      <publishTime>01/29/2019 17:04:41</publishTime>
     </File>
     <File Include="bin/NBL.dll">
-      <publishTime>01/27/2019 15:39:41</publishTime>
+      <publishTime>01/29/2019 17:20:32</publishTime>
     </File>
     <File Include="bin/NBL.Models.dll">
-      <publishTime>01/27/2019 15:28:11</publishTime>
+      <publishTime>01/29/2019 17:04:40</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>08/03/2014 20:33:56</publishTime>
@@ -22867,7 +22873,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/26/2018 13:28:38</publishTime>
     </File>
     <File Include="Scripts/_references.js">
-      <publishTime>01/21/2019 15:24:38</publishTime>
+      <publishTime>01/29/2019 14:29:45</publishTime>
     </File>
     <File Include="Views/Account/ConfirmEmail.cshtml">
       <publishTime>01/08/2019 09:19:03</publishTime>
