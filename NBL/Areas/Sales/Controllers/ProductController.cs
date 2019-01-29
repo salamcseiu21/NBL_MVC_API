@@ -184,73 +184,13 @@ namespace NBL.Areas.Sales.Controllers
             ViewBag.ProductList = result;
             return View(result);
         }
-
-        [HttpPost]
-        public ActionResult Receive(FormCollection collection)
-        {
-            int branchId = Convert.ToInt32(Session["BranchId"]);
-            int companyId = Convert.ToInt32(Session["CompanyId"]);
-            string deliveryRef = collection["DeliveryRef"];
-            List<TransactionModel> receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryRef(deliveryRef).ToList();
-            var collectionAllKeys = collection.AllKeys.ToList().FindAll(n => n.Contains("product_qty_"));
-            foreach (var item in collectionAllKeys)
-            {
-                var value = item.Replace("product_qty_", "");
-                int productId = Convert.ToInt32(value);
-                ProductDetails aProduct = _iProductManager.GetProductDetailsByProductId(productId);
-                int qty = Convert.ToInt32(collection["product_qty_" + value]);
-                var transaction = receivesProductList.Find(n => n.ProductId == productId);
-                transaction.Quantity = qty;
-                transaction.CostPrice = aProduct.UnitPrice;
-                transaction.StockQuantity = _iInventoryManager.GetStockQtyByBranchAndProductId(branchId, productId) + qty;
-                receivesProductList.Remove(transaction);
-                receivesProductList.Add(transaction);
-
-            }
-            var model = receivesProductList.ToList().First();
-            model.TransactionRef = deliveryRef;
-            int rowAffected = _iInventoryManager.ReceiveProduct(receivesProductList.ToList(), model);
-            var result = _iInventoryManager.GetAllReceiveableListByBranchAndCompanyId(branchId,companyId).ToList();
-            ViewBag.ProductList = result;
-            return View(result);
-
-        }
-
-
         public ActionResult ReceiveableDetails(long id)
         {
-
-            List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
-            string fileName = "Received_Product_For_" + id;
-            var filePath = Server.MapPath("~/Files/" + fileName);
-            if (System.IO.File.Exists(filePath))
-            {
-                //if the file is exists read the file
-                barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
-            }
-            else
-            {
-                //if the file does not exists create the file
-                System.IO.File.Create(filePath).Close();
-            }
-
-            ReceiveProductViewModel aModel=new ReceiveProductViewModel();
-            var model = _iInventoryManager.GetTransactionModelById(id);
-            aModel.DeliveryId = id;
-            aModel.TransactionModel = model;
-            List<TransactionModel> receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id).ToList();
-            foreach (TransactionModel transactionModel in receivesProductList)
-            {
-                int productId = Convert.ToInt32(transactionModel.ProductId);
-                foreach (ScannedBarCode barCode in barcodeList.FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3)).Equals(productId)))
-                {
-                    transactionModel.RecievedProductBarCodes += barCode.ProductCode + ",";
-                }
-            }
-            aModel.TransactionModels = receivesProductList;
+            ReceiveProductViewModel aModel = new ReceiveProductViewModel {DeliveryId = id};
             return View(aModel);
         }
 
+        [HttpPost]
         public void SaveScannedBarcodeToTextFile(FormCollection collection)
         {
             var productCode = collection["ProductCode"];
@@ -261,7 +201,7 @@ namespace NBL.Areas.Sales.Controllers
             {
                 string fileName = "Received_Product_For_" + id;
                 var filePath = Server.MapPath("~/Files/" + fileName);
-                var result = _iProductManager.AddProductToTextFile(productCode, filePath);
+               _iProductManager.AddProductToTextFile(productCode, filePath);
             }
         }
 

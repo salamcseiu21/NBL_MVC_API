@@ -391,19 +391,21 @@ namespace NBL.DAL
         private int SaveReceivedProductBarCodes(string itemProductBarCodes,int inventoryId)
         {
             int i = 0;
-            var codes=itemProductBarCodes.Remove(itemProductBarCodes.Length-1,1).Split(',');
-            foreach (string code in codes)
+            if (itemProductBarCodes.Length != 0)
             {
-                CommandObj.CommandText = "spSaveReceivedProductBarCodes";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.Clear();
-                CommandObj.Parameters.AddWithValue("@ProductBarcode", code);
-                CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
-                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
-                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
-                CommandObj.ExecuteNonQuery();
-
-                i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                var codes = itemProductBarCodes.Remove(itemProductBarCodes.Length - 1, 1).Split(',');
+                foreach (string code in codes)
+                {
+                    CommandObj.CommandText = "spSaveReceivedProductBarCodes";
+                    CommandObj.CommandType = CommandType.StoredProcedure;
+                    CommandObj.Parameters.Clear();
+                    CommandObj.Parameters.AddWithValue("@ProductBarcode", code);
+                    CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
+                    CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                    CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                    CommandObj.ExecuteNonQuery();
+                    i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                }
             }
             return i;
         }

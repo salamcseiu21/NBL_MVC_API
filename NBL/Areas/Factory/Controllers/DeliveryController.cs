@@ -30,11 +30,12 @@ namespace NBL.Areas.Factory.Controllers
         {
             IEnumerable<TransferIssue> issueList = _iProductManager.GetDeliverableTransferIssueList();
             var model=new ViewTransferIssueModel();
-            foreach (var issue in issueList)
+            var transferIssues = issueList as TransferIssue[] ?? issueList.ToArray();
+            foreach (var issue in transferIssues)
             {
                 model.FromBranch = _iBranchManager.GetById(issue.FromBranchId);
                 model.ToBranch = _iBranchManager.GetById(issue.ToBranchId);
-                model.TransferIssues = issueList.ToList();
+                model.TransferIssues = transferIssues.ToList();
             }
             return View(model);
         }
@@ -83,7 +84,6 @@ namespace NBL.Areas.Factory.Controllers
             
         }
 
-
         public ActionResult SaveProductToFactoryInventory(FormCollection collection)
         {
             int transferIssueId = Convert.ToInt32(collection["TransferIssueId"]);
@@ -95,7 +95,8 @@ namespace NBL.Areas.Factory.Controllers
             TransferIssue transferIssue = _iProductManager.GetDeliverableTransferIssueById(transferIssueId);
             IEnumerable<TransferIssueDetails> issueDetails = _iProductManager.GetTransferIssueDetailsById(transferIssueId);
 
-            foreach (var detail in issueDetails)
+            var transferIssueDetailses = issueDetails as TransferIssueDetails[] ?? issueDetails.ToArray();  
+            foreach (var detail in transferIssueDetailses)
             {
                 detail.BarCodes = products.ToList()
                     .FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == detail.ProductId).ToList();
@@ -119,7 +120,7 @@ namespace NBL.Areas.Factory.Controllers
                 FromBranchId = transferIssue.FromBranchId
             };
 
-            string result = _iFactoryDeliveryManager.SaveDeliveryInformation(aDelivery, issueDetails);
+            string result = _iFactoryDeliveryManager.SaveDeliveryInformation(aDelivery, transferIssueDetailses);
             if (result.StartsWith("Sa"))
             {
                 System.IO.File.Create(filePath).Close();
