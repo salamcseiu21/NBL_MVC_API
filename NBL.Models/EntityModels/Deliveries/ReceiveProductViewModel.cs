@@ -11,6 +11,7 @@ namespace NBL.Models.EntityModels.Deliveries
         public long DeliveryId { get; set; }    
         public TransactionModel TransactionModel { get; set; } 
         public ICollection<TransactionModel> TransactionModels { get; set; }
+        
 
     }
 }

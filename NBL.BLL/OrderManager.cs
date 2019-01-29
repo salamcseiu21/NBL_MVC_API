@@ -209,8 +209,6 @@ namespace NBL.BLL
             return discountCode;
         }
 
-     
-
         public IEnumerable<OrderDetails> GetAllOrderDetails()
         {
             return _iOrderGateway.GetAllOrderDetails();

@@ -39,39 +39,24 @@ namespace NBL.Areas.Factory.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public ActionResult Delivery(int id)
         {
 
-            List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
-            string fileName = "Deliverd_Issued_Product_For_" + id;
-            var filePath = Server.MapPath("~/Files/" + fileName);
-            if (System.IO.File.Exists(filePath))
-            {
-                //if the file is exists read the file
-                barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
-            }
-            else
-            {
-                //if the file does not exists create the file
-                System.IO.File.Create(filePath).Close();
-            }
-
             var transferIssue = _iProductManager.GetDeliverableTransferIssueById(id);
-            transferIssue.Products = _iProductManager.GetIssuedProductListById(id);
              var model = new ViewTransferIssueModel
                 {
                     FromBranch = _iBranchManager.GetById(transferIssue.FromBranchId),
                     ToBranch = _iBranchManager.GetById(transferIssue.ToBranchId),
-                    TransferIssue = transferIssue,
-                    ScannedBarCodes = barcodeList
+                    TransferIssue = transferIssue
                 };
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Delivery(int id,FormCollection collection)
+        public void SaveScannedBarcodeToTextFile(FormCollection collection)
         {
-
+            var id = Convert.ToInt32(collection["TransferIssueId"]);
             string code = collection["ProductCode"];
             List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
             string fileName = "Deliverd_Issued_Product_For_" + id;
@@ -87,25 +72,16 @@ namespace NBL.Areas.Factory.Controllers
                 //if the file does not exists create the file
                 System.IO.File.Create(filePath).Close();
             }
-            TransferIssue transferIssue = _iProductManager.GetDeliverableTransferIssueById(id);
-            transferIssue.Products = _iProductManager.GetIssuedProductListById(id);
-            var model = new ViewTransferIssueModel
-            {
-                FromBranch = _iBranchManager.GetById(transferIssue.FromBranchId),
-                ToBranch = _iBranchManager.GetById(transferIssue.ToBranchId),
-                TransferIssue = transferIssue,
-                ScannedBarCodes = barcodeList
-            };
+
             int productId = Convert.ToInt32(code.Substring(0, 3));
             Product product = _iProductManager.GetProductByProductId(productId);
-            if (product != null)
+            var scannedBarCode = barcodeList.ToList().Find(n => n.ProductCode.Equals(code));
+            if (product != null && scannedBarCode == null)
             {
-                var result = _iProductManager.AddProductToTextFile(code, filePath);
-                return RedirectToAction("Delivery",new {id=id});
+               _iProductManager.AddProductToTextFile(code, filePath);
             }
-            return View(model);
+            
         }
-
 
 
         public ActionResult SaveProductToFactoryInventory(FormCollection collection)
@@ -158,6 +134,34 @@ namespace NBL.Areas.Factory.Controllers
 
             TransferIssue model = _iProductManager.GetDeliverableTransferIssueById(transferIssueId);
             return PartialView("_ViewDeliveryModalPartialPage", model);
+        }
+
+
+        public JsonResult LoadDeliverableProduct(int issueId)
+        {
+            List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
+            string fileName = "Deliverd_Issued_Product_For_" + issueId;
+            var filePath = Server.MapPath("~/Files/" + fileName);
+            if (System.IO.File.Exists(filePath))
+            {
+                //if the file is exists read the file
+                barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+            }
+            else
+            {
+                //if the file does not exists create the file
+                System.IO.File.Create(filePath).Close();
+            }
+            var products = _iProductManager.GetIssuedProductListById(issueId);
+            foreach (Product product in products)
+            {
+                foreach (ScannedBarCode code in barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == product.ProductId))
+                {
+                    product.ScannedProductCodes += code.ProductCode+",";
+                }
+            }
+
+            return Json(products, JsonRequestBehavior.AllowGet);
         }
     }
 }

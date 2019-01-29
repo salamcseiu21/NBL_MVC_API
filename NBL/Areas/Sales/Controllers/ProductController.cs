@@ -9,6 +9,7 @@ using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Productions;
 
 namespace NBL.Areas.Sales.Controllers
 {
@@ -218,15 +219,52 @@ namespace NBL.Areas.Sales.Controllers
 
         public ActionResult ReceiveableDetails(long id)
         {
+
+            List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
+            string fileName = "Received_Product_For_" + id;
+            var filePath = Server.MapPath("~/Files/" + fileName);
+            if (System.IO.File.Exists(filePath))
+            {
+                //if the file is exists read the file
+                barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+            }
+            else
+            {
+                //if the file does not exists create the file
+                System.IO.File.Create(filePath).Close();
+            }
+
             ReceiveProductViewModel aModel=new ReceiveProductViewModel();
             var model = _iInventoryManager.GetTransactionModelById(id);
             aModel.DeliveryId = id;
             aModel.TransactionModel = model;
             List<TransactionModel> receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id).ToList();
+            foreach (TransactionModel transactionModel in receivesProductList)
+            {
+                int productId = Convert.ToInt32(transactionModel.ProductId);
+                foreach (ScannedBarCode barCode in barcodeList.FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3)).Equals(productId)))
+                {
+                    transactionModel.RecievedProductBarCodes += barCode.ProductCode + ",";
+                }
+            }
             aModel.TransactionModels = receivesProductList;
-
             return View(aModel);
         }
+
+        public void SaveScannedBarcodeToTextFile(FormCollection collection)
+        {
+            var productCode = collection["ProductCode"];
+            var id = Convert.ToInt64(collection["DeliveryId"]);
+            int productId = Convert.ToInt32(productCode.Substring(0, 3));
+            Product product = _iProductManager.GetProductByProductId(productId);
+            if (product != null)
+            {
+                string fileName = "Received_Product_For_" + id;
+                var filePath = Server.MapPath("~/Files/" + fileName);
+                var result = _iProductManager.AddProductToTextFile(productCode, filePath);
+            }
+        }
+
         [HttpPost]
         public ActionResult ReceiveProduct(ReceiveProductViewModel model)
         {
@@ -256,5 +294,32 @@ namespace NBL.Areas.Sales.Controllers
             return Json(new List<Order>(), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public JsonResult LoadReceiveableProduct(long deliveryId)
+        {
+            List<TransactionModel> receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(deliveryId).ToList();
+            List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
+            string fileName = "Received_Product_For_" + deliveryId;
+            var filePath = Server.MapPath("~/Files/" + fileName);
+            if (System.IO.File.Exists(filePath))
+            {
+                //if the file is exists read the file
+                barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+            }
+            else
+            {
+                //if the file does not exists create the file
+                System.IO.File.Create(filePath).Close();
+            }
+            foreach (TransactionModel transactionModel in receivesProductList)
+            {
+                int productId = Convert.ToInt32(transactionModel.ProductId);
+                foreach (ScannedBarCode barCode in barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)).Equals(productId)))
+                {
+                    transactionModel.RecievedProductBarCodes += barCode.ProductCode + ",";
+                }
+            }
+            return Json(receivesProductList, JsonRequestBehavior.AllowGet);
+        }
     }
 }

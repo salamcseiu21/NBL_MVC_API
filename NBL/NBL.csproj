@@ -452,6 +452,7 @@
     <Content Include="Areas\Editor\Images\Signature\e4e3da2e91d04f7197f6bba0afe58057.png" />
     <Content Include="Areas\Editor\Images\Signature\f021ab04335947ce863010696ae091b7.png" />
     <Content Include="Areas\Editor\Images\Signature\signature.png" />
+    <Content Include="Areas\Factory\Scripts\loadAllDeliverableProducts.js" />
     <Content Include="Areas\Sales\Scripts\addNewItemToList.js" />
     <Content Include="Areas\Sales\Scripts\cancelOrder.js" />
     <Content Include="Areas\Sales\Scripts\clientNameAutoComplete.js" />
@@ -459,6 +460,7 @@
     <Content Include="Areas\Sales\Scripts\loadTempOrders.js" />
     <Content Include="Areas\Sales\Scripts\orders.js" />
     <Content Include="Areas\Sales\Scripts\productNameAutoComplete.js" />
+    <Content Include="Areas\Sales\Scripts\ReceiveProduct\loadAllReceivableProducts.js" />
     <Content Include="Areas\Sales\Scripts\removeProduct.js" />
     <Content Include="Areas\Sales\Scripts\updateOrder.js" />
     <Content Include="Areas\SuperAdmin\Reports\ViewReport.aspx" />

@@ -33,21 +33,22 @@
 
 
             <div class="col-md-6 col-md-offset-3" style="border: 1px solid;">
-                @using (Html.BeginForm())
+                @using (Html.BeginForm("SaveScannedBarcodeToTextFile","Delivery",FormMethod.Post,new {id= "scanProductBarcodeForm" }))
                 {
                     <div class="form-horizontal">
                         <h2 class="text-center">Scan Product</h2>
                         <div class="form-group">
                             @Html.LabelFor(m => m.ProductCode, new {@class = "control-label col-md-2"})
+                            <input type="hidden" id="TransferIssueId" name="TransferIssueId" value="@Model.TransferIssue.TransferIssueId"/>
                             <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control", placeholder = "Always keep pointer here..!!", autofocus = "" })
+                                @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control", placeholder = "Always keep pointer here..!!", autofocus = "", onchange= "SaveScannedBarcodeToTextFile(this)" })
                                 @Html.ValidationMessageFor(m => m.ProductCode, "", new { @class = "text-danger" })
                             </div>
 
                         </div>
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Save" class="btn btn-info"/>
+                               
                                 @*@Html.ActionLink("Process", "SaveProductToFactoryInventory",null,new {@class="btn btn-success"})*@
                                 <button type="button" value="@Model.TransferIssue.TransferIssueId" class="btn btn-success" onclick="viewDetails(this)"> Delivery</button>
                             </div>
@@ -69,31 +70,13 @@
             </thead>
 
             <tbody>
-
-            @foreach (var item in Model.TransferIssue.Products)
-            {
-                <tr>
-                    <td>@item.ProductName</td>
-                    <td>@item.Quantity</td>
-
-                    <td>
-                        @if (Model.ScannedBarCodes != null)
-                        {
-                            foreach (var p in Model.ScannedBarCodes.ToList().FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3))==item.ProductId))
-                            {
-                                @p.ProductCode<span>,</span>
-                            }
-                        }
-                    </td>
-                </tr>
-            }
-                   
+         
             </tbody>
             <tfoot>
             <tr>
-                <td style="text-align:right"><label>Total :</label></td>
-                <td><label>@Model.TransferIssue.Products.Sum(n => n.Quantity)</label></td>
-                <td></td>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Product Code</th>
             </tr>
             </tfoot>
         </table>
@@ -107,18 +90,28 @@
 
 @section Scripts
 {
+    
+<script src="~/Areas/Factory/Scripts/loadAllDeliverableProducts.js"></script>
     <script>
-
-        $('#table_deliverable_issue_details').DataTable({
-            "bPaginate": false,
-            "bFilter": false,
-            "bInfo": false
-        });
-
+        function SaveScannedBarcodeToTextFile(btnClicked) {
+            var $form = $(btnClicked).parents('form');
+            $.ajax({
+                type: "POST",
+                url: RootUrl + 'factory/delivery/SaveScannedBarcodeToTextFile',
+                data: $form.serialize(),
+                error: function (xhr, status, error) {
+                    //do something about the error
+                },
+                success: function (response) {
+                    //alert("Saved Successfully");
+                    loadAllDeliverableProducts();
+                    $('#scanProductBarcodeForm').trigger("reset");
+                }
+            });
+        }
     </script>
-
+    
     <script>
-
 
         function SaveDeliveryInfo(id) {
 
@@ -135,7 +128,6 @@
         }
     </script>
     
-    
     <script>
 
         function viewDetails(transferIssueId) {
@@ -151,5 +143,10 @@
             });
         }
 
+    </script>
+    <script>
+        window.onload = function () {
+            loadAllDeliverableProducts();
+        };
     </script>
 }

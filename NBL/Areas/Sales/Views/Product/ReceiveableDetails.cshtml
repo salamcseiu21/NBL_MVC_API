@@ -9,8 +9,8 @@
    
     
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            @using (Html.BeginForm("ReceiveProduct","Product",FormMethod.Post))
+        <div class="col-md-6 col-md-offset-3" style="border: 1px solid;">
+            @using (Html.BeginForm("ReceiveProduct","Product",FormMethod.Post,new {id="scanProductBarcodeForm"}))
             {
                 <div class="form-horizontal">
                     <h2 class="text-center">Scan Product</h2>
@@ -18,7 +18,7 @@
                     <label for="ProductCode" class="control-label col-md-2"></label>
                         <div class="col-md-10">
                             @Html.HiddenFor(m=>m.DeliveryId)
-                            <input type="text" id="ProductCode" name="ProductCode" class="form-control"placeholder="Always keep pointer here..!!" autofocus/>
+                            <input type="text" id="ProductCode" name="ProductCode" class="form-control"placeholder="Always keep pointer here..!!" autofocus onchange="SaveScannedBarcodeToTextFile(this)"/>
                         </div>
 
                     </div>
@@ -39,20 +39,11 @@
                 <th>Product Name</th>
                 <th> Qty </th>
                 <th>Sent Product Codes</th>
-            
+                <th>Scanned Product Codes</th>
             </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model.TransactionModels.ToList())
-            {
-                <tr>
-
-                    <td>@item.ProductName</td>
-                    <td>@item.Quantity</td>
-                    <td>@item.ProductBarCodes.Remove(item.ProductBarCodes.Length - 1, 1)</td>
-                
-                </tr>
-            }
+           
             </tbody>
 
             <tfoot>
@@ -60,7 +51,7 @@
                 <th>Product Name</th>
                 <th> Qty </th>
                 <th>Sent Product Codes</th>
-            
+                <th>Scanned Product Codes</th>
             </tr>
             </tfoot>
         </table>
@@ -69,9 +60,30 @@
 
 @section Scripts
 {
-    <script>
-        $("#tbl_receivable_list").DataTable();
 
+<script src="~/Areas/Sales/Scripts/ReceiveProduct/loadAllReceivableProducts.js"></script>
+    <script>
+        function SaveScannedBarcodeToTextFile(btnClicked) {
+            var $form = $(btnClicked).parents('form');
+            $.ajax({
+                type: "POST",
+                url: RootUrl + 'Sales/Product/SaveScannedBarcodeToTextFile',
+                data: $form.serialize(),
+                error: function (xhr, status, error) {
+                    //do something about the error
+                },
+                success: function (response) {
+                    //alert("Saved Successfully");
+                    loadAllReceivableProducts();
+                    $('#scanProductBarcodeForm').trigger("reset");
+                }
+            });
+        }
     </script>
 
+    <script>
+        window.onload = function () {
+            loadAllReceivableProducts();
+        };
+    </script>
 }
