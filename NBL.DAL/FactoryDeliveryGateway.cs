@@ -71,7 +71,7 @@ namespace NBL.DAL
                 CommandObj.Parameters.AddWithValue("@ProductId", tr.ProductId);
                 CommandObj.Parameters.AddWithValue("@Quantity", tr.Quantity);
                 CommandObj.Parameters.AddWithValue("@DeliveryId", deliveryId);
-                CommandObj.Parameters.AddWithValue("@ProductBarCodes", tr.ProductBarCodes);
+                CommandObj.Parameters.AddWithValue("@ProductBarCodes", tr.ProductBarCodes.TrimEnd(','));
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();

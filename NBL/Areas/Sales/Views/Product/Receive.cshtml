@@ -1,6 +1,4 @@
 ﻿
-@using NBL.Models.EntityModels.TransferProducts
-@model IEnumerable<TransactionModel>
 
 @{
     ViewBag.Title = "Receive";
@@ -34,15 +32,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.FromBranch.BranchName</td>
-                 <td>@item.DeliveryRef</td>
-                <td>@item.Quantity</td>
-                <td class="text-center">@Html.ActionLink("Details","ReceiveableDetails",new {id=item.DeliveryId},new {@class="btn btn-info"})</td>
-            </tr>
-        }
+      
         </tbody>
         
         <tfoot>
@@ -66,8 +56,6 @@
 </section>
     
 @section Scripts
-{
-    <script>
-        $("#table_receivable_list").DataTable();
-    </script>
+{ 
+ <script src="~/Areas/Sales/Scripts/ReceiveProduct/loadAllReceivableList.js"></script>
 }

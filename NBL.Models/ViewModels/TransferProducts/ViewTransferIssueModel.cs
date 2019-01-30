@@ -10,7 +10,6 @@ namespace NBL.Models.ViewModels.TransferProducts
    public  class ViewTransferIssueModel
     {
         [Required(ErrorMessage = "Please scan barcode or tpye the product code")]
-        [StringLength(13, MinimumLength = 13, ErrorMessage = "Barcode must be exact 13 character long.")]
         [Display(Name = "Product Barcode")]
         public string ProductCode { get; set; }
         public Branch FromBranch { get; set; }

@@ -382,18 +382,18 @@ namespace NBL.DAL
                 CommandObj.ExecuteNonQuery();
 
                 i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
-                n += SaveReceivedProductBarCodes(item.ProductBarCodes,inventoryId);
+                n += SaveReceivedProductBarCodes(item.RecievedProductBarCodes,inventoryId);
             }
 
             return n;
         }
 
-        private int SaveReceivedProductBarCodes(string itemProductBarCodes,int inventoryId)
+        private int SaveReceivedProductBarCodes(string recievedProductBarCodes, int inventoryId) 
         {
             int i = 0;
-            if (itemProductBarCodes.Length != 0)
+            if (recievedProductBarCodes.Length != 0)
             {
-                var codes = itemProductBarCodes.Remove(itemProductBarCodes.Length - 1, 1).Split(',');
+                var codes = recievedProductBarCodes.TrimEnd(',').Split(',');
                 foreach (string code in codes)
                 {
                     CommandObj.CommandText = "spSaveReceivedProductBarCodes";

@@ -460,6 +460,7 @@
     <Content Include="Areas\Sales\Scripts\loadTempOrders.js" />
     <Content Include="Areas\Sales\Scripts\orders.js" />
     <Content Include="Areas\Sales\Scripts\productNameAutoComplete.js" />
+    <Content Include="Areas\Sales\Scripts\ReceiveProduct\loadAllReceivableList.js" />
     <Content Include="Areas\Sales\Scripts\ReceiveProduct\loadAllReceivableProducts.js" />
     <Content Include="Areas\Sales\Scripts\removeProduct.js" />
     <Content Include="Areas\Sales\Scripts\updateOrder.js" />
@@ -6926,7 +6927,6 @@
     <Content Include="Content\editor.dataTables.min.css" />
     <Content Include="Content\myStyle.css" />
     <Content Include="favicon.ico" />
-    <Content Include="Files\product_code.txt" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -8030,6 +8030,7 @@
     <Folder Include="Areas\Sales\Models\" />
     <Folder Include="Assets\css\" />
     <Folder Include="Assets\documentation\build\" />
+    <Folder Include="Files\" />
     <Folder Include="Views\Common\" />
   </ItemGroup>
   <ItemGroup>

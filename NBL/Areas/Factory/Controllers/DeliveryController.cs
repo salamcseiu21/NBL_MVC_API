@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
+using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
@@ -55,34 +56,64 @@ namespace NBL.Areas.Factory.Controllers
         }
 
         [HttpPost]
-        public void SaveScannedBarcodeToTextFile(FormCollection collection)
+        public JsonResult SaveScannedBarcodeToTextFile(FormCollection collection)
         {
-            var id = Convert.ToInt32(collection["TransferIssueId"]);
-            string code = collection["ProductCode"];
-            List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
-            string fileName = "Deliverd_Issued_Product_For_" + id;
-            var filePath = Server.MapPath("~/Files/" + fileName);
-            if (System.IO.File.Exists(filePath))
+            SuccessErrorModel model = new SuccessErrorModel();
+            try
             {
-                //if the file is exists read the file
-                barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
-            }
 
-            else
-            {
-                //if the file does not exists create the file
-                System.IO.File.Create(filePath).Close();
-            }
+                var id = Convert.ToInt32(collection["TransferIssueId"]);
+                string scannedBarCode = collection["ProductCode"];
+                List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
+                string fileName = "Deliverd_Issued_Product_For_" + id;
+                var filePath = Server.MapPath("~/Files/" + fileName);
+                if (System.IO.File.Exists(filePath))
+                {
+                    //if the file is exists read the file
+                    barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+                }
 
-            int productId = Convert.ToInt32(code.Substring(0, 3));
-            Product product = _iProductManager.GetProductByProductId(productId);
-            var scannedBarCode = barcodeList.ToList().Find(n => n.ProductCode.Equals(code));
-            if (product != null && scannedBarCode == null)
-            {
-               _iProductManager.AddProductToTextFile(code, filePath);
+                else
+                {
+                    //if the file does not exists create the file
+                    System.IO.File.Create(filePath).Close();
+                }
+
+                var issuedProducts = _iProductManager.GetTransferIssueDetailsById(id);
+                int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
+                bool isScannedBefore = _iProductManager.IsScannedBefore(barcodeList, scannedBarCode);
+                bool isValied = issuedProducts.Select(n => n.ProductId).Contains(productId);
+
+                if (scannedBarCode.Length != 13)
+                {
+                    model.Message = "<p style='color:red'> Invalid Barcode</p>";
+                }
+                if (isScannedBefore)
+                {
+                    model.Message = "<p style='color:red'> Already Scanned</p>";
+                }
+                if (scannedBarCode.Length != 13)
+                {
+                    model.Message = "<p style='color:red'> Invalid Barcode</p>";
+                }
+                if (isValied && !isScannedBefore && scannedBarCode.Length == 13)
+                {
+                    _iProductManager.AddProductToTextFile(scannedBarCode, filePath);
+                }
             }
-            
+            catch (FormatException exception)
+            {
+                model.Message = "<p style='color:red'>" + exception.GetType() + "</p>";
+            }
+            catch (Exception exception)
+            {
+                
+                    model.Message = "<p style='color:red'>" + exception.Message + "</p>";
+            }
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
+
+        
 
         public ActionResult SaveProductToFactoryInventory(FormCollection collection)
         {
@@ -154,12 +185,14 @@ namespace NBL.Areas.Factory.Controllers
                 System.IO.File.Create(filePath).Close();
             }
             var products = _iProductManager.GetIssuedProductListById(issueId);
-            foreach (Product product in products)
+            foreach (var product in products)
             {
-                foreach (ScannedBarCode code in barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == product.ProductId))
+                foreach (var code in barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == product.ProductId))
                 {
                     product.ScannedProductCodes += code.ProductCode+",";
+                   
                 }
+               
             }
 
             return Json(products, JsonRequestBehavior.AllowGet);

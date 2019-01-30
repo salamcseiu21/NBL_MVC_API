@@ -147,6 +147,11 @@ namespace NBL.BLL
             return _iProductGateway.GetIssuedProductListById(id);
         }
 
+        public bool IsScannedBefore(List<ScannedBarCode> barcodeList, string scannedBarCode)
+        {
+            return barcodeList.ToList().Select(n => n.ProductCode).Contains(scannedBarCode);
+        }
+
         public IEnumerable<TransferIssueDetails> GetTransferIssueDetailsById(int id)
         {
             return _iProductGateway.GetTransferIssueDetailsById(id); 

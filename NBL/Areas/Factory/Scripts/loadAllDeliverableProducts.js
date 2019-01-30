@@ -17,6 +17,9 @@
                         data: null,
                         className: "text-center",
                         render: function (data, type, row) {
+                            if (data.ScannedProductCodes!=null) {
+                                return data.ScannedProductCodes.substr(0, data.ScannedProductCodes.length - 1);
+                            }
                             return data.ScannedProductCodes;
                         }
                     }

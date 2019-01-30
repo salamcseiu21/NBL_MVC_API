@@ -24,6 +24,9 @@
                         data: null,
                         className: "text-center",
                         render: function (data, type, row) {
+                            if (data.RecievedProductBarCodes != null) {
+                                return data.RecievedProductBarCodes.substr(0, data.RecievedProductBarCodes.length - 1);
+                            }
                             return data.RecievedProductBarCodes;
                         }
                     }

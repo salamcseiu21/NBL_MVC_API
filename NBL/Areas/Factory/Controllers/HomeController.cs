@@ -9,6 +9,8 @@ namespace NBL.Areas.Factory.Controllers
         public ActionResult Home()
         {
 
+            Session.Remove("BranchId");
+            Session.Remove("Branch");
             return View();
         }
 
