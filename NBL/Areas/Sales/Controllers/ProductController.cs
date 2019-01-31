@@ -197,10 +197,9 @@ namespace NBL.Areas.Sales.Controllers
                 int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
                 string fileName = "Received_Product_For_" + id;
                 var filePath = Server.MapPath("~/Files/" + fileName);
-                List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
-                barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+                var barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
                 var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id).Select(n => n.ProductId);
-               bool isScannedBefore=barcodeList.Select(n => n.ProductCode).Contains(scannedBarCode);
+                bool isScannedBefore=barcodeList.Select(n => n.ProductCode).Contains(scannedBarCode);
                 if (scannedBarCode.Length != 13)
                 {
                     model.Message = "<p style='color:red'> Invalid Barcode</p>";
@@ -209,9 +208,9 @@ namespace NBL.Areas.Sales.Controllers
                 {
                     model.Message = "<p style='color:red'> Already Scanned</p>";
                 }
+
                 if (receivesProductList.Contains(productId) && scannedBarCode.Length==13 &&  !isScannedBefore)
                 {
-                    
                     _iProductManager.AddProductToTextFile(scannedBarCode, filePath);
                 }
             }
@@ -231,7 +230,7 @@ namespace NBL.Areas.Sales.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var transactionModel = _iInventoryManager.GetTransactionModelById(model.DeliveryId);
-            List<TransactionModel> receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(model.DeliveryId).ToList();
+            var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(model.DeliveryId).ToList();
             string fileName = "Received_Product_For_" + model.DeliveryId;
             var filePath = Server.MapPath("~/Files/" + fileName);
             var barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
@@ -243,7 +242,6 @@ namespace NBL.Areas.Sales.Controllers
                 {
                     item.RecievedProductBarCodes += barCode.ProductCode + ",";
                 }
-
             }
 
             _iInventoryManager.ReceiveProduct(receivesProductList.ToList(), transactionModel);
@@ -263,8 +261,8 @@ namespace NBL.Areas.Sales.Controllers
         [HttpGet]
         public JsonResult LoadReceiveableProduct(long deliveryId)
         {
-            List<TransactionModel> receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(deliveryId).ToList();
-            List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
+            var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(deliveryId).ToList();
+            var barcodeList = new List<ScannedBarCode>();
             string fileName = "Received_Product_For_" + deliveryId;
             var filePath = Server.MapPath("~/Files/" + fileName);
             if (System.IO.File.Exists(filePath))
@@ -279,7 +277,7 @@ namespace NBL.Areas.Sales.Controllers
             }
             foreach (var transactionModel in receivesProductList)
             {
-                int productId = Convert.ToInt32(transactionModel.ProductId);
+                var productId = Convert.ToInt32(transactionModel.ProductId);
                 foreach (var barCode in barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)).Equals(productId)))
                 {
                     transactionModel.RecievedProductBarCodes += barCode.ProductCode + ",";

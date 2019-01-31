@@ -62,7 +62,9 @@ namespace NBL.Areas.Corporate.Controllers
         public ActionResult Home()
         {
 
-            Session["BranchId"] = null;
+            Session.Remove("BranchId");
+            Session.Remove("Branch");
+
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var branches = _iBranchManager.GetAllBranches();
             ViewTotalOrder totalOrder = _iReportManager.GetTotalOrdersByCompanyIdAndYear(companyId,DateTime.Now.Year);

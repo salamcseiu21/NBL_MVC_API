@@ -193,5 +193,22 @@ namespace NBL.BLL
         {
             return _iProductGateway.PendingProductionNote();
         }
+
+        public List<ScannedBarCode> ScannedBarCodes(string filePath)
+        {
+            List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
+            if (System.IO.File.Exists(filePath))
+            {
+                //if the file is exists read the file
+                barcodeList =GetScannedBarcodeListFromTextFile(filePath).ToList();
+            }
+
+            else
+            {
+                //if the file does not exists create the file
+                System.IO.File.Create(filePath).Close();
+            }
+            return barcodeList;
+        }
     }
 }

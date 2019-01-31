@@ -64,25 +64,17 @@ namespace NBL.Areas.Factory.Controllers
 
                 var id = Convert.ToInt32(collection["TransferIssueId"]);
                 string scannedBarCode = collection["ProductCode"];
-                List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
+
                 string fileName = "Deliverd_Issued_Product_For_" + id;
                 var filePath = Server.MapPath("~/Files/" + fileName);
-                if (System.IO.File.Exists(filePath))
-                {
-                    //if the file is exists read the file
-                    barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
-                }
+                var barcodeList = _iProductManager.ScannedBarCodes(filePath);
 
-                else
-                {
-                    //if the file does not exists create the file
-                    System.IO.File.Create(filePath).Close();
-                }
 
                 var issuedProducts = _iProductManager.GetTransferIssueDetailsById(id);
-                int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
                 bool isScannedBefore = _iProductManager.IsScannedBefore(barcodeList, scannedBarCode);
+                int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
                 bool isValied = issuedProducts.Select(n => n.ProductId).Contains(productId);
+                bool isScannComplete = issuedProducts.Sum(n => n.Quantity) == barcodeList.Count;
 
                 if (scannedBarCode.Length != 13)
                 {
@@ -92,11 +84,12 @@ namespace NBL.Areas.Factory.Controllers
                 {
                     model.Message = "<p style='color:red'> Already Scanned</p>";
                 }
-                if (scannedBarCode.Length != 13)
+                if (isScannComplete)
                 {
-                    model.Message = "<p style='color:red'> Invalid Barcode</p>";
+                    model.Message = "<p style='color:green'> Scan Completed.</p>";
                 }
-                if (isValied && !isScannedBefore && scannedBarCode.Length == 13)
+
+                if (isValied && !isScannedBefore && scannedBarCode.Length == 13 && !isScannComplete)
                 {
                     _iProductManager.AddProductToTextFile(scannedBarCode, filePath);
                 }
@@ -113,7 +106,6 @@ namespace NBL.Areas.Factory.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-        
 
         public ActionResult SaveProductToFactoryInventory(FormCollection collection)
         {

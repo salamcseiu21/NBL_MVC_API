@@ -61,7 +61,6 @@ namespace NBL.Areas.Factory.Controllers
             return View();
         }
 
-
         [HttpPost]
         public void TempTransferIssue(FormCollection collection) 
         {
@@ -152,7 +151,6 @@ namespace NBL.Areas.Factory.Controllers
 
             return Json(productList);
         }
-
 
         public JsonResult GetTempTransferIssueProductList()
         {

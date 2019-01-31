@@ -5,12 +5,8 @@
         <tr>
             <th>Client Info</th>
             <th>Order Slip No</th>
-            <th class="text-right">Amount  (&#2547;)</th>
-            <th class="text-right">Vat (&#2547;)</th>
-            <th class="text-right">Discount (&#2547;)</th>
-            <th class="text-right">S.D (&#2547;)</th>
-            <th class="text-right">Net(&#2547;)</th>
             <th class="text-right">Qty</th>
+            <th class="text-right">Amount  (&#2547;)</th>
             <th class="text-center">Approved by NSM At</th>
             <th class="text-center">Order At</th>
             <th class="text-center">Order By</th>
@@ -27,12 +23,8 @@
                     @Html.Raw(item.Client.GetBasicInformation())
                 </td>
                 <td>@item.OrderSlipNo</td>
-                <td class="text-right">@(item.Amounts-item.Vat)</td>
-                <td class="text-right">@item.Vat</td>
-                <td class="text-right">@item.Discount</td>
-                <td class="text-right">@item.SpecialDiscount</td>
-                <td class="text-right">@item.NetAmounts</td>
                 <td class="text-right">@item.Quantity</td>
+                <td class="text-right">@item.NetAmounts</td>
                 <td class="text-center">
 
                     @item.ApprovedByNsmDateTime.ToShortTimeString(), @item.ApprovedByNsmDateTime.ToString("dd-MMM-yyyy")
@@ -62,12 +54,8 @@
         <tr>
             <th>Client Info</th>
             <th>Order Slip No</th>
-            <th class="text-right">Amount  (&#2547;)</th>
-            <th class="text-right">Vat (&#2547;)</th>
-            <th class="text-right">Discount (&#2547;)</th>
-            <th class="text-right">S.D (&#2547;)</th>
-            <th class="text-right">Net(&#2547;)</th>
             <th class="text-right">Qty</th>
+            <th class="text-right">Amount  (&#2547;)</th>
             <th class="text-center">Approved by NSM At</th>
             <th class="text-center">Order At</th>
             <th class="text-center">Order By</th>

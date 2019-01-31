@@ -33,6 +33,9 @@ namespace NBL.Areas.Editor.Controllers
         // GET: Editor/Home
         public ActionResult Home() 
         {
+
+            Session.Remove("BranchId");
+            Session.Remove("Branch");
             SummaryModel model = new SummaryModel
             {
                 Clients = _iClientManager.GetAllClientDetails().ToList(),

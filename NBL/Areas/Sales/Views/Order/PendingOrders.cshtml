@@ -14,12 +14,8 @@
             <tr>
                 <th>Client Info</th>
                 <th>Order Slip No</th>
-                <th class="text-right">Amount (&#2547;)</th>
-                <th class="text-right">Vat (&#2547;)</th>
-                <th class="text-right">Discount (&#2547;)</th>
-                <th class="text-right">S.D (&#2547;)</th>
-                <th class="text-right">Net Amount (&#2547;)</th>
                 <th class="text-right">Qty</th>
+                <th class="text-right">Amount (&#2547;)</th>
                 <th class="text-center">Date</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Action</th>
@@ -37,13 +33,9 @@
 
                     <td>@Html.Raw(order.Client.GetBasicInformation())</td>
                     <td>@order.OrderSlipNo</td>
-                    <td class="text-right">@(order.Amounts- order.Vat)</td>
-                    <td class="text-right">@order.Vat</td>
-                    <td class="text-right">@order.Discount</td>
-                    <td class="text-right">@order.SpecialDiscount</td>
-                   
-                    <td class="text-right">@order.NetAmounts</td>
                     <td class="text-right">@order.Quantity</td>
+                    <td class="text-right">@order.NetAmounts</td>
+                    
                     <td class="text-center">
 
                         @order.OrderDate.ToString("dd-MMM-yyyy")
@@ -81,12 +73,8 @@
             <tr>
                 <th>Client Info</th>
                 <th>Order Slip No</th>
-                <th class="text-right">Amount (&#2547;)</th>
-                <th class="text-right">Vat (&#2547;)</th>
-                <th class="text-right">Discount (&#2547;)</th>
-                <th class="text-right">S.D (&#2547;)</th>
-                <th class="text-right">Net Amount (&#2547;)</th>
                 <th class="text-right">Qty</th>
+                <th class="text-right">Amount (&#2547;)</th>
                 <th class="text-center">Date</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Action</th>

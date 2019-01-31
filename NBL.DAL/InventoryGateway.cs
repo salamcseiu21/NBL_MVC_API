@@ -503,7 +503,6 @@ namespace NBL.DAL
                 CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
                 CommandObj.Parameters.AddWithValue("@ProductId", item.ProductId);
                 CommandObj.Parameters.AddWithValue("@Quantity", item.Quantity);
-                CommandObj.Parameters.AddWithValue("@CostPrice", item.UnitPrice);
                 CommandObj.Parameters.AddWithValue("@StockQuantity", item.StockQuantity);
                 CommandObj.Parameters.AddWithValue("@DeliveryId", deliveryId);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
