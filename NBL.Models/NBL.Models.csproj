@@ -124,6 +124,7 @@
     <Compile Include="ViewModels\Productions\ScanProductViewModel.cs" />
     <Compile Include="ViewModels\Productions\ScannedBarCode.cs" />
     <Compile Include="ViewModels\Sales\ProductReceiveViewModel.cs" />
+    <Compile Include="ViewModels\TransferProducts\CreateTransferIssueViewModel.cs" />
     <Compile Include="ViewModels\TransferProducts\ViewTransferIssueDetailsModel.cs" />
     <Compile Include="ViewModels\TransferProducts\ViewTransferIssueModel.cs" />
     <Compile Include="ViewModels\ViewAssignedRegion.cs" />

@@ -68,13 +68,12 @@ namespace NBL.Areas.Factory.Controllers
                 string fileName = "Deliverd_Issued_Product_For_" + id;
                 var filePath = Server.MapPath("~/Files/" + fileName);
                 var barcodeList = _iProductManager.ScannedBarCodes(filePath);
-
-
                 var issuedProducts = _iProductManager.GetTransferIssueDetailsById(id);
                 bool isScannedBefore = _iProductManager.IsScannedBefore(barcodeList, scannedBarCode);
                 int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
-                bool isValied = issuedProducts.Select(n => n.ProductId).Contains(productId);
-                bool isScannComplete = issuedProducts.Sum(n => n.Quantity) == barcodeList.Count;
+                var transferIssueDetailses = issuedProducts as TransferIssueDetails[] ?? issuedProducts.ToArray();
+                bool isValied = transferIssueDetailses.Select(n => n.ProductId).Contains(productId);
+                bool isScannComplete = transferIssueDetailses.Sum(n => n.Quantity) == barcodeList.Count;
 
                 if (scannedBarCode.Length != 13)
                 {
@@ -113,6 +112,7 @@ namespace NBL.Areas.Factory.Controllers
             string fileName = "Deliverd_Issued_Product_For_" + transferIssueId;
             var filePath = Server.MapPath("~/Files/" + fileName);
             var products = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+
             int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             TransferIssue transferIssue = _iProductManager.GetDeliverableTransferIssueById(transferIssueId);

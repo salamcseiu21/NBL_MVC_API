@@ -5,9 +5,11 @@ using System.Linq;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using NBL.BLL.Contracts;
+using NBL.Models;
 using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.TransferProducts;
 
 namespace NBL.Areas.Factory.Controllers
 {
@@ -62,17 +64,14 @@ namespace NBL.Areas.Factory.Controllers
         }
 
         [HttpPost]
-        public void TempTransferIssue(FormCollection collection) 
+        public JsonResult TempTransferIssue(CreateTransferIssueViewModel model) 
         {
+            SuccessErrorModel msgSuccessErrorModel=new SuccessErrorModel();
             try
             {
-                // TODO: Add Transcition logic here
                 List<Product> productList = (List<Product>)Session["factory_transfer_product_list"]; 
-                int productId = Convert.ToInt32(collection["ProductId"]);
-                var product = _iProductManager.GetAll().ToList().Find(n => n.ProductId == productId);
-                int quantiy = Convert.ToInt32(collection["Quantity"]);
-                product.SalePrice = product.UnitPrice;
-                product.Quantity = quantiy;
+                var product = _iProductManager.GetAll().ToList().Find(n => n.ProductId == model.ProductId);
+                product.Quantity = model.Quantity;
 
                 if(productList!=null)
                 {
@@ -85,10 +84,11 @@ namespace NBL.Areas.Factory.Controllers
                 
                 Session["factory_transfer_product_list"] = productList;
             }
-            catch
+            catch(Exception exception)
             {
-                //return View();
+                msgSuccessErrorModel.Message = "<p style='colore:red'>" + exception.Message + "</p>";
             }
+            return Json(msgSuccessErrorModel, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
