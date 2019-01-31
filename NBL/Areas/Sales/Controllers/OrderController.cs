@@ -51,45 +51,29 @@ namespace NBL.Areas.Sales.Controllers
         public ActionResult Order()
         {
             Session["ProductList"] = null;
-            int companyId = Convert.ToInt32(Session["CompanyId"]);
-            int branchId = Convert.ToInt32(Session["BranchId"]);
-            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
-            CreateOrderViewModel model = new CreateOrderViewModel {Products = products};
-            return View(model);
+            return View();
         }
 
         [HttpPost]
-        public ActionResult Order(FormCollection collection)
+        public ActionResult Order(CreateOrderViewModel model)
         {
             try
             {
-                int companyId = Convert.ToInt32(Session["CompanyId"]);
-                int branchId = Convert.ToInt32(Session["BranchId"]);
                 List<Product> productList = (List<Product>)Session["ProductList"];
-                int clientId = Convert.ToInt32(collection["CId"]);
-                Client aClient=_iClientManager.GetById(clientId);
-                int productId = Convert.ToInt32(collection["ProductId"]);
-                int qty = Convert.ToInt32(collection["Quantity"]);
-
-                var aProduct = _iProductManager.GetProductByProductAndClientTypeId(productId,aClient.ClientTypeId); 
-                aProduct.Quantity = qty;
+                //---------Get product by product id and client type id ---//
+                var aProduct = _iProductManager.GetProductByProductAndClientTypeId(model.ProductId,model.ClientTypeId); 
+                aProduct.Quantity = model.Quantity;
               
                 if (productList != null)
                 {
                     productList.Add(aProduct);
                     Session["ProductList"] = productList;
-                    ViewBag.ProductList = productList;
                 }
                 else
                 {
                     productList = new List<Product> { aProduct };
                     Session["ProductList"] = productList;
-                    ViewBag.ProductList = productList;
                 }
-
-                var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
-                CreateOrderViewModel model = new CreateOrderViewModel { Products = products };
-                ViewBag.Total = productList.Sum(n => n.SubTotal);
                 return View(model);
             }
             catch (Exception e)
@@ -118,7 +102,7 @@ namespace NBL.Areas.Sales.Controllers
                     var aProduct = productList.Find(n => n.ProductId == pid);
                     productList.Remove(aProduct);
                     Session["ProductList"] = productList;
-                    ViewBag.ProductList = productList;
+                    
                 }
                 else
                 {
@@ -138,7 +122,6 @@ namespace NBL.Areas.Sales.Controllers
                             aProduct.Quantity = qty;
                             productList.Add(aProduct);
                             Session["ProductList"] = productList;
-                            ViewBag.ProductList = productList;
                         }
 
                     }
@@ -169,14 +152,13 @@ namespace NBL.Areas.Sales.Controllers
             var branchId = Convert.ToInt32(Session["BranchId"]);
             try
             {
-                decimal vat = 0;
                 var user = (ViewUser)Session["user"];
                 int clientId = Convert.ToInt32(collection["ClientId"]);
                 int orderByUserId = user.UserId;
                 decimal amount = Convert.ToDecimal(collection["Total"]);
                 DateTime orderDate = Convert.ToDateTime(collection["OrderDate"]);
                 List<Product> productList = (List<Product>)Session["ProductList"];
-                vat = productList.Sum(n => n.Vat * n.Quantity);
+                var vat = productList.Sum(n => n.Vat * n.Quantity);
                 var order = new Order
                 {
                 BranchId = branchId,

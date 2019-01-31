@@ -23,7 +23,6 @@
         },
         select: function (e, i) {
             $("#ClientId").val(i.item.val);
-            $("#CId").val(i.item.val);
             $("#orders").html("");
             productIdlist = [];
             $("#Total").val('');
@@ -53,6 +52,7 @@
                     var code = data.SubSubSubAccountCode;
                     var ctype = data.ClientTypeName;
                     var cl = data.CreditLimit;
+                    var ct = data.ClientTypeId;
                     $("#Address").val(address);
                     $("#ClientPhone").val(phone);
                     $("#ClientEmail").val(email);
@@ -60,7 +60,7 @@
                     $("#SubSubSubAccountCode").val(code);
                     $("#ClientTypeName").val(ctype);
                     $("#CreditLimit").val(cl);
-
+                    $("#ClientTypeId").val(ct);
 
                 }
             });

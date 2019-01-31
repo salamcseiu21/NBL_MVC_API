@@ -112,7 +112,7 @@ namespace NBL.Controllers
 
             return Json(accountList);
         }
-        //------------Client Name autocomplete-----------
+        //------------Client Name autocomplete by branch Id-----------
         [HttpPost]
         public JsonResult ClientNameAutoComplete(string prefix)
         {

@@ -432,6 +432,7 @@ namespace NBL.DAL
                         ClientTypeId = Convert.ToInt32(reader["ClientTypeId"]),
                         ClientTypeName = reader["ClientTypeName"].ToString()
                     };
+                    client.ClientTypeId = Convert.ToInt32(reader["ClientTypeId"]);
                     client.ClientTypeName = reader["ClientTypeName"].ToString();
                     client.Discount = Convert.ToDecimal(reader["Discount"]);
                     client.SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString();

@@ -1,4 +1,4 @@
-﻿@using NBL.Models
+﻿
 @model IEnumerable<NBL.Models.ViewModels.Orders.ViewOrder>
 @{
     ViewBag.Title = "Pending Order";
@@ -13,11 +13,8 @@
             <tr>
                 <th>Client Info</th>
                 <th>Order Slip No</th>
+                <th class="text-center">Qty</th>
                 <th class="text-center">Amount (&#2547;)</th>
-                <th class="text-center">Vat (&#2547;)</th>
-                <th class="text-center">Discount (&#2547;)</th>
-                <th class="text-center">S.D (&#2547;)</th>
-                <th class="text-center">Net Amount (&#2547;)</th>
                 <th class="text-center">Order Date</th>
                 <th class="text-center">Order By</th>
                 <th class="text-center">Action</th>
@@ -34,10 +31,7 @@
                        @Html.Raw(item.Client.GetBasicInformation())
                    </td>
                     <td>@item.OrderSlipNo</td>
-                    <td class="text-right">@(item.Amounts-item.Vat)</td>
-                    <td class="text-right">@item.Vat</td>
-                    <td class="text-right">@item.Discount</td>
-                    <td class="text-right">@item.SpecialDiscount</td>
+                    <td class="text-right">@item.Quantity</td>
                     <td class="text-right">@item.NetAmounts</td>
                     <td class="text-center">@item.SysDate.ToShortTimeString(),@item.SysDate.ToString("dd-MMM-yyyy")
                         @*<br/>
@@ -58,11 +52,8 @@
             <tr>
                 <th>Client Info</th>
                 <th>Order Slip No</th>
+                <th class="text-center">Qty</th>
                 <th class="text-center">Amount (&#2547;)</th>
-                <th class="text-center">Vat (&#2547;)</th>
-                <th class="text-center">Discount (&#2547;)</th>
-                <th class="text-center">S.D (&#2547;)</th>
-                <th class="text-center">Net Amount (&#2547;)</th>
                 <th class="text-center">Order Date</th>
                 <th class="text-center">Order By</th>
                 <th class="text-center">Action</th>
