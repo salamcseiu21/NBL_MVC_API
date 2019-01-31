@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
-using NBL.Models;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.TransferProducts;
@@ -204,17 +202,7 @@ namespace NBL.Areas.Admin.Controllers
         public JsonResult BranchAutoComplete(string prefix)
         {
 
-            //BranchManager branchManager = new BranchManager();
-            //int corporateBarachIndex = 9;
-            //int branchId = 9;
-
-
             var branches = _iBranchManager.GetAll().ToList();
-
-           //branches.RemoveAt(corporateBarachIndex);
-           //int currentBranchIndex = branches.ToList().FindIndex(n => n.BranchId == branchId);
-           // branches.RemoveAt(currentBranchIndex);
-
             var branchList = (from c in branches.ToList()
                               where c.BranchName.ToLower().Contains(prefix.ToLower())
                               select new

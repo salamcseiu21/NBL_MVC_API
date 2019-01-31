@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
-using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
@@ -64,7 +63,6 @@ namespace NBL.Areas.Factory.Controllers
 
                 var id = Convert.ToInt32(collection["TransferIssueId"]);
                 string scannedBarCode = collection["ProductCode"];
-
                 string fileName = "Deliverd_Issued_Product_For_" + id;
                 var filePath = Server.MapPath("~/Files/" + fileName);
                 var barcodeList = _iProductManager.ScannedBarCodes(filePath);

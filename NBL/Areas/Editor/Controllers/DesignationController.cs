@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
 using NBL.BLL.Contracts;
-using NBL.Models;
 using NBL.Models.EntityModels.Designations;
 
 namespace NBL.Areas.Editor.Controllers

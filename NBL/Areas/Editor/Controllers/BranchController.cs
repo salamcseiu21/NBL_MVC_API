@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.Models;
 using NBL.BLL.Contracts;
 using NBL.Models.EntityModels.Branches;
 

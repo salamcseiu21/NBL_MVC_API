@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
-using NBL.Models;
 using NBL.Models.EntityModels.VatDiscounts;
 using NBL.Models.ViewModels;
 

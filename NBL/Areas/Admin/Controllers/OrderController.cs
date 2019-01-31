@@ -102,7 +102,6 @@ namespace NBL.Areas.Admin.Controllers
                 order.SpecialDiscount = specialDiscount;
                 order.AdminUserId = anUser.UserId;
                 string result = _iOrderManager.ApproveOrderByAdmin(order);
-                ViewBag.Message = result;
                 return RedirectToAction("PendingOrder");
             }
             catch(Exception exception)

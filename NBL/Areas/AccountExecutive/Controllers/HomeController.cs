@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.Areas.Accounts.BLL.Contracts;
-
 using NBL.BLL.Contracts;
 using NBL.Models;
 

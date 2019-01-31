@@ -91,7 +91,7 @@ namespace NBL.Areas.Accounts.Controllers
                 {
                     PurposeCode = accontCode,
                     Amounts =amount,
-                    DebitOrCredit = "Cr",
+                    DebitOrCredit = "Cr"
                    
                 };
 

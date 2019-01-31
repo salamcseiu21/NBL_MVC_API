@@ -4,7 +4,6 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
-using NBL.Models;
 using NBL.Models.EntityModels.Designations;
 using NBL.Models.EntityModels.Employees;
 using NBL.Models.ViewModels;
