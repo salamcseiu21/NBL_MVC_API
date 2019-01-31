@@ -4,7 +4,6 @@
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-   // var orders = (IEnumerable<OrderItem>)Session["TOrders"];
 }
 
 <section class="content">
@@ -28,6 +27,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <input type="hidden" name="OrderId" id="OrderId" value="@Model.OrderId" />
+                            <input type="hidden" name="ClientId" id="ClientId" value="@Model.Client.ClientId" />
                             <label for="ProductId" class="control-label col-md-3">Product</label>
                             <div class="col-md-9">
                                 

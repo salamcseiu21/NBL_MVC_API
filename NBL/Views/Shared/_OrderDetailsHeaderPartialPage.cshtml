@@ -1,7 +1,7 @@
 ﻿@model NBL.Models.ViewModels.Orders.ViewOrder
 @{
 
-var aClient =Model.Client;
+    var aClient = Model.Client;
 }
 
 <div class="row">
@@ -10,6 +10,7 @@ var aClient =Model.Client;
 
         <section>
             <img src="~/@aClient.ClientImage" height="120" width="100" style="float:left;margin-right:20px" title="@aClient.ClientName" />
+           
             <span>
                 @Html.Raw(aClient.GetMailingAddress())
             </span>

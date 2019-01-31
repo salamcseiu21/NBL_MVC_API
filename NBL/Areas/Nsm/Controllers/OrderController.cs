@@ -71,10 +71,10 @@ namespace NBL.Areas.Nsm.Controllers
             List<OrderItem> orders = (List<OrderItem>)Session["TOrders"];
             try
             {
-                var ord = _iOrderManager.GetOrderByOrderId(orderId);
-                ord.Client=_iClientManager.GetById(ord.ClientId);
+                var clientId = Convert.ToInt32(collection["ClientId"]);
+                var client = _iClientManager.GetById(clientId);
                 int productId = Convert.ToInt32(collection["ProductId"]);
-                var aProduct = _iProductManager.GetProductByProductAndClientTypeId(productId, ord.Client.ClientType.ClientTypeId);
+                var aProduct = _iProductManager.GetProductByProductAndClientTypeId(productId, client.ClientTypeId);
                 aProduct.Quantity = Convert.ToInt32(collection["Quantity"]);
                 var orderItem = orders.Find(n => n.ProductId == productId); 
                 if (orderItem != null)
@@ -106,12 +106,9 @@ namespace NBL.Areas.Nsm.Controllers
         //---Edit and approved the order-------
         public ActionResult Edit(int id)
         {
-            int branchId = Convert.ToInt32(Session["BranchId"]);
-            int companyId = Convert.ToInt32(Session["CompanyId"]);
+           
             var order = _iOrderManager.GetOrderByOrderId(id);
             order.Client = _iClientManager.GetById(order.ClientId);
-            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
-            ViewBag.Products = products;
             Session["TOrders"] = order.OrderItems.ToList();
             return View(order);
 
@@ -138,7 +135,6 @@ namespace NBL.Areas.Nsm.Controllers
                 string r = _iOrderManager.UpdateOrderDetails(orderItems);
                 order.NsmUserId = user.UserId;
                 string result = _iOrderManager.ApproveOrderByNsm(order);
-                ViewBag.Message = result;
                 return RedirectToAction("PendingOrder");
             }
             catch (Exception exception)
@@ -162,7 +158,6 @@ namespace NBL.Areas.Nsm.Controllers
                     if (rowAffected)
                     {
                         Session["TOrders"] = orderItems;
-                        ViewBag.Orders = orderItems;
                     }
                    
                 }
@@ -175,32 +170,22 @@ namespace NBL.Areas.Nsm.Controllers
                         var value = s.Replace("product_Id_", "");
                         int productId = Convert.ToInt32(collection["product_Id_" + value]);
                         int qty = Convert.ToInt32(collection["NewQuantity_" + value]);
-                        var anItem = orderItems.Find(n => n.ProductId == productId);
-                        if (anItem != null)
+                        var item = orderItems.Find(n => n.ProductId == productId);
+                        if (item != null)
                         {
-                            orderItems.Remove(anItem);
-                            anItem.Quantity = qty;
-                            orderItems.Add(anItem);
+                            orderItems.Remove(item);
+                            item.Quantity = qty;
+                            orderItems.Add(item);
                             Session["TOrders"] = orderItems;
-                            ViewBag.Orders = orderItems;
                         }
 
                     }
                 }
 
 
-                int companyId = Convert.ToInt32(Session["CompanyId"]);
-                int branchId = Convert.ToInt32(Session["BranchId"]);
-                var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
-                ViewBag.Products = products;
-
             }
             catch (Exception e)
             {
-                int companyId = Convert.ToInt32(Session["CompanyId"]);
-                int branchId = Convert.ToInt32(Session["BranchId"]);
-                var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
-                ViewBag.Products = products;
                 if (e.InnerException != null)
                     ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException.Message;
 

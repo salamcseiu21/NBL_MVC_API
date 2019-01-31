@@ -11,8 +11,8 @@ namespace NBL.BLL
 {
     public class ClientManager:IClientManager
     {
-        readonly IClientGateway _iClientGateway;
-        readonly IOrderManager _iOrderManager;
+        private readonly IClientGateway _iClientGateway;
+        private readonly IOrderManager _iOrderManager;
 
         public ClientManager(IClientGateway iClientGateway,IOrderManager iOrderManager)
         {
@@ -76,7 +76,6 @@ namespace NBL.BLL
             return addr.Address == email;
         }
 
-       // public IEnumerable<Client> GetAll => _clientGateway.GetAll;
 
         public ICollection<Client> GetAll()
         {

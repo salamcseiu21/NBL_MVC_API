@@ -223,7 +223,6 @@ namespace NBL.Areas.Sales.Controllers
             var user = (ViewUser)Session["user"];
             int orderId = Convert.ToInt32(collection["OrderId"]);
             var order = _iOrderManager.GetOrderByOrderId(orderId);
-            order.Client = _iClientManager.GetById(order.ClientId);
             order.ResonOfCancel = collection["Reason"];
             order.CancelByUserId = user.UserId;
             order.Status = Convert.ToInt32(OrderStatus.CancelledbySalesPerson);
@@ -234,13 +233,8 @@ namespace NBL.Areas.Sales.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            int companyId = Convert.ToInt32(Session["CompanyId"]);
-            int branchId = Convert.ToInt32(Session["BranchId"]);
             var order = _iOrderManager.GetOrderByOrderId(id);
             order.Client = _iClientManager.GetById(order.ClientId);
-            //var orderdetails = _orderManager.GetOrderDetailsByOrderId(id).ToList();
-            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
-            ViewBag.Products = products;
             Session["TOrders"] = order.OrderItems;
             return View(order);
         }
@@ -290,7 +284,6 @@ namespace NBL.Areas.Sales.Controllers
                     orderItems.Remove(anOrder);
                     var result = _iOrderManager.DeleteProductFromOrderDetails(anOrder.OrderItemId); 
                     Session["TOrders"] = orderItems;
-                    ViewBag.Orders = orderItems;
                 }
                 else
                 {
@@ -308,25 +301,14 @@ namespace NBL.Areas.Sales.Controllers
                             anItem.Quantity = qty;
                             orderItems.Add(anItem);
                             Session["TOrders"] = orderItems;
-                            ViewBag.Orders = orderItems;
+                           
                         }
 
                     }
                 }
-
-
-                int companyId = Convert.ToInt32(Session["CompanyId"]);
-                int branchId = Convert.ToInt32(Session["BranchId"]);
-                var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
-                ViewBag.Products = products;
-
             }
             catch (Exception e)
             {
-                int companyId = Convert.ToInt32(Session["CompanyId"]);
-                int branchId = Convert.ToInt32(Session["BranchId"]);
-                var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
-                ViewBag.Products = products;
                 if (e.InnerException != null)
                     ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException.Message;
 
@@ -341,8 +323,9 @@ namespace NBL.Areas.Sales.Controllers
             var items = (List<OrderItem>)Session["TOrders"];
             try
             {
-                var ord= _iOrderManager.GetOrderByOrderId(orderId);
-                Client aClient = _iClientManager.GetById(ord.ClientId);
+
+                int clientId = Convert.ToInt32(collection["ClientId"]);
+                Client aClient = _iClientManager.GetById(clientId);
                 int productId = Convert.ToInt32(collection["ProductId"]);
                 var aProduct = _iProductManager.GetProductByProductAndClientTypeId(productId, aClient.ClientTypeId);
                 aProduct.Quantity = Convert.ToInt32(collection["Quantity"]);

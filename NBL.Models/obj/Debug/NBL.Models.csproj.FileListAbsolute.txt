@@ -19,4 +19,3 @@ E:\API\NBL\NBL.Models\bin\Debug\AutoMapper.xml
 E:\API\NBL\NBL.Models\bin\Debug\System.ValueTuple.xml
 E:\API\NBL\NBL.Models\obj\Debug\NBL.Models.dll
 E:\API\NBL\NBL.Models\obj\Debug\NBL.Models.pdb
-E:\API\NBL\NBL.Models\obj\Debug\NBL.Models.csprojResolveAssemblyReference.cache
