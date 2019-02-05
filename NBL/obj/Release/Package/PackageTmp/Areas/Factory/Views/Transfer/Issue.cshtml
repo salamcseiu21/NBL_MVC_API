@@ -96,9 +96,6 @@
               
                 <div class="col-md-9">
                     
-                   
-
-                   
 
                 </div>
                 <div class="col-md-3">
@@ -158,7 +155,7 @@
         $("#ProductName").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '/Factory/Transfer/ProductNameAutoComplete/',
+                    url: RootUrl+'Factory/Transfer/ProductNameAutoComplete/',
                     data: "{ 'prefix': '" + request.term + "'}",
                     dataType: "json",
                     type: "POST",
@@ -204,7 +201,7 @@
         $("#ToBranchName").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '/Factory/Branch/BranchAutoComplete/',
+                    url: RootUrl + 'Factory/Branch/BranchAutoComplete/',
                     data: "{ 'prefix': '" + request.term + "'}",
                     dataType: "json",
                     type: "POST",

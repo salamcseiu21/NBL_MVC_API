@@ -24,3 +24,14 @@ E:\API\NBL\NBL.DAL\bin\Release\System.ValueTuple.xml
 E:\API\NBL\NBL.DAL\obj\Release\NBL.DAL.csprojResolveAssemblyReference.cache
 E:\API\NBL\NBL.DAL\obj\Release\NBL.DAL.dll
 E:\API\NBL\NBL.DAL\obj\Release\NBL.DAL.pdb
+E:\API\NBL\NBL.DAL\bin\Release\System.Web.Mvc.dll
+E:\API\NBL\NBL.DAL\bin\Release\System.Web.Razor.dll
+E:\API\NBL\NBL.DAL\bin\Release\System.Web.WebPages.Razor.dll
+E:\API\NBL\NBL.DAL\bin\Release\System.Web.WebPages.dll
+E:\API\NBL\NBL.DAL\bin\Release\Microsoft.Web.Infrastructure.dll
+E:\API\NBL\NBL.DAL\bin\Release\System.Web.WebPages.Deployment.dll
+E:\API\NBL\NBL.DAL\bin\Release\System.Web.Mvc.xml
+E:\API\NBL\NBL.DAL\bin\Release\System.Web.Razor.xml
+E:\API\NBL\NBL.DAL\bin\Release\System.Web.WebPages.Razor.xml
+E:\API\NBL\NBL.DAL\bin\Release\System.Web.WebPages.xml
+E:\API\NBL\NBL.DAL\bin\Release\System.Web.WebPages.Deployment.xml

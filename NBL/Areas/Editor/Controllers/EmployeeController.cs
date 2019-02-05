@@ -7,6 +7,7 @@ using NBL.BLL.Contracts;
 using NBL.Models.EntityModels.Designations;
 using NBL.Models.EntityModels.Employees;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Employees;
 
 namespace NBL.Areas.Editor.Controllers
 {
@@ -29,18 +30,10 @@ namespace NBL.Areas.Editor.Controllers
         }
         public ActionResult AddEmployee() 
         {
-            var departments = _iDepartmentManager.GetAll();
-            var designations = _iDesignationManager.GetAll();
-            var empTypes = _iEmployeeTypeManager.GetAll();
-            var branches = _iBranchManager.GetAllBranches();
-            ViewBag.EmployeeTypes = empTypes;
-            ViewBag.Designations = designations;
-            ViewBag.Departments = departments;
-            ViewBag.Branches = branches;
 
-            ViewBag.EmployeeTypeId = new SelectList(empTypes, "EmployeeTypeId", "EmployeeTypeName");
-            ViewBag.BranchId=new SelectList(branches,"BranchId","BranchName");
-            ViewBag.DepartmentId =new SelectList(departments, "DepartmentId", "DepartmentName");
+            ViewBag.EmployeeTypeId = new SelectList(_iEmployeeTypeManager.GetAll(), "EmployeeTypeId", "EmployeeTypeName");
+            ViewBag.BranchId=new SelectList(_iBranchManager.GetAllBranches(), "BranchId","BranchName");
+            ViewBag.DepartmentId =new SelectList(_iDepartmentManager.GetAll(), "DepartmentId", "DepartmentName");
             ViewBag.DesignationId = new SelectList(new List<Designation>(), "DesignationId", "DesignationName");
             return View();
         }
@@ -80,28 +73,20 @@ namespace NBL.Areas.Editor.Controllers
                     TempData["Message"] = "Saved Successfully!";
                 }
                 TempData["Message"] = "Failed to Save";
-                //if(result.Contains("successfully"))
-                // return RedirectToAction("ViewEmployee", "Home");
-                var departments = _iDepartmentManager.GetAll();
-                var empTypes = _iEmployeeTypeManager.GetAll();
-                var branches = _iBranchManager.GetAll();
-                ViewBag.EmployeeTypeId = new SelectList(empTypes, "EmployeeTypeId", "EmployeeTypeName");
-                ViewBag.BranchId = new SelectList(branches, "BranchId", "BranchName");
-                ViewBag.DepartmentId = new SelectList(departments, "DepartmentId", "DepartmentName");
+
+
+                ViewBag.EmployeeTypeId = new SelectList(_iEmployeeTypeManager.GetAll(), "EmployeeTypeId", "EmployeeTypeName");
+                ViewBag.BranchId = new SelectList(_iBranchManager.GetAllBranches(), "BranchId", "BranchName");
+                ViewBag.DepartmentId = new SelectList(_iDepartmentManager.GetAll(), "DepartmentId", "DepartmentName");
                 ViewBag.DesignationId = new SelectList(new List<Designation>(), "DesignationId", "DesignationName");
                 return View();
             }
             catch (Exception e)
             {
-
-                var departments = _iDepartmentManager.GetAll();
-                var empTypes = _iEmployeeTypeManager.GetAll();
-                var branches = _iBranchManager.GetAllBranches();
-                ViewBag.EmployeeTypeId = new SelectList(empTypes, "EmployeeTypeId", "EmployeeTypeName");
-                ViewBag.BranchId = new SelectList(branches, "BranchId", "BranchName");
-                ViewBag.DepartmentId = new SelectList(departments, "DepartmentId", "DepartmentName");
+                ViewBag.EmployeeTypeId = new SelectList(_iEmployeeTypeManager.GetAll(), "EmployeeTypeId", "EmployeeTypeName");
+                ViewBag.BranchId = new SelectList(_iBranchManager.GetAllBranches(), "BranchId", "BranchName");
+                ViewBag.DepartmentId = new SelectList(_iDepartmentManager.GetAll(), "DepartmentId", "DepartmentName");
                 ViewBag.DesignationId = new SelectList(new List<Designation>(), "DesignationId", "DesignationName");
-                TempData["Error"] = e.Message;
                 return View();
               }
         }

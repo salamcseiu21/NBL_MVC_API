@@ -44,6 +44,10 @@ namespace NBL.Areas.Factory.Controllers
         public ActionResult Delivery(int id)
         {
 
+
+
+
+
             var transferIssue = _iProductManager.GetDeliverableTransferIssueById(id);
              var model = new ViewTransferIssueModel
                 {
@@ -71,7 +75,7 @@ namespace NBL.Areas.Factory.Controllers
                 int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
                 var transferIssueDetailses = issuedProducts as TransferIssueDetails[] ?? issuedProducts.ToArray();
                 bool isValied = transferIssueDetailses.Select(n => n.ProductId).Contains(productId);
-                bool isScannComplete = transferIssueDetailses.Sum(n => n.Quantity) == barcodeList.Count;
+                bool isScannComplete = transferIssueDetailses.ToList().FindAll(n=>n.ProductId==productId).Sum(n => n.Quantity) == barcodeList.FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3))==productId).Count;
 
                 if (scannedBarCode.Length != 13)
                 {

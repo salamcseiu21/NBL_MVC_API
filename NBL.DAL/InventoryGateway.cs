@@ -8,6 +8,7 @@ using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Productions;
 
 namespace NBL.DAL
 {
@@ -29,13 +30,12 @@ namespace NBL.DAL
                 {
                     products.Add(new ViewProduct
                     {
+                        
+                        StockQuantity = Convert.ToInt32(reader["StockQuantity"]),
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         ProductName = reader["ProductName"].ToString(),
-                        StockQuantity = Convert.ToInt32(reader["StockQuantity"]),
-                        CostPrice = Convert.ToDecimal(reader["CostPrice"]),
-                        Vat = Convert.ToDecimal(reader["Vat"]),
-                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
-                        ProductCategoryName = reader["ProductCategoryName"].ToString()
+                        CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
                     });
                 }
 
@@ -325,7 +325,7 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public int ReceiveProduct(List<TransactionModel> receiveProductList,TransactionModel model)
+        public int ReceiveProduct(List<ScannedBarCode> receiveProductList,TransactionModel model)
         {
             
             ConnectionObj.Open();
@@ -338,6 +338,7 @@ namespace NBL.DAL
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@TransactionDate", model.TransactionDate);
                 CommandObj.Parameters.AddWithValue("@TransactionRef", model.DeliveryRef);
+                CommandObj.Parameters.AddWithValue("@Quantity", model.Quantity);
                 CommandObj.Parameters.AddWithValue("@ToBranchId", model.ToBranchId);
                 CommandObj.Parameters.AddWithValue("@CompanyId", model.CompanyId);
                 CommandObj.Parameters.AddWithValue("@UserId", model.UserId);
@@ -364,28 +365,27 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public int SaveReceiveProductDetails(List<TransactionModel> receiveProductList, int inventoryId)
+
+        
+
+        public int SaveReceiveProductDetails(List<ScannedBarCode> receiveProductList, int inventoryId)
         {
             int i = 0;
-            int n = 0;
             foreach (var item in receiveProductList) 
             {
                 CommandObj.CommandText = "spSaveReceiveProduct";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.Clear();
-                CommandObj.Parameters.AddWithValue("@ProductId", item.ProductId);
-                CommandObj.Parameters.AddWithValue("@Quantity", item.Quantity);
-                CommandObj.Parameters.AddWithValue("@StockQuantity", item.StockQuantity);
+                CommandObj.Parameters.AddWithValue("@ProductBarcode", item.ProductCode);
+                CommandObj.Parameters.AddWithValue("@ProductId", Convert.ToInt32(item.ProductCode.Substring(0,3)));
                 CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
-
                 i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
-                n += SaveReceivedProductBarCodes(item.RecievedProductBarCodes,inventoryId);
             }
 
-            return n;
+            return i;
         }
 
         private int SaveReceivedProductBarCodes(string recievedProductBarCodes, int inventoryId) 
@@ -497,13 +497,15 @@ namespace NBL.DAL
             int i = 0;
             foreach (var item in invoicedOrders)
             {
+               
                 CommandObj.CommandText = "spSaveDeliveredOrderDetails";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.Clear();
                 CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
                 CommandObj.Parameters.AddWithValue("@ProductId", item.ProductId);
                 CommandObj.Parameters.AddWithValue("@Quantity", item.Quantity);
-                CommandObj.Parameters.AddWithValue("@StockQuantity", item.StockQuantity);
+                CommandObj.Parameters.AddWithValue("@ProductBarcode", item.ScannedProductCodes);
+                CommandObj.Parameters.AddWithValue("@Status", 1);
                 CommandObj.Parameters.AddWithValue("@DeliveryId", deliveryId);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;

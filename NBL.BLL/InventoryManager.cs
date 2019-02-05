@@ -9,6 +9,7 @@ using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Enums;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Productions;
 
 namespace NBL.BLL
 {
@@ -36,7 +37,7 @@ namespace NBL.BLL
             return _iInventoryGateway.GetAllReceiveableListByBranchAndCompanyId(branchId,companyId); 
         }
 
-        public int ReceiveProduct(List<TransactionModel> receiveProductList,TransactionModel model)
+        public int ReceiveProduct(List<ScannedBarCode> receiveProductList, TransactionModel model) 
         {
             
             return _iInventoryGateway.ReceiveProduct(receiveProductList, model);

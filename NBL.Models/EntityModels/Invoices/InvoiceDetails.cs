@@ -14,6 +14,7 @@
         public decimal SalePrice { get; set; }
         public int ProductId { get; set; }
         public string InvoiceRef { get; set; }
+        public string ScannedProductCodes { get; set; } 
        
 
       

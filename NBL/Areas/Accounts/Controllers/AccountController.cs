@@ -55,7 +55,7 @@ namespace NBL.Areas.Accounts.Controllers
                 var chequeNo = collection["ChequeNo"];
                 var amount = Convert.ToDecimal(collection["Amount"]);
                 var date = Convert.ToDateTime(collection["Date"]);
-                Payment aPayment = new Payment
+                var aPayment = new Payment
                 {
                     ChequeAmount = amount,
                     BankBranchName = bankBranchName,

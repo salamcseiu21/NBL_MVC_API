@@ -8,6 +8,7 @@ using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Productions;
 
 namespace NBL.BLL.Contracts
 {
@@ -16,7 +17,7 @@ namespace NBL.BLL.Contracts
        IEnumerable<ViewProduct> GetStockProductByBranchAndCompanyId(int branchId, int companyId);
        IEnumerable<ViewProduct> GetStockProductByCompanyId(int companyId);
        IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId, int companyId);
-       int ReceiveProduct(List<TransactionModel> receiveProductList, TransactionModel model);
+       int ReceiveProduct(List<ScannedBarCode> receiveProductList, TransactionModel model);
        int GetStockQtyByBranchAndProductId(int branchId, int productId);
        string Save(List<InvoiceDetails> invoicedOrders, Delivery aDelivery, int invoiceStatus, int orderStatus);
        string GenerateDeliveryReference(int maxRefNo);

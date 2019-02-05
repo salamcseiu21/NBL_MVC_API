@@ -453,6 +453,7 @@
     <Content Include="Areas\Editor\Images\Signature\f021ab04335947ce863010696ae091b7.png" />
     <Content Include="Areas\Editor\Images\Signature\signature.png" />
     <Content Include="Areas\Factory\Scripts\loadAllDeliverableProducts.js" />
+    <Content Include="Areas\Manager\Scripts\loadAllDeliverableOrderedProducts.js" />
     <Content Include="Areas\Sales\Scripts\addNewItemToList.js" />
     <Content Include="Areas\Sales\Scripts\cancelOrder.js" />
     <Content Include="Areas\Sales\Scripts\clientNameAutoComplete.js" />
@@ -8008,6 +8009,7 @@
     <Content Include="Views\Shared\_ViewBranchPartialPage.cshtml" />
     <Content Include="Views\Shared\_ViewDeliveryModalPartialPage.cshtml" />
     <Content Include="Views\Shared\_ModalDeliveryPartialPage.cshtml" />
+    <Content Include="Views\Shared\_ModalOrderDeliveryPartialPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
