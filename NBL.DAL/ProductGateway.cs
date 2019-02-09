@@ -825,12 +825,12 @@ namespace NBL.DAL
         }
 
        
-        public ICollection<ScannedBarCode> GetScannedBarcodeListFromTextFile(string filePath) 
+        public ICollection<ScannedProduct> GetScannedProductListFromTextFile(string filePath) 
         {
 
             try
             {
-                List<ScannedBarCode> barCodes = new List<ScannedBarCode>(); 
+                List<ScannedProduct> barCodes = new List<ScannedProduct>(); 
                 // Read a text file using StreamReader
                 using (StreamReader sr = new StreamReader(filePath))
                 {
@@ -838,8 +838,12 @@ namespace NBL.DAL
                     string line;
                     while ((line = sr.ReadLine()) != null)
                     {
-
-                        barCodes.Add(new ScannedBarCode {ProductCode = line});
+                        barCodes.Add(
+                            new ScannedProduct
+                            {
+                                ProductCode = line,
+                                ProductName = GetProductByProductId(Convert.ToInt32(line.Substring(0,3))).ProductName
+                            });
                     }
                     sr.Close();
                 }
@@ -942,6 +946,38 @@ namespace NBL.DAL
                 ConnectionObj.Close();
                 CommandObj.Dispose();
                 CommandObj.Parameters.Clear();
+            }
+        }
+
+        public ScannedProduct GetProductByBarCode(string barCode)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetProductByBarCode";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@BarCode", barCode);
+                ConnectionObj.Open();
+                ScannedProduct scannedProduct = null;
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                if (reader.Read())
+                {
+                    scannedProduct=new ScannedProduct
+                    {
+                        ProductCode = reader["ProductBarCode"].ToString() 
+                    };
+                }
+                reader.Close();
+                return scannedProduct;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not get product by barcode",exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
             }
         }
     }

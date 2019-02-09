@@ -70,7 +70,6 @@ namespace NBL.Areas.Manager.Controllers
 
 
                 int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
-                int branchId = Convert.ToInt32(Session["BranchId"]);
                 int invoiceId = Convert.ToInt32(collection["InvoiceId"]);
                 var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(invoiceId);
                 var invoicedOrders = _iInvoiceManager.GetInvoicedOrderDetailsByInvoiceRef(invoice.InvoiceRef).ToList();
@@ -81,7 +80,7 @@ namespace NBL.Areas.Manager.Controllers
                 string fileName = "Ordered_Product_List_For_" + invoiceId;
                 var filePath = Server.MapPath("~/Files/" + fileName);
                     //if the file is exists read the file
-                var barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+                var barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
 
                 foreach (var item in invoicedOrders)
                 {
@@ -198,13 +197,13 @@ namespace NBL.Areas.Manager.Controllers
         [HttpGet]
         public JsonResult LoadDeliverableProduct(int invoiceId)
         {
-            List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
+            List<ScannedProduct> barcodeList = new List<ScannedProduct>();
             string fileName = "Ordered_Product_List_For_" + invoiceId;
             var filePath = Server.MapPath("~/Files/" + fileName);
             if (System.IO.File.Exists(filePath))
             {
                 //if the file is exists read the file
-                barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+                barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
             }
             else
             {

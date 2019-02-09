@@ -197,7 +197,7 @@ namespace NBL.Areas.Sales.Controllers
                 int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
                 string fileName = "Received_Product_For_" + id;
                 var filePath = Server.MapPath("~/Files/" + fileName);
-                var barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+                var barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
                 var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id);
                 var receivesProductIdList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id).Select(n => n.ProductId);
                 bool isScannedBefore=barcodeList.Select(n => n.ProductCode).Contains(scannedBarCode);
@@ -238,7 +238,7 @@ namespace NBL.Areas.Sales.Controllers
             var transactionModel = _iInventoryManager.GetTransactionModelById(model.DeliveryId);
             string fileName = "Received_Product_For_" + model.DeliveryId;
             var filePath = Server.MapPath("~/Files/" + fileName);
-            var receiveProductList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+            var receiveProductList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
             transactionModel.Quantity = receiveProductList.Count;
             _iInventoryManager.ReceiveProduct(receiveProductList, transactionModel);
             return RedirectToAction("Receive");
@@ -257,13 +257,13 @@ namespace NBL.Areas.Sales.Controllers
         public JsonResult LoadReceiveableProduct(long deliveryId)
         {
             var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(deliveryId).ToList();
-            var barcodeList = new List<ScannedBarCode>();
+            var barcodeList = new List<ScannedProduct>();
             string fileName = "Received_Product_For_" + deliveryId;
             var filePath = Server.MapPath("~/Files/" + fileName);
             if (System.IO.File.Exists(filePath))
             {
                 //if the file is exists read the file
-                barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+                barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
             }
             else
             {

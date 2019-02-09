@@ -127,9 +127,9 @@ namespace NBL.BLL
            return _iProductGateway.GetDeliverableTransferIssueById(transerIssueId);
         }
 
-        public ICollection<ScannedBarCode> GetScannedBarcodeListFromTextFile(string filePath)
+        public ICollection<ScannedProduct> GetScannedProductListFromTextFile(string filePath)
         {
-           return _iProductGateway.GetScannedBarcodeListFromTextFile(filePath);
+           return _iProductGateway.GetScannedProductListFromTextFile(filePath);
         }
 
         public bool AddProductToTextFile(string productCode, string filePath)
@@ -147,7 +147,7 @@ namespace NBL.BLL
             return _iProductGateway.GetIssuedProductListById(id);
         }
 
-        public bool IsScannedBefore(List<ScannedBarCode> barcodeList, string scannedBarCode)
+        public bool IsScannedBefore(List<ScannedProduct> barcodeList, string scannedBarCode)
         {
             return barcodeList.ToList().Select(n => n.ProductCode).Contains(scannedBarCode);
         }
@@ -194,13 +194,13 @@ namespace NBL.BLL
             return _iProductGateway.PendingProductionNote();
         }
 
-        public List<ScannedBarCode> ScannedBarCodes(string filePath)
+        public List<ScannedProduct> ScannedBarCodes(string filePath)
         {
-            List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
+            List<ScannedProduct> barcodeList = new List<ScannedProduct>();
             if (System.IO.File.Exists(filePath))
             {
                 //if the file is exists read the file
-                barcodeList =GetScannedBarcodeListFromTextFile(filePath).ToList();
+                barcodeList =GetScannedProductListFromTextFile(filePath).ToList();
             }
 
             else
@@ -209,6 +209,11 @@ namespace NBL.BLL
                 System.IO.File.Create(filePath).Close();
             }
             return barcodeList;
+        }
+
+        public ScannedProduct GetProductByBarCode(string barCode)
+        {
+           return _iProductGateway.GetProductByBarCode(barCode);
         }
     }
 }

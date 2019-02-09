@@ -36,9 +36,10 @@ namespace NBL.DAL.Contracts
         IEnumerable<ViewProductionNoteModel> PendingProductionNote();
         TransferIssue GetTransferIssueById(int transerIssueId);
         TransferIssue GetDeliverableTransferIssueById(int transerIssueId);
-        ICollection<ScannedBarCode> GetScannedBarcodeListFromTextFile(string filePath);
+        ICollection<ScannedProduct> GetScannedProductListFromTextFile(string filePath);
         bool AddProductToTextFile(string productCode, string filePath);
         bool AddProductToInventory(List<Product> products);
         List<Product> GetIssuedProductListById(int id);
+        ScannedProduct GetProductByBarCode(string barCode);
     }
 }

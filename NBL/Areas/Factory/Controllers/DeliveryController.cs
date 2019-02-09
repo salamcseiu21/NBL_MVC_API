@@ -113,7 +113,7 @@ namespace NBL.Areas.Factory.Controllers
             int transferIssueId = Convert.ToInt32(collection["TransferIssueId"]);
             string fileName = "Deliverd_Issued_Product_For_" + transferIssueId;
             var filePath = Server.MapPath("~/Files/" + fileName);
-            var products = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+            var products = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
 
             int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
@@ -165,13 +165,13 @@ namespace NBL.Areas.Factory.Controllers
 
         public JsonResult LoadDeliverableProduct(int issueId)
         {
-            List<ScannedBarCode> barcodeList = new List<ScannedBarCode>();
+            List<ScannedProduct> barcodeList = new List<ScannedProduct>();
             string fileName = "Deliverd_Issued_Product_For_" + issueId;
             var filePath = Server.MapPath("~/Files/" + fileName);
             if (System.IO.File.Exists(filePath))
             {
                 //if the file is exists read the file
-                barcodeList = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+                barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
             }
             else
             {

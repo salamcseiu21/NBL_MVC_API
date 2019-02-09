@@ -19,12 +19,13 @@ namespace NBL.DAL.Contracts
        int GetMaxDeliveryRefNoOfCurrentYear();
        IEnumerable<TransactionModel> GetAllReceiveableProductToBranchByDeliveryRef(string deliveryRef);
        IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId, int companyId);
-       int ReceiveProduct(List<ScannedBarCode> receiveProductList, TransactionModel model);
-       int SaveReceiveProductDetails(List<ScannedBarCode> receiveProductList, int inventoryId);
+       int ReceiveProduct(List<ScannedProduct> receiveProductList, TransactionModel model);
+       int SaveReceiveProductDetails(List<ScannedProduct> receiveProductList, int inventoryId);
        int GetStockQtyByBranchAndProductId(int branchId, int productId);
        int Save(List<InvoiceDetails> invoicedOrders, Delivery aDelivery, int invoiceStatus, int orderStatus);
        int SaveDeliveredOrderDetails(List<InvoiceDetails> invoicedOrders, int inventoryId, int deliveryId);
        ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(long id);
        TransactionModel GetTransactionModelById(long id);
+       int SaveScannedProductToFactoryInventory(List<ScannedProduct> scannedProducts,int userId);
     }
 }

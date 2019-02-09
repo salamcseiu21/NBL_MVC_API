@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.UI.WebControls;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Branches;
 using NBL.Models.EntityModels.Deliveries;
@@ -270,6 +271,34 @@ namespace NBL.DAL
             }
         }
 
+        public int SaveScannedProductToFactoryInventory(List<ScannedProduct> scannedProducts,int userId)
+        {
+            try
+            {
+                int rowAffected = 0;
+                foreach (var product in scannedProducts)
+                {
+                    CommandObj.CommandText = "UDSP_SaveProductToFactoryInventory";
+                    CommandObj.CommandType = CommandType.StoredProcedure;
+                    CommandObj.Parameters.Clear();
+                    CommandObj.Parameters.AddWithValue("@ProductCode", product.ProductCode);
+                    CommandObj.Parameters.AddWithValue("@UserId", userId);
+                    CommandObj.Parameters.Add("@RowAffected", SqlDbType.BigInt);
+                    CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                    ConnectionObj.Open();
+                    CommandObj.ExecuteNonQuery();
+                    rowAffected += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                    ConnectionObj.Close();
+                }
+                return rowAffected;
+            }
+            catch (Exception exception)
+            {
+                
+               throw new Exception("Could not saved scanned products",exception);
+            }
+        }
+
         public IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId,int companyId) 
         {
             try
@@ -325,7 +354,7 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public int ReceiveProduct(List<ScannedBarCode> receiveProductList,TransactionModel model)
+        public int ReceiveProduct(List<ScannedProduct> receiveProductList,TransactionModel model)
         {
             
             ConnectionObj.Open();
@@ -368,7 +397,7 @@ namespace NBL.DAL
 
         
 
-        public int SaveReceiveProductDetails(List<ScannedBarCode> receiveProductList, int inventoryId)
+        public int SaveReceiveProductDetails(List<ScannedProduct> receiveProductList, int inventoryId)
         {
             int i = 0;
             foreach (var item in receiveProductList) 

@@ -151,7 +151,7 @@
     <Compile Include="ViewModels\Employees\CreateEmployeeViewModel.cs" />
     <Compile Include="ViewModels\Orders\CreateOrderViewModel.cs" />
     <Compile Include="ViewModels\Productions\ScanProductViewModel.cs" />
-    <Compile Include="ViewModels\Productions\ScannedBarCode.cs" />
+    <Compile Include="ViewModels\Productions\ScannedProduct.cs" />
     <Compile Include="ViewModels\Sales\ProductReceiveViewModel.cs" />
     <Compile Include="ViewModels\TransferProducts\CreateTransferIssueViewModel.cs" />
     <Compile Include="ViewModels\TransferProducts\ViewTransferIssueDetailsModel.cs" />

@@ -37,7 +37,7 @@ namespace NBL.BLL
             return _iInventoryGateway.GetAllReceiveableListByBranchAndCompanyId(branchId,companyId); 
         }
 
-        public int ReceiveProduct(List<ScannedBarCode> receiveProductList, TransactionModel model) 
+        public int ReceiveProduct(List<ScannedProduct> receiveProductList, TransactionModel model) 
         {
             
             return _iInventoryGateway.ReceiveProduct(receiveProductList, model);
@@ -78,6 +78,11 @@ namespace NBL.BLL
         public TransactionModel GetTransactionModelById(long id)
         {
             return _iInventoryGateway.GetTransactionModelById(id);
+        }
+
+        public int SaveScannedProductToFactoryInventory(List<ScannedProduct> scannedProducts,int userId)
+        {
+            return _iInventoryGateway.SaveScannedProductToFactoryInventory(scannedProducts, userId);
         }
     }
 }

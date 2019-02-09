@@ -27,11 +27,12 @@ namespace NBL.BLL.Contracts
         IEnumerable<ViewProductionNoteModel> PendingProductionNote();
         TransferIssue GetTransferIssueById(int transerIssueId);
         TransferIssue GetDeliverableTransferIssueById(int transerIssueId);
-        ICollection<ScannedBarCode> GetScannedBarcodeListFromTextFile(string filePath);
+        ICollection<ScannedProduct> GetScannedProductListFromTextFile(string filePath);
         bool AddProductToTextFile(string productCode, string filePath);
         bool AddProductToInventory(List<Product> products);
         List<Product> GetIssuedProductListById(int id);
-        bool IsScannedBefore(List<ScannedBarCode> barcodeList, string scannedBarCode);
-        List<ScannedBarCode> ScannedBarCodes(string filePath);
+        bool IsScannedBefore(List<ScannedProduct> barcodeList, string scannedBarCode);
+        List<ScannedProduct> ScannedBarCodes(string filePath);
+        ScannedProduct GetProductByBarCode(string barCode); 
     }
 }

@@ -61,8 +61,7 @@ namespace NBL.DAL
         
         public int SaveDeliveryInformationDetails(IEnumerable<TransferIssueDetails> issueDetails, int deliveryId)
         {
-            int i;
-            int n = 0;
+            int i=0;
             foreach (TransferIssueDetails tr in issueDetails)
             {
                 CommandObj.CommandText = "spSaveDeliveryInformationDetails";
@@ -76,16 +75,12 @@ namespace NBL.DAL
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
                 i=Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
-                if (i > 0)
-                {
-                    n += SaveDeliveredProductsBarcode(tr.BarCodes, tr.TransferIssueId);
-                }
+                
             }
-
-            return n;
+            return i;
         }
 
-        private int SaveDeliveredProductsBarcode(ICollection<ScannedBarCode> trBarCodes, int transferIssueId)
+        private int SaveDeliveredProductsBarcode(ICollection<ScannedProduct> trBarCodes, int transferIssueId)
         {
             int rowAffected = 0;
             foreach (var product in trBarCodes)

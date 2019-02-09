@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using Microsoft.Ajax.Utilities;
 using NBL.BLL.Contracts;
+using NBL.Models;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Productions;
@@ -20,10 +21,12 @@ namespace NBL.Areas.Factory.Controllers
     {
         // GET: Factory/Product
         private readonly IProductManager _iProductManager;
+        private readonly IInventoryManager _iInventoryManager;
 
-        public ProductController(IProductManager iProductManager)
+        public ProductController(IProductManager iProductManager,IInventoryManager iInventoryManager)
         {
             _iProductManager = iProductManager;
+            _iInventoryManager = iInventoryManager;
         }
 
         [HttpGet]
@@ -249,10 +252,60 @@ namespace NBL.Areas.Factory.Controllers
             ScanProductViewModel model=new ScanProductViewModel();
             string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
             var filePath = Server.MapPath("~/Files/" + fileName);
+            if (!System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Create(filePath).Close();
+            }
+            return View(model);
+           
+        }
+        [HttpPost]
+
+        public JsonResult AddProductToTempFile(ScanProductViewModel model)
+        {
+            SuccessErrorModel successErrorModel = new SuccessErrorModel();
+            try
+            {
+                int productId = Convert.ToInt32(model.ProductCode.Substring(0, 3));
+                Product product = _iProductManager.GetProductByProductId(productId);
+                ScannedProduct scannedProduct = _iProductManager.GetProductByBarCode(model.ProductCode);
+                string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
+                var filePath = Server.MapPath("~/Files/" + fileName);
+                var barcodeList = _iProductManager.ScannedBarCodes(filePath);
+                bool isScannedBefore = _iProductManager.IsScannedBefore(barcodeList, model.ProductCode);
+                if (scannedProduct != null || isScannedBefore)
+                {
+                    successErrorModel.Message = "<p style='color:red'> Already exits </p>";
+                }
+                if (product != null && scannedProduct == null && !isScannedBefore)
+                {
+                   
+                    var result = _iProductManager.AddProductToTextFile(model.ProductCode, filePath);
+
+                }
+            }
+            catch (FormatException exception)
+            {
+                successErrorModel.Message = "<p style='color:red'>" + exception.GetType() + "</p>";
+            }
+            catch (Exception exception)
+            {
+
+                successErrorModel.Message = "<p style='color:red'>" + exception.Message + "</p>";
+            }
+            return Json(successErrorModel, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult LoadScannedProducts()
+        {
+            ScanProductViewModel model = new ScanProductViewModel();
+            string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
+            var filePath = Server.MapPath("~/Files/" + fileName);
             if (System.IO.File.Exists(filePath))
             {
                 //if the file is exists read the file
-                model.BarCodes = _iProductManager.GetScannedBarcodeListFromTextFile(filePath).ToList();
+                model.BarCodes = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
             }
 
             else
@@ -261,26 +314,36 @@ namespace NBL.Areas.Factory.Controllers
                 System.IO.File.Create(filePath).Close();
             }
 
-            return View(model);
-           
+            return Json(model.BarCodes,JsonRequestBehavior.AllowGet);
         }
-        [HttpPost]
 
-        public ActionResult AddProductToTempFile(ScanProductViewModel model)
+        [HttpPost]
+        public ActionResult SaveProductToFactoryInventory()
         {
-        
-            int productId= Convert.ToInt32(model.ProductCode.Substring(0, 3));
-            Product product= _iProductManager.GetProductByProductId(productId);
-            if (product!=null)
+            try
             {
+                int userId = ((ViewUser)Session["user"]).UserId;
                 string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
                 var filePath = Server.MapPath("~/Files/" + fileName);
-                var result = _iProductManager.AddProductToTextFile(model.ProductCode, filePath);
+                if (System.IO.File.Exists(filePath))
+                {
+                    //if the file is exists read the file
+                    var scannedProduct = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
+                    int result = _iInventoryManager.SaveScannedProductToFactoryInventory(scannedProduct, userId);
+                    if (result > 0)
+                        //if the scanned products save successfully then clear the file..
+                    {
+                        System.IO.File.Create(filePath).Close();
+                        return RedirectToAction("AddProductToTempFile");
+                    }
+                }
                 return RedirectToAction("AddProductToTempFile");
             }
-            ViewBag.Error = "Product Id is invalid!";
-            return RedirectToAction("AddProductToTempFile");
+            catch (Exception exception)
+            {
+                string message = exception.InnerException?.Message;
+                return RedirectToAction("AddProductToTempFile");
+            }
         }
-
     }
 }

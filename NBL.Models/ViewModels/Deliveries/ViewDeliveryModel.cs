@@ -14,6 +14,6 @@ namespace NBL.Models.ViewModels.Deliveries
         public ICollection<InvoiceDetails> InvoiceDetailses { get; set; }
         public Client Client { get; set; }
         public Invoice Invoice { get; set; }
-        public ICollection<ScannedBarCode> ScannedBarCodes { get; set; }
+        public ICollection<ScannedProduct> ScannedBarCodes { get; set; }
     }
 }
