@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
@@ -201,7 +202,8 @@ namespace NBL.Areas.Sales.Controllers
                 var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id);
                 var receivesProductIdList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id).Select(n => n.ProductId);
                 bool isScannedBefore=barcodeList.Select(n => n.ProductCode).Contains(scannedBarCode);
-                bool isScannComplete = receivesProductList.ToList().FindAll(n=>n.ProductId==productId).ToList().Sum(n => n.Quantity) == barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == productId).Count;
+
+                bool isScannComplete = receivesProductList.ToList().FindAll(n=>n.ProductId==productId).ToList().Count == barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == productId).Count;
                 if (scannedBarCode.Length != 13)
                 {
                     model.Message = "<p style='color:red'> Invalid Barcode</p>";
@@ -235,6 +237,7 @@ namespace NBL.Areas.Sales.Controllers
         [HttpPost]
         public ActionResult ReceiveProduct(ReceiveProductViewModel model)
         {
+            //var id = Convert.ToInt64(collection["DeliveryId"]);
             var transactionModel = _iInventoryManager.GetTransactionModelById(model.DeliveryId);
             string fileName = "Received_Product_For_" + model.DeliveryId;
             var filePath = Server.MapPath("~/Files/" + fileName);
@@ -256,7 +259,11 @@ namespace NBL.Areas.Sales.Controllers
         [HttpGet]
         public JsonResult LoadReceiveableProduct(long deliveryId)
         {
-            var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(deliveryId).ToList();
+
+
+            List<TransactionModel> productList=new List<TransactionModel>();
+
+            var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(deliveryId).ToList().DistinctBy(n=>n.ProductName).ToList();
             var barcodeList = new List<ScannedProduct>();
             string fileName = "Received_Product_For_" + deliveryId;
             var filePath = Server.MapPath("~/Files/" + fileName);
@@ -270,6 +277,24 @@ namespace NBL.Areas.Sales.Controllers
                 //if the file does not exists create the file
                 System.IO.File.Create(filePath).Close();
             }
+
+            foreach (var transactionModel in receivesProductList)
+            {
+               
+                var products = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(deliveryId)
+                    .ToList().FindAll(n => n.ProductId == transactionModel.ProductId);
+                transactionModel.Quantity = products.Count;
+                string code = "";
+                foreach (TransactionModel product in products)
+                {
+
+                    code += product.ProductBarCodes + ",";
+
+                }
+                transactionModel.ProductBarCodes = code.TrimEnd(',');
+
+            }
+
             foreach (var transactionModel in receivesProductList)
             {
                 var productId = Convert.ToInt32(transactionModel.ProductId);
@@ -277,6 +302,7 @@ namespace NBL.Areas.Sales.Controllers
                 {
                     transactionModel.RecievedProductBarCodes += barCode.ProductCode + ",";
                 }
+
             }
             return Json(receivesProductList, JsonRequestBehavior.AllowGet);
         }
