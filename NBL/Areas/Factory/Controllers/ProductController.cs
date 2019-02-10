@@ -9,7 +9,6 @@ using NBL.Models;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Productions;
-using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
@@ -266,23 +265,16 @@ namespace NBL.Areas.Factory.Controllers
             SuccessErrorModel successErrorModel = new SuccessErrorModel();
             try
             {
-                int productId = Convert.ToInt32(model.ProductCode.Substring(0, 3));
-                Product product = _iProductManager.GetProductByProductId(productId);
-                ScannedProduct scannedProduct = _iProductManager.GetProductByBarCode(model.ProductCode);
                 string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
                 var filePath = Server.MapPath("~/Files/" + fileName);
-                var barcodeList = _iProductManager.ScannedBarCodes(filePath);
-                bool isScannedBefore = _iProductManager.IsScannedBefore(barcodeList, model.ProductCode);
-                if (scannedProduct != null || isScannedBefore)
+                ScannedProduct scannedProduct =_iProductManager.GetProductByBarCode(model.ProductCode);
+                if (scannedProduct == null)
                 {
-                    successErrorModel.Message = "<p style='color:red'> Already exits </p>";
-                }
-                if (product != null && scannedProduct == null && !isScannedBefore)
-                {
-                   
                     var result = _iProductManager.AddProductToTextFile(model.ProductCode, filePath);
-
+                    successErrorModel.Message = result;
                 }
+                
+
             }
             catch (FormatException exception)
             {

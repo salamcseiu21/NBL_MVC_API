@@ -4,15 +4,13 @@ using System.Data;
 using System.Data.SqlClient;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
-using NBL.Models.EntityModels.Products;
-using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels.Productions;
 
 namespace NBL.DAL
 {
     public class FactoryDeliveryGateway : DbGateway,IFactoryDeliveryGateway
     {
-        public int SaveDeliveryInformation(Delivery aDelivery, IEnumerable<TransferIssueDetails> issueDetails)
+        public int SaveDeliveryInformation(Delivery aDelivery, IEnumerable<ScannedProduct> scannedProducts)
         {
             ConnectionObj.Open();
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
@@ -37,7 +35,7 @@ namespace NBL.DAL
                 CommandObj.Parameters["@DeliveryId"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
                 int deliveryId = Convert.ToInt32(CommandObj.Parameters["@DeliveryId"].Value);
-                int rowAffected = SaveDeliveryInformationDetails(issueDetails, deliveryId);
+                int rowAffected = SaveDeliveryInformationDetails(scannedProducts, deliveryId);
                 if (rowAffected > 0)
                 {
                     sqlTransaction.Commit();
@@ -59,22 +57,21 @@ namespace NBL.DAL
         }
 
         
-        public int SaveDeliveryInformationDetails(IEnumerable<TransferIssueDetails> issueDetails, int deliveryId)
+        public int SaveDeliveryInformationDetails(IEnumerable<ScannedProduct> scannedProducts, int deliveryId)
         {
             int i=0;
-            foreach (TransferIssueDetails tr in issueDetails)
+            foreach (var item in scannedProducts) 
             {
                 CommandObj.CommandText = "spSaveDeliveryInformationDetails";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.Clear();
-                CommandObj.Parameters.AddWithValue("@ProductId", tr.ProductId);
-                CommandObj.Parameters.AddWithValue("@Quantity", tr.Quantity);
+                CommandObj.Parameters.AddWithValue("@ProductId", Convert.ToInt32(item.ProductCode.Substring(0,3)));
                 CommandObj.Parameters.AddWithValue("@DeliveryId", deliveryId);
-                CommandObj.Parameters.AddWithValue("@ProductBarCodes", tr.ProductBarCodes.TrimEnd(','));
+                CommandObj.Parameters.AddWithValue("@ProductBarCode", item.ProductCode);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
-                i=Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                i +=Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
                 
             }
             return i;

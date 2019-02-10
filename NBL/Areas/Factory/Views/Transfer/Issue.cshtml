@@ -45,9 +45,16 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label col-md-3">Stock Quantity : </label>
+                        <div class="col-md-9">
+                            <input type="number" name="StockQty" id="StockQty" class="form-control" placeholder="Stock Qty" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label col-md-3">Quantity : </label>
                         <div class="col-md-9">
-                            <input type="number" name="Quantity" id="Quantity" class="form-control" placeholder="Quantity" required />
+                            <input type="number" name="Quantity" id="Quantity" class="form-control" placeholder="Quantity" required min="1" value="1"/>
+                            <div id="divQuantityLimitOutput"></div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -175,7 +182,7 @@
                 var json = { productId: pId };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("GetProductQuantityInStockById", "Common",new {area=""})',
+                    url: '@Url.Action("GetProductQuantityInStockById", "Transfer",new {area="Factory"})',
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(json),
                     success: function (data) {
@@ -435,5 +442,26 @@
 
 
     }
+
+
+    // -----Prevent to enter max qty more than stock qty------------
+    $(document).ready(function () {
+
+        $('#Quantity').on('keydown keyup', function (e) {
+            var divElement = $('#divQuantityLimitOutput');
+            divElement.text('');
+            var stockQty = parseInt($("#StockQty").val());
+            if ($(this).val() > stockQty
+                    && e.keyCode !== 46 // keycode for delete
+                    && e.keyCode !== 8 // keycode for backspace
+            ) {
+
+                divElement.text('Quantity Out of Stock!');
+                divElement.css('color', 'red');
+                e.preventDefault();
+                $(this).val(1);
+            }
+        });
+    });
 </script>
 }

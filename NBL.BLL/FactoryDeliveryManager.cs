@@ -7,6 +7,7 @@ using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Enums;
+using NBL.Models.ViewModels.Productions;
 
 namespace NBL.BLL
 {
@@ -20,11 +21,11 @@ namespace NBL.BLL
         {
             _iFactoryDeliveryGateway = iFactoryDeliveryGateway;
         }
-        public string SaveDeliveryInformation(Delivery aDelivery, IEnumerable<TransferIssueDetails> issueDetails)
+        public string SaveDeliveryInformation(Delivery aDelivery, IEnumerable<ScannedProduct> scannedProducts)
         {
             int maxDeliveryNo = _inventoryGateway.GetMaxDeliveryRefNoOfCurrentYear();
             aDelivery.DeliveryRef = GenerateDeliveryReference(maxDeliveryNo);
-            int rowAffected = _iFactoryDeliveryGateway.SaveDeliveryInformation(aDelivery, issueDetails);
+            int rowAffected = _iFactoryDeliveryGateway.SaveDeliveryInformation(aDelivery, scannedProducts);
             if (rowAffected > 0)
                 return "Saved Successfully!";
             return "Failed to Save";

@@ -17,10 +17,12 @@ namespace NBL.Areas.Factory.Controllers
     public class TransferController : Controller
     {
         private readonly IProductManager _iProductManager;
+        private readonly IInventoryManager _iInventoryManager;
 
-        public TransferController(IProductManager iProductManager)
+        public TransferController(IProductManager iProductManager,IInventoryManager iInventoryManager)
         {
             _iProductManager = iProductManager;
+            _iInventoryManager = iInventoryManager;
         }
         // GET: Factory/Transfer
         [HttpGet]
@@ -140,7 +142,7 @@ namespace NBL.Areas.Factory.Controllers
         public JsonResult ProductNameAutoComplete(string prefix) 
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var products = _iProductManager.GetAll().ToList().DistinctBy(n => n.ProductId).ToList().FindAll(n=>n.CompanyId==companyId).ToList();
+            var products = _iInventoryManager.GetStockProductByCompanyId(companyId).ToList();
             var productList = (from c in products
                                where c.ProductName.ToLower().Contains(prefix.ToLower())
                                select new
@@ -150,6 +152,16 @@ namespace NBL.Areas.Factory.Controllers
                                }).ToList();
 
             return Json(productList);
+        }
+
+        //----------------------Get Stock Quantiy  By  product Id----------
+        public JsonResult GetProductQuantityInStockById(int productId)
+        {
+            StockModel stock = new StockModel();
+            int companyId = Convert.ToInt32(Session["CompanyId"]);
+            var qty = _iInventoryManager.GetStockProductByCompanyId(companyId).ToList().Find(n=>n.ProductId==productId).StockQuantity;
+            stock.StockQty = qty;
+            return Json(stock, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetTempTransferIssueProductList()

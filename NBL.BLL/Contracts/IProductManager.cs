@@ -28,7 +28,7 @@ namespace NBL.BLL.Contracts
         TransferIssue GetTransferIssueById(int transerIssueId);
         TransferIssue GetDeliverableTransferIssueById(int transerIssueId);
         ICollection<ScannedProduct> GetScannedProductListFromTextFile(string filePath);
-        bool AddProductToTextFile(string productCode, string filePath);
+        string AddProductToTextFile(string productCode, string filePath);
         bool AddProductToInventory(List<Product> products);
         List<Product> GetIssuedProductListById(int id);
         bool IsScannedBefore(List<ScannedProduct> barcodeList, string scannedBarCode);

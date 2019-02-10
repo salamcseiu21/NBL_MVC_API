@@ -8,6 +8,7 @@ using NBL.Models.EntityModels.Productions;
 using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Enums;
+using NBL.Models.Validators;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
 
@@ -132,9 +133,35 @@ namespace NBL.BLL
            return _iProductGateway.GetScannedProductListFromTextFile(filePath);
         }
 
-        public bool AddProductToTextFile(string productCode, string filePath)
+        public string AddProductToTextFile(string productCode, string filePath)
         {
-            return _iProductGateway.AddProductToTextFile(productCode, filePath);
+            bool result = true;
+            Product product = null;
+            bool isScannedBefore = false;
+            bool isValid = Validator.ValidateProductBarCode(productCode);
+            if (isValid)
+            {
+                var productId = Convert.ToInt32(productCode.Substring(0, 3));
+                product =GetProductByProductId(productId);
+              
+                var barcodeList = ScannedBarCodes(filePath);
+                isScannedBefore=IsScannedBefore(barcodeList, productCode);
+            }
+            if (!isValid)
+            {
+                return "<p style='color:red'> Invalid Barcode </p>";
+            }
+            if (isScannedBefore)
+            {
+                return "<p style='color:red'> Already exits </p>";
+            }
+            if (product != null)
+            {
+
+                result = _iProductGateway.AddProductToTextFile(productCode, filePath);
+
+            }
+            return result ? "<p class='text-green'>Added Successfully!</p>" : "<p style='color:red'> Failed to Add </p>";
         }
 
         public bool AddProductToInventory(List<Product> products)

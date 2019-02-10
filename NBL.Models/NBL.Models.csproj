@@ -147,6 +147,7 @@
     <Compile Include="EntityModels\VatDiscounts\Vat.cs" />
     <Compile Include="Searchs\SearchCriteria.cs" />
     <Compile Include="SummaryModels\AccountSummary.cs" />
+    <Compile Include="Validators\Validator.cs" />
     <Compile Include="ViewModels\Deliveries\ViewDeliveryModel.cs" />
     <Compile Include="ViewModels\Employees\CreateEmployeeViewModel.cs" />
     <Compile Include="ViewModels\Orders\CreateOrderViewModel.cs" />

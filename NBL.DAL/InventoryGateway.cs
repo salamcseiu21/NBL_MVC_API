@@ -185,7 +185,7 @@ namespace NBL.DAL
                         ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
                         UserId = Convert.ToInt32(reader["DeliveredByUserId"]),
                         ProductId = Convert.ToInt32(reader["ProductId"]),
-                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        // Quantity = Convert.ToInt32(reader["Quantity"]),
                         TransactionDate = Convert.ToDateTime(reader["SysDateTime"]),
                         ProductName = reader["ProductName"].ToString(),
                         DeliveryRef = reader["DeliveryRef"].ToString(),
@@ -195,7 +195,7 @@ namespace NBL.DAL
                         VehicleNo = reader["VehicleNo"].ToString(),
                         DeliveryId = Convert.ToInt32(reader["DeliveryId"]),
                         CompanyId = Convert.ToInt32(reader["CompanyId"]),
-                        ProductBarCodes = reader["ProductBarCodes"].ToString()
+                        ProductBarCodes = reader["ProductBarCode"].ToString()
                     });
                 }
 

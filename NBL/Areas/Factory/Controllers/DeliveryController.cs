@@ -44,10 +44,6 @@ namespace NBL.Areas.Factory.Controllers
         public ActionResult Delivery(int id)
         {
 
-
-
-
-
             var transferIssue = _iProductManager.GetDeliverableTransferIssueById(id);
              var model = new ViewTransferIssueModel
                 {
@@ -113,24 +109,11 @@ namespace NBL.Areas.Factory.Controllers
             int transferIssueId = Convert.ToInt32(collection["TransferIssueId"]);
             string fileName = "Deliverd_Issued_Product_For_" + transferIssueId;
             var filePath = Server.MapPath("~/Files/" + fileName);
-            var products = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
+            var scannedProducts = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
 
             int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             TransferIssue transferIssue = _iProductManager.GetDeliverableTransferIssueById(transferIssueId);
-            IEnumerable<TransferIssueDetails> issueDetails = _iProductManager.GetTransferIssueDetailsById(transferIssueId);
-
-            var transferIssueDetailses = issueDetails as TransferIssueDetails[] ?? issueDetails.ToArray();  
-            foreach (var detail in transferIssueDetailses)
-            {
-                detail.BarCodes = products.ToList()
-                    .FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == detail.ProductId).ToList();
-                foreach (var product in products.ToList().FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3)) == detail.ProductId).ToList())
-                {
-                    detail.ProductBarCodes += product.ProductCode + ",";
-                }
-            }
-
             Delivery aDelivery = new Delivery
             {
                 TransactionRef = transferIssue.TransferIssueRef,
@@ -145,7 +128,7 @@ namespace NBL.Areas.Factory.Controllers
                 FromBranchId = transferIssue.FromBranchId
             };
 
-            string result = _iFactoryDeliveryManager.SaveDeliveryInformation(aDelivery, transferIssueDetailses);
+            string result = _iFactoryDeliveryManager.SaveDeliveryInformation(aDelivery, scannedProducts);
             if (result.StartsWith("Sa"))
             {
                 System.IO.File.Create(filePath).Close();
