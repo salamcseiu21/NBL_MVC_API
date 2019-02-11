@@ -7,7 +7,6 @@ using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Invoices;
-using NBL.Models.EntityModels.Products;
 using NBL.Models.Enums;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Deliveries;
@@ -67,8 +66,6 @@ namespace NBL.Areas.Manager.Controllers
         {
             try
             {
-
-
                 int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
                 int invoiceId = Convert.ToInt32(collection["InvoiceId"]);
                 var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(invoiceId);
@@ -77,7 +74,6 @@ namespace NBL.Areas.Manager.Controllers
                 var filePath = Server.MapPath("~/Files/" + fileName);
                     //if the file is exists read the file
                 var barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
-
                 int quantity = deliveredQty + barcodeList.Count;
                 int invoiceStatus = Convert.ToInt32(InvoiceStatus.PartiallyDelivered);
                 int orderStatus = Convert.ToInt32(OrderStatus.PartiallyDelivered);
@@ -222,11 +218,8 @@ namespace NBL.Areas.Manager.Controllers
                 {
                     invoiceDetailse.Quantity = invoiceQty - deliveredQty;
                     list.Add(invoiceDetailse);
-                }
-                
+                } 
             }
-
-            // var products = _iProductManager.GetIssuedProductListById(invoiceId);
             foreach (var item in list)
             {
                 foreach (var code in barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == item.ProductId))
