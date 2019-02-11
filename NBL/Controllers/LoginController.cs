@@ -51,8 +51,8 @@ namespace NBL.Controllers
                 Session["Company"] = company;
                 FormsAuthentication.SetAuthCookie(user.UserName, false);
                 var anUser = _userManager.GetUserByUserNameAndPassword(user.UserName, user.Password);
-                anUser.IpAddress = GetLocalIPAddress();
-                anUser.MacAddress = GetMacAddress().ToString();
+                //anUser.IpAddress = GetLocalIPAddress();
+                //anUser.MacAddress = GetMacAddress().ToString();
                 anUser.LogInDateTime = DateTime.Now;
 
                 bool result = _userManager.ChangeLoginStatus(anUser, 1);

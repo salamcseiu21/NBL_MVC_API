@@ -72,43 +72,20 @@ namespace NBL.Areas.Manager.Controllers
                 int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
                 int invoiceId = Convert.ToInt32(collection["InvoiceId"]);
                 var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(invoiceId);
-                var invoicedOrders = _iInvoiceManager.GetInvoicedOrderDetailsByInvoiceRef(invoice.InvoiceRef).ToList();
-                int invoiceQty = invoicedOrders.Sum(n => n.InvoicedQuantity);
-
-                List<InvoiceDetails> invoiceList = new List<InvoiceDetails>();
-
+                var deliveredQty = _iInvoiceManager.GetDeliveredProductsByInvoiceRef(invoice.InvoiceRef).Count;
                 string fileName = "Ordered_Product_List_For_" + invoiceId;
                 var filePath = Server.MapPath("~/Files/" + fileName);
                     //if the file is exists read the file
                 var barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
 
-                foreach (var item in invoicedOrders)
-                {
-                    ProductDetails aProduct = _iProductManager.GetProductDetailsByProductId(item.ProductId);
-                    item.UnitPrice = aProduct.UnitPrice;
-                    var productWishCodeList = barcodeList.ToList().FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == item.ProductId).Select(n => n.ProductCode); 
-                    int qty = productWishCodeList.ToList().Count;
-                    foreach (var code in productWishCodeList)
-                    {
-                        item.ScannedProductCodes += code + ",";
-                    }
-                    item.ScannedProductCodes=item.ScannedProductCodes.TrimEnd(',');
-                    if (qty > 0)
-                    {
-                        item.Quantity = qty;
-                        invoiceList.Add(item);
-                    }
-
-                }
-                int diliveryQty =invoicedOrders.Sum(n=>n.DeliveredQuantity)+invoiceList.Sum(n => n.Quantity);
+                int quantity = deliveredQty + barcodeList.Count;
                 int invoiceStatus = Convert.ToInt32(InvoiceStatus.PartiallyDelivered);
                 int orderStatus = Convert.ToInt32(OrderStatus.PartiallyDelivered);
-                if (invoiceQty == diliveryQty)
+                if (invoice.Quantity == quantity)
                 {
                     invoiceStatus = Convert.ToInt32(InvoiceStatus.Delivered);
                     orderStatus = Convert.ToInt32(OrderStatus.Delivered);
                 }
-                
 
                 var aDelivery = new Delivery
                 {
@@ -125,7 +102,7 @@ namespace NBL.Areas.Manager.Controllers
                     ToBranchId = invoice.BranchId,
                     FromBranchId = invoice.BranchId
                 };
-                string result = _iInventoryManager.Save(invoiceList, aDelivery, invoiceStatus,orderStatus);
+                string result = _iInventoryManager.Save(barcodeList, aDelivery, invoiceStatus,orderStatus);
                 if (result.StartsWith("S"))
                 {
                     return RedirectToAction("OrderList");
@@ -149,15 +126,33 @@ namespace NBL.Areas.Manager.Controllers
 
                 var id = Convert.ToInt32(collection["InvoiceId"]);
                 var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(id);
+
                 string scannedBarCode = collection["ProductCode"];
+                int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
                 string fileName = "Ordered_Product_List_For_" + id;
                 var filePath = Server.MapPath("~/Files/" + fileName);
                 var barcodeList = _iProductManager.ScannedBarCodes(filePath);
-                var invoicedOrders = _iInvoiceManager.GetInvoicedOrderDetailsByInvoiceRef(invoice.InvoiceRef).ToList();
                 bool isScannedBefore = _iProductManager.IsScannedBefore(barcodeList, scannedBarCode);
-                int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
-                bool isValied = invoicedOrders.Select(n => n.ProductId).Contains(productId);
-                bool isScannComplete = invoicedOrders.ToList().FindAll(n=>n.ProductId==productId).Sum(n => n.Quantity) == barcodeList.FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3))==productId).Count;
+                bool isSold = _iInventoryManager.IsThisProductSold(scannedBarCode);
+
+                //------------Get invoced products-------------
+                var invoicedOrders = _iInvoiceManager.GetInvoicedOrderDetailsByInvoiceRef(invoice.InvoiceRef).ToList();
+                List<InvoiceDetails> list = new List<InvoiceDetails>();
+                var deliveredProducts = _iInvoiceManager.GetDeliveredProductsByInvoiceRef(invoice.InvoiceRef);
+
+                foreach (InvoiceDetails invoiceDetailse in invoicedOrders)
+                {
+                    var invoiceQty = invoiceDetailse.Quantity;
+                    var deliveredQty = deliveredProducts.ToList().FindAll(n => n.ProductId == invoiceDetailse.ProductId).Count;
+                    if (invoiceQty != deliveredQty)
+                    {
+                        invoiceDetailse.Quantity = invoiceQty - deliveredQty;
+                        list.Add(invoiceDetailse);
+                    }
+
+                }
+                bool isValied = list.Select(n => n.ProductId).Contains(productId);
+                bool isScannComplete = list.ToList().FindAll(n=>n.ProductId==productId).Sum(n=>n.Quantity) == barcodeList.FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3))==productId).Count;
 
                 if (scannedBarCode.Length != 13)
                 {
@@ -172,7 +167,7 @@ namespace NBL.Areas.Manager.Controllers
                     model.Message = "<p style='color:green'> Scan Completed.</p>";
                 }
 
-                if (isValied && !isScannedBefore && scannedBarCode.Length == 13 && !isScannComplete)
+                if (isValied && !isScannedBefore && !isScannComplete && !isSold)
                 {
                     _iProductManager.AddProductToTextFile(scannedBarCode, filePath);
                 }
@@ -197,6 +192,9 @@ namespace NBL.Areas.Manager.Controllers
         [HttpGet]
         public JsonResult LoadDeliverableProduct(int invoiceId)
         {
+            var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(invoiceId);
+          
+
             List<ScannedProduct> barcodeList = new List<ScannedProduct>();
             string fileName = "Ordered_Product_List_For_" + invoiceId;
             var filePath = Server.MapPath("~/Files/" + fileName);
@@ -210,10 +208,26 @@ namespace NBL.Areas.Manager.Controllers
                 //if the file does not exists create the file
                 System.IO.File.Create(filePath).Close();
             }
-            var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(invoiceId);
+          
             var invoicedOrders = _iInvoiceManager.GetInvoicedOrderDetailsByInvoiceRef(invoice.InvoiceRef).ToList();
-           // var products = _iProductManager.GetIssuedProductListById(invoiceId);
-            foreach (var item in invoicedOrders)
+            List<InvoiceDetails> list=new List<InvoiceDetails>();
+
+            var deliveredProducts = _iInvoiceManager.GetDeliveredProductsByInvoiceRef(invoice.InvoiceRef);
+
+            foreach (InvoiceDetails invoiceDetailse in invoicedOrders)
+            {
+                var invoiceQty = invoiceDetailse.Quantity;
+                var deliveredQty = deliveredProducts.ToList().FindAll(n => n.ProductId == invoiceDetailse.ProductId).Count;
+                if (invoiceQty != deliveredQty)
+                {
+                    invoiceDetailse.Quantity = invoiceQty - deliveredQty;
+                    list.Add(invoiceDetailse);
+                }
+                
+            }
+
+            // var products = _iProductManager.GetIssuedProductListById(invoiceId);
+            foreach (var item in list)
             {
                 foreach (var code in barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == item.ProductId))
                 {
@@ -223,7 +237,7 @@ namespace NBL.Areas.Manager.Controllers
 
             }
 
-            return Json(invoicedOrders, JsonRequestBehavior.AllowGet);
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
         public ActionResult Calan(int id)
         {

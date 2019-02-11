@@ -143,7 +143,6 @@ namespace NBL.BLL
             {
                 var productId = Convert.ToInt32(productCode.Substring(0, 3));
                 product =GetProductByProductId(productId);
-              
                 var barcodeList = ScannedBarCodes(filePath);
                 isScannedBefore=IsScannedBefore(barcodeList, productCode);
             }

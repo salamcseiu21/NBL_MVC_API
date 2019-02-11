@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using NBL.Areas.Admin.DAL.Contracts;
 using NBL.DAL;
 using NBL.Models;
@@ -9,6 +10,7 @@ using NBL.Models.EntityModels.Clients;
 using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.Masters;
 using NBL.Models.EntityModels.Orders;
+using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Admin.DAL
 {
@@ -164,6 +166,7 @@ namespace NBL.Areas.Admin.DAL
                 CommandObj.Parameters.AddWithValue("@InvoiceRef", anInvoice.InvoiceRef);
                 CommandObj.Parameters.AddWithValue("@TransactionRef", anInvoice.TransactionRef);
                 CommandObj.Parameters.AddWithValue("@InvoiceNo", anInvoice.InvoiceNo);
+                CommandObj.Parameters.AddWithValue("@TotalQuantity", orderItems.Sum(n => n.Quantity));
                 CommandObj.Parameters.AddWithValue("@ClientId", anInvoice.ClientId);
                 CommandObj.Parameters.AddWithValue("@InvoiceByUserId", anInvoice.InvoiceByUserId);
                 CommandObj.Parameters.AddWithValue("@BranchId", anInvoice.BranchId);
@@ -561,9 +564,7 @@ namespace NBL.Areas.Admin.DAL
                         ProductName = reader["ProductName"].ToString(),
                         Quantity = Convert.ToInt32(reader["Quantity"]),
                         ProductCategoryName = reader["ProductCategoryName"].ToString(),
-                        UnitPrice = Convert.ToDecimal(reader["UnitPrice"]),
-                        InvoicedQuantity =Convert.ToInt32(reader["InvoicedQuantity"]),
-                        DeliveredQuantity=Convert.ToInt32(reader["DeliveredQuantity"])
+                        UnitPrice = Convert.ToDecimal(reader["UnitPrice"])
 
                     };
                     invoiceDetails.Add(invoice);
@@ -604,6 +605,7 @@ namespace NBL.Areas.Admin.DAL
                           InvoiceByUserId = Convert.ToInt32(reader["InvoiceByUserId"]),
                           InvoiceNo = Convert.ToInt32(reader["InvoiceNo"]),
                           InvoiceRef = reader["InvoiceRef"].ToString(),
+                          Quantity = Convert.ToInt32(reader["TotalQuantity"]),
                           InvoiceStatus = Convert.ToInt16(reader["InvoiceStatus"]),
                           Cancel = Convert.ToChar(reader["Cancel"]),
                           BranchId = Convert.ToInt16(reader["BranchId"]),
@@ -640,6 +642,42 @@ namespace NBL.Areas.Admin.DAL
                 CommandObj.Parameters.Clear();
             }
         }
- 
+
+        public ICollection<ViewProduct> GetDeliveredProductsByInvoiceRef(string invoiceRef)
+        {
+            try
+            {
+                List<ViewProduct> products=new List<ViewProduct>();
+                CommandObj.CommandText = "UDSP_GetDeliveredProductsByInvoiceRef";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@InvoiceRef", invoiceRef);
+                ConnectionObj.Open();
+               
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    products.Add(new ViewProduct
+                    {
+                        ProductName = reader["ProductName"].ToString(),
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
+                    });
+                }
+                
+                reader.Close();
+                return products;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not get Delivered Qty by  invoice ref", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
     }
 }

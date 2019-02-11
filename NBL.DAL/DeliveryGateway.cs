@@ -150,7 +150,7 @@ namespace NBL.DAL
                         DeliveryDate = Convert.ToDateTime(reader["DeliveryDate"]),
                         TransactionRef = reader["TransactionRef"].ToString(),
                         DeliveredByUserId = Convert.ToInt32(reader["DeliveredByUserId"]),
-                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                       // Quantity = Convert.ToInt32(reader["Quantity"]),
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         ProductName = reader["ProductName"].ToString(),
                         CategoryId=Convert.ToInt32(reader["CategoryId"]),

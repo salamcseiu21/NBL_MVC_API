@@ -52,12 +52,12 @@ namespace NBL.BLL
             return _iInventoryGateway.GetStockQtyByBranchAndProductId(branchId,productId);
         }
 
-        public string Save(List<InvoiceDetails> invoicedOrders, Delivery aDelivery,int invoiceStatus,int orderStatus)
+        public string Save(List<ScannedProduct> scannedProducts, Delivery aDelivery,int invoiceStatus,int orderStatus)
         {
 
             int maxRefNo = _iInventoryGateway.GetMaxDeliveryRefNoOfCurrentYear();
             aDelivery.DeliveryRef = GenerateDeliveryReference(maxRefNo);
-            int rowAffected = _iInventoryGateway.Save(invoicedOrders, aDelivery, invoiceStatus, orderStatus);
+            int rowAffected = _iInventoryGateway.Save(scannedProducts, aDelivery, invoiceStatus, orderStatus);
             return rowAffected > 0 ? "Saved Successfully!" : "Failed to Save";
         }
 
@@ -83,6 +83,12 @@ namespace NBL.BLL
         public int SaveScannedProductToFactoryInventory(List<ScannedProduct> scannedProducts,int userId)
         {
             return _iInventoryGateway.SaveScannedProductToFactoryInventory(scannedProducts, userId);
+        }
+
+        public bool IsThisProductSold(string scannedBarCode)
+        {
+            var scannedProduct = _iInventoryGateway.IsThisProductSold(scannedBarCode);
+            return scannedProduct != null;
         }
     }
 }

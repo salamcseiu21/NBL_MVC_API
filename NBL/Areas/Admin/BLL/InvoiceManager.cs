@@ -8,6 +8,7 @@ using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.Enums;
+using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Admin.BLL
 {
@@ -85,6 +86,11 @@ namespace NBL.Areas.Admin.BLL
         public Invoice GetInvoicedOrderByInvoiceId(int invoiceId)
         {
             return _iInvoiceGateway.GetInvoicedOrderByInvoiceId(invoiceId); 
+        }
+
+        public ICollection<ViewProduct> GetDeliveredProductsByInvoiceRef(string invoiceRef)
+        {
+            return _iInvoiceGateway.GetDeliveredProductsByInvoiceRef(invoiceRef);
         }
     }
 }

@@ -299,6 +299,41 @@ namespace NBL.DAL
             }
         }
 
+        public ScannedProduct IsThisProductSold(string scannedBarCode)
+        {
+            try
+            {
+
+                CommandObj.CommandText = "UDSP_IsThisProductSold";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@ScannedBarCode", scannedBarCode);
+                ConnectionObj.Open();
+                ScannedProduct product = null;
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                if (reader.Read())
+                {
+                    product = new ScannedProduct
+                    {
+                        ProductCode = reader["ProductBarCode"].ToString(),
+                        ProductName = reader["ProductName"].ToString()
+                    };
+                }
+                reader.Close();
+                return product;
+            }
+            catch (Exception exception)
+            {
+
+                throw new Exception("Could not Get  product by barcode", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
         public IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId,int companyId) 
         {
             try
@@ -468,7 +503,7 @@ namespace NBL.DAL
                 CommandObj.Parameters.Clear();
             }
         }
-        public int Save(List<InvoiceDetails> invoicedOrders, Delivery aDelivery, int invoiceStatus,int orderStatus)
+        public int Save(List<ScannedProduct> scannedProducts, Delivery aDelivery, int invoiceStatus,int orderStatus)
         {
             ConnectionObj.Open();
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
@@ -493,6 +528,7 @@ namespace NBL.DAL
                 CommandObj.Parameters.AddWithValue("@ToBranchId", aDelivery.ToBranchId);
                 CommandObj.Parameters.AddWithValue("@CompanyId", aDelivery.CompanyId);
                 CommandObj.Parameters.AddWithValue("@UserId", aDelivery.DeliveredByUserId);
+                CommandObj.Parameters.AddWithValue("@Quantity", scannedProducts.Count);
                 CommandObj.Parameters.Add("@InventoryId", SqlDbType.Int);
                 CommandObj.Parameters["@InventoryId"].Direction = ParameterDirection.Output;
                 CommandObj.Parameters.Add("@DeliveryId", SqlDbType.Int);
@@ -501,7 +537,7 @@ namespace NBL.DAL
                 int inventoryId = Convert.ToInt32(CommandObj.Parameters["@InventoryId"].Value);
                 int deliveryId = Convert.ToInt32(CommandObj.Parameters["@DeliveryId"].Value);
 
-                int rowAffected = SaveDeliveredOrderDetails(invoicedOrders, inventoryId, deliveryId);
+                int rowAffected = SaveDeliveredOrderDetails(scannedProducts, inventoryId, deliveryId);
                 if (rowAffected > 0)
                 {
                     sqlTransaction.Commit();
@@ -521,19 +557,18 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public int SaveDeliveredOrderDetails(List<InvoiceDetails> invoicedOrders, int inventoryId,int deliveryId)
+        public int SaveDeliveredOrderDetails(List<ScannedProduct> scannedProducts, int inventoryId,int deliveryId)
         {
             int i = 0;
-            foreach (var item in invoicedOrders)
+            foreach (var item in scannedProducts)
             {
                
                 CommandObj.CommandText = "spSaveDeliveredOrderDetails";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.Clear();
                 CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
-                CommandObj.Parameters.AddWithValue("@ProductId", item.ProductId);
-                CommandObj.Parameters.AddWithValue("@Quantity", item.Quantity);
-                CommandObj.Parameters.AddWithValue("@ProductBarcode", item.ScannedProductCodes);
+                CommandObj.Parameters.AddWithValue("@ProductId", Convert.ToInt32(item.ProductCode.Substring(0,3)));
+                CommandObj.Parameters.AddWithValue("@ProductBarcode", item.ProductCode);
                 CommandObj.Parameters.AddWithValue("@Status", 1);
                 CommandObj.Parameters.AddWithValue("@DeliveryId", deliveryId);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
