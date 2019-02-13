@@ -268,10 +268,15 @@ namespace NBL.Areas.Factory.Controllers
                 string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
                 var filePath = Server.MapPath("~/Files/" + fileName);
                 ScannedProduct scannedProduct =_iProductManager.GetProductByBarCode(model.ProductCode);
+                //------------If this barcode dose not exits...............
                 if (scannedProduct == null)
                 {
                     var result = _iProductManager.AddProductToTextFile(model.ProductCode, filePath);
-                    successErrorModel.Message = result;
+                    if (!result.Contains("Added"))
+                    {
+                        successErrorModel.Message = result;
+                    }
+                   
                 }
                 
 
@@ -288,26 +293,6 @@ namespace NBL.Areas.Factory.Controllers
             return Json(successErrorModel, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
-        public JsonResult LoadScannedProducts()
-        {
-            ScanProductViewModel model = new ScanProductViewModel();
-            string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
-            var filePath = Server.MapPath("~/Files/" + fileName);
-            if (System.IO.File.Exists(filePath))
-            {
-                //if the file is exists read the file
-                model.BarCodes = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
-            }
-
-            else
-            {
-                //if the file does not exists create the file
-                System.IO.File.Create(filePath).Close();
-            }
-
-            return Json(model.BarCodes,JsonRequestBehavior.AllowGet);
-        }
 
         [HttpPost]
         public ActionResult SaveProductToFactoryInventory()
@@ -336,6 +321,28 @@ namespace NBL.Areas.Factory.Controllers
                 string message = exception.InnerException?.Message;
                 return RedirectToAction("AddProductToTempFile");
             }
+        }
+
+
+        [HttpGet]
+        public JsonResult LoadScannedProducts()
+        {
+            ScanProductViewModel model = new ScanProductViewModel();
+            string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
+            var filePath = Server.MapPath("~/Files/" + fileName);
+            if (System.IO.File.Exists(filePath))
+            {
+                //if the file is exists read the file
+                model.BarCodes = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
+            }
+
+            else
+            {
+                //if the file does not exists create the file
+                System.IO.File.Create(filePath).Close();
+            }
+
+            return Json(model.BarCodes, JsonRequestBehavior.AllowGet);
         }
     }
 }

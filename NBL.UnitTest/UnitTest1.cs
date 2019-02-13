@@ -10,7 +10,7 @@ namespace NBL.UnitTest
         [TestMethod]
         public void TestMethod()
         {
-            var result = Validator.ValidateProductBarCode("1025896321547");
+            var result = Validator.ValidateProductBarCode("122120219123654");
             Assert.AreEqual(true, result);
         }
         [TestMethod]

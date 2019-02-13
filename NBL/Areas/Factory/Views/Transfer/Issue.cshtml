@@ -281,7 +281,7 @@
 
         if (a < 0) {
             productIdlist.push(id);
-            var stock = 5000;
+            var stock = $("#StockQty").val();
             var qty = $("#Quantity").val();
             if (stock - qty >= 0) {
                 var $form = $(btnClicked).parents('form');
@@ -322,7 +322,7 @@
         //alert(quantiy);
         //var oldQty = btnClicked.value;
         //alert(oldQty);
-        var stock = 5000;
+        var stock = $("#StockQty").val();
         var q = stock - btnClicked.value;
         if (q>=0) {
            // alert("OK");

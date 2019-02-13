@@ -28,6 +28,7 @@ namespace NBL.Models.EntityModels.Deliveries
         [Required]
         [Display(Name = "Product Name")]
         public string ProductName { get; set; }
+        public string ProductBarCode { get; set; }
         [Required]
         public int CategoryId { get; set; }
         public int CompanyId { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
@@ -23,6 +24,7 @@ namespace NBL.DAL
                 CommandObj.Parameters.AddWithValue("@DeliveryDate", aDelivery.DeliveryDate);
                 CommandObj.Parameters.AddWithValue("@DeliveryRef", aDelivery.DeliveryRef);
                 CommandObj.Parameters.AddWithValue("@TransactionRef", aDelivery.TransactionRef);
+                CommandObj.Parameters.AddWithValue("@DeliveredQuantity", scannedProducts.ToList().Count);
                 CommandObj.Parameters.AddWithValue("@Transportation", aDelivery.Transportation);
                 CommandObj.Parameters.AddWithValue("@DriverName", aDelivery.DriverName);
                 CommandObj.Parameters.AddWithValue("@TransportationCost", aDelivery.TransportationCost);

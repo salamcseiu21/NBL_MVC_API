@@ -28,5 +28,7 @@ namespace NBL.DAL.Contracts
        TransactionModel GetTransactionModelById(long id);
        int SaveScannedProductToFactoryInventory(List<ScannedProduct> scannedProducts,int userId);
        ScannedProduct IsThisProductSold(string scannedBarCode);
+       ICollection<ViewProduct> OldestProductByBarcode(string scannedBarCode);
+       ScannedProduct IsThisProductDispachedFromFactory(string scannedBarCode);
    }
 }

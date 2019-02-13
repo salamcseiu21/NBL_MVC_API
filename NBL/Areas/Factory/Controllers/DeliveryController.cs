@@ -6,6 +6,7 @@ using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
+using NBL.Models.Validators;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.TransferProducts;
@@ -19,12 +20,15 @@ namespace NBL.Areas.Factory.Controllers
         private readonly IProductManager _iProductManager;
         private readonly IFactoryDeliveryManager _iFactoryDeliveryManager;
         private readonly IBranchManager _iBranchManager;
+
+        private readonly IInventoryManager _iInventoryManager;
         // GET: Factory/Delivery
-        public DeliveryController(IProductManager iProductManager,IFactoryDeliveryManager iFactoryDeliveryManager,IBranchManager iBranchManager)
+        public DeliveryController(IProductManager iProductManager,IFactoryDeliveryManager iFactoryDeliveryManager,IBranchManager iBranchManager,IInventoryManager iInventoryManager)
         {
             _iProductManager = iProductManager;
             _iFactoryDeliveryManager = iFactoryDeliveryManager;
             _iBranchManager = iBranchManager;
+            _iInventoryManager = iInventoryManager;
         }
         public ActionResult DeliverableTransferIssueList() 
         {
@@ -60,53 +64,64 @@ namespace NBL.Areas.Factory.Controllers
             SuccessErrorModel model = new SuccessErrorModel();
             try
             {
-
-                var id = Convert.ToInt32(collection["TransferIssueId"]);
+               
                 string scannedBarCode = collection["ProductCode"];
-                string fileName = "Deliverd_Issued_Product_For_" + id;
+                var transferIssueId = Convert.ToInt32(collection["TransferIssueId"]);
+                string fileName = "Deliverd_Issued_Product_For_" + transferIssueId;
                 var filePath = Server.MapPath("~/Files/" + fileName);
-                var barcodeList = _iProductManager.ScannedBarCodes(filePath);
-                var issuedProducts = _iProductManager.GetTransferIssueDetailsById(id);
-                bool isScannedBefore = _iProductManager.IsScannedBefore(barcodeList, scannedBarCode);
-                int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
-                var transferIssueDetailses = issuedProducts as TransferIssueDetails[] ?? issuedProducts.ToArray();
-                bool isValied = transferIssueDetailses.Select(n => n.ProductId).Contains(productId);
-                bool isScannComplete = transferIssueDetailses.ToList().FindAll(n=>n.ProductId==productId).Sum(n => n.Quantity) == barcodeList.FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3))==productId).Count;
+                var barcodeList = _iProductManager.ScannedProducts(filePath);
 
-                if (scannedBarCode.Length != 13)
+                bool exists = barcodeList.Select(n=>n.ProductCode).Contains(scannedBarCode);
+                bool isDeliveredBefore = _iInventoryManager.IsThisProductDispachedFromFactory(scannedBarCode);
+
+                //var oldestProducts = _iInventoryManager.OldestProductByBarcode(scannedBarCode).ToList();
+                
+                var issuedProducts = _iProductManager.GetTransferIssueDetailsById(transferIssueId);
+               
+
+                var isValied = Validator.ValidateProductBarCode(scannedBarCode);
+
+                int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
+
+                bool isContains = issuedProducts.Select(n => n.ProductId).Contains(productId);
+                bool isScannComplete = issuedProducts.ToList().FindAll(n=>n.ProductId==productId).Sum(n => n.Quantity) == barcodeList.FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3))==productId).Count;
+
+                if (!isContains)
                 {
-                    model.Message = "<p style='color:red'> Invalid Barcode</p>";
+                    model.Message = "<p style='color:red'> Invalid Product Scanned.....</p>";
+                    return Json(model, JsonRequestBehavior.AllowGet);
                 }
-                if (isScannedBefore)
-                {
-                    model.Message = "<p style='color:red'> Already Scanned</p>";
-                }
+
                 if (isScannComplete)
                 {
                     model.Message = "<p style='color:green'> Scan Completed.</p>";
+                   return Json(model, JsonRequestBehavior.AllowGet);
                 }
-
-                if (isValied && !isScannedBefore && scannedBarCode.Length == 13 && !isScannComplete)
+                
+                if (isValied && !exists && !isDeliveredBefore)
                 {
                     _iProductManager.AddProductToTextFile(scannedBarCode, filePath);
                 }
             }
-            catch (FormatException exception)
+                catch (FormatException exception)
             {
-                model.Message = "<p style='color:red'>" + exception.GetType() + "</p>";
+              model.Message = "<p style='color:red'>Invalid Barcode</p>";
+              return  Json(model, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
                 
                     model.Message = "<p style='color:red'>" + exception.Message + "</p>";
+              return  Json(model, JsonRequestBehavior.AllowGet);
             }
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
 
-        public ActionResult SaveProductToFactoryInventory(FormCollection collection)
+        public ActionResult SaveDispatchInformation(FormCollection collection) 
         {
             int transferIssueId = Convert.ToInt32(collection["TransferIssueId"]);
+            var products = _iProductManager.GetIssuedProductListById(transferIssueId);
             string fileName = "Deliverd_Issued_Product_For_" + transferIssueId;
             var filePath = Server.MapPath("~/Files/" + fileName);
             var scannedProducts = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
@@ -128,13 +143,19 @@ namespace NBL.Areas.Factory.Controllers
                 FromBranchId = transferIssue.FromBranchId
             };
 
-            string result = _iFactoryDeliveryManager.SaveDeliveryInformation(aDelivery, scannedProducts);
-            if (result.StartsWith("Sa"))
+            if (scannedProducts.Count == products.Sum(n=>n.Quantity))
             {
-                System.IO.File.Create(filePath).Close();
-                //---------------Send mail to branch before redirect--------------
-                return RedirectToAction("DeliverableTransferIssueList");
+                string result = _iFactoryDeliveryManager.SaveDeliveryInformation(aDelivery, scannedProducts);
+                if (result.StartsWith("Sa"))
+                {
+                    System.IO.File.Create(filePath).Close();
+                    //---------------Send mail to branch before redirect--------------
+                    return RedirectToAction("DeliverableTransferIssueList");
+                }
+                return RedirectToAction("Delivery", new { id = transferIssueId });
             }
+            TempData["QuantityNotSame"]= "Issued Quantity and Scanned Quantity Should be same";
+           
             return RedirectToAction("Delivery",new {id= transferIssueId });
         }
 

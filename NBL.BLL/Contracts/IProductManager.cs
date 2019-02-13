@@ -32,7 +32,7 @@ namespace NBL.BLL.Contracts
         bool AddProductToInventory(List<Product> products);
         List<Product> GetIssuedProductListById(int id);
         bool IsScannedBefore(List<ScannedProduct> barcodeList, string scannedBarCode);
-        List<ScannedProduct> ScannedBarCodes(string filePath);
+        List<ScannedProduct> ScannedProducts(string filePath);
         ScannedProduct GetProductByBarCode(string barCode); 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Orders;
@@ -59,6 +60,10 @@ namespace NBL.BLL.Contracts
             return _iDeliveryGateway.GetDeliveredOrderDetailsByDeliveryId(deliveryId);
         }
 
+        public IEnumerable<ViewProduct> GetDeliveredProductsByDeliveryIdAndProductId(long deliveryId,int productId) 
+        {
+            return  _iDeliveryGateway.GetDeliveredProductsByDeliveryIdAndProductId(deliveryId,productId);
+        }
         public IEnumerable<DeliveryModel> GetAllInvoiceOrderListByBranchId(int branchId)
         {
             return _iDeliveryGateway.GetAllInvoiceOrderListByBranchId(branchId);
@@ -68,6 +73,10 @@ namespace NBL.BLL.Contracts
         {
             Delivery delivery =GetOrderByDeliveryId(deliveryId);
             var details = GetDeliveredOrderDetailsByDeliveryId(deliveryId);
+            foreach (DeliveryDetails deliveryDetailse in details)
+            {
+                deliveryDetailse.DeliveredProducts = GetDeliveredProductsByDeliveryIdAndProductId(deliveryId,deliveryDetailse.ProductId).ToList();
+            }
             Order order = _iOrderManager.GetOrderInfoByTransactionRef(delivery.TransactionRef);
             var client = _iClientManager.GetClientDeailsById(order.ClientId);
             var chalan = new ViewChalanModel

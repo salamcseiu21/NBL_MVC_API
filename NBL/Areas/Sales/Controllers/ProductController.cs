@@ -9,6 +9,7 @@ using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.TransferProducts;
+using NBL.Models.Validators;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
 
@@ -200,25 +201,17 @@ namespace NBL.Areas.Sales.Controllers
                 var filePath = Server.MapPath("~/Files/" + fileName);
                 var barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
                 var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id);
-                var receivesProductIdList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id).Select(n => n.ProductId);
-                bool isScannedBefore=barcodeList.Select(n => n.ProductCode).Contains(scannedBarCode);
+                var receivesProductCodeList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id).Select(n => n.ProductBarCode);
+                var isvalid = Validator.ValidateProductBarCode(scannedBarCode);
 
                 bool isScannComplete = receivesProductList.ToList().FindAll(n=>n.ProductId==productId).ToList().Count == barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == productId).Count;
-                if (scannedBarCode.Length != 13)
-                {
-                    model.Message = "<p style='color:red'> Invalid Barcode</p>";
-                }
-                if (isScannedBefore)
-                {
-                    model.Message = "<p style='color:red'> Already Scanned</p>";
-                }
 
                 if (isScannComplete)
                 {
                     model.Message = "<p style='color:green'> Scanned Complete</p>";
                 }
 
-                if (receivesProductIdList.Contains(productId) && scannedBarCode.Length==13 &&  !isScannedBefore && !isScannComplete)
+                if (receivesProductCodeList.Contains(scannedBarCode) && !isScannComplete && isvalid)
                 {
                     _iProductManager.AddProductToTextFile(scannedBarCode, filePath);
                 }
@@ -288,10 +281,10 @@ namespace NBL.Areas.Sales.Controllers
                 foreach (TransactionModel product in products)
                 {
 
-                    code += product.ProductBarCodes + ",";
+                    code += product.ProductBarCode + ",";
 
                 }
-                transactionModel.ProductBarCodes = code.TrimEnd(',');
+                transactionModel.ProductBarCode = code.TrimEnd(',');
 
             }
 
@@ -304,6 +297,7 @@ namespace NBL.Areas.Sales.Controllers
                 }
 
             }
+            
             return Json(receivesProductList, JsonRequestBehavior.AllowGet);
         }
 

@@ -135,15 +135,15 @@ namespace NBL.BLL
 
         public string AddProductToTextFile(string productCode, string filePath)
         {
-            bool result = true;
             Product product = null;
             bool isScannedBefore = false;
             bool isValid = Validator.ValidateProductBarCode(productCode);
+            
             if (isValid)
             {
                 var productId = Convert.ToInt32(productCode.Substring(0, 3));
                 product =GetProductByProductId(productId);
-                var barcodeList = ScannedBarCodes(filePath);
+                var barcodeList = ScannedProducts(filePath);
                 isScannedBefore=IsScannedBefore(barcodeList, productCode);
             }
             if (!isValid)
@@ -154,13 +154,13 @@ namespace NBL.BLL
             {
                 return "<p style='color:red'> Already exits </p>";
             }
-            if (product != null)
+            if (product == null)
             {
-
-                result = _iProductGateway.AddProductToTextFile(productCode, filePath);
-
+                return "<p style='color:red'> Invalid Product </p>";
             }
-            return result ? "<p class='text-green'>Added Successfully!</p>" : "<p style='color:red'> Failed to Add </p>";
+
+             var result = _iProductGateway.AddProductToTextFile(productCode, filePath);
+             return result ? "<p class='text-green'>Added Successfully!</p>" : "<p style='color:red'> Failed to Add </p>";
         }
 
         public bool AddProductToInventory(List<Product> products)
@@ -220,7 +220,7 @@ namespace NBL.BLL
             return _iProductGateway.PendingProductionNote();
         }
 
-        public List<ScannedProduct> ScannedBarCodes(string filePath)
+        public List<ScannedProduct> ScannedProducts(string filePath)
         {
             List<ScannedProduct> barcodeList = new List<ScannedProduct>();
             if (System.IO.File.Exists(filePath))

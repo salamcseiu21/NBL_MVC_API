@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Web.UI.WebControls;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Branches;
 using NBL.Models.EntityModels.Deliveries;
-using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
@@ -36,7 +34,8 @@ namespace NBL.DAL
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         ProductName = reader["ProductName"].ToString(),
                         CategoryId = Convert.ToInt32(reader["CategoryId"]),
-                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        ProductCategoryName = reader["ProductCategoryName"].ToString()
                     });
                 }
 
@@ -195,7 +194,7 @@ namespace NBL.DAL
                         VehicleNo = reader["VehicleNo"].ToString(),
                         DeliveryId = Convert.ToInt32(reader["DeliveryId"]),
                         CompanyId = Convert.ToInt32(reader["CompanyId"]),
-                        ProductBarCodes = reader["ProductBarCode"].ToString()
+                        ProductBarCode = reader["ProductBarCode"].ToString()
                     });
                 }
 
@@ -334,6 +333,76 @@ namespace NBL.DAL
             }
         }
 
+        public ICollection<ViewProduct> OldestProductByBarcode(string scannedBarCode)
+        {
+            try
+            {
+                List<ViewProduct> products=new List<ViewProduct>();
+                CommandObj.CommandText = "UDSP_OldestProductByBarcode";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@BarCode", scannedBarCode);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while(reader.Read())
+                {
+                    products.Add(new ViewProduct
+                    {
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductBarCode = reader["ProductBarCode"].ToString(),
+                        ProductionDate =Convert.ToDateTime(reader["Production_Date"])
+                        
+                    });
+                }
+                reader.Close();
+                return products;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not Get  Oldest product qty by barcode", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
+        public ScannedProduct IsThisProductDispachedFromFactory(string scannedBarCode)
+        {
+            try
+            {
+
+                CommandObj.CommandText = "UDSP_IsThisProductDispachedFromFactory";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@ScannedBarCode", scannedBarCode);
+                ConnectionObj.Open();
+                ScannedProduct product = null;
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                if (reader.Read())
+                {
+                    product = new ScannedProduct
+                    {
+                        ProductCode = reader["ProductBarCode"].ToString(),
+                        ProductName = reader["ProductName"].ToString()
+                    };
+                }
+                reader.Close();
+                return product;
+            }
+            catch (Exception exception)
+            {
+
+                throw new Exception("Could not Get  product by barcode", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
         public IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId,int companyId) 
         {
             try
@@ -352,7 +421,7 @@ namespace NBL.DAL
                         FromBranchId = Convert.ToInt32(reader["FromBranchId"]),
                         ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
                         UserId = Convert.ToInt32(reader["DeliveredByUserId"]),
-                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        Quantity = Convert.ToInt32(reader["TotalQuantity"]),
                         TransactionDate = Convert.ToDateTime(reader["SysDateTime"]),
                         DeliveryRef = reader["DeliveryRef"].ToString(),
                         Transportation = reader["Transportation"].ToString(),

@@ -37,6 +37,10 @@
                 {
                     <div class="form-horizontal">
                         <h3 class="text-center">Scan Product</h3>
+                        @if (TempData["QuantityNotSame"] != null)
+                        {
+                            <p class="text-danger">@TempData["QuantityNotSame"]</p>
+                        }
                         <div id="message" style="display:none;font-weight:bold;font-size:20px" class="text-center">
                         </div>
                         <div class="form-group">

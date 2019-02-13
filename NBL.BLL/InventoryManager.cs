@@ -90,5 +90,16 @@ namespace NBL.BLL
             var scannedProduct = _iInventoryGateway.IsThisProductSold(scannedBarCode);
             return scannedProduct != null;
         }
+
+        public ICollection<ViewProduct> OldestProductByBarcode(string scannedBarCode)
+        {
+            return _iInventoryGateway.OldestProductByBarcode(scannedBarCode);
+        }
+
+        public bool IsThisProductDispachedFromFactory(string scannedBarCode)
+        {
+            var scannedProduct = _iInventoryGateway.IsThisProductDispachedFromFactory(scannedBarCode); 
+            return scannedProduct != null;
+        }
     }
 }

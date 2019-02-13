@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.InteropServices;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Transports;
+using NBL.Models.ViewModels;
 
 namespace NBL.DAL
 {
@@ -150,9 +152,10 @@ namespace NBL.DAL
                         DeliveryDate = Convert.ToDateTime(reader["DeliveryDate"]),
                         TransactionRef = reader["TransactionRef"].ToString(),
                         DeliveredByUserId = Convert.ToInt32(reader["DeliveredByUserId"]),
-                       // Quantity = Convert.ToInt32(reader["Quantity"]),
+                        Quantity = reader["DeliveredQuantity"] is DBNull ? 0 : Convert.ToInt32(reader["DeliveredQuantity"]),
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         ProductName = reader["ProductName"].ToString(),
+                        //ProductBarCode = reader["ProductBarCode"].ToString(),
                         CategoryId=Convert.ToInt32(reader["CategoryId"]),
                         CategoryName=reader["ProductCategoryName"].ToString()
                     };
@@ -378,6 +381,51 @@ namespace NBL.DAL
             catch (Exception exception)
             {
                 throw new Exception("Could not Collect Delivered Order by Invoice ref", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
+        public IEnumerable<ViewProduct> GetDeliveredProductsByDeliveryIdAndProductId(long deliveryId, int productId)
+        {
+            try
+            {
+
+                CommandObj.CommandText = "GetDeliveredProductsByDeliveryIdAndProductId";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@DeliveryId", deliveryId);
+                CommandObj.Parameters.AddWithValue("@productId", productId);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<ViewProduct> products = new List<ViewProduct>();
+                while (reader.Read())
+                {
+                    ViewProduct aModel = new ViewProduct
+                    {
+                        
+                        ProductId = productId,
+                        ProductName = reader["ProductName"].ToString(),
+                        ProductBarCode = reader["ProductBarCode"].ToString(),
+                        CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                        ProductCategoryName = reader["ProductCategoryName"].ToString()
+                    };
+                    products.Add(aModel);
+                }
+                reader.Close();
+                return products;
+
+            }
+            catch (SqlException exception)
+            {
+                throw new Exception("Could not Collect Delivered products due to Db Exception", exception);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not Collect Delivered products Orders", exception);
             }
             finally
             {

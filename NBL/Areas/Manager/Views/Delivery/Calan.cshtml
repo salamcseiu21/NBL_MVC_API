@@ -71,6 +71,7 @@
                             <tr>
                                 <th>Sl No</th>
                                 <th>Product Name </th>
+                                <th>Product Codes </th>
                                 <th class="text-right">Quantity</th>
                                
                             </tr>
@@ -81,6 +82,8 @@
 
                             @{
                                 int rowNo = 0;
+                                int totalQty = 0;
+                             
                                 foreach (IGrouping<string, DeliveryDetails> orderDetailses in Model.DeliveryDetailses.ToList().GroupBy(n => n.CategoryName))
                                 {
                                     <tr style="border: none">
@@ -88,11 +91,20 @@
                                     </tr>
                                     foreach (DeliveryDetails item in orderDetailses)
                                     {
-
+                                        string codes = "";
+                                        totalQty += item.DeliveredProducts.Count;
                                         <tr>
                                             <td>  @(rowNo += 1)</td>
                                             <td>@item.ProductName</td>
-                                            <td class="text-right">@item.Quantity</td>
+                                         
+                                            <td>@foreach (var i in item.DeliveredProducts)
+                                                {
+                                                    codes += i.ProductBarCode + ",";
+                                                }
+                                                @codes.TrimEnd(',')
+                                                
+                                            </td>
+                                            <td class="text-right">@item.DeliveredProducts.Count</td>
                                             
                                         </tr>
                                     }
@@ -107,11 +119,12 @@
                             <tr>
                                 
                                 <th></th>
+                                <th></th>
                                 <th class="text-right">
                                     Total
                                 </th>
                                 <th class="text-right">
-                                    @Model.DeliveryDetailses.ToList().Sum(n => n.Quantity)
+                                    @totalQty
                                 </th>
                             
 

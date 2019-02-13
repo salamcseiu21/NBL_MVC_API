@@ -70,14 +70,15 @@ namespace NBL.Areas.Manager.Controllers
                 int invoiceId = Convert.ToInt32(collection["InvoiceId"]);
                 var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(invoiceId);
                 var deliveredQty = _iInvoiceManager.GetDeliveredProductsByInvoiceRef(invoice.InvoiceRef).Count;
+                var remainingToDeliverQty = invoice.Quantity - deliveredQty;
                 string fileName = "Ordered_Product_List_For_" + invoiceId;
                 var filePath = Server.MapPath("~/Files/" + fileName);
                     //if the file is exists read the file
                 var barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
-                int quantity = deliveredQty + barcodeList.Count;
+
                 int invoiceStatus = Convert.ToInt32(InvoiceStatus.PartiallyDelivered);
                 int orderStatus = Convert.ToInt32(OrderStatus.PartiallyDelivered);
-                if (invoice.Quantity == quantity)
+                if (remainingToDeliverQty == barcodeList.Count)
                 {
                     invoiceStatus = Convert.ToInt32(InvoiceStatus.Delivered);
                     orderStatus = Convert.ToInt32(OrderStatus.Delivered);
@@ -101,6 +102,7 @@ namespace NBL.Areas.Manager.Controllers
                 string result = _iInventoryManager.Save(barcodeList, aDelivery, invoiceStatus,orderStatus);
                 if (result.StartsWith("S"))
                 {
+                    System.IO.File.Create(filePath).Close();
                     return RedirectToAction("OrderList");
                 }
                 return View();
@@ -122,15 +124,14 @@ namespace NBL.Areas.Manager.Controllers
 
                 var id = Convert.ToInt32(collection["InvoiceId"]);
                 var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(id);
-
                 string scannedBarCode = collection["ProductCode"];
                 int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
                 string fileName = "Ordered_Product_List_For_" + id;
                 var filePath = Server.MapPath("~/Files/" + fileName);
-                var barcodeList = _iProductManager.ScannedBarCodes(filePath);
+                var barcodeList = _iProductManager.ScannedProducts(filePath);
                 bool isScannedBefore = _iProductManager.IsScannedBefore(barcodeList, scannedBarCode);
-                bool isSold = _iInventoryManager.IsThisProductSold(scannedBarCode);
 
+                bool isSold = _iInventoryManager.IsThisProductSold(scannedBarCode);
                 //------------Get invoced products-------------
                 var invoicedOrders = _iInvoiceManager.GetInvoicedOrderDetailsByInvoiceRef(invoice.InvoiceRef).ToList();
                 List<InvoiceDetails> list = new List<InvoiceDetails>();
@@ -149,11 +150,6 @@ namespace NBL.Areas.Manager.Controllers
                 }
                 bool isValied = list.Select(n => n.ProductId).Contains(productId);
                 bool isScannComplete = list.ToList().FindAll(n=>n.ProductId==productId).Sum(n=>n.Quantity) == barcodeList.FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3))==productId).Count;
-
-                if (scannedBarCode.Length != 13)
-                {
-                    model.Message = "<p style='color:red'> Invalid Barcode</p>";
-                }
                 if (isScannedBefore)
                 {
                     model.Message = "<p style='color:red'> Already Scanned</p>";
