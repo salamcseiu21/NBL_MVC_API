@@ -28,5 +28,6 @@ namespace NBL.BLL.Contracts
        bool IsThisProductSold(string scannedBarCode);
        ICollection<ViewProduct> OldestProductByBarcode(string scannedBarCode);
        bool IsThisProductDispachedFromFactory(string scannedBarCode);
+       bool IsThisProductAlreadyInFactoryInventory(string scannedBarCode); 
    }
 }

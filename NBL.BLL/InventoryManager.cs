@@ -5,7 +5,6 @@ using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
-using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Enums;
 using NBL.Models.ViewModels;
@@ -99,6 +98,12 @@ namespace NBL.BLL
         public bool IsThisProductDispachedFromFactory(string scannedBarCode)
         {
             var scannedProduct = _iInventoryGateway.IsThisProductDispachedFromFactory(scannedBarCode); 
+            return scannedProduct != null;
+        }
+
+        public bool IsThisProductAlreadyInFactoryInventory(string scannedBarCode)
+        {
+            var scannedProduct = _iInventoryGateway.IsThisProductAlreadyInFactoryInventory(scannedBarCode); 
             return scannedProduct != null;
         }
     }

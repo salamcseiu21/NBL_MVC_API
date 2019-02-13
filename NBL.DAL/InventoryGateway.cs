@@ -403,6 +403,41 @@ namespace NBL.DAL
             }
         }
 
+        public ScannedProduct IsThisProductAlreadyInFactoryInventory(string scannedBarCode)
+        {
+            try
+            {
+
+                CommandObj.CommandText = "UDSP_IsThisProductAlreadyInFactoryInventory";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@ScannedBarCode", scannedBarCode);
+                ConnectionObj.Open();
+                ScannedProduct product = null;
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                if (reader.Read())
+                {
+                    product = new ScannedProduct
+                    {
+                        ProductCode = reader["ProductBarCode"].ToString(),
+                        ProductName = reader["ProductName"].ToString()
+                    };
+                }
+                reader.Close();
+                return product;
+            }
+            catch (Exception exception)
+            {
+
+                throw new Exception("Could not Get  product by barcode", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
         public IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId,int companyId) 
         {
             try
@@ -498,9 +533,6 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
-        
-
         public int SaveReceiveProductDetails(List<ScannedProduct> receiveProductList, int inventoryId)
         {
             int i = 0;

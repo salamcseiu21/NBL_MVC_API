@@ -10,6 +10,7 @@ using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Productions;
 using NBL.Models.EntityModels.TransferProducts;
+using NBL.Models.Validators;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
 
@@ -261,22 +262,37 @@ namespace NBL.Areas.Factory.Controllers
         [HttpPost]
 
         public JsonResult AddProductToTempFile(ScanProductViewModel model)
-        {
+      {
             SuccessErrorModel successErrorModel = new SuccessErrorModel();
             try
             {
                 string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
-                var filePath = Server.MapPath("~/Files/" + fileName);
-                ScannedProduct scannedProduct =_iProductManager.GetProductByBarCode(model.ProductCode);
-                //------------If this barcode dose not exits...............
-                if (scannedProduct == null)
+                string filePath = Server.MapPath("~/Files/" + fileName);
+                bool isValid= Validator.ValidateProductBarCode(model.ProductCode);
+                if (isValid)
                 {
-                    var result = _iProductManager.AddProductToTextFile(model.ProductCode, filePath);
-                    if (!result.Contains("Added"))
+                    bool isExists = _iInventoryManager.IsThisProductAlreadyInFactoryInventory(model.ProductCode); 
+                    //------------If this barcode dose not exits...............
+                    if (!isExists)
                     {
-                        successErrorModel.Message = result;
+                        var result = _iProductManager.AddProductToTextFile(model.ProductCode, filePath);
+                        if (!result.Contains("Added"))
+                        {
+                            successErrorModel.Message = result;
+                        }
+
                     }
-                   
+                    else
+                    {
+                        successErrorModel.Message = "<p style='color:red'>This Product already exists!!</p>";
+                        return Json(successErrorModel, JsonRequestBehavior.AllowGet);
+                    }
+
+                }
+                else
+                {
+                    successErrorModel.Message = "<p style='color:red'>Invalid Barcode..</p>";
+                    return Json(successErrorModel, JsonRequestBehavior.AllowGet);
                 }
                 
 
@@ -284,11 +300,13 @@ namespace NBL.Areas.Factory.Controllers
             catch (FormatException exception)
             {
                 successErrorModel.Message = "<p style='color:red'>" + exception.GetType() + "</p>";
+                return Json(successErrorModel, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
 
                 successErrorModel.Message = "<p style='color:red'>" + exception.Message + "</p>";
+                return Json(successErrorModel, JsonRequestBehavior.AllowGet);
             }
             return Json(successErrorModel, JsonRequestBehavior.AllowGet);
         }

@@ -139,22 +139,22 @@ namespace NBL.BLL
             bool isScannedBefore = false;
             bool isValid = Validator.ValidateProductBarCode(productCode);
             
-            if (isValid)
+            if(isValid)
             {
                 var productId = Convert.ToInt32(productCode.Substring(0, 3));
                 product =GetProductByProductId(productId);
                 var barcodeList = ScannedProducts(filePath);
                 isScannedBefore=IsScannedBefore(barcodeList, productCode);
             }
-            if (!isValid)
+            if(!isValid)
             {
                 return "<p style='color:red'> Invalid Barcode </p>";
             }
-            if (isScannedBefore)
+            if(isScannedBefore)
             {
-                return "<p style='color:red'> Already exits </p>";
+                return "<p style='color:red'> Already Scanned </p>";
             }
-            if (product == null)
+            if(product == null)
             {
                 return "<p style='color:red'> Invalid Product </p>";
             }

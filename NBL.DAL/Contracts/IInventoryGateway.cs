@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NBL.Models;
+﻿using System.Collections.Generic;
 using NBL.Models.EntityModels.Deliveries;
-using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
@@ -30,5 +24,6 @@ namespace NBL.DAL.Contracts
        ScannedProduct IsThisProductSold(string scannedBarCode);
        ICollection<ViewProduct> OldestProductByBarcode(string scannedBarCode);
        ScannedProduct IsThisProductDispachedFromFactory(string scannedBarCode);
+       ScannedProduct IsThisProductAlreadyInFactoryInventory(string scannedBarCode);
    }
 }
