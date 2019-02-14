@@ -10,6 +10,7 @@ using NBL.Models.Enums;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.Sales;
+using NBL.Models.ViewModels.TransferProducts;
 
 namespace NBL.BLL
 {
@@ -116,6 +117,11 @@ namespace NBL.BLL
         public ICollection<ViewBranchStockModel> GetStockProductInBranchByBranchAndCompanyId(int branchId, int companyId)
         {
             return _iInventoryGateway.GetStockProductInBranchByBranchAndCompanyId(branchId,companyId);
+        }
+
+        public ICollection<ViewProductTransactionModel> GetAllProductTransactionFromFactory()
+        {
+            return _iInventoryGateway.GetAllProductTransactionFromFactory();
         }
     }
 }

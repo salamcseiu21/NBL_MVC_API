@@ -10,6 +10,7 @@ using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.Sales;
+using NBL.Models.ViewModels.TransferProducts;
 
 namespace NBL.BLL.Contracts
 {
@@ -32,5 +33,6 @@ namespace NBL.BLL.Contracts
        bool IsThisProductAlreadyInFactoryInventory(string scannedBarCode);
        ICollection<ViewFactoryStockModel> GetStockProductInFactory();
        ICollection<ViewBranchStockModel> GetStockProductInBranchByBranchAndCompanyId(int branchId, int companyId);
+       ICollection<ViewProductTransactionModel> GetAllProductTransactionFromFactory();
    }
 }

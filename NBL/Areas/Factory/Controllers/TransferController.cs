@@ -173,5 +173,11 @@ namespace NBL.Areas.Factory.Controllers
             return Json(new List<Product>(), JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult Transactions()
+        {
+            var transactions = _iInventoryManager.GetAllProductTransactionFromFactory();
+            return View(transactions);
+        }
+
     }
 }

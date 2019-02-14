@@ -9,6 +9,7 @@ using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.Sales;
+using NBL.Models.ViewModels.TransferProducts;
 
 namespace NBL.DAL
 {
@@ -215,7 +216,6 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
         public TransactionModel GetTransactionModelById(long id)
         {
             try
@@ -270,7 +270,6 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
         public int SaveScannedProductToFactoryInventory(List<ScannedProduct> scannedProducts,int userId)
         {
             try
@@ -298,7 +297,6 @@ namespace NBL.DAL
                throw new Exception("Could not saved scanned products",exception);
             }
         }
-
         public ScannedProduct IsThisProductSold(string scannedBarCode)
         {
             try
@@ -333,7 +331,6 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
         public ICollection<ViewProduct> OldestProductByBarcode(string scannedBarCode)
         {
             try
@@ -368,7 +365,6 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
         public ScannedProduct IsThisProductDispachedFromFactory(string scannedBarCode)
         {
             try
@@ -403,7 +399,6 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
         public ScannedProduct IsThisProductAlreadyInFactoryInventory(string scannedBarCode)
         {
             try
@@ -438,7 +433,6 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
         public ICollection<ViewFactoryStockModel> GetStockProductInFactory()
         {
             try
@@ -482,7 +476,6 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
         public ICollection<ViewBranchStockModel> GetStockProductInBranchByBranchAndCompanyId(int branchId, int companyId)
         {
             try
@@ -529,7 +522,47 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
+        public ICollection<ViewProductTransactionModel> GetAllProductTransactionFromFactory()
+        {
+            try
+            {
+                List<ViewProductTransactionModel> transactions=new List<ViewProductTransactionModel>();
+                CommandObj.CommandText = "UDSP_GetAllProductTransactionFromFactory";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    transactions.Add(new ViewProductTransactionModel
+                    {
+                        TransferIssueId = Convert.ToInt32(reader["TransferIssueId"]),
+                        TransactionRef = reader["TransferIssueRef"].ToString(),
+                        TransferIssueDate = Convert.ToDateTime(reader["TransferIssueDate"]),
+                        IssueStatus = Convert.ToInt32(reader["IssueStatus"]),
+                        QuantityIssued = Convert.ToInt32(reader["QuantityIssued"]),
+                        DeliveredQuantity = Convert.ToInt32(reader["DeliveredQuantity"]),
+                        ReceivedQuantity = Convert.ToInt32(reader["ReceivedQuantity"]),
+                        DeliveredStatus = Convert.ToInt32(reader["DeliveryStatus"]),
+                        DeliveredAt = Convert.ToDateTime(reader["DeliveredAt"]),
+                        ApprovedDateTime = Convert.ToDateTime(reader["ApproveDateTime"]),
+                        FromBranchId = Convert.ToInt32(reader["FromBranchId"]),
+                        ToBranchId = Convert.ToInt32(reader["ToBranchId"])
+                    });
+                }
+                reader.Close();
+                return transactions;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect Production transaction info",exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
         public IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId,int companyId) 
         {
             try
@@ -644,7 +677,6 @@ namespace NBL.DAL
 
             return i;
         }
-
         private int SaveReceivedProductBarCodes(string recievedProductBarCodes, int inventoryId) 
         {
             int i = 0;
@@ -666,7 +698,6 @@ namespace NBL.DAL
             }
             return i;
         }
-
         public int GetStockQtyByBranchAndProductId(int branchId, int productId)
         {
             try

@@ -4,6 +4,7 @@ using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.Sales;
+using NBL.Models.ViewModels.TransferProducts;
 
 namespace NBL.DAL.Contracts
 {
@@ -28,5 +29,6 @@ namespace NBL.DAL.Contracts
        ScannedProduct IsThisProductAlreadyInFactoryInventory(string scannedBarCode);
        ICollection<ViewFactoryStockModel> GetStockProductInFactory();
        ICollection<ViewBranchStockModel> GetStockProductInBranchByBranchAndCompanyId(int branchId, int companyId);
+       ICollection<ViewProductTransactionModel> GetAllProductTransactionFromFactory();
    }
 }
