@@ -842,7 +842,9 @@ namespace NBL.DAL
                             new ScannedProduct
                             {
                                 ProductCode = line,
-                                ProductName = GetProductByProductId(Convert.ToInt32(line.Substring(0,3))).ProductName
+                                ProductName = GetProductByProductId(Convert.ToInt32(line.Substring(0,3))).ProductName,
+                                ProductId = Convert.ToInt32(line.Substring(0, 3))
+
                             });
                     }
                     sr.Close();

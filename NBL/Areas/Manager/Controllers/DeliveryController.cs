@@ -169,7 +169,7 @@ namespace NBL.Areas.Manager.Controllers
 
                 }
                 bool isValied = list.Select(n => n.ProductId).Contains(productId);
-                bool isScannComplete = list.ToList().FindAll(n=>n.ProductId==productId).Sum(n=>n.Quantity) == barcodeList.FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3))==productId).Count;
+                bool isScannComplete = list.ToList().FindAll(n=>n.ProductId==productId).Sum(n=>n.Quantity) == barcodeList.FindAll(n=>n.ProductId==productId).Count;
                 if (isScannedBefore)
                 {
                     model.Message = "<p style='color:red'> Already Scanned</p>";
@@ -199,11 +199,13 @@ namespace NBL.Areas.Manager.Controllers
             catch (FormatException exception)
             {
                 model.Message = "<p style='color:red'>" + exception.GetType() + "</p>";
+                return Json(model, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
 
                 model.Message = "<p style='color:red'>" + exception.Message + "</p>";
+                return Json(model, JsonRequestBehavior.AllowGet);
             }
             return Json(model, JsonRequestBehavior.AllowGet);
         }
