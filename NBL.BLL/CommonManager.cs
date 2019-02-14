@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using NBL.BLL.Contracts;
 using NBL.DAL.Contracts;
@@ -110,5 +111,10 @@ namespace NBL.BLL
         {
             return _iCommonGateway.GetAllStatus();
         }
-    }
+
+       public DateTime GenerateDateFromBarCode(string scannedBarCode)
+       {
+           return _iCommonGateway.GenerateDateFromBarCode(scannedBarCode);
+       }
+   }
 }

@@ -9,6 +9,7 @@ using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Enums;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Sales;
 
 namespace NBL.BLL
 {
@@ -105,6 +106,16 @@ namespace NBL.BLL
         {
             var scannedProduct = _iInventoryGateway.IsThisProductAlreadyInFactoryInventory(scannedBarCode); 
             return scannedProduct != null;
+        }
+
+        public ICollection<ViewFactoryStockModel> GetStockProductInFactory()
+        {
+            return _iInventoryGateway.GetStockProductInFactory();
+        }
+
+        public ICollection<ViewBranchStockModel> GetStockProductInBranchByBranchAndCompanyId(int branchId, int companyId)
+        {
+            return _iInventoryGateway.GetStockProductInBranchByBranchAndCompanyId(branchId,companyId);
         }
     }
 }

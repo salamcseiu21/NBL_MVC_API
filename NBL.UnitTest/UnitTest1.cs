@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NBL.Models;
 using NBL.Models.Validators;
 
 namespace NBL.UnitTest
@@ -16,7 +17,9 @@ namespace NBL.UnitTest
         [TestMethod]
         public void TestMethod1()
         {
-           var result=Validator.ValidateProductBarCode("012569368lokdk");
+
+           var  result= Generator.GenerateDateFromBarCode("1222902199636999");
+            
             Assert.AreEqual(true, result);
         }
         

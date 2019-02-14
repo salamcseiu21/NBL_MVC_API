@@ -707,5 +707,34 @@ CommandObj.Parameters.Clear();
 
             }
         }
+
+        public DateTime GenerateDateFromBarCode(string scannedBarCode)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GenerateDateFromBarCode";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@ScannedBarCode", scannedBarCode);
+                DateTime date=new DateTime();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                if (reader.Read())
+                {
+                    date = Convert.ToDateTime(reader["DateFromBarCode"]);
+                }
+                reader.Close();
+                return date;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to generate date from barcode",exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
     }
 }

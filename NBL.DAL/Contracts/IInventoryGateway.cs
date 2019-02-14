@@ -3,6 +3,7 @@ using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Sales;
 
 namespace NBL.DAL.Contracts
 {
@@ -25,5 +26,7 @@ namespace NBL.DAL.Contracts
        ICollection<ViewProduct> OldestProductByBarcode(string scannedBarCode);
        ScannedProduct IsThisProductDispachedFromFactory(string scannedBarCode);
        ScannedProduct IsThisProductAlreadyInFactoryInventory(string scannedBarCode);
+       ICollection<ViewFactoryStockModel> GetStockProductInFactory();
+       ICollection<ViewBranchStockModel> GetStockProductInBranchByBranchAndCompanyId(int branchId, int companyId);
    }
 }

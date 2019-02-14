@@ -11,6 +11,7 @@ using NBL.Models.Enums;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Sales;
 
 namespace NBL.Areas.Manager.Controllers
 {
@@ -23,14 +24,16 @@ namespace NBL.Areas.Manager.Controllers
         private readonly IProductManager _iProductManager;
         private readonly IDeliveryManager _iDeliveryManager;
         private readonly IClientManager _iClientManager;
+        private readonly ICommonManager _iCommonManager;
 
-        public DeliveryController(IDeliveryManager iDeliveryManager,IInventoryManager iInventoryManager,IProductManager iProductManager,IClientManager iClientManager,IInvoiceManager iInvoiceManager)
+        public DeliveryController(IDeliveryManager iDeliveryManager,IInventoryManager iInventoryManager,IProductManager iProductManager,IClientManager iClientManager,IInvoiceManager iInvoiceManager,ICommonManager iCommonManager)
         {
             _iDeliveryManager = iDeliveryManager;
             _iInventoryManager = iInventoryManager;
             _iProductManager = iProductManager;
             _iClientManager = iClientManager;
             _iInvoiceManager = iInvoiceManager;
+            _iCommonManager = iCommonManager;
         }
         public ActionResult OrderList()
         {
@@ -49,9 +52,12 @@ namespace NBL.Areas.Manager.Controllers
         [HttpGet]
         public ActionResult Delivery(int id)
         {
-
+            int branchId = Convert.ToInt32(Session["BranchId"]);
+            int companyId = Convert.ToInt32(Session["CompanyId"]);
             var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(id);
             var invoicedOrders = _iInvoiceManager.GetInvoicedOrderDetailsByInvoiceRef(invoice.InvoiceRef).ToList();
+            var stock = _iInventoryManager.GetStockProductInBranchByBranchAndCompanyId(branchId,companyId);
+            Session["Branch_stock"] = stock;
             var model=new ViewDeliveryModel
             {
                 Client = _iClientManager.GetById(invoice.ClientId),
@@ -122,6 +128,7 @@ namespace NBL.Areas.Manager.Controllers
             try
             {
 
+                List<ViewBranchStockModel> products = (List<ViewBranchStockModel>) Session["Branch_stock"];
                 var id = Convert.ToInt32(collection["InvoiceId"]);
                 var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(id);
                 string scannedBarCode = collection["ProductCode"];
@@ -129,6 +136,19 @@ namespace NBL.Areas.Manager.Controllers
                 string fileName = "Ordered_Product_List_For_" + id;
                 var filePath = Server.MapPath("~/Files/" + fileName);
                 var barcodeList = _iProductManager.ScannedProducts(filePath);
+
+                if (barcodeList.Count != 0)
+                {
+                    foreach (ScannedProduct scannedProduct in barcodeList)
+                    {
+                        var p = products.Find(n => n.ProductBarCode.Equals(scannedProduct.ProductCode));
+                        products.Remove(p);
+                        Session["Branch_stock"] = products;
+                    }
+                }
+
+                DateTime date = _iCommonManager.GenerateDateFromBarCode(scannedBarCode);
+                var oldestProducts = products.ToList().FindAll(n => n.ProductionDate < date && n.ProductId == productId).ToList();
                 bool isScannedBefore = _iProductManager.IsScannedBefore(barcodeList, scannedBarCode);
 
                 bool isSold = _iInventoryManager.IsThisProductSold(scannedBarCode);
@@ -153,13 +173,25 @@ namespace NBL.Areas.Manager.Controllers
                 if (isScannedBefore)
                 {
                     model.Message = "<p style='color:red'> Already Scanned</p>";
+                    return Json(model, JsonRequestBehavior.AllowGet);
                 }
                 if (isScannComplete)
                 {
                     model.Message = "<p style='color:green'> Scan Completed.</p>";
+                    return Json(model, JsonRequestBehavior.AllowGet);
                 }
 
-                if (isValied && !isScannedBefore && !isScannComplete && !isSold)
+                if (oldestProducts.Count > 0)
+                {
+                    model.Message = "<p style='color:red'>There are total " + oldestProducts.Count + " Old product of this type .Please deliver those first .. </p>";
+                    return Json(model, JsonRequestBehavior.AllowGet);
+                }
+                if (isSold)
+                {
+                    model.Message = "<p style='color:green'> This product Scanned for one of previous invoice... </p>";
+                    return Json(model, JsonRequestBehavior.AllowGet);
+                }
+                if (isValied)
                 {
                     _iProductManager.AddProductToTextFile(scannedBarCode, filePath);
                 }

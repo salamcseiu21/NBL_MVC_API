@@ -8,6 +8,7 @@ using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Sales;
 
 namespace NBL.DAL
 {
@@ -429,6 +430,97 @@ namespace NBL.DAL
             {
 
                 throw new Exception("Could not Get  product by barcode", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
+        public ICollection<ViewFactoryStockModel> GetStockProductInFactory()
+        {
+            try
+            {
+                List<ViewFactoryStockModel> products=new List<ViewFactoryStockModel>();
+                CommandObj.CommandText = "UDSP_GetStockProductInFactory";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    products.Add(new ViewFactoryStockModel
+                    {
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductName = reader["ProductName"].ToString(),
+                        ProductBarCode = reader["ProductBarCode"].ToString(),
+                        ProductImage = reader["ProductImagePath"].ToString(),
+                        ProductTypeId = Convert.ToInt32(reader["ProductTypeId"]),
+                        ProductTypeName = reader["ProductTypeName"].ToString(),
+                        CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        ProductionDate = Convert.ToDateTime(reader["ProductionDate"]),
+                        ComeIntoStore = Convert.ToDateTime(reader["ComeIntoStore"]),
+                        CategoryName = reader["ProductCategoryName"].ToString(),
+                        CompanyId = Convert.ToInt32(reader["CompanyId"]),
+                        Age = Convert.ToInt32(reader["Age"])
+                    });
+                }
+                reader.Close();
+                return products;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect stock product in facotry store", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
+        public ICollection<ViewBranchStockModel> GetStockProductInBranchByBranchAndCompanyId(int branchId, int companyId)
+        {
+            try
+            {
+                List<ViewBranchStockModel> products = new List<ViewBranchStockModel>();
+                CommandObj.CommandText = "UDSP_GetStockProductInBranchByBranchAndCompanyId";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
+                CommandObj.Parameters.AddWithValue("@BranchId", branchId);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    products.Add(new ViewBranchStockModel
+                    {
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductName = reader["ProductName"].ToString(),
+                        ProductBarCode = reader["ProductBarCode"].ToString(),
+                        ProductImage = reader["ProductImagePath"].ToString(),
+                        ProductTypeId = Convert.ToInt32(reader["ProductTypeId"]),
+                        ProductTypeName = reader["ProductTypeName"].ToString(),
+                        CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        ProductionDate = Convert.ToDateTime(reader["ProductionDate"]),
+                        ComeIntoBranch = Convert.ToDateTime(reader["ComeIntoBranch"]),
+                        CategoryName = reader["ProductCategoryName"].ToString(),
+                        CompanyId = Convert.ToInt32(reader["CompanyId"]),
+                        Age = Convert.ToInt32(reader["Age"]),
+                        AgeAtBranch = Convert.ToInt32(reader["AgeAtBranch"])
+                    });
+                }
+                reader.Close();
+                return products;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect stock product in branch store", exception);
             }
             finally
             {

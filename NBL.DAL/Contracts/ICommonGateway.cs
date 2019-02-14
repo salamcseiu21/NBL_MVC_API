@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using NBL.Models;
 using NBL.Models.EntityModels.Banks;
@@ -32,5 +33,6 @@ namespace NBL.DAL.Contracts
        IEnumerable<ReferenceAccount> GetAllReferenceAccounts();
        IEnumerable<ViewReferenceAccountModel> GetAllSubReferenceAccounts();
        IEnumerable<Status> GetAllStatus();
+       DateTime GenerateDateFromBarCode(string scannedBarCode);
    }
 }

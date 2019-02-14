@@ -9,6 +9,7 @@ using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Sales;
 
 namespace NBL.BLL.Contracts
 {
@@ -28,6 +29,8 @@ namespace NBL.BLL.Contracts
        bool IsThisProductSold(string scannedBarCode);
        ICollection<ViewProduct> OldestProductByBarcode(string scannedBarCode);
        bool IsThisProductDispachedFromFactory(string scannedBarCode);
-       bool IsThisProductAlreadyInFactoryInventory(string scannedBarCode); 
+       bool IsThisProductAlreadyInFactoryInventory(string scannedBarCode);
+       ICollection<ViewFactoryStockModel> GetStockProductInFactory();
+       ICollection<ViewBranchStockModel> GetStockProductInBranchByBranchAndCompanyId(int branchId, int companyId);
    }
 }

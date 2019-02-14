@@ -199,7 +199,10 @@ namespace NBL.Areas.Sales.Controllers
                 int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
                 string fileName = "Received_Product_For_" + id;
                 var filePath = Server.MapPath("~/Files/" + fileName);
+
+                //------------read Scanned barcode form text file---------
                 var barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
+                //------------Load receiveable product---------
                 var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id);
                 var receivesProductCodeList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(id).Select(n => n.ProductBarCode);
                 var isvalid = Validator.ValidateProductBarCode(scannedBarCode);
@@ -209,9 +212,15 @@ namespace NBL.Areas.Sales.Controllers
                 if (isScannComplete)
                 {
                     model.Message = "<p style='color:green'> Scanned Complete</p>";
+                    return Json(model, JsonRequestBehavior.AllowGet);
+                }
+                if (!isvalid)
+                {
+                    model.Message = "<p style='color:red'> Invalid Barcode</p>";
+                    return Json(model, JsonRequestBehavior.AllowGet);
                 }
 
-                if (receivesProductCodeList.Contains(scannedBarCode) && !isScannComplete && isvalid)
+                if (receivesProductCodeList.Contains(scannedBarCode))
                 {
                     _iProductManager.AddProductToTextFile(scannedBarCode, filePath);
                 }
@@ -219,10 +228,12 @@ namespace NBL.Areas.Sales.Controllers
             catch (FormatException exception)
             {
                 model.Message = "<p style='color:red'>" + exception.GetType() + "</p>";
+                return Json(model, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
                 model.Message = "<p style='color:red'>" + exception.Message + "</p>";
+                return Json(model, JsonRequestBehavior.AllowGet);
             }
             return Json(model, JsonRequestBehavior.AllowGet);
         }

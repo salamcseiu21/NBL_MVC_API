@@ -20,15 +20,16 @@ namespace NBL.Areas.Factory.Controllers
         private readonly IProductManager _iProductManager;
         private readonly IFactoryDeliveryManager _iFactoryDeliveryManager;
         private readonly IBranchManager _iBranchManager;
-
+        private readonly ICommonManager _iCommonManager;
         private readonly IInventoryManager _iInventoryManager;
         // GET: Factory/Delivery
-        public DeliveryController(IProductManager iProductManager,IFactoryDeliveryManager iFactoryDeliveryManager,IBranchManager iBranchManager,IInventoryManager iInventoryManager)
+        public DeliveryController(IProductManager iProductManager,IFactoryDeliveryManager iFactoryDeliveryManager,IBranchManager iBranchManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager)
         {
             _iProductManager = iProductManager;
             _iFactoryDeliveryManager = iFactoryDeliveryManager;
             _iBranchManager = iBranchManager;
             _iInventoryManager = iInventoryManager;
+            _iCommonManager = iCommonManager;
         }
         public ActionResult DeliverableTransferIssueList() 
         {
@@ -49,6 +50,8 @@ namespace NBL.Areas.Factory.Controllers
         {
 
             var transferIssue = _iProductManager.GetDeliverableTransferIssueById(id);
+            var stock=_iInventoryManager.GetStockProductInFactory();
+            Session["Factory_Stock"] = stock;
              var model = new ViewTransferIssueModel
                 {
                     FromBranch = _iBranchManager.GetById(transferIssue.FromBranchId),
@@ -64,24 +67,34 @@ namespace NBL.Areas.Factory.Controllers
             SuccessErrorModel model = new SuccessErrorModel();
             try
             {
-               
+                var products = (List<ViewFactoryStockModel>) Session["Factory_Stock"];
                 string scannedBarCode = collection["ProductCode"];
+                int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
                 var transferIssueId = Convert.ToInt32(collection["TransferIssueId"]);
                 string fileName = "Deliverd_Issued_Product_For_" + transferIssueId;
                 var filePath = Server.MapPath("~/Files/" + fileName);
                 var barcodeList = _iProductManager.ScannedProducts(filePath);
+                if (barcodeList.Count != 0)
+                {
+                    foreach (ScannedProduct scannedProduct in barcodeList)
+                    {
+                        var p = products.Find(n => n.ProductBarCode.Equals(scannedProduct.ProductCode));
+                        products.Remove(p);
+                        Session["Factory_Stock"] = products;
+                    }
+                }
 
                 bool exists = barcodeList.Select(n=>n.ProductCode).Contains(scannedBarCode);
                 bool isDeliveredBefore = _iInventoryManager.IsThisProductDispachedFromFactory(scannedBarCode);
 
-                //var oldestProducts = _iInventoryManager.OldestProductByBarcode(scannedBarCode).ToList();
-                
+                DateTime date = _iCommonManager.GenerateDateFromBarCode(scannedBarCode);
+                var oldestProducts = products.ToList().FindAll(n=>n.ProductionDate<date && n.ProductId==productId).ToList();
                 var issuedProducts = _iProductManager.GetTransferIssueDetailsById(transferIssueId);
                
 
                 var isValied = Validator.ValidateProductBarCode(scannedBarCode);
 
-                int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
+                
 
                 bool isContains = issuedProducts.Select(n => n.ProductId).Contains(productId);
                 bool isScannComplete = issuedProducts.ToList().FindAll(n=>n.ProductId==productId).Sum(n => n.Quantity) == barcodeList.FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3))==productId).Count;
@@ -97,10 +110,21 @@ namespace NBL.Areas.Factory.Controllers
                     model.Message = "<p style='color:green'> Scan Completed.</p>";
                    return Json(model, JsonRequestBehavior.AllowGet);
                 }
-                
+
+                if (oldestProducts.Count > 0)
+                {
+                    model.Message = "<p style='color:red'>There are total "+oldestProducts.Count+" Old product of this type .Please deliver those first .. </p>";
+                    return Json(model, JsonRequestBehavior.AllowGet);
+                }
                 if (isValied && !exists && !isDeliveredBefore)
                 {
-                    _iProductManager.AddProductToTextFile(scannedBarCode, filePath);
+                   var result= _iProductManager.AddProductToTextFile(scannedBarCode, filePath);
+                    if (result.Contains("Added"))
+                    {
+                        var p=  products.Find(n => n.ProductBarCode.Equals(scannedBarCode));
+                        products.Remove(p);
+                        Session["Factory_Stock"] = products;
+                    }
                 }
             }
                 catch (FormatException exception)
