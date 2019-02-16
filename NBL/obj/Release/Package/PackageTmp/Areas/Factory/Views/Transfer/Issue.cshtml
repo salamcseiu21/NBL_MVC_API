@@ -45,9 +45,16 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label col-md-3">Stock Quantity : </label>
+                        <div class="col-md-9">
+                            <input type="number" name="StockQty" id="StockQty" class="form-control" placeholder="Stock Qty" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label col-md-3">Quantity : </label>
                         <div class="col-md-9">
-                            <input type="number" name="Quantity" id="Quantity" class="form-control" placeholder="Quantity" required />
+                            <input type="number" name="Quantity" id="Quantity" class="form-control" placeholder="Quantity" required min="1" value="1"/>
+                            <div id="divQuantityLimitOutput"></div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -115,22 +122,16 @@
                         </div>
                     </div>
                     <div class="form-group">
-
-
-                        <div class="col-md-9 col-md-offset-3">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <input type="button" value="Cancel" class="btn btn-danger btn-block" onclick="ClearInputFields()" />
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-9 text-right">
+                                <div class="btn-toolbar">
+                                    <input type="button" value="Cancel" class="btn btn-danger" onclick="ClearInputFields()"/>
+                                    <input type="button" value="Save" onclick="PreviewOrderDetails(this)" class="btn btn-success"/>
                                 </div>
-
-                                <div class="col-md-8">
-
-                                    <input type="button" value="Save" onclick="PreviewOrderDetails(this)" class="btn btn-success btn-block" />
-                                </div>
-
-
                             </div>
                         </div>
+                       
                     </div>
                 </div>
 
@@ -181,7 +182,7 @@
                 var json = { productId: pId };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("GetProductQuantityInStockById", "Common",new {area=""})',
+                    url: '@Url.Action("GetProductQuantityInStockById", "Transfer",new {area="Factory"})',
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(json),
                     success: function (data) {
@@ -280,7 +281,7 @@
 
         if (a < 0) {
             productIdlist.push(id);
-            var stock = 5000;
+            var stock = $("#StockQty").val();
             var qty = $("#Quantity").val();
             if (stock - qty >= 0) {
                 var $form = $(btnClicked).parents('form');
@@ -321,7 +322,7 @@
         //alert(quantiy);
         //var oldQty = btnClicked.value;
         //alert(oldQty);
-        var stock = 5000;
+        var stock = $("#StockQty").val();
         var q = stock - btnClicked.value;
         if (q>=0) {
            // alert("OK");
@@ -441,5 +442,26 @@
 
 
     }
+
+
+    // -----Prevent to enter max qty more than stock qty------------
+    $(document).ready(function () {
+
+        $('#Quantity').on('keydown keyup', function (e) {
+            var divElement = $('#divQuantityLimitOutput');
+            divElement.text('');
+            var stockQty = parseInt($("#StockQty").val());
+            if ($(this).val() > stockQty
+                    && e.keyCode !== 46 // keycode for delete
+                    && e.keyCode !== 8 // keycode for backspace
+            ) {
+
+                divElement.text('Quantity Out of Stock!');
+                divElement.css('color', 'red');
+                e.preventDefault();
+                $(this).val(1);
+            }
+        });
+    });
 </script>
 }

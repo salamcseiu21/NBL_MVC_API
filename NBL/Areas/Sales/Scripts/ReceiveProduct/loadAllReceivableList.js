@@ -1,12 +1,11 @@
 ﻿
 $.ajax({
     type:"GET",
-    url: RootUrl + "Sales/Product/LoadAllReceiveableList",
+    url: RootUrl + "sales/product/LoadAllReceiveableList",
     dataType: "json",
     contentType: 'application/json; charset=utf-8',
     success:function(data) {
-        $("#table_receivable_list").DataTable({
-            destroy: true,
+        $("#table_receivable_list").dataTable({
             data: data,
             columns:
               [
@@ -26,3 +25,5 @@ $.ajax({
         });
     }
 });
+
+

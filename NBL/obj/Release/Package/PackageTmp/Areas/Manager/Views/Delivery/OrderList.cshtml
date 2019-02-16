@@ -14,7 +14,7 @@
                     <th>Client Info</th>
                     <th>Invoice Ref</th>
                     <th>Invoice No</th>
-                    <th class="text-center">Qty</th>
+                    <th class="text-center">Status</th>
                     <th class="text-center">Invoice At</th>
                     <th class="text-center">Action</th>
                 </tr>
@@ -33,7 +33,18 @@
                             @item.InvoiceNo
                         </td>
                         <td class="text-center">
-                            @item.Quantity
+                            @if (item.InvoiceStatus == 0)
+                            {
+                                <p class="text-danger">Pending</p>
+                            }
+                            else if (item.InvoiceStatus == 1)
+                            {
+                                <p class="text-warning">Patitally Delivered</p>
+                            }
+                            else
+                            {
+                                <p class="text-success">Delivered</p>
+                            }
                         </td>
                         <td class="text-center">
                             @item.InvoiceDateTime.ToShortTimeString()
@@ -55,7 +66,7 @@
                     <th>Client Info</th>
                     <th>Invoice Ref</th>
                     <th>Invoice No</th>
-                    <th class="text-center">Qty</th>
+                    <th class="text-center">Status</th>
                     <th class="text-center">Invoice At</th>
                     <th class="text-center">Action</th>
 

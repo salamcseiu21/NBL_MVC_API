@@ -180,7 +180,10 @@ namespace NBL.Areas.Sales.Controllers
 
         public ActionResult Receive()
         {
-            return View();
+            int branchId = Convert.ToInt32(Session["BranchId"]);
+            int companyId = Convert.ToInt32(Session["CompanyId"]);
+            var result = _iInventoryManager.GetAllReceiveableListByBranchAndCompanyId(branchId, companyId).ToList();
+            return View(result);
         }
         public ActionResult ReceiveableDetails(long id)
         {

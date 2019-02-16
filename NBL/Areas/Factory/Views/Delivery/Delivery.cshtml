@@ -29,42 +29,48 @@
 
         </div>
         
-        <section style="margin: 10px">
+       
+
+      
+
+    </div>
+    <div class="row" style="padding: 10px">
 
 
-            <div class="col-md-6 col-md-offset-3" style="border: 1px solid;">
-                @using (Html.BeginForm("SaveScannedBarcodeToTextFile","Delivery",FormMethod.Post,new {id= "scanProductBarcodeForm" }))
-                {
-                    <div class="form-horizontal">
-                        <h3 class="text-center">Scan Product</h3>
-                        @if (TempData["QuantityNotSame"] != null)
-                        {
-                            <p class="text-danger">@TempData["QuantityNotSame"]</p>
-                        }
-                        <div id="message" style="display:none;font-weight:bold;font-size:20px" class="text-center">
+        <div class="col-md-6 col-md-offset-3" style="border: 1px solid;">
+            @using (Html.BeginForm("SaveScannedBarcodeToTextFile", "Delivery", FormMethod.Post, new { id = "scanProductBarcodeForm" }))
+            {
+                <div class="form-horizontal">
+                    <h3 class="text-center">Scan Product</h3>
+                    @if (TempData["QuantityNotSame"] != null)
+                    {
+                        <p class="text-danger">@TempData["QuantityNotSame"]</p>
+                    }
+                    <div id="message" style="display:none;font-weight:bold;font-size:20px" class="text-center">
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ProductCode, new { @class = "control-label col-md-2" })
+                        <input type="hidden" id="TransferIssueId" name="TransferIssueId" value="@Model.TransferIssue.TransferIssueId" />
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control", placeholder = "Always keep pointer here..!!", autofocus = "", onchange = "SaveScannedBarcodeToTextFile(this)" })
+                            @Html.ValidationMessageFor(m => m.ProductCode, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.ProductCode, new {@class = "control-label col-md-2"})
-                            <input type="hidden" id="TransferIssueId" name="TransferIssueId" value="@Model.TransferIssue.TransferIssueId"/>
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control", placeholder = "Always keep pointer here..!!", autofocus = "", onchange= "SaveScannedBarcodeToTextFile(this)" })
-                                @Html.ValidationMessageFor(m => m.ProductCode, "", new { @class = "text-danger" })
-                            </div>
 
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                               
-                                @*@Html.ActionLink("Process", "SaveProductToFactoryInventory",null,new {@class="btn btn-success"})*@
-                                <button type="button" value="@Model.TransferIssue.TransferIssueId" class="btn btn-success" onclick="viewDetails(this)"> Delivery</button>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+
+                            @*@Html.ActionLink("Process", "SaveProductToFactoryInventory",null,new {@class="btn btn-success"})*@
+                            <button type="button" value="@Model.TransferIssue.TransferIssueId" class="btn btn-success" onclick="viewDetails(this)"> Delivery</button>
                         </div>
                     </div>
-                }
-            </div>
-        </section>
+                </div>
+            }
+        </div>
+    </div>
 
-        <table id="table_deliverable_issue_details" class="display" style="border:1px solid black">
+    <div class="row" style="padding: 15px; border: 1px solid;margin: 10px">
+        <table id="table_deliverable_issue_details" class="display responsive" style="border:1px solid black">
             <caption class="text-center text-green" style="font-weight:bolder;font-size:20px">Issued Product List</caption>
 
             <thead>
@@ -74,10 +80,7 @@
                 <th>Product Code</th>
             </tr>
             </thead>
-
-            <tbody>
-         
-            </tbody>
+            <tbody></tbody>
             <tfoot>
             <tr>
                 <th>Product Name</th>
@@ -87,17 +90,15 @@
             </tfoot>
         </table>
         <hr />
-      
-
     </div>
+      
     @Html.Partial("_ModalDeliveryPartialPage")
 
 </section>
 
 @section Scripts
 {
-    
-<script src="~/Areas/Factory/Scripts/loadAllDeliverableProducts.js"></script>
+
     <script>
         function SaveScannedBarcodeToTextFile(btnClicked) {
             var $form = $(btnClicked).parents('form');
@@ -159,4 +160,7 @@
             loadAllDeliverableProducts();
         };
     </script>
+    
+<script src="~/Areas/Factory/Scripts/loadAllDeliverableProducts.js"></script>
+  
 }

@@ -3,7 +3,6 @@
     $.ajax({
         type: 'GET',
         url: RootUrl + "Sales/Product/LoadReceiveableProduct",
-        contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         data: { deliveryId: deliveryId },
         success: function (data) {
@@ -17,13 +16,13 @@
                         data: null,
                         className: "text-center",
                         render: function (data, type, row) {
-                            return data.ProductBarCodes;
+                            return data.ProductBarCode;
                         }
                     },
                     {
-                        data: null,
+                        'data': null,
                         className: "text-center",
-                        render: function (data, type, row) {
+                        'render': function (data, type, row) {
                             if (data.RecievedProductBarCodes != null) {
                                 return data.RecievedProductBarCodes.substr(0, data.RecievedProductBarCodes.length - 1);
                             }
@@ -35,3 +34,4 @@
         }
     });
 }
+

@@ -7,25 +7,32 @@
         dataType: 'json',
         data: { issueId: issueId },
         success: function (data) {
-            $('#table_deliverable_issue_details').dataTable({
-                destroy: true,
-                data: data,
-                columns: [
-                    { 'data': 'ProductName' },
-                    { 'data': 'Quantity' },
-                    {
-                        data: null,
-                        className: "text-center",
-                        render: function (data, type, row) {
-                            if (data.ScannedProductCodes!=null) {
-                                return data.ScannedProductCodes.substr(0, data.ScannedProductCodes.length - 1);
-                            }
-                            return data.ScannedProductCodes;
-                        }
-                    }
-                    
-                ]
-            });
+            loadData(data);
         }
+    });
+}
+function loadData(data) {
+    $('#table_deliverable_issue_details').dataTable({
+        destroy: true,
+        data: data,
+        
+        columns: [
+            { 'data': 'ProductName' },
+            {
+                'data': 'Quantity',
+                className: "text-center"
+            },
+            {
+                data: null,
+                className: "text-center",
+                render: function (data, type, row) {
+                    if (data.ScannedProductCodes != null) {
+                        return data.ScannedProductCodes.substr(0, data.ScannedProductCodes.length - 1);
+                    }
+                    return data.ScannedProductCodes;
+                }
+            }
+
+        ]
     });
 }
