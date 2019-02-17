@@ -547,7 +547,15 @@ namespace NBL.DAL
                         DeliveredAt = Convert.ToDateTime(reader["DeliveredAt"]),
                         ApprovedDateTime = Convert.ToDateTime(reader["ApproveDateTime"]),
                         FromBranchId = Convert.ToInt32(reader["FromBranchId"]),
-                        ToBranchId = Convert.ToInt32(reader["ToBranchId"])
+                        ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
+                        ToBranch = new Branch
+                        {
+                            BranchName = reader["TBName"].ToString(),
+                            Title = reader["TBTitle"].ToString(),
+                            BranchAddress = reader["TBAddress"].ToString(),
+                            BranchEmail = reader["TBEmail"].ToString(),
+                            BranchPhone = reader["TBPhone"].ToString()
+                        }
                     });
                 }
                 reader.Close();

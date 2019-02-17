@@ -81,7 +81,7 @@ namespace NBL.Areas.Factory.Controllers
                 int quantiy = Convert.ToInt32(collection["Quantity"]);
                 int userId = ((ViewUser)Session["user"]).UserId;
                 DateTime date = Convert.ToDateTime(collection["TransactionDate"]);
-                TransactionModel aModel = new TransactionModel
+                var aModel = new TransactionModel
                 {
                     ProductId = productId,
                     FromBranchId = fromBranchId,
