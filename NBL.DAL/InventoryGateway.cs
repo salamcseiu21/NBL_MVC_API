@@ -8,6 +8,7 @@ using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Products;
 using NBL.Models.ViewModels.Sales;
 using NBL.Models.ViewModels.TransferProducts;
 
@@ -803,6 +804,74 @@ namespace NBL.DAL
 
             return i;
         }
+        public ViewProductLifeCycleModel GetProductLifeCycleByBarcode(string productBarCode)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_RptGetProductLifeCycleByBarcode";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@BarCode", productBarCode);
+                ViewProductLifeCycleModel model = null;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                if (reader.Read())
+                {
+                    model=new ViewProductLifeCycleModel
+                    {
+                        Age = Convert.ToInt32(reader["Age"]),
+                        ComeIntoInventory = Convert.ToDateTime(reader["ComeIntoInventory"]),
+                        ProductionDate = Convert.ToDateTime(reader["ProductionDate"]),
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductName = reader["ProductName"].ToString(),
+                       // Status = Convert.ToInt32(reader["Status"])
+                    };
+                }
+                reader.Close();
+                return model;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not get product life cycle by barcode",exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
 
+        public IEnumerable<ViewProduct> GetAllProductsBarcode()
+        {
+            try
+            {
+                List<ViewProduct> products=new List<ViewProduct>();
+                CommandObj.CommandText = "UDSP_GetAllProductsBarcode";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    products.Add(new ViewProduct
+                    {
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductName = reader["ProductName"].ToString(),
+                        ProductBarCode = reader["ProductBarCode"].ToString()
+                    });
+                }
+                reader.Close();
+                return products;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect products barcode",exception);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+                CommandObj.Parameters.Clear();
+            }
+        }
     }
 }

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NBL.Models;
+﻿using System.Collections.Generic;
 using NBL.Models.EntityModels.Deliveries;
-using NBL.Models.EntityModels.Invoices;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Products;
 using NBL.Models.ViewModels.Sales;
 using NBL.Models.ViewModels.TransferProducts;
 
@@ -34,5 +29,7 @@ namespace NBL.BLL.Contracts
        ICollection<ViewFactoryStockModel> GetStockProductInFactory();
        ICollection<ViewBranchStockModel> GetStockProductInBranchByBranchAndCompanyId(int branchId, int companyId);
        ICollection<ViewProductTransactionModel> GetAllProductTransactionFromFactory();
+       ViewProductLifeCycleModel GetProductLifeCycleByBarcode(string productBarCode);
+       IEnumerable<ViewProduct> GetAllProductsBarcode();
    }
 }

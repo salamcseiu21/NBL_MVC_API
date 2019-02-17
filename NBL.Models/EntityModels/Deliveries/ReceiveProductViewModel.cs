@@ -1,7 +1,6 @@
 ﻿
 using System.Collections.Generic;
 using NBL.Models.EntityModels.TransferProducts;
-using NBL.Models.ViewModels.Productions;
 
 namespace NBL.Models.EntityModels.Deliveries
 {

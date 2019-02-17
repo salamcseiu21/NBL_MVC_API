@@ -1,5 +1,6 @@
 ﻿function loadAllReceivableProducts() {
     var deliveryId = $("#DeliveryId").val();
+
     $.ajax({
         type: 'GET',
         url: RootUrl + "Sales/Product/LoadReceiveableProduct",

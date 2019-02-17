@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Masters;
@@ -251,6 +252,7 @@ namespace NBL.DAL
                 CommandObj.Parameters.AddWithValue("@ToBranchId", aTransferIssue.ToBranchId);
                 CommandObj.Parameters.AddWithValue("@IssueByUserId", aTransferIssue.IssueByUserId);
                 CommandObj.Parameters.AddWithValue("@TransferIssueRef", aTransferIssue.TransferIssueRef);
+                CommandObj.Parameters.AddWithValue("@QuantityIssued", aTransferIssue.Products.Sum(n => n.Quantity));
                 CommandObj.Parameters.Add("@TransferIssueId", SqlDbType.Int);
                 CommandObj.Parameters["@TransferIssueId"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();

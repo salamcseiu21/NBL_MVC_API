@@ -61,7 +61,6 @@ namespace NBL.Areas.Sales.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var clients = _iClientManager.GetClientByBranchId(branchId).ToList();
             return PartialView("_ViewClientPartialPage", clients);
-
         }
 
 

@@ -563,6 +563,31 @@ namespace NBL.Controllers
             List<Designation> designations = _idepartmentManager.GetAllDesignationByDepartmentId(departmentId);
             return Json(designations, JsonRequestBehavior.AllowGet);
         }
+
+
+        //----------------Product Barcode Auto Complete------------------
+        [HttpPost]
+        public JsonResult ProductBarCodeAutoComplete(string barcode)  
+        {           
+            var products = _iInventoryManager.GetAllProductsBarcode();
+            var productList = (from c in products
+                where c.ProductBarCode.ToLower().Contains(barcode.ToLower())
+                select new
+                {
+                    label = c.ProductBarCode,
+                    val = c.ProductBarCode
+                }).ToList();
+
+            return Json(productList);
+        }
+
+        //----------------Product life cycle by Barcode ----------------
+        [HttpPost]
+        public JsonResult GetProductLifeCycleByBarCode(string ProductBarCode)
+        {
+            var product= _iInventoryManager.GetProductLifeCycleByBarcode(ProductBarCode);
+            return Json(product, JsonRequestBehavior.AllowGet);
+        }
     }
 
 

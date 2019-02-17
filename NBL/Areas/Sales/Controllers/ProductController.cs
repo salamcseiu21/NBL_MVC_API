@@ -26,7 +26,6 @@ namespace NBL.Areas.Sales.Controllers
             _iInventoryManager = iInventoryManager;
             _iProductManager = iProductManager;
         }
-     
         public PartialViewResult Stock()
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
@@ -34,7 +33,6 @@ namespace NBL.Areas.Sales.Controllers
             var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             return PartialView("_ViewStockProductInBranchPartialPage", products);
         }
-
         [HttpGet]
         public ActionResult Transaction()
         {
@@ -187,7 +185,13 @@ namespace NBL.Areas.Sales.Controllers
         }
         public ActionResult ReceiveableDetails(long id)
         {
-            ReceiveProductViewModel aModel = new ReceiveProductViewModel {DeliveryId = id};
+            var receivableProductList = GetReceivesProductList(id);
+            ReceiveProductViewModel aModel = new ReceiveProductViewModel
+            {
+                DeliveryId = id,
+                TransactionModels = receivableProductList
+            };
+          
             return View(aModel);
         }
 
@@ -266,11 +270,15 @@ namespace NBL.Areas.Sales.Controllers
         [HttpGet]
         public JsonResult LoadReceiveableProduct(long deliveryId)
         {
+            var receivesProductList = GetReceivesProductList(deliveryId);
 
+            return Json(receivesProductList, JsonRequestBehavior.AllowGet);
+        }
 
-            List<TransactionModel> productList=new List<TransactionModel>();
-
-            var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(deliveryId).ToList().DistinctBy(n=>n.ProductName).ToList();
+        private List<TransactionModel> GetReceivesProductList(long deliveryId)
+        {
+            var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(deliveryId).ToList()
+                .DistinctBy(n => n.ProductName).ToList();
             var barcodeList = new List<ScannedProduct>();
             string fileName = "Received_Product_For_" + deliveryId;
             var filePath = Server.MapPath("~/Files/" + fileName);
@@ -287,32 +295,27 @@ namespace NBL.Areas.Sales.Controllers
 
             foreach (var transactionModel in receivesProductList)
             {
-               
                 var products = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryId(deliveryId)
                     .ToList().FindAll(n => n.ProductId == transactionModel.ProductId);
                 transactionModel.Quantity = products.Count;
                 string code = "";
                 foreach (TransactionModel product in products)
                 {
-
                     code += product.ProductBarCode + ",";
-
                 }
                 transactionModel.ProductBarCode = code.TrimEnd(',');
-
             }
 
             foreach (var transactionModel in receivesProductList)
             {
                 var productId = Convert.ToInt32(transactionModel.ProductId);
-                foreach (var barCode in barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)).Equals(productId)))
+                foreach (var barCode in barcodeList.FindAll(n =>
+                    Convert.ToInt32(n.ProductCode.Substring(0, 3)).Equals(productId)))
                 {
                     transactionModel.RecievedProductBarCodes += barCode.ProductCode + ",";
                 }
-
             }
-            
-            return Json(receivesProductList, JsonRequestBehavior.AllowGet);
+            return receivesProductList;
         }
 
         [HttpGet]

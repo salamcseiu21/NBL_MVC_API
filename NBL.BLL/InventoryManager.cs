@@ -9,6 +9,7 @@ using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Enums;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Products;
 using NBL.Models.ViewModels.Sales;
 using NBL.Models.ViewModels.TransferProducts;
 
@@ -122,6 +123,16 @@ namespace NBL.BLL
         public ICollection<ViewProductTransactionModel> GetAllProductTransactionFromFactory()
         {
             return _iInventoryGateway.GetAllProductTransactionFromFactory();
+        }
+
+        public ViewProductLifeCycleModel GetProductLifeCycleByBarcode(string productBarCode)
+        {
+            return _iInventoryGateway.GetProductLifeCycleByBarcode(productBarCode);
+        }
+
+        public IEnumerable<ViewProduct> GetAllProductsBarcode()
+        {
+            return _iInventoryGateway.GetAllProductsBarcode();
         }
     }
 }

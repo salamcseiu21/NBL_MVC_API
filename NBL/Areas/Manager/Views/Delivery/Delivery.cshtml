@@ -5,7 +5,6 @@
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
     UserManager userManager = new UserManager();
-    var date = DateTime.Now.Date.ToString("dd-MMMM-yyyy");
     var invoicedBy = userManager.GetUserInformationByUserId(Model.Invoice.InvoiceByUserId);
     var aClient = Model.Client;
     var invoice = Model.Invoice;

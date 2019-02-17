@@ -362,5 +362,10 @@ namespace NBL.Areas.Factory.Controllers
 
             return Json(model.BarCodes, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult ProductLifeCycle()
+        {
+            return View();
+        }
     }
 }
