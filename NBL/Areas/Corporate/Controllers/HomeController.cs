@@ -14,6 +14,7 @@ using NBL.Models.EntityModels.VatDiscounts;
 using NBL.Models.Searchs;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Orders;
+using NBL.Models.ViewModels.Summaries;
 
 namespace NBL.Areas.Corporate.Controllers
 {

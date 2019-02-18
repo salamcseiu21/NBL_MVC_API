@@ -14,6 +14,7 @@ using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Orders;
+using NBL.Models.ViewModels.Summaries;
 
 namespace NBL.Areas.Management.Controllers
 {

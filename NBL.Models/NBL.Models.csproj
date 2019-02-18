@@ -133,7 +133,8 @@
     <Compile Include="StockModel.cs" />
     <Compile Include="SubSubSubAccount.cs" />
     <Compile Include="SuccessErrorModel.cs" />
-    <Compile Include="SummaryModel.cs" />
+    <Compile Include="ViewModels\Summaries\FactorySummaryModel.cs" />
+    <Compile Include="ViewModels\Summaries\SummaryModel.cs" />
     <Compile Include="EntityModels\Suppliers\Supplier.cs" />
     <Compile Include="EntityModels\Locations\Territory.cs" />
     <Compile Include="EntityModels\TransferProducts\TransactionModel.cs" />

@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using NBL.Areas.Admin.BLL.Contracts;
 using NBL.BLL.Contracts;
 using NBL.Models;
+using NBL.Models.ViewModels.Summaries;
 
 namespace NBL.Areas.Admin.Controllers
 {

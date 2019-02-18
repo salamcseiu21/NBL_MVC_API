@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
+using NBL.Models.ViewModels.Summaries;
 
 namespace NBL.Areas.Factory.Controllers
 {
@@ -20,7 +21,13 @@ namespace NBL.Areas.Factory.Controllers
         {
             Session.Remove("BranchId");
             Session.Remove("Branch");
-            return View();
+            var model=new FactorySummaryModel
+            {
+                StockQuantity = _iInventoryManager.GetStockProductInFactory().Count,
+                IssuedQuantity = 10,
+                ReturnedQuantity = 1 
+            };
+            return View(model);
         }
 
         [HttpGet]

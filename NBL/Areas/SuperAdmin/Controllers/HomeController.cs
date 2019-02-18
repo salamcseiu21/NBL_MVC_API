@@ -15,6 +15,7 @@ using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.VatDiscounts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Orders;
+using NBL.Models.ViewModels.Summaries;
 
 namespace NBL.Areas.SuperAdmin.Controllers
 {

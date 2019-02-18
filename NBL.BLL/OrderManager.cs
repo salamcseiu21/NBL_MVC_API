@@ -181,7 +181,7 @@ namespace NBL.BLL
             return rowAffected > 0 ? "Updated Successfully!" : "Failed to Update";
         }
 
-        public bool DeleteProductFromOrderDetails(int orderItemId) 
+        public bool DeleteProductFromOrderDetails(long orderItemId) 
         {
             int rowAffected = _iOrderGateway.DeleteProductFromOrderDetails(orderItemId);
             return rowAffected > 0;

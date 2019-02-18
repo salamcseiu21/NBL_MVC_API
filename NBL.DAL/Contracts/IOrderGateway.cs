@@ -36,7 +36,7 @@ namespace NBL.DAL.Contracts
        int Save(Order order);
        int UpdateOrder(ViewOrder order);
        int AddNewItemToExistingOrder(Product aProduct, int orderId);
-       int DeleteProductFromOrderDetails(int orderItemId);
+       int DeleteProductFromOrderDetails(long orderItemId);
        int CancelOrder(ViewOrder order);
        int ApproveOrderByNsm(ViewOrder aModel);
        int ApproveOrderByAdmin(ViewOrder order);

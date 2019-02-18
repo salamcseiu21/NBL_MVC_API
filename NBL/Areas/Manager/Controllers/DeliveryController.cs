@@ -12,6 +12,7 @@ using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.Sales;
+using NBL.Models.ViewModels.Summaries;
 
 namespace NBL.Areas.Manager.Controllers
 {

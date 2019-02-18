@@ -9,7 +9,7 @@ namespace NBL.Models.EntityModels.Orders
 {
     public class Order
     {
-        public int OrderId { get; set; }
+        public long OrderId { get; set; }
         [Display(Name = "Client Id")]
         [Required]
         public int ClientId { get; set; }

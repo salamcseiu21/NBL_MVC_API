@@ -75,7 +75,7 @@ namespace NBL.BLL.Contracts
        
         string UpdateOrderDetails(IEnumerable<OrderItem> orderItems);
         
-        bool DeleteProductFromOrderDetails(int orderItemId);
+        bool DeleteProductFromOrderDetails(long orderItemId);
         
         string GetDiscountAccountCodeByClintTypeId(int typeId);
         

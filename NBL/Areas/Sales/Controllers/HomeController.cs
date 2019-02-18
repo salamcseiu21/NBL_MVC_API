@@ -9,6 +9,7 @@ using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Clients;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Summaries;
 
 
 namespace NBL.Areas.Sales.Controllers

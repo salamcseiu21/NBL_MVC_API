@@ -100,7 +100,7 @@
         $("#ClientName").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '/Common/ClientNameAutoComplete/',
+                    url: RootUrl + 'Common/ClientNameAutoComplete/',
                     data: "{ 'prefix': '" + request.term + "'}",
                     dataType: "json",
                     type: "POST",

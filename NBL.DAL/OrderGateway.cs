@@ -1533,7 +1533,7 @@ ConnectionObj.Close();
                 ConnectionObj.Close();
             }
         }
-        public int DeleteProductFromOrderDetails(int orderItemId)
+        public int DeleteProductFromOrderDetails(long orderItemId)
         {
             try
             {

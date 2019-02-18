@@ -7,7 +7,7 @@ namespace NBL.Models.EntityModels.Orders
 {
     public class OrderItem
     {
-        public int OrderItemId { get; set; } 
+        public long OrderItemId { get; set; } 
         public int OrderId { get; set; }
         public int DeletionStatus { get; set; }
         public string ProductCategoryName { get; set; }

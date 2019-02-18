@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Products;
+using NBL.Models.ViewModels.Summaries;
 
 namespace NBL.Areas.Editor.Controllers
 {

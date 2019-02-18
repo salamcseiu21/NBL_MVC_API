@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.Models;
+using NBL.Models.ViewModels.Summaries;
 
 namespace NBL.Areas.Nsm.Controllers
 {
