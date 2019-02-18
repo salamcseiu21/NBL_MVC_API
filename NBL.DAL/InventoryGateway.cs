@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Branches;
 using NBL.Models.EntityModels.Deliveries;
@@ -271,32 +272,53 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public int SaveScannedProductToFactoryInventory(List<ScannedProduct> scannedProducts,int userId)
+        public int SaveScannedProduct(List<ScannedProduct> scannedProducts,int userId)
         {
+            ConnectionObj.Open();
+            SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
             try
             {
-                int rowAffected = 0;
-                foreach (var product in scannedProducts)
+                CommandObj.Parameters.Clear();
+                CommandObj.Transaction = sqlTransaction;
+                CommandObj.CommandText = "UDSP_SaveScannedProduct";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@UserId", userId);
+                CommandObj.Parameters.AddWithValue("@Quantity", scannedProducts.Count);
+                CommandObj.Parameters.Add("@MasterId", SqlDbType.BigInt);
+                CommandObj.Parameters["@MasterId"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                long masterId = Convert.ToInt32(CommandObj.Parameters["@MasterId"].Value);
+                var rowAffected = SaveScannedProductToFactoryInventory(scannedProducts,masterId);
+                if (rowAffected > 0)
                 {
-                    CommandObj.CommandText = "UDSP_SaveProductToFactoryInventory";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    CommandObj.Parameters.Clear();
-                    CommandObj.Parameters.AddWithValue("@ProductCode", product.ProductCode);
-                    CommandObj.Parameters.AddWithValue("@UserId", userId);
-                    CommandObj.Parameters.Add("@RowAffected", SqlDbType.BigInt);
-                    CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
-                    ConnectionObj.Open();
-                    CommandObj.ExecuteNonQuery();
-                    rowAffected += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
-                    ConnectionObj.Close();
-                }
+                    sqlTransaction.Commit();
+                } 
                 return rowAffected;
             }
             catch (Exception exception)
             {
-                
+               sqlTransaction.Rollback();
                throw new Exception("Could not saved scanned products",exception);
             }
+        }
+        private int SaveScannedProductToFactoryInventory(List<ScannedProduct> scannedProducts,long masterId)
+        {
+            int i = 0;
+            foreach (var item in scannedProducts)
+            {
+
+                CommandObj.CommandText = "UDSP_SaveProductToFactoryInventoryDetails";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.Clear();
+                CommandObj.Parameters.AddWithValue("@MasterId", masterId);
+                CommandObj.Parameters.AddWithValue("@ProductCode", item.ProductCode);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+            }
+
+            return i;
         }
         public ScannedProduct IsThisProductSold(string scannedBarCode)
         {
@@ -636,7 +658,7 @@ namespace NBL.DAL
             {
                 CommandObj.Parameters.Clear();
                 CommandObj.Transaction = sqlTransaction;
-                CommandObj.CommandText = "spReceiveProuctToBranch";
+                CommandObj.CommandText = "spSaveReceiveProuctToBranch";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@TransactionDate", model.TransactionDate);
                 CommandObj.Parameters.AddWithValue("@TransactionRef", model.DeliveryRef);
@@ -652,6 +674,10 @@ namespace NBL.DAL
                 if (rowAffected > 0)
                 {
                     sqlTransaction.Commit();
+                }
+                else
+                {
+                    sqlTransaction.Rollback();
                 }
                 return rowAffected;
             }
@@ -670,6 +696,7 @@ namespace NBL.DAL
         public int SaveReceiveProductDetails(List<ScannedProduct> receiveProductList, int inventoryId)
         {
             int i = 0;
+            int n = 0;
             foreach (var item in receiveProductList) 
             {
                 CommandObj.CommandText = "spSaveReceiveProduct";
@@ -683,27 +710,29 @@ namespace NBL.DAL
                 CommandObj.ExecuteNonQuery();
                 i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
             }
-
-            return i;
+            if (i > 0)
+            {
+                n= SaveReceivedItemWithQuantity(receiveProductList, inventoryId);
+            }
+            return n;
         }
-        private int SaveReceivedProductBarCodes(string recievedProductBarCodes, int inventoryId) 
+        private int SaveReceivedItemWithQuantity(List<ScannedProduct> receiveProductList, int inventoryId) 
         {
             int i = 0;
-            if (recievedProductBarCodes.Length != 0)
+            var groupBy = receiveProductList.GroupBy(n => n.ProductId);
+            foreach (IGrouping<int, ScannedProduct> scannedProducts in groupBy)
             {
-                var codes = recievedProductBarCodes.TrimEnd(',').Split(',');
-                foreach (string code in codes)
-                {
-                    CommandObj.CommandText = "spSaveReceivedProductBarCodes";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    CommandObj.Parameters.Clear();
-                    CommandObj.Parameters.AddWithValue("@ProductBarcode", code);
-                    CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
-                    CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
-                    CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
-                    CommandObj.ExecuteNonQuery();
-                    i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
-                }
+                CommandObj.CommandText = "spSaveInventoryItem";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.Clear();
+                CommandObj.Parameters.AddWithValue("@ProductId", scannedProducts.Key);
+                CommandObj.Parameters.AddWithValue("@Quantity", scannedProducts.Count());
+                CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+
             }
             return i;
         }
@@ -736,7 +765,7 @@ namespace NBL.DAL
                 CommandObj.Parameters.Clear();
             }
         }
-        public int Save(List<ScannedProduct> scannedProducts, Delivery aDelivery, int invoiceStatus,int orderStatus)
+        public int SaveDeliveredOrder(List<ScannedProduct> scannedProducts, Delivery aDelivery, int invoiceStatus,int orderStatus)
         {
             ConnectionObj.Open();
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
@@ -775,6 +804,10 @@ namespace NBL.DAL
                 {
                     sqlTransaction.Commit();
                 }
+                else
+                {
+                    sqlTransaction.Rollback();
+                }
                 return rowAffected;
 
             }
@@ -793,6 +826,7 @@ namespace NBL.DAL
         public int SaveDeliveredOrderDetails(List<ScannedProduct> scannedProducts, int inventoryId,int deliveryId)
         {
             int i = 0;
+            int n = 0;
             foreach (var item in scannedProducts)
             {
                
@@ -810,6 +844,31 @@ namespace NBL.DAL
                 i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
             }
 
+            if (i > 0)
+            {
+                n = SaveDeliveredItemWithQuantity(scannedProducts, inventoryId);
+            }
+            return n;
+        }
+
+        private int SaveDeliveredItemWithQuantity(List<ScannedProduct> deliveredProducts, int inventoryId)
+        {
+            int i = 0;
+            var groupBy = deliveredProducts.GroupBy(n => n.ProductId);
+            foreach (IGrouping<int, ScannedProduct> scannedProducts in groupBy)
+            {
+                CommandObj.CommandText = "spSaveInventoryItem";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.Clear();
+                CommandObj.Parameters.AddWithValue("@ProductId", scannedProducts.Key);
+                CommandObj.Parameters.AddWithValue("@Quantity", scannedProducts.Count());
+                CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+
+            }
             return i;
         }
         public ViewProductLifeCycleModel GetProductLifeCycleByBarcode(string productBarCode)

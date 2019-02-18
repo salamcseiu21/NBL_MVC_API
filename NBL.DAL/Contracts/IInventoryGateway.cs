@@ -19,11 +19,11 @@ namespace NBL.DAL.Contracts
        int ReceiveProduct(List<ScannedProduct> receiveProductList, TransactionModel model);
        int SaveReceiveProductDetails(List<ScannedProduct> receiveProductList, int inventoryId);
        int GetStockQtyByBranchAndProductId(int branchId, int productId);
-       int Save(List<ScannedProduct> scannedProducts, Delivery aDelivery, int invoiceStatus, int orderStatus); 
+       int SaveDeliveredOrder(List<ScannedProduct> scannedProducts, Delivery aDelivery, int invoiceStatus, int orderStatus); 
        int SaveDeliveredOrderDetails(List<ScannedProduct> scannedProducts, int inventoryId, int deliveryId);
        ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(long id);
        TransactionModel GetTransactionModelById(long id);
-       int SaveScannedProductToFactoryInventory(List<ScannedProduct> scannedProducts,int userId);
+       int SaveScannedProduct(List<ScannedProduct> scannedProducts,int userId);
        ScannedProduct IsThisProductSold(string scannedBarCode);
        ICollection<ViewProduct> OldestProductByBarcode(string scannedBarCode);
        ScannedProduct IsThisProductDispachedFromFactory(string scannedBarCode);

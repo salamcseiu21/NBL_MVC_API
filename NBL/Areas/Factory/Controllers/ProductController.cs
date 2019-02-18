@@ -324,7 +324,7 @@ namespace NBL.Areas.Factory.Controllers
                 {
                     //if the file is exists read the file
                     var scannedProduct = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
-                    int result = _iInventoryManager.SaveScannedProductToFactoryInventory(scannedProduct, userId);
+                    int result = _iInventoryManager.SaveScannedProduct(scannedProduct, userId);
                     if (result > 0)
                         //if the scanned products save successfully then clear the file..
                     {

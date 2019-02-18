@@ -106,7 +106,7 @@ namespace NBL.Areas.Manager.Controllers
                     ToBranchId = invoice.BranchId,
                     FromBranchId = invoice.BranchId
                 };
-                string result = _iInventoryManager.Save(barcodeList, aDelivery, invoiceStatus,orderStatus);
+                string result = _iInventoryManager.SaveDeliveredOrder(barcodeList, aDelivery, invoiceStatus,orderStatus);
                 if (result.StartsWith("S"))
                 {
                     System.IO.File.Create(filePath).Close();

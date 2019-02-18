@@ -16,12 +16,12 @@ namespace NBL.BLL.Contracts
        IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId, int companyId);
        int ReceiveProduct(List<ScannedProduct> receiveProductList, TransactionModel model);
        int GetStockQtyByBranchAndProductId(int branchId, int productId);
-       string Save(List<ScannedProduct> scannedProducts, Delivery aDelivery, int invoiceStatus, int orderStatus);
+       string SaveDeliveredOrder(List<ScannedProduct> scannedProducts, Delivery aDelivery, int invoiceStatus, int orderStatus);
        string GenerateDeliveryReference(int maxRefNo);
        IEnumerable<TransactionModel> GetAllReceiveableProductToBranchByDeliveryRef(string deliveryRef);
        ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(long id);
        TransactionModel GetTransactionModelById(long id);
-       int SaveScannedProductToFactoryInventory(List<ScannedProduct> scannedProducts,int userId);
+       int SaveScannedProduct(List<ScannedProduct> scannedProducts,int userId);
        bool IsThisProductSold(string scannedBarCode);
        ICollection<ViewProduct> OldestProductByBarcode(string scannedBarCode);
        bool IsThisProductDispachedFromFactory(string scannedBarCode);

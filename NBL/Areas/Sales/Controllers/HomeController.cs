@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
-using NBL.Models;
 using NBL.Models.EntityModels.Clients;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Summaries;

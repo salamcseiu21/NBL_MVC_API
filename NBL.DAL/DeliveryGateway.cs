@@ -143,7 +143,7 @@ namespace NBL.DAL
                 List<DeliveryDetails> orders = new List<DeliveryDetails>();
                 while (reader.Read())
                 {
-                    DeliveryDetails aModel = new DeliveryDetails
+                    var aModel = new DeliveryDetails
                     {
                         DeliveryId = deliveryId,
                         ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
