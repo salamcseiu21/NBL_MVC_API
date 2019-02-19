@@ -583,7 +583,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/23/2018 10:41:48</publishTime>
     </File>
     <File Include="Areas/Factory/Views/Product/ProductLifeCycle.cshtml">
-      <publishTime>02/17/2019 14:01:18</publishTime>
+      <publishTime>02/19/2019 12:11:20</publishTime>
     </File>
     <File Include="Areas/Factory/Views/Product/Transaction.cshtml">
       <publishTime>12/02/2018 11:56:04</publishTime>
@@ -22141,19 +22141,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/23/2012 15:23:58</publishTime>
     </File>
     <File Include="bin/NBL.BLL.dll">
-      <publishTime>02/18/2019 10:01:25</publishTime>
+      <publishTime>02/19/2019 12:50:15</publishTime>
     </File>
     <File Include="bin/NBL.Contracts.dll">
       <publishTime>01/10/2019 09:41:31</publishTime>
     </File>
     <File Include="bin/NBL.DAL.dll">
-      <publishTime>02/18/2019 10:01:25</publishTime>
+      <publishTime>02/19/2019 12:50:14</publishTime>
     </File>
     <File Include="bin/NBL.dll">
-      <publishTime>02/18/2019 10:01:31</publishTime>
+      <publishTime>02/19/2019 12:50:21</publishTime>
     </File>
     <File Include="bin/NBL.Models.dll">
-      <publishTime>02/18/2019 10:01:24</publishTime>
+      <publishTime>02/19/2019 12:50:14</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>08/03/2014 20:33:56</publishTime>
@@ -23023,7 +23023,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/13/2019 14:55:43</publishTime>
     </File>
     <File Include="Views/Shared/_UserLayoutPage.cshtml">
-      <publishTime>02/03/2019 14:18:56</publishTime>
+      <publishTime>02/19/2019 11:57:43</publishTime>
     </File>
     <File Include="Views/Shared/_ViewAllSalesPartialPage.cshtml">
       <publishTime>01/13/2019 15:00:47</publishTime>
@@ -23073,8 +23073,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Shared/_ViewPopularBatteriesPartialPage.cshtml">
       <publishTime>12/23/2018 10:47:34</publishTime>
     </File>
+    <File Include="Views/Shared/_ViewProductLifeCyclePartialPage.cshtml">
+      <publishTime>02/19/2019 12:13:42</publishTime>
+    </File>
     <File Include="Views/Shared/_ViewProductPartialPage.cshtml">
-      <publishTime>01/20/2019 15:04:08</publishTime>
+      <publishTime>02/19/2019 10:38:17</publishTime>
     </File>
     <File Include="Views/Shared/_ViewProductWishVatPartialPage.cshtml">
       <publishTime>01/13/2019 15:03:28</publishTime>

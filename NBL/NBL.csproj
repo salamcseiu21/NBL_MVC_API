@@ -8041,6 +8041,7 @@
     <Folder Include="Assets\css\" />
     <Folder Include="Assets\documentation\build\" />
     <Folder Include="Files\" />
+    <Folder Include="Logs\" />
     <Folder Include="Views\Common\" />
   </ItemGroup>
   <ItemGroup>

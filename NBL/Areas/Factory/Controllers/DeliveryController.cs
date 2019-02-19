@@ -6,8 +6,10 @@ using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
+using NBL.Models.Logs;
 using NBL.Models.Validators;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Logs;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.TransferProducts;
 
@@ -65,8 +67,10 @@ namespace NBL.Areas.Factory.Controllers
         public JsonResult SaveScannedBarcodeToTextFile(FormCollection collection)
         {
             SuccessErrorModel model = new SuccessErrorModel();
+            ViewWriteLogModel log=new ViewWriteLogModel();
             try
             {
+               
                 var products = (List<ViewFactoryStockModel>) Session["Factory_Stock"];
                 string scannedBarCode = collection["ProductCode"];
                 int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
@@ -83,18 +87,14 @@ namespace NBL.Areas.Factory.Controllers
                         Session["Factory_Stock"] = products;
                     }
                 }
-
                 bool exists = barcodeList.Select(n=>n.ProductCode).Contains(scannedBarCode);
                 bool isDeliveredBefore = _iInventoryManager.IsThisProductDispachedFromFactory(scannedBarCode);
 
                 DateTime date = _iCommonManager.GenerateDateFromBarCode(scannedBarCode);
                 var oldestProducts = products.ToList().FindAll(n=>n.ProductionDate<date && n.ProductId==productId).ToList();
                 var issuedProducts = _iProductManager.GetTransferIssueDetailsById(transferIssueId);
-               
-
+              
                 var isValied = Validator.ValidateProductBarCode(scannedBarCode);
-
-                
 
                 bool isContains = issuedProducts.Select(n => n.ProductId).Contains(productId);
                 bool isScannComplete = issuedProducts.ToList().FindAll(n=>n.ProductId==productId).Sum(n => n.Quantity) == barcodeList.FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3))==productId).Count;
@@ -127,15 +127,20 @@ namespace NBL.Areas.Factory.Controllers
                     }
                 }
             }
-                catch (FormatException exception)
+            catch (FormatException exception)
             {
-              model.Message = "<p style='color:red'>Invalid Barcode</p>";
+                log.Heading = exception.GetType().ToString();
+                log.LogMessage = exception.StackTrace;
+                Log.LogWrite(log);
+                model.Message = "<p style='color:red'>Invalid Barcode</p>";
               return  Json(model, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
-                
-                    model.Message = "<p style='color:red'>" + exception.Message + "</p>";
+                log.Heading = exception.GetType().ToString();
+                log.LogMessage = exception.StackTrace;
+                Log.LogWrite(log);
+                model.Message = "<p style='color:red'>" + exception.Message + "</p>";
               return  Json(model, JsonRequestBehavior.AllowGet);
             }
             return Json(model, JsonRequestBehavior.AllowGet);
