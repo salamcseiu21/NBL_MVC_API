@@ -394,7 +394,7 @@ namespace NBL.DAL
             try
             {
 
-                CommandObj.CommandText = "GetDeliveredProductsByDeliveryIdAndProductId";
+                CommandObj.CommandText = "spGetDeliveredProductsByDeliveryIdAndProductId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@DeliveryId", deliveryId);
                 CommandObj.Parameters.AddWithValue("@productId", productId);
