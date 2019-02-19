@@ -15,32 +15,7 @@
         </div>
     </div>
     <hr/>
-    
-    <div class="panel panel-info">
-        <div class="panel panel-body">
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="ProductionDate" class="control-label col-md-3">Production Date</label>
-                    <div class="col-md-9">
-                        <input type="text" id="ProductionDate" class="form-control" readonly/>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <label for="Age" class="control-label col-md-3">Product Age</label>
-                    <div class="col-md-9">
-                        <input type="text" id="Age" class="form-control" readonly/>
-                    </div>
-                   
-                </div>
-                <div class="col-md-4">
-                    <label for="ProductName" class="control-label col-md-3">Product Name</label>
-                    <div class="col-md-9">
-                        <input type="text" id="ProductName" readonly class="form-control"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @Html.Partial("_ViewProductLifeCyclePartialPage")
 </section>
 @section Scripts
 {
@@ -78,9 +53,12 @@
                         contentType: "application/json; charset=utf-8",
                         data: JSON.stringify(json),
                         success: function (data) {
-                            $("#ProductName").val(data.ProductName);
-                            $("#Age").val(data.Age);
-                            $("#ProductionDate").val(ConvertJsonDateString(data.ProductionDate));
+                            $("#ProductName").text(data.ProductName);
+                            $("#Age").text(data.Age);
+                            $("#ProductionDate").text(ConvertJsonDateString(data.ProductionDate));
+                            $("#ComeTofactoryInventory").text(ConvertJsonDateString(data.ComeIntoInventory));
+                            $("#LifeTime").text(data.LifeTime);
+                            $("#RemainingLife").text(data.RemainingLifeTime);
                         }
                     });
                 },

@@ -890,6 +890,7 @@ namespace NBL.DAL
                         ProductionDate = Convert.ToDateTime(reader["ProductionDate"]),
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         ProductName = reader["ProductName"].ToString(),
+                        LifeTime = Convert.ToInt32(reader["LifeTime"])
                        // Status = Convert.ToInt32(reader["Status"])
                     };
                 }
