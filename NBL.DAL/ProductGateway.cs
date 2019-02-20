@@ -1054,10 +1054,10 @@ namespace NBL.DAL
             }
         }
 
-        private int SaveRequisitionDetails(List<Product> products, int requisitionId)
+        private int SaveRequisitionDetails(List<ViewRequisitionModel> products, int requisitionId)
         {
             int i = 0;
-            foreach (Product product in products)
+            foreach (var product in products)
             {
                 CommandObj.CommandText = "UDSP_SaveRequisitionDetails";
                 CommandObj.CommandType = CommandType.StoredProcedure;

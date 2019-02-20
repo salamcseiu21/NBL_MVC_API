@@ -10,7 +10,6 @@
 <section class="content">
     <p class="text-center text-green" style="margin: 0;font-weight:bolder;font-size:20px">Create Requisition</p>
     <hr />
-
     @using (Html.BeginForm("AddRequisitionProductToXmlFile","Requisition",FormMethod.Post))
     {
         <div class="form-horizontal">
@@ -21,6 +20,7 @@
                         <label class="control-label col-md-3">To Branch :</label>
                         <div class="col-md-9">
                             <input type="text" name="ToBranchName" id="ToBranchName" class="form-control" placeholder="Branch Name...." required />
+                            <input type="hidden" id="ToBranchId" name="ToBranchId" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -76,11 +76,12 @@
 
             <thead>
 
-                <tr>
-                    <th style="border: 1px solid black;" class="text-center">Product Name</th>
-                    <th style="border: 1px solid black; width: 10%" class="text-center">Quantity</th>
-                    <th style="border: 1px solid black;" class="text-center">Action</th>
-                </tr>
+            <tr>
+                <th style="border: 1px solid black;" class="text-center">To Branch</th>
+                <th style="border: 1px solid black;" class="text-center">Product Name</th>
+                <th style="border: 1px solid black; width: 10%" class="text-center">Quantity</th>
+                <th style="border: 1px solid black;" class="text-center">Action</th>
+            </tr>
             </thead>
             <tbody id="transfers"></tbody>
         </table>
@@ -97,7 +98,6 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <input type="hidden" id="ToBranchId" name="ToBranchId" />
                         <label for="TotalQty" class="control-label col-md-3"> Quantity :</label>
                         <div class="col-md-9">
                             <input type="number" id="TotalQty" name="TotalQty" class="form-control" value="0" readonly="readonly" />
@@ -252,11 +252,13 @@
     var productIdlist = [];
     function AddProduct(btnClicked) {
         var id = $("#ProductId").val();
-        var a = $.inArray(id, productIdlist);
-
+        var branchId = $("#ToBranchId").val();
+        var v = branchId > 9 ? "" + branchId : "0" + branchId;
+        var str=v.concat(id);
+        var a = $.inArray(str, productIdlist);
         if (a < 0) {
-            productIdlist.push(id);
-           
+            productIdlist.push(str);
+           alert(str);
                 var $form = $(btnClicked).parents('form');
                 $.ajax({
                     type: "POST",
@@ -308,7 +310,8 @@
     }
     function RemoveProduct(btnClicked) {
 
-
+       
+        //alert(btnClicked.id);
         if (confirm("Are you sure to remove this product ??")) {
             $("#productIdToRemove").val(btnClicked.id);
             
@@ -357,7 +360,7 @@
                     //total =+ value.SubTotal;
                     //alert(key);
                     //$("#orders").append('<option value=' + value.ClientId + '>' + value.ProductId + '</option>');
-                    var row = $("<tr><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ProductName + "</td><td style='border: 1px solid black; padding: 5px 10px;'>  <input type='number' min='1' value='" + value.Quantity + "' class='form-control text-right' id='" + value.ProductId + "' name='NewQuantity_" + value.ProductId + "'  onchange='Update(this)'/>" + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-center'><button id='" + value.ProductId + "' type='button' onclick='RemoveProduct(this)' class='btn btn-default btn-sm'><i class='fa fa-times' style='color:red;'></i></button>" + "</td></tr>");
+                    var row = $("<tr><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ToBranchId + "</td><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ProductName + "</td><td style='border: 1px solid black; padding: 5px 10px;'>  <input type='number' min='1' value='" + value.Quantity + "' class='form-control text-right' id='" + value.ProductId + "' name='NewQuantity_" + value.ProductId + "'  onchange='Update(this)'/>" + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-center'><button id='" + value.Serial + "' type='button' onclick='RemoveProduct(this)' class='btn btn-default btn-sm'><i class='fa fa-times' style='color:red;'></i></button>" + "</td></tr>");
 
                     $("#transfers").append(row);
                 });

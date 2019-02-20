@@ -1,3 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <!--Creating an XML Tree using LINQ to XML-->
-<Products />
+<Products>
+  <Product Id="046">
+    <ProductId>6</ProductId>
+    <ProductName>NS 60</ProductName>
+    <Quantity>1</Quantity>
+    <ToBranchId>4</ToBranchId>
+  </Product>
+</Products>

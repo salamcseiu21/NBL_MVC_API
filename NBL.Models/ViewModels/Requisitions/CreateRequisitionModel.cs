@@ -19,6 +19,6 @@ namespace NBL.Models.ViewModels.Requisitions
         public int ApproveByUserId { get; set; }
         public DateTime ApproveDateTime { get; set; }
         public DateTime SystemDateTime { get; set; }
-        public List<Product> Products { get; set; }
+        public List<ViewRequisitionModel> Products { get; set; }
     }
 }

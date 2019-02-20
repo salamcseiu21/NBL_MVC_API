@@ -3,15 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Xml;
 using System.Xml.Linq;
 using NBL.BLL.Contracts;
 using NBL.Models;
-using NBL.Models.EntityModels.Products;
-using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Requisitions;
-using NBL.Models.ViewModels.TransferProducts;
 
 namespace NBL.Areas.Admin.Controllers
 {
@@ -43,7 +39,7 @@ namespace NBL.Areas.Admin.Controllers
         public ActionResult Create(FormCollection collection)
         {
             var filePath = Server.MapPath("~/Files/" + "Requisition_Products.xml");
-            List<Product> productList = GetProductFromXmalFile(filePath).ToList();
+            List<ViewRequisitionModel> productList = GetProductFromXmalFile(filePath).ToList();
 
             if (productList.Count != 0)
             {
@@ -62,11 +58,11 @@ namespace NBL.Areas.Admin.Controllers
                 {
                     xmlData.Root?.Elements().Remove();
                     xmlData.Save(filePath);
-                    TempData["message"] = "Transfer Issue  Successful!";
+                    TempData["message"] = "Requisition Create  Successfully!";
                 }
                 else
                 {
-                    TempData["message"] = "Failed to Issue Transfer!";
+                    TempData["message"] = "Failed to create Requisition!";
                 }
 
             }
@@ -83,14 +79,18 @@ namespace NBL.Areas.Admin.Controllers
             {
 
                 int productId = Convert.ToInt32(collection["ProductId"]);
+                int toBranchId = Convert.ToInt32(collection["ToBranchId"]);
+                var id=toBranchId.ToString("D2") + productId;
                 var product = _iProductManager.GetAll().ToList().Find(n => n.ProductId == productId);
                 int quantity = Convert.ToInt32(collection["Quantity"]);
                 var filePath = Server.MapPath("~/Files/" + "Requisition_Products.xml");
                 var xmlDocument = XDocument.Load(filePath);
                 xmlDocument.Element("Products")?.Add(
-                    new XElement("Product", new XAttribute("Id", productId),
+                    new XElement("Product", new XAttribute("Id", id),
+                        new XElement("ProductId", product.ProductId),
                         new XElement("ProductName", product.ProductName),
-                        new XElement("Quantity", quantity)
+                        new XElement("Quantity", quantity),
+                        new XElement("ToBranchId", toBranchId)
                     ));
                 xmlDocument.Save(filePath);
             }
@@ -107,16 +107,21 @@ namespace NBL.Areas.Admin.Controllers
         {
             try
             {
-                int productId = Convert.ToInt32(collection["productIdToRemove"]);
                 var filePath = Server.MapPath("~/Files/" + "Requisition_Products.xml");
-                var xmlData = XDocument.Load(filePath);  
-                List<Product> productList = GetProductFromXmalFile(filePath).ToList();
-              
-                if (productId != 0)
+                var xmlData = XDocument.Load(filePath);
+                List<ViewRequisitionModel> productList = GetProductFromXmalFile(filePath).ToList();
+                var branchIdProductId=  collection["productIdToRemove"];
+                if (!branchIdProductId.Equals("0"))
                 {
-                    xmlData.Root?.Elements().Remove();
-                    xmlData.Save(filePath);
+                    int productId = Convert.ToInt32(branchIdProductId.Substring(2, branchIdProductId.Length - 2));
+                    var toBranchId = Convert.ToInt32(branchIdProductId.Substring(0, 2));
+                    if (productId != 0)
+                    {
+                        xmlData.Root?.Elements().Where(n => n.Attribute("Id")?.Value == branchIdProductId.ToString()).Remove();
+                        xmlData.Save(filePath);
+                    }
                 }
+               
                 else
                 {
                     var collectionAllKeys = collection.AllKeys.ToList();
@@ -159,7 +164,7 @@ namespace NBL.Areas.Admin.Controllers
             {
                 //if the file is exists read the file
 
-                IEnumerable<Product> productList = GetProductFromXmalFile(filePath);
+                IEnumerable<ViewRequisitionModel> productList = GetProductFromXmalFile(filePath);
                 return Json(productList, JsonRequestBehavior.AllowGet);
             }
             else
@@ -169,22 +174,24 @@ namespace NBL.Areas.Admin.Controllers
             }
 
             
-            return Json(new List<Product>(), JsonRequestBehavior.AllowGet);
+            return Json(new List<ViewRequisitionModel>(), JsonRequestBehavior.AllowGet);
         }
 
-        private IEnumerable<Product> GetProductFromXmalFile(string filePath)
+        private IEnumerable<ViewRequisitionModel> GetProductFromXmalFile(string filePath)
         {
-            List<Product> products = new List<Product>();
+            List<ViewRequisitionModel> products = new List<ViewRequisitionModel>();
             var xmlData = XDocument.Load(filePath).Element("Products")?.Elements();
             foreach (XElement element in xmlData)
             {
-                Product aProduct = new Product();
+                ViewRequisitionModel aProduct = new ViewRequisitionModel();
                 var elementFirstAttribute = element.FirstAttribute.Value;
-                aProduct.ProductId = Convert.ToInt32(elementFirstAttribute);
+                aProduct.Serial = elementFirstAttribute;
                 var elementValue = element.Elements();
                 var xElements = elementValue as XElement[] ?? elementValue.ToArray();
-                aProduct.ProductName = xElements[0].Value;
-                aProduct.Quantity = Convert.ToInt32(xElements[1].Value);
+                aProduct.ProductId = Convert.ToInt32(xElements[0].Value);
+                aProduct.ProductName = xElements[1].Value;
+                aProduct.Quantity = Convert.ToInt32(xElements[2].Value);
+                aProduct.ToBranchId = Convert.ToInt32(xElements[3].Value);
                 products.Add(aProduct);
             }
 
