@@ -553,7 +553,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/27/2018 12:46:26</publishTime>
     </File>
     <File Include="Areas/Factory/Scripts/loadAllDeliverableProducts.js">
-      <publishTime>02/16/2019 10:56:50</publishTime>
+      <publishTime>02/19/2019 14:57:57</publishTime>
     </File>
     <File Include="Areas/Factory/Scripts/loadAllScannedProducts.js">
       <publishTime>02/09/2019 10:40:01</publishTime>
@@ -22141,19 +22141,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/23/2012 15:23:58</publishTime>
     </File>
     <File Include="bin/NBL.BLL.dll">
-      <publishTime>02/19/2019 12:50:15</publishTime>
+      <publishTime>02/19/2019 14:55:25</publishTime>
     </File>
     <File Include="bin/NBL.Contracts.dll">
       <publishTime>01/10/2019 09:41:31</publishTime>
     </File>
     <File Include="bin/NBL.DAL.dll">
-      <publishTime>02/19/2019 12:50:14</publishTime>
+      <publishTime>02/19/2019 14:55:25</publishTime>
     </File>
     <File Include="bin/NBL.dll">
-      <publishTime>02/19/2019 12:50:21</publishTime>
+      <publishTime>02/19/2019 15:02:40</publishTime>
     </File>
     <File Include="bin/NBL.Models.dll">
-      <publishTime>02/19/2019 12:50:14</publishTime>
+      <publishTime>02/19/2019 14:55:24</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>08/03/2014 20:33:56</publishTime>

@@ -218,13 +218,8 @@ namespace NBL.Controllers
         {
 
             int corporateBarachIndex = _iBranchManager.GetAllBranches().ToList().FindIndex(n => n.BranchName.Contains("Corporate"));
-            int branchId = Convert.ToInt32(Session["BranchId"]);
             var branches = _iBranchManager.GetAllBranches().ToList();
-
             branches.RemoveAt(corporateBarachIndex);
-            int currentBranchIndex = branches.ToList().FindIndex(n => n.BranchId == branchId);
-            branches.RemoveAt(currentBranchIndex);
-
             var branchList = (from c in branches.ToList()
                               where c.BranchName.ToLower().Contains(prefix.ToLower())
                               select new
@@ -235,7 +230,11 @@ namespace NBL.Controllers
 
             return Json(branchList);
         }
-
+        public JsonResult GetBranchDetailsById(int branchId)
+        {
+            var branch = _iBranchManager.GetById(branchId);
+            return Json(branch, JsonRequestBehavior.AllowGet);
+        }
 
         //-----------------Get All Bank Branch By Bank id----------------
         public JsonResult GetAllBankBranchByBankId(int bankId)

@@ -12,6 +12,7 @@ using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Requisitions;
 
 namespace NBL.DAL
 {
@@ -983,6 +984,93 @@ namespace NBL.DAL
                 CommandObj.Parameters.Clear();
                 CommandObj.Dispose();
             }
+        }
+
+        public int SaveRequisitionInfo(CreateRequisitionModel aRequisitionModel)
+        {
+            ConnectionObj.Open();
+            SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
+            try
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Transaction = sqlTransaction;
+                CommandObj.CommandText = "UDSP_SaveRequisitionInfo";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@RequisitionDate", aRequisitionModel.RequisitionDate);
+                CommandObj.Parameters.AddWithValue("@ToBranchId", aRequisitionModel.ToBranchId);
+                CommandObj.Parameters.AddWithValue("@RequisitionByUserId", aRequisitionModel.RequisitionByUserId);
+                CommandObj.Parameters.AddWithValue("@RequisitionRef", aRequisitionModel.RequisitionRef);
+                CommandObj.Parameters.AddWithValue("@Quantity", aRequisitionModel.Products.Sum(n => n.Quantity));
+                CommandObj.Parameters.Add("@RequisitionId", SqlDbType.Int);
+                CommandObj.Parameters["@RequisitionId"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                int requisitionId = Convert.ToInt32(CommandObj.Parameters["@RequisitionId"].Value);
+                int rowAffected = SaveRequisitionDetails(aRequisitionModel.Products, requisitionId);
+                if (rowAffected > 0)
+                {
+                    sqlTransaction.Commit();
+                }
+                return rowAffected;
+
+            }
+            catch (Exception exception)
+            {
+                sqlTransaction.Rollback();
+                throw new Exception("Could not Save requisition Info", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
+        public int GetMaxRequisitionNoOfCurrentYear()
+        {
+            try
+            {
+                CommandObj.CommandText = "spGetMaxRequisitionNoOfCurrentYear";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                int slNo = 0;
+                if (reader.Read())
+                {
+                    slNo = Convert.ToInt32(reader["MaxSlNo"]);
+                }
+                reader.Close();
+                return slNo;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect max requisition no of current Year", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
+        private int SaveRequisitionDetails(List<Product> products, int requisitionId)
+        {
+            int i = 0;
+            foreach (Product product in products)
+            {
+                CommandObj.CommandText = "UDSP_SaveRequisitionDetails";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.Clear();
+                CommandObj.Parameters.AddWithValue("@ProductId", product.ProductId);
+                CommandObj.Parameters.AddWithValue("@Quantity", product.Quantity);
+                CommandObj.Parameters.AddWithValue("@RequisitionId", requisitionId);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+            }
+            return i;
         }
     }
 }

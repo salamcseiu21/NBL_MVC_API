@@ -36,7 +36,6 @@ namespace NBL.Areas.Sales.Controllers
         public ActionResult Home()
         {
 
-          
             var user = (ViewUser)Session["user"];
             var branchId = Convert.ToInt32(Session["BranchId"]);
             var companyId = Convert.ToInt32(Session["CompanyId"]); 

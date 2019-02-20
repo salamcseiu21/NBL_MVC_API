@@ -9,6 +9,7 @@ using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Requisitions;
 
 namespace NBL.DAL.Contracts
 {
@@ -41,5 +42,7 @@ namespace NBL.DAL.Contracts
         bool AddProductToInventory(List<Product> products);
         List<Product> GetIssuedProductListById(int id);
         ScannedProduct GetProductByBarCode(string barCode);
+        int SaveRequisitionInfo(CreateRequisitionModel aRequisitionModel);
+        int GetMaxRequisitionNoOfCurrentYear();
     }
 }

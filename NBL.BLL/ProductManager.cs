@@ -11,6 +11,7 @@ using NBL.Models.Enums;
 using NBL.Models.Validators;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Requisitions;
 
 namespace NBL.BLL
 {
@@ -105,6 +106,14 @@ namespace NBL.BLL
             string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == Convert.ToInt32(ReferenceType.Transfer)).Code;
             string temp = (maxTrNo + 1).ToString();
             string reference=DateTime.Now.Year.ToString().Substring(2,2)+ refCode+temp;
+            return reference;
+        }
+        private string GenerateRequisitionRef(int maxrNo)
+        {
+
+            string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == Convert.ToInt32(ReferenceType.Requisition)).Code;
+            string temp = (maxrNo + 1).ToString();
+            string reference = DateTime.Now.Year.ToString().Substring(2, 2) + refCode + temp;
             return reference;
         }
 
@@ -240,6 +249,15 @@ namespace NBL.BLL
         public ScannedProduct GetProductByBarCode(string barCode)
         {
            return _iProductGateway.GetProductByBarCode(barCode);
+        }
+
+        public int SaveRequisitionInfo(CreateRequisitionModel aRequisitionModel)
+        {
+            int maxTrNo = _iProductGateway.GetMaxRequisitionNoOfCurrentYear();
+            aRequisitionModel.RequisitionRef = GenerateRequisitionRef(maxTrNo);
+            int rowAffected = _iProductGateway.SaveRequisitionInfo(aRequisitionModel);
+            return rowAffected;
+           
         }
     }
 }

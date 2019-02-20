@@ -52,3 +52,19 @@ Log Entry : 2:51:49 PM Tuesday, February 19, 2019
    at System.Convert.ToInt32(String value)
    at NBL.Areas.Factory.Controllers.DeliveryController.SaveScannedBarcodeToTextFile(FormCollection collection) in E:\API\NBL\NBL\Areas\Factory\Controllers\DeliveryController.cs:line 76
 -------------------------------
+
+Log Entry : 2:58:30 PM Tuesday, February 19, 2019
+:System.FormatException
+  :   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Convert.ToInt32(String value)
+   at NBL.Areas.Factory.Controllers.DeliveryController.SaveScannedBarcodeToTextFile(FormCollection collection) in E:\API\NBL\NBL\Areas\Factory\Controllers\DeliveryController.cs:line 76
+-------------------------------
+
+Log Entry : 3:11:46 PM Tuesday, February 19, 2019
+:System.FormatException
+  :   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Convert.ToInt32(String value)
+   at NBL.Areas.Factory.Controllers.DeliveryController.SaveScannedBarcodeToTextFile(FormCollection collection) in E:\API\NBL\NBL\Areas\Factory\Controllers\DeliveryController.cs:line 76
+-------------------------------

@@ -62,6 +62,8 @@ namespace NBL.Controllers
                 {
                     case "Super":
                         return RedirectToAction("Home", "Home", new { area = "SuperAdmin" });
+                    case "SalesAdmin":
+                        return RedirectToAction("Home", "Home", new { area = "Admin" });
                     case "Factory":
                         return RedirectToAction("Home", "Home", new { area = "Factory" });
                     case "Editor":

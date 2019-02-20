@@ -1,6 +1,6 @@
+E:\API\NBL\NBL\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
 E:\API\NBL\NBL\bin\roslyn\csc.exe
 E:\API\NBL\NBL\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-E:\API\NBL\NBL\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
 E:\API\NBL\NBL\bin\roslyn\Microsoft.CodeAnalysis.dll
 E:\API\NBL\NBL\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
 E:\API\NBL\NBL\bin\roslyn\Microsoft.CSharp.Core.targets

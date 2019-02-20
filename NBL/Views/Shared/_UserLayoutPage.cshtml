@@ -19,6 +19,11 @@
         roleName = "Admin";
         areas = "admin";
     }
+    else if (User.IsInRole("SalesAdmin"))
+    {
+        roleName = "Sales Admin";
+        areas = "admin";
+    }
     else if (User.IsInRole("User"))
     {
         roleName = "Sales";
@@ -206,6 +211,9 @@
                 {
                     case "Admin":
                         Html.RenderPartial("~/Areas/Admin/Views/Shared/_MenuPartialPage.cshtml");
+                        break;
+                    case "SalesAdmin":
+                        Html.RenderPartial("~/Areas/Admin/Views/Shared/_SalesAdminMenuPartialPage.cshtml");
                         break;
                     case "Super":
                         Html.RenderPartial("~/Areas/SuperAdmin/Views/Shared/_MenuPartialPage.cshtml");

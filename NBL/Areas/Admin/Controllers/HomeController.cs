@@ -9,7 +9,7 @@ using NBL.Models.ViewModels.Summaries;
 
 namespace NBL.Areas.Admin.Controllers
 {
-    [Authorize(Roles ="Admin")]
+  
     public class HomeController : Controller
     {
 
@@ -29,30 +29,40 @@ namespace NBL.Areas.Admin.Controllers
             _iInventoryManager = iInventoryManager;
             _iInvoiceManager = iInvoiceManager;
         }
+
+        [Authorize]
         // GET: Admin/Home
-        public ActionResult Home() 
+        public ActionResult Home()
         {
-            
-            var branchId = Convert.ToInt32(Session["BranchId"]);
-            var companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _iInvoiceManager.GetAllInvoicedOrdersByCompanyId(companyId).ToList().FindAll(n=>n.BranchId==branchId).ToList();
-            var pendingOrders = _iOrderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId).ToList().FindAll(n => n.Status == 1).ToList();
-            var clients = _iClientManager.GetAllClientDetailsByBranchId(branchId).ToList();
-            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
-            var delayedOrders = _iOrderManager.GetDelayedOrdersToAdminByBranchAndCompanyId(branchId, companyId);
-            var verifiedOrders = _iOrderManager.GetVerifiedOrdersByBranchAndCompanyId(branchId,companyId);
-            SummaryModel model = new SummaryModel
+            SummaryModel model = new SummaryModel();
+            if (User.Identity.Name.Contains("nbl_sales"))
             {
-                InvoicedOrderList = orders,
-                PendingOrders = pendingOrders,
-                Clients = clients,
-                Products = products,
-                DelayedOrders = delayedOrders,
-                VerifiedOrders = verifiedOrders
-            };
+                Session.Remove("BranchId");
+                Session.Remove("Branch");
+            }
+            else
+            {
+                var branchId = Convert.ToInt32(Session["BranchId"]);
+                var companyId = Convert.ToInt32(Session["CompanyId"]);
+                var orders = _iInvoiceManager.GetAllInvoicedOrdersByCompanyId(companyId).ToList().FindAll(n => n.BranchId == branchId).ToList();
+                var pendingOrders = _iOrderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId).ToList().FindAll(n => n.Status == 1).ToList();
+                var clients = _iClientManager.GetAllClientDetailsByBranchId(branchId).ToList();
+                var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+                var delayedOrders = _iOrderManager.GetDelayedOrdersToAdminByBranchAndCompanyId(branchId, companyId);
+                var verifiedOrders = _iOrderManager.GetVerifiedOrdersByBranchAndCompanyId(branchId, companyId);
+                 model = new SummaryModel
+                {
+                    InvoicedOrderList = orders,
+                    PendingOrders = pendingOrders,
+                    Clients = clients,
+                    Products = products,
+                    DelayedOrders = delayedOrders,
+                    VerifiedOrders = verifiedOrders
+                };
+            }
             return View(model);
         }
-
+        [Authorize(Roles = "Admin")]
         public PartialViewResult ViewClient()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
@@ -61,11 +71,13 @@ namespace NBL.Areas.Admin.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         public PartialViewResult ViewClientProfile(int id)
         {
             var client = _iClientManager.GetClientDeailsById(id);
             return PartialView("_ViewClientProfilePartialPage",client);
         }
+        [Authorize(Roles = "Admin")]
 
         public PartialViewResult ViewEmployee()
         {
@@ -73,6 +85,7 @@ namespace NBL.Areas.Admin.Controllers
             return PartialView("_ViewEmployeePartialPage",employees);
 
         }
+        [Authorize(Roles = "Admin")]
 
         public PartialViewResult ViewEmployeeProfile(int id)
         {
@@ -80,6 +93,7 @@ namespace NBL.Areas.Admin.Controllers
             return PartialView("_ViewEmployeeProfilePartialPage",employee);
 
         }
+        [Authorize(Roles = "Admin")]
 
         public PartialViewResult Stock() 
         {
@@ -89,12 +103,14 @@ namespace NBL.Areas.Admin.Controllers
             return PartialView("_ViewStockProductInBranchPartialPage",products);
 
         }
+        [Authorize(Roles = "Admin")]
         public PartialViewResult ViewBranch()
         {
             var branches = _iBranchManager.GetAllBranches().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
         }
 
+        [Authorize(Roles = "Admin")]
         public PartialViewResult VerifyingOrders()
         {
             int branchId = Convert.ToInt32(Session["branchId"]);

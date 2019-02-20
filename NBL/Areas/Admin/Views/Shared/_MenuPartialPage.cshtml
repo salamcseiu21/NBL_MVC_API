@@ -32,8 +32,23 @@
 
             <li>@Html.ActionLink(" Pending Invoices", "InvoicedOrderList", "Order", new { area = "Admin" }, new { @class = "fa fa-list", style = "font-weight: bolder" })</li>
         </ul>
-
-<li class="treeview">
+    </li>
+    
+    
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-shopping-cart"></i>
+            <span>Requisition</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li>@Html.ActionLink(" All", "All", "Requisition", new { area = "Admin" }, new { @class = "fa fa-list", style = "font-weight: bolder" })</li>
+            <li>@Html.ActionLink(" New Requisition", "Create", "Requisition", new { area = "Admin" }, new { @class = "fa fa-plus", style = "font-weight: bolder" })</li>
+        </ul>
+    </li>
+    <li class="treeview">
         <a href="#">
             <i class="fa fa-book"></i> <span>Reports</span>
             <span class="pull-right-container">
