@@ -6,6 +6,7 @@ using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Productions;
 using NBL.Models.EntityModels.Products;
+using NBL.Models.EntityModels.Requisitions;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Enums;
 using NBL.Models.Validators;
@@ -251,13 +252,23 @@ namespace NBL.BLL
            return _iProductGateway.GetProductByBarCode(barCode);
         }
 
-        public int SaveRequisitionInfo(CreateRequisitionModel aRequisitionModel)
+        public int SaveRequisitionInfo(ViewRequisitionModel aRequisitionModel)
         {
             int maxTrNo = _iProductGateway.GetMaxRequisitionNoOfCurrentYear();
             aRequisitionModel.RequisitionRef = GenerateRequisitionRef(maxTrNo);
             int rowAffected = _iProductGateway.SaveRequisitionInfo(aRequisitionModel);
             return rowAffected;
            
+        }
+
+        public IEnumerable<ViewRequisitionModel> GetRequsitionsByStatus(int status)
+        {
+            return _iProductGateway.GetRequsitionsByStatus(status);
+        }
+
+        public List<RequisitionModel> GetRequsitionDetailsById(long requisitionId)
+        {
+            return _iProductGateway.GetRequsitionDetailsById(requisitionId);
         }
     }
 }

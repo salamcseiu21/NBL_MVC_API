@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Xml.Linq;
 using NBL.BLL.Contracts;
 using NBL.Models;
+using NBL.Models.EntityModels.Requisitions;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Requisitions;
 
@@ -17,15 +18,18 @@ namespace NBL.Areas.Admin.Controllers
 
         private readonly IProductManager _iProductManager;
         private readonly IInventoryManager _iInventoryManager;
-        public RequisitionController(IProductManager iProductManager,IInventoryManager iInventoryManager)
+        private readonly IBranchManager _iBranchManager;
+        public RequisitionController(IProductManager iProductManager,IInventoryManager iInventoryManager,IBranchManager iBranchManager)
         {
             _iProductManager = iProductManager;
             _iInventoryManager = iInventoryManager;
+            _iBranchManager = iBranchManager;
         }
         // GET: Admin/Requisition
-        public ActionResult All() 
+        public ActionResult All()
         {
-            return View();
+            IEnumerable<ViewRequisitionModel> requisitions = _iProductManager.GetRequsitionsByStatus(0);
+            return View(requisitions);
         }
 
         [HttpGet]
@@ -39,14 +43,14 @@ namespace NBL.Areas.Admin.Controllers
         public ActionResult Create(FormCollection collection)
         {
             var filePath = Server.MapPath("~/Files/" + "Requisition_Products.xml");
-            List<ViewRequisitionModel> productList = GetProductFromXmalFile(filePath).ToList();
+            List<RequisitionModel> productList = GetProductFromXmalFile(filePath).ToList();
 
             if (productList.Count != 0)
             {
                 var xmlData = XDocument.Load(filePath);
                 int toBranchId = Convert.ToInt32(collection["ToBranchId"]);
                 var user = (ViewUser)Session["user"];
-                CreateRequisitionModel aRequisitionModel = new CreateRequisitionModel 
+                ViewRequisitionModel aRequisitionModel = new ViewRequisitionModel 
                 {
                     Products = productList,
                     ToBranchId = toBranchId,
@@ -109,17 +113,11 @@ namespace NBL.Areas.Admin.Controllers
             {
                 var filePath = Server.MapPath("~/Files/" + "Requisition_Products.xml");
                 var xmlData = XDocument.Load(filePath);
-                List<ViewRequisitionModel> productList = GetProductFromXmalFile(filePath).ToList();
                 var branchIdProductId=  collection["productIdToRemove"];
                 if (!branchIdProductId.Equals("0"))
                 {
-                    int productId = Convert.ToInt32(branchIdProductId.Substring(2, branchIdProductId.Length - 2));
-                    var toBranchId = Convert.ToInt32(branchIdProductId.Substring(0, 2));
-                    if (productId != 0)
-                    {
-                        xmlData.Root?.Elements().Where(n => n.Attribute("Id")?.Value == branchIdProductId.ToString()).Remove();
-                        xmlData.Save(filePath);
-                    }
+                    xmlData.Root?.Elements().Where(n => n.Attribute("Id")?.Value == branchIdProductId.ToString()).Remove();
+                    xmlData.Save(filePath);
                 }
                
                 else
@@ -129,18 +127,15 @@ namespace NBL.Areas.Admin.Controllers
                     foreach (string s in productIdList)
                     {
                         var value = s.Replace("NewQuantity_", "");
-                        int productIdToUpdate = Convert.ToInt32(value);
+                      
                         int qty = Convert.ToInt32(collection["NewQuantity_" + value]);
-                        var product = productList.Find(n => n.ProductId == productIdToUpdate);
+                       
 
-                        if (product != null)
-                        {
-                             xmlData.Element("Products")?
-                                .Elements("Product")?
-                                .Where(n => n.Attribute("Id")?.Value == product.ProductId.ToString()).FirstOrDefault()
-                                ?.SetElementValue("Quantity", qty);
-                            xmlData.Save(filePath);
-                        }
+                        xmlData.Element("Products")?
+                               .Elements("Product")?
+                               .Where(n => n.Attribute("Id")?.Value == value).FirstOrDefault()
+                               ?.SetElementValue("Quantity", qty);
+                        xmlData.Save(filePath);
 
                     }
                 }
@@ -163,27 +158,21 @@ namespace NBL.Areas.Admin.Controllers
             if (System.IO.File.Exists(filePath))
             {
                 //if the file is exists read the file
-
-                IEnumerable<ViewRequisitionModel> productList = GetProductFromXmalFile(filePath);
+                IEnumerable<RequisitionModel> productList = GetProductFromXmalFile(filePath);
                 return Json(productList, JsonRequestBehavior.AllowGet);
             }
-            else
-            {
-                //if the file does not exists create the file
-                System.IO.File.Create(filePath).Close();
-            }
-
-            
-            return Json(new List<ViewRequisitionModel>(), JsonRequestBehavior.AllowGet);
+            //if the file does not exists create the file
+            System.IO.File.Create(filePath).Close();
+            return Json(new List<RequisitionModel>(), JsonRequestBehavior.AllowGet);
         }
 
-        private IEnumerable<ViewRequisitionModel> GetProductFromXmalFile(string filePath)
+        private IEnumerable<RequisitionModel> GetProductFromXmalFile(string filePath)
         {
-            List<ViewRequisitionModel> products = new List<ViewRequisitionModel>();
+            List<RequisitionModel> products = new List<RequisitionModel>();
             var xmlData = XDocument.Load(filePath).Element("Products")?.Elements();
             foreach (XElement element in xmlData)
             {
-                ViewRequisitionModel aProduct = new ViewRequisitionModel();
+                RequisitionModel aProduct = new RequisitionModel();
                 var elementFirstAttribute = element.FirstAttribute.Value;
                 aProduct.Serial = elementFirstAttribute;
                 var elementValue = element.Elements();
@@ -192,12 +181,19 @@ namespace NBL.Areas.Admin.Controllers
                 aProduct.ProductName = xElements[1].Value;
                 aProduct.Quantity = Convert.ToInt32(xElements[2].Value);
                 aProduct.ToBranchId = Convert.ToInt32(xElements[3].Value);
+                aProduct.ToBranch = _iBranchManager.GetById(aProduct.ToBranchId);
                 products.Add(aProduct);
             }
 
             return products;
         }
 
+
+        public PartialViewResult ViewRequisitionDetails(long requisitionId)
+        {
+            var requisitions = _iProductManager.GetRequsitionDetailsById(requisitionId);
+            return PartialView("_ViewRequisitionDetailsPartialPage", requisitions);
+        }
         private void CreateXmlFile()
         {
 

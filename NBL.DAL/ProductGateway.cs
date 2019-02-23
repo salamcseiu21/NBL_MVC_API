@@ -5,10 +5,11 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using NBL.DAL.Contracts;
-using NBL.Models;
+using NBL.Models.EntityModels.Branches;
 using NBL.Models.EntityModels.Masters;
 using NBL.Models.EntityModels.Productions;
 using NBL.Models.EntityModels.Products;
+using NBL.Models.EntityModels.Requisitions;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
@@ -986,7 +987,7 @@ namespace NBL.DAL
             }
         }
 
-        public int SaveRequisitionInfo(CreateRequisitionModel aRequisitionModel)
+        public int SaveRequisitionInfo(ViewRequisitionModel aRequisitionModel)
         {
             ConnectionObj.Open();
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
@@ -997,7 +998,6 @@ namespace NBL.DAL
                 CommandObj.CommandText = "UDSP_SaveRequisitionInfo";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@RequisitionDate", aRequisitionModel.RequisitionDate);
-                CommandObj.Parameters.AddWithValue("@ToBranchId", aRequisitionModel.ToBranchId);
                 CommandObj.Parameters.AddWithValue("@RequisitionByUserId", aRequisitionModel.RequisitionByUserId);
                 CommandObj.Parameters.AddWithValue("@RequisitionRef", aRequisitionModel.RequisitionRef);
                 CommandObj.Parameters.AddWithValue("@Quantity", aRequisitionModel.Products.Sum(n => n.Quantity));
@@ -1026,6 +1026,25 @@ namespace NBL.DAL
             }
         }
 
+        private int SaveRequisitionDetails(List<RequisitionModel> products, int requisitionId)
+        {
+            int i = 0;
+            foreach (var product in products)
+            {
+                CommandObj.CommandText = "UDSP_SaveRequisitionDetails";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.Clear();
+                CommandObj.Parameters.AddWithValue("@ToBranchId", product.ToBranchId);
+                CommandObj.Parameters.AddWithValue("@ProductId", product.ProductId);
+                CommandObj.Parameters.AddWithValue("@Quantity", product.Quantity);
+                CommandObj.Parameters.AddWithValue("@RequisitionId", requisitionId);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+            }
+            return i;
+        }
         public int GetMaxRequisitionNoOfCurrentYear()
         {
             try
@@ -1054,23 +1073,81 @@ namespace NBL.DAL
             }
         }
 
-        private int SaveRequisitionDetails(List<ViewRequisitionModel> products, int requisitionId)
+        public IEnumerable<ViewRequisitionModel> GetRequsitionsByStatus(int status)
         {
-            int i = 0;
-            foreach (var product in products)
+            try
             {
-                CommandObj.CommandText = "UDSP_SaveRequisitionDetails";
+                CommandObj.CommandText = "UDSP_GetRequisitionsByStatus";
                 CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.Clear();
-                CommandObj.Parameters.AddWithValue("@ProductId", product.ProductId);
-                CommandObj.Parameters.AddWithValue("@Quantity", product.Quantity);
-                CommandObj.Parameters.AddWithValue("@RequisitionId", requisitionId);
-                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
-                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
-                CommandObj.ExecuteNonQuery();
-                i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                CommandObj.Parameters.AddWithValue("@Status", status);
+                ConnectionObj.Open();
+                List<ViewRequisitionModel> requisitions=new List<ViewRequisitionModel>();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    requisitions.Add(new ViewRequisitionModel
+                    {
+                        RequisitionId = Convert.ToInt64(reader["Id"]),
+                        RequisitionByUserId = Convert.ToInt32(reader["RequisitionByUserId"]),
+                        RequisitionBy = reader["RequisitionBy"].ToString(),
+                        RequisitionDate = Convert.ToDateTime(reader["RequisitionDate"]),
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        RequisitionRef = reader["RequisitionRef"].ToString()
+                    });
+                }
+                reader.Close();
+                return requisitions;
             }
-            return i;
+            catch (Exception exception)
+            {
+                throw new Exception("Could not get requisition by Status",exception);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public List<RequisitionModel> GetRequsitionDetailsById(long requisitionId)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetRequsitionDetailsById";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@RequisitionId", requisitionId);
+                List<RequisitionModel> requisitions=new List<RequisitionModel>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    requisitions.Add(new RequisitionModel
+                    {
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductName = reader["ProductName"].ToString(),
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        ToBranch = new Branch
+                        {
+                            BranchName = reader["BranchName"].ToString(),
+                            BranchAddress = reader["BranchAddress"].ToString()
+                        }
+                    });
+                }
+                reader.Close();
+                return requisitions;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not get requisition details by id",exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
         }
     }
 }

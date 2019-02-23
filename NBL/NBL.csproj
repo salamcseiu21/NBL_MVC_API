@@ -7905,6 +7905,12 @@
     <Content Include="Areas\Admin\Views\Shared\_SalesAdminMenuPartialPage.cshtml" />
     <Content Include="Areas\Admin\Views\SalesAdmin\Home.cshtml" />
     <Content Include="Areas\Admin\Views\Requisition\All.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_ViewRequisitionDetailsPartialPage.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\View.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_RequisitonDetailsModal.cshtml" />
+    <Content Include="Areas\Factory\Views\Product\Requisitions.cshtml" />
+    <Content Include="Areas\Factory\Views\Shared\_RequisitonDetailsModal.cshtml" />
+    <Content Include="Areas\Factory\Views\Shared\_ViewRequisitionDetailsPartialPage.cshtml" />
     <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

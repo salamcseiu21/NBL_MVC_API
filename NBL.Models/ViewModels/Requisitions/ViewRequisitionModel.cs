@@ -1,19 +1,26 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
+using NBL.Models.EntityModels.Requisitions;
 
 namespace NBL.Models.ViewModels.Requisitions
 {
-   public class ViewRequisitionModel
+    public class ViewRequisitionModel 
     {
 
-        public string Serial { get; set; } 
-        public int ProductId { get; set; }
-        [Required]
-        [Display(Name = "Product Name")]
-        public string ProductName { get; set; }
-        public int Quantity { get; set; }
-        public int ToBranchId { get; set; }    
+        public long RequisitionId { get; set; }
+        public string RequisitionRef { get; set; }
+        public DateTime RequisitionDate { get; set; }
+        public int RequisitionByUserId { get; set; }
+        public string RequisitionBy { get; set; }   
+        public int Quantity { get; set; }   
+        public int ToBranchId { get; set; }
+        public int Status { get; set; }
+        public char IsCancelled { get; set; }
+        public char EntryStatus { get; set; }
+        public int ApproveByUserId { get; set; }
+        public DateTime ApproveDateTime { get; set; }
+        public DateTime SystemDateTime { get; set; }
+        public List<RequisitionModel> Products { get; set; }
     }
 }

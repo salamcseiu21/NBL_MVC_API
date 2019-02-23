@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using NBL.Models;
 using NBL.Models.EntityModels.Productions;
 using NBL.Models.EntityModels.Products;
+using NBL.Models.EntityModels.Requisitions;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
@@ -42,7 +43,9 @@ namespace NBL.DAL.Contracts
         bool AddProductToInventory(List<Product> products);
         List<Product> GetIssuedProductListById(int id);
         ScannedProduct GetProductByBarCode(string barCode);
-        int SaveRequisitionInfo(CreateRequisitionModel aRequisitionModel);
+        int SaveRequisitionInfo(ViewRequisitionModel aRequisitionModel);
         int GetMaxRequisitionNoOfCurrentYear();
+        IEnumerable<ViewRequisitionModel> GetRequsitionsByStatus(int status);
+        List<RequisitionModel> GetRequsitionDetailsById(long requisitionId); 
     }
 }

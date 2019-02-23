@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NBL.Models.EntityModels.Productions;
 using NBL.Models.EntityModels.Products;
+using NBL.Models.EntityModels.Requisitions;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
@@ -35,6 +36,8 @@ namespace NBL.BLL.Contracts
         bool IsScannedBefore(List<ScannedProduct> barcodeList, string scannedBarCode);
         List<ScannedProduct> ScannedProducts(string filePath);
         ScannedProduct GetProductByBarCode(string barCode);
-        int SaveRequisitionInfo(CreateRequisitionModel aRequisitionModel);
+        int SaveRequisitionInfo(ViewRequisitionModel aRequisitionModel);
+        IEnumerable<ViewRequisitionModel> GetRequsitionsByStatus(int status);
+        List<RequisitionModel> GetRequsitionDetailsById(long requisitionId);
     }
 }

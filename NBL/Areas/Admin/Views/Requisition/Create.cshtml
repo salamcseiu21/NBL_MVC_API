@@ -1,11 +1,10 @@
-﻿@model NBL.Models.ViewModels.Requisitions.CreateRequisitionModel
+﻿@model NBL.Models.ViewModels.Requisitions.ViewRequisitionModel
 
 @{
     ViewBag.Title = "Requisition";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
     var tdate = DateTime.Now.Date.ToString("dd-MMMM-yyyy");
 }
-
 
 <section class="content">
     <p class="text-center text-green" style="margin: 0;font-weight:bolder;font-size:20px">Create Requisition</p>
@@ -258,7 +257,7 @@
         var a = $.inArray(str, productIdlist);
         if (a < 0) {
             productIdlist.push(str);
-           alert(str);
+           //alert(str);
                 var $form = $(btnClicked).parents('form');
                 $.ajax({
                     type: "POST",
@@ -290,8 +289,7 @@
     function Update(btnClicked) {
         $("#productIdToRemove").val(0);
         var $form = $(btnClicked).parents('form');
-      
-        $.ajax({
+              $.ajax({
             type: "POST",
             url: '@Url.Action("Update")',
             data: $form.serialize(),
@@ -360,7 +358,7 @@
                     //total =+ value.SubTotal;
                     //alert(key);
                     //$("#orders").append('<option value=' + value.ClientId + '>' + value.ProductId + '</option>');
-                    var row = $("<tr><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ToBranchId + "</td><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ProductName + "</td><td style='border: 1px solid black; padding: 5px 10px;'>  <input type='number' min='1' value='" + value.Quantity + "' class='form-control text-right' id='" + value.ProductId + "' name='NewQuantity_" + value.ProductId + "'  onchange='Update(this)'/>" + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-center'><button id='" + value.Serial + "' type='button' onclick='RemoveProduct(this)' class='btn btn-default btn-sm'><i class='fa fa-times' style='color:red;'></i></button>" + "</td></tr>");
+                    var row = $("<tr><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ToBranch.BranchName + "</td><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ProductName + "</td><td style='border: 1px solid black; padding: 5px 10px;'>  <input type='number' min='1' value='" + value.Quantity + "' class='form-control text-right' id='" + value.ProductId + "' name='NewQuantity_" + value.Serial + "'  onchange='Update(this)'/>" + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-center'><button id='" + value.Serial + "' type='button' onclick='RemoveProduct(this)' class='btn btn-default btn-sm'><i class='fa fa-times' style='color:red;'></i></button>" + "</td></tr>");
 
                     $("#transfers").append(row);
                 });
@@ -373,7 +371,6 @@
 
     <script>
     function PreviewOrderDetails(id) {
-
 
         if (confirm("Are you sure to Save  this Transfer Issue?")) {
 

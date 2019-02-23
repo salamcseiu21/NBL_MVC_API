@@ -13,6 +13,7 @@ using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Validators;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Requisitions;
 
 namespace NBL.Areas.Factory.Controllers
 {
@@ -363,6 +364,18 @@ namespace NBL.Areas.Factory.Controllers
             return Json(model.BarCodes, JsonRequestBehavior.AllowGet);
         }
 
+
+        public ActionResult Requisitions()
+        {
+            List<ViewRequisitionModel> requisitions=_iProductManager.GetRequsitionsByStatus(0).ToList();
+            return View(requisitions);
+        }
+
+        public PartialViewResult ViewRequisitionDetails(long requisitionId)
+        {
+            var requisitions = _iProductManager.GetRequsitionDetailsById(requisitionId);
+            return PartialView("_ViewRequisitionDetailsPartialPage", requisitions);
+        }
         public ActionResult ProductLifeCycle()
         {
             return View();
