@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "CreateTrip";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+}
+
+<section class="content">
+    
+    <div class="row">
+        
+        
+        <div class="col-md-6 col-md-offset-3" style="border: 1px solid">
+            
+            <h3 class="text-center  text-green">Create Trip</h3>
+            
+            @using (Html.BeginForm())
+            {
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="TripName" class="control-label col-md-2">Trip Name</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="TripName" name="TripName" placeholder="Trip Name here.."/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="RequisitionRef" class="control-label col-md-2">Requisition Ref</label>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="RequisitionRef" name="RequisitionRef" placeholder="Type Requisition Ref"/>
+                                    <input type="hidden" name="RequisitionId" id="RequisitionId"/>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="button" value="Add" onclick="AddRequisition(this)" class="btn btn-primary"/>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="RequisitionQty" class="control-label col-md-2">Requisition Qty</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="RequisitionQty" name="RequisitionQty" placeholder="Requisition Qty" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="btn-toolbar">
+                                <input type="button" value="Save" class="btn btn-info"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            }
+            <table class="display table-bordered" id="tbl_requisition_list">
+                <thead>
+                <tr>
+                    <th>Requisition Ref</th>
+                    <th>Quantity</th>
+                </tr>
+                </thead>
+
+                <tfoot>
+                <tr>
+                    <th>Requisition Ref</th>
+                    <th>Quantity</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+      
+    </div>
+    
+  
+</section>
+
+@section Scripts
+{
+    <script>
+        $("#tbl_requisition_list").DataTable();
+    </script>
+    <script src="~/Areas/Factory/Scripts/requisitionReferencesAutoComplete.js"></script>
+    
+    
+    @*Ajax form Submit*@
+    <script>
+        function AddRequisition(btnClicked) {
+            //alert(str);
+            var $form = $(btnClicked).parents('form');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddRequistionToTripXmlFile")',
+                data: $form.serialize(),
+                error: function (xhr, status, error) {
+                    //do something about the error
+                },
+                success: function (response) {
+                    //alert("Saved Successfully");
+                    $("#RequisitionRef").val("");
+                    $('#RequisitionId').val(0);
+                    $('#RequisitioRequisitionQtynId').val(0);
+                }
+            });
+            return false; // if it's a link to prevent post
+
+        }
+    </script>
+}

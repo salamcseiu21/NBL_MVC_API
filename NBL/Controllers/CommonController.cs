@@ -71,8 +71,6 @@ namespace NBL.Controllers
 
         public JsonResult BankAccountNameAutoComplete(string prefix)
         {
-
-
             var bankAccountList = (from c in _iCommonManager.GetAllBankBranch().ToList()
                             where c.BankBranchName.ToLower().Contains(prefix.ToLower())
                             select new

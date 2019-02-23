@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Requisitions>
+  <Requisition Id="4">
+    <RequisitionRef>192032</RequisitionRef>
+    <Quantity>60</Quantity>
+  </Requisition>
+</Requisitions>

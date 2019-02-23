@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Xml.Linq;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Products;
@@ -180,5 +181,61 @@ namespace NBL.Areas.Factory.Controllers
             return View(transactions);
         }
 
+        [HttpGet]
+        public ActionResult CreateTrip()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateTrip(FormCollection collection)
+        {
+            return View();
+        }
+
+        public JsonResult AddRequistionToTripXmlFile(FormCollection collection)
+        {
+           SuccessErrorModel model=new SuccessErrorModel();
+            try
+            {
+                int requisitionRef = Convert.ToInt32(collection["RequisitionRef"]);
+                int requisitionId = Convert.ToInt32(collection["RequisitionId"]);
+                var requisition = _iProductManager.GetRequsitionsByStatus(0).ToList().Find(n=>n.RequisitionId==requisitionId);
+                var filePath = Server.MapPath("~/Files/" + "Create_Trip_File.xml");
+                var xmlDocument = XDocument.Load(filePath);
+                xmlDocument.Element("Requisitions")?.Add(
+                    new XElement("Requisition", new XAttribute("Id", requisitionId),
+                        new XElement("RequisitionRef", requisitionRef),
+                        new XElement("Quantity", requisition.Quantity)
+                    ));
+                xmlDocument.Save(filePath);
+            }
+            catch (Exception e)
+            {
+                model.Message = "<p style='color:red'> Failed to add requisition ref to List"+e.Message+"</p>";
+            }
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetRequisitionRefeAutoComplete(string prefix)
+        {
+           
+            var requisitions = (from c in _iProductManager.GetRequsitionsByStatus(0)
+                where c.RequisitionRef.ToLower().Contains(prefix.ToLower())
+                select new
+                {
+                    label = c.RequisitionRef,
+                    val = c.RequisitionId
+                }).ToList();
+
+            return Json(requisitions);
+        }
+
+        public JsonResult GetRequisitionById(long requisitionId)
+        {
+            var requisition = _iProductManager.GetRequsitionsByStatus(0).ToList()
+                .Find(n => n.RequisitionId == requisitionId);
+            return Json(requisition, JsonRequestBehavior.AllowGet);
+        }
     }
 }

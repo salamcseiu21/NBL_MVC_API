@@ -456,6 +456,7 @@
     <Content Include="Areas\Editor\Images\Signature\signature.png" />
     <Content Include="Areas\Factory\Scripts\loadAllDeliverableProducts.js" />
     <Content Include="Areas\Factory\Scripts\loadAllScannedProducts.js" />
+    <Content Include="Areas\Factory\Scripts\requisitionReferencesAutoComplete.js" />
     <Content Include="Areas\Manager\Scripts\loadAllDeliverableOrderedProducts.js" />
     <Content Include="Areas\Sales\Scripts\addNewItemToList.js" />
     <Content Include="Areas\Sales\Scripts\cancelOrder.js" />
@@ -6931,6 +6932,7 @@
     <Content Include="Content\editor.dataTables.min.css" />
     <Content Include="Content\myStyle.css" />
     <Content Include="favicon.ico" />
+    <Content Include="Files\Create_Trip_File.xml" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -7911,6 +7913,7 @@
     <Content Include="Areas\Factory\Views\Product\Requisitions.cshtml" />
     <Content Include="Areas\Factory\Views\Shared\_RequisitonDetailsModal.cshtml" />
     <Content Include="Areas\Factory\Views\Shared\_ViewRequisitionDetailsPartialPage.cshtml" />
+    <Content Include="Areas\Factory\Views\Transfer\CreateTrip.cshtml" />
     <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -8052,7 +8055,6 @@
     <Folder Include="Areas\Sales\Models\" />
     <Folder Include="Assets\css\" />
     <Folder Include="Assets\documentation\build\" />
-    <Folder Include="Files\" />
     <Folder Include="Logs\" />
     <Folder Include="Views\Common\" />
   </ItemGroup>
