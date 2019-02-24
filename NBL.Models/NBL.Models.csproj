@@ -101,6 +101,8 @@
     <Compile Include="EntityModels\Deliveries\DeliveryModel.cs" />
     <Compile Include="EntityModels\Departments\Department.cs" />
     <Compile Include="EntityModels\Designations\Designation.cs" />
+    <Compile Include="EntityModels\TransferProducts\Trip.cs" />
+    <Compile Include="EntityModels\TransferProducts\TripDetails.cs" />
     <Compile Include="EntityModels\VatDiscounts\Discount.cs" />
     <Compile Include="EntityModels\Locations\District.cs" />
     <Compile Include="EntityModels\Locations\Division.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="ViewModels\TransferProducts\ViewProductTransactionModel.cs" />
     <Compile Include="ViewModels\TransferProducts\ViewTransferIssueDetailsModel.cs" />
     <Compile Include="ViewModels\TransferProducts\ViewTransferIssueModel.cs" />
+    <Compile Include="ViewModels\TransferProducts\ViewTripModel.cs" />
     <Compile Include="ViewModels\ViewAssignedRegion.cs" />
     <Compile Include="ViewModels\ViewAssignedUpazilla.cs" />
     <Compile Include="ViewModels\ViewBranch.cs" />

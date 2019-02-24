@@ -8,7 +8,6 @@
     
     <div class="row">
         
-        
         <div class="col-md-6 col-md-offset-3" style="border: 1px solid">
             
             <h3 class="text-center  text-green">Create Trip</h3>
@@ -17,30 +16,11 @@
             {
                 <div class="form-horizontal">
                     <div class="form-group">
-                        <label for="TripName" class="control-label col-md-2">Trip Name</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" id="TripName" name="TripName" placeholder="Trip Name here.."/>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label for="RequisitionRef" class="control-label col-md-2">Requisition Ref</label>
                         <div class="col-md-10">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <input type="text" class="form-control" id="RequisitionRef" name="RequisitionRef" placeholder="Type Requisition Ref"/>
-                                    <input type="hidden" name="RequisitionId" id="RequisitionId"/>
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="button" value="Add" onclick="AddRequisition(this)" class="btn btn-primary"/>
-                                </div>
-                            </div>
+                            <input type="text" class="form-control" id="RequisitionRef" name="RequisitionRef" placeholder="Type Requisition Ref"/>
+                            <input type="hidden" name="RequisitionId" id="RequisitionId"/>
                             
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="RequisitionQty" class="control-label col-md-2">Requisition Qty</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" id="RequisitionQty" name="RequisitionQty" placeholder="Requisition Qty" readonly="readonly"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -55,26 +35,11 @@
                 </div>
 
             }
-            <table class="display table-bordered" id="tbl_requisition_list">
-                <thead>
-                <tr>
-                    <th>Requisition Ref</th>
-                    <th>Quantity</th>
-                </tr>
-                </thead>
-
-                <tfoot>
-                <tr>
-                    <th>Requisition Ref</th>
-                    <th>Quantity</th>
-                </tr>
-                </tfoot>
-            </table>
+            <div id="Requisitiondetails"></div>
         </div>
       
     </div>
     
-  
 </section>
 
 @section Scripts
@@ -82,9 +47,6 @@
     <script>
         $("#tbl_requisition_list").DataTable();
     </script>
-    <script src="~/Areas/Factory/Scripts/requisitionReferencesAutoComplete.js"></script>
-    
-    
     @*Ajax form Submit*@
     <script>
         function AddRequisition(btnClicked) {
@@ -107,5 +69,51 @@
             return false; // if it's a link to prevent post
 
         }
+    </script>
+    
+    <script>
+        $(function () {
+            $("#RequisitionRef").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: RootUrl + 'factory/transfer/GetRequisitionRefeAutoComplete/',
+                        data: "{ 'prefix': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data,
+                                function (item) {
+                                    return item;
+                                }));
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    $("#RequisitionId").val(i.item.val);
+                    var requisitionId = i.item.val;
+                    var json = { requisitionId: requisitionId };
+
+                    $.ajax({
+                        type: "POST",
+                        url: RootUrl + 'factory/transfer/GetRequisitionById',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(json),
+                        success: function (data) {
+                           // var qty = data.Quantity;
+                           // $("#RequisitionQty").val(qty);
+                            $('#Requisitiondetails').html(data); 
+                        }
+                    });
+                },
+                minLength: 1
+            });
+        });
     </script>
 }

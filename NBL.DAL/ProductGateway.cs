@@ -1124,11 +1124,14 @@ namespace NBL.DAL
                 {
                     requisitions.Add(new RequisitionModel
                     {
+                        RequisitionId=requisitionId,
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         ProductName = reader["ProductName"].ToString(),
                         Quantity = Convert.ToInt32(reader["Quantity"]),
+                        ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
                         ToBranch = new Branch
                         {
+                            
                             BranchName = reader["BranchName"].ToString(),
                             BranchAddress = reader["BranchAddress"].ToString()
                         }

@@ -5,7 +5,7 @@ namespace NBL.Models.EntityModels.Requisitions
 {
    public class RequisitionModel 
     {
-
+        public long RequisitionId { get; set; } 
         public string Serial { get; set; } 
         public int ProductId { get; set; }
         [Required]

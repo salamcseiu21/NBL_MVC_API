@@ -34,6 +34,8 @@
                 success: function (data) {
                     var qty = data.Quantity;
                     $("#RequisitionQty").val(qty);
+                    $('#modalBody').html(data);
+                    $('#showRequisitionDetailsModal').modal('show');
                 }
             });
         },
