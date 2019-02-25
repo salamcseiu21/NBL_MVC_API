@@ -7,9 +7,9 @@ using System.Xml.Linq;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Products;
-using NBL.Models.EntityModels.Requisitions;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Requisitions;
 using NBL.Models.ViewModels.TransferProducts;
 
 namespace NBL.Areas.Factory.Controllers
@@ -195,8 +195,14 @@ namespace NBL.Areas.Factory.Controllers
         {
             return View();
         }
+        public ActionResult ConfirmTrip()
+        {
+            var filePath = Server.MapPath("~/Files/" + "Create_Trip_File.xml");
+            var products= GetProductFromXmalFile(filePath);
+            return View(products);
+        }
 
-        public ActionResult AddRequistionToTripXmlFile(FormCollection collection)
+        public JsonResult AddRequistionToTripXmlFile(FormCollection collection)
         {
            SuccessErrorModel model=new SuccessErrorModel();
             try
@@ -207,6 +213,7 @@ namespace NBL.Areas.Factory.Controllers
                 {
                     var start = key.LastIndexOf("_", StringComparison.Ordinal)+1;
                     var productId = Convert.ToInt32(key.Substring(10, 3));
+                    var product = _iProductManager.GetProductByProductId(productId);
                     var branchId = Convert.ToInt32(key.Substring(7, 2));
                     var requisitionQty = key.Substring(start);
                     var deliveryQty = Convert.ToInt32(collection[key]);
@@ -220,7 +227,8 @@ namespace NBL.Areas.Factory.Controllers
                             new XElement("ProuctId",productId),
                             new XElement("RequisitionQty", requisitionQty),
                             new XElement("DeliveryQuantity", deliveryQty),
-                            new XElement("ToBranchId", branchId)
+                            new XElement("ToBranchId", branchId),
+                            new XElement("ProductName", product.ProductName)
                         ));
                     model.Message += "Added";
                     xmlDocument.Save(filePath);
@@ -235,11 +243,25 @@ namespace NBL.Areas.Factory.Controllers
            
         }
 
+
+        public JsonResult DeleteProductFromTempRequisition(string tempRequisitionId)
+        {
+            SuccessErrorModel model=new SuccessErrorModel();
+            var filePath = Server.MapPath("~/Files/" + "Create_Trip_File.xml");
+            var xmlData = XDocument.Load(filePath);
+            xmlData.Root?.Elements().Where(n => n.Attribute("Id")?.Value == tempRequisitionId).Remove();
+            xmlData.Save(filePath);
+            model.Message = "<p style='color:red;'>Removed successfully!</p>";
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetRequisitionRefeAutoComplete(string prefix)
         {
-           
-            var requisitions = (from c in _iProductManager.GetRequsitionsByStatus(0)
-                where c.RequisitionRef.ToLower().Contains(prefix.ToLower())
+
+            var list = ViewPendingRequisitionList();
+            var requisitions = (from c in list
+                                where c.RequisitionRef.ToLower().Contains(prefix.ToLower())
                 select new
                 {
                     label = c.RequisitionRef,
@@ -249,14 +271,39 @@ namespace NBL.Areas.Factory.Controllers
             return Json(requisitions);
         }
 
+        private List<ViewRequisitionModel> ViewPendingRequisitionList()
+        {
+            var list = new List<ViewRequisitionModel>();
+            var filePath = Server.MapPath("~/Files/" + "Create_Trip_File.xml");
+            var requisitionRefs = GetProductFromXmalFile(filePath).ToList().Select(n => n.RequisitionRef).Distinct().ToList();
+            List<ViewRequisitionModel> requsitionList = new List<ViewRequisitionModel>();
+            foreach (string requisitionRef in requisitionRefs)
+            {
+                requsitionList.Add(_iProductManager.GetRequsitionsByStatus(0).ToList()
+                    .Find(n => n.RequisitionRef.Equals(requisitionRef)));
+            }
+            List<ViewRequisitionModel> viewRequisitionModels = _iProductManager.GetRequsitionsByStatus(0).ToList();
+            foreach (ViewRequisitionModel model in viewRequisitionModels)
+            {
+                ViewRequisitionModel viewRequisitionModel =
+                    requsitionList.ToList().Find(m => m.RequisitionRef.Equals(model.RequisitionRef));
+                if (viewRequisitionModel == null)
+                {
+                    list.Add(model);
+                }
+            }
+            return list;
+        }
+
         public PartialViewResult GetRequisitionById(long requisitionId)
         {
+           
             var requisitions = _iProductManager.GetRequsitionDetailsById(requisitionId);
             return PartialView("_ViewRequisitionDetailsByIdPartialPage", requisitions);
         }
         
 
-        public JsonResult GetTempTrip()
+        public PartialViewResult GetTempTrip()
         {
             var filePath = Server.MapPath("~/Files/" + "Create_Trip_File.xml");
 
@@ -264,11 +311,11 @@ namespace NBL.Areas.Factory.Controllers
             {
                 //if the file is exists read the file
                 IEnumerable<ViewTripModel> tripModels = GetProductFromXmalFile(filePath);
-                return Json(tripModels, JsonRequestBehavior.AllowGet);
+                return PartialView("_ViewTempTripProductsPartialPage",tripModels);
             }
             //if the file does not exists create the file
             System.IO.File.Create(filePath).Close();
-            return Json(new List<RequisitionModel>(), JsonRequestBehavior.AllowGet);
+            return PartialView("_ViewTempTripProductsPartialPage",new List<ViewTripModel>());
         }
 
         private IEnumerable<ViewTripModel> GetProductFromXmalFile(string filePath)
@@ -277,13 +324,22 @@ namespace NBL.Areas.Factory.Controllers
             var xmlData = XDocument.Load(filePath).Element("Requisitions")?.Elements();
             foreach (XElement element in xmlData)
             {
-                ViewTripModel model = new ViewTripModel();
+               
                 var elementFirstAttribute = element.FirstAttribute.Value;
-                model.RequisitionId = Convert.ToInt64(elementFirstAttribute);
                 var elementValue = element.Elements();
                 var xElements = elementValue as XElement[] ?? elementValue.ToArray();
-                model.RequisitionRef = xElements[0].Value;
-                model.Quantity = Convert.ToInt32(xElements[1].Value);
+                ViewTripModel model = new ViewTripModel
+                {
+                    Id = elementFirstAttribute,
+                    RequisitionId = Convert.ToInt64(xElements[0].Value),
+                    RequisitionRef = xElements[1].Value,
+                    ProuctId = Convert.ToInt32(xElements[2].Value),
+                    RequisitionQty = Convert.ToInt32(xElements[3].Value),
+                    DeliveryQuantity = Convert.ToInt32(xElements[4].Value),
+                    ToBranchId = Convert.ToInt32(xElements[5].Value),
+                    ProuctName = xElements[6].Value
+                   
+                };
                 tripModels.Add(model);
             }
             return tripModels;

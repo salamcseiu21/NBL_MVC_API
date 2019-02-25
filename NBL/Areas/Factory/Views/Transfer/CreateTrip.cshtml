@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "CreateTrip";
+    ViewBag.Title = "Create Trip";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
 }
 
@@ -11,7 +11,8 @@
         <div class="col-md-6 col-md-offset-3" style="border: 1px solid">
             
             <h3 class="text-center  text-green">Create Trip</h3>
-            
+            <div id="message" style="display:none;font-weight:bold;font-size:20px" class="text-center">
+            </div>
             @using (Html.BeginForm())
             {
                 <div class="form-horizontal">
@@ -27,7 +28,7 @@
 
                         <div class="col-md-8 col-md-offset-2">
                             <div class="btn-toolbar">
-                                <input type="button" value="Save" class="btn btn-info"/>
+                                <input type="button" value="Save" class="btn btn-info" onclick="ConfirmTrip(this)"/>
                             </div>
                         </div>
                     </div>
@@ -39,13 +40,20 @@
         </div>
       
     </div>
-    
+    <div id="TempTripProducts"></div>
 </section>
 
 @section Scripts
 {
+
     <script>
         $("#tbl_requisition_list").DataTable();
+    </script>
+    
+    <script>
+        window.onload = function() {
+            loadTempTripProducts();
+        };
     </script>
     @*Ajax form Submit*@
     <script>
@@ -68,6 +76,27 @@
             });
             return false; // if it's a link to prevent post
 
+        }
+        function loadTempTripProducts() {
+            $.ajax({
+                url: RootUrl + "factory/transfer/GetTempTrip",
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    // var qty = data.Quantity;
+                    // $("#RequisitionQty").val(qty);
+                    $("#RequisitionRef").val("");
+                    $('#TempTripProducts').html(data);
+                }
+            });
+        }
+
+        function ConfirmTrip(btnClick) {
+            var isConfirm = confirm("Are you Confirm to Crate Trip ?");
+            if (isConfirm) {
+                window.location.href = RootUrl + "factory/transfer/ConfirmTrip";
+            }
+            return false;
         }
     </script>
     
@@ -106,9 +135,11 @@
                         contentType: "application/json; charset=utf-8",
                         data: JSON.stringify(json),
                         success: function (data) {
-                           // var qty = data.Quantity;
-                           // $("#RequisitionQty").val(qty);
-                            $('#Requisitiondetails').html(data); 
+                            // var qty = data.Quantity;
+                            // $("#RequisitionQty").val(qty);
+                          
+                            $('#Requisitiondetails').html(data);
+                           
                         }
                     });
                 },

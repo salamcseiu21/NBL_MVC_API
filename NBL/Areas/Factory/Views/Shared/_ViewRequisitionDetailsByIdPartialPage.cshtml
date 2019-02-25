@@ -2,72 +2,76 @@
 @using NBL.Models.EntityModels.Requisitions
 @model IEnumerable<RequisitionModel>
 <section class="content">
-  @using (Html.BeginForm("AddRequistionToTripXmlFile","Transfer",FormMethod.Post))
-  {
-      <input type="hidden" name="RIdNo" value="@Model.First().RequisitionId"/>
-      <table id="tbl_requisition_details_list" class="table-bordered" style="border: 1px solid">
+    
+    @using (Html.BeginForm("AddRequistionToTripXmlFile", "Transfer", FormMethod.Post, new {id = "AddRequistionToTripForm"}))
+    {
+        <input type="hidden" name="RIdNo" value="@Model.First().RequisitionId"/>
+        <table id="tbl_requisition_details_list" class="table-bordered" style="border: 1px solid">
 
-          <thead>
+            <thead>
 
-          <tr>
-              <th rowspan="2">Branch</th>
-              <th colspan="2">Products</th>
-          </tr>
-          </thead>
+            <tr>
+                <th rowspan="2">Branch</th>
+                <th colspan="2">Products</th>
+            </tr>
+            </thead>
 
-          <tbody>
-          @{
-              var groupBy = Model.GroupBy(n => n.ToBranch.BranchName);
-              foreach (IGrouping<string, RequisitionModel> requisitionModels in groupBy)
-              {
-                  <tr>
-                      <td>@requisitionModels.Key
-                        
-                      </td>
-                    
-                      <td>
-                          <table class="table" style="margin: 0; padding: 0;">
-                              <thead>
-                              <tr>
-                                  <th>Product Name</th>
-                                  <th class="text-right">Qty</th>
-                                  <th class="text-right">Delivery</th>
-                              </tr>
-                              </thead>
-                              <tbody>
-                              @foreach (var item in requisitionModels)
-                              {
-                                  <tr>
-                                      
-                                      <td style="margin: 0; padding: 0;">@item.ProductName</td>
-                                      <td style="margin: 0; padding: 0;" class="text-right">
-                                          @item.Quantity
-                                      </td>
-                                      <td style="margin: 0; padding: 0;" class="text-right">
-                                          <input name="@("Qty_Of_" + item.ToBranchId.ToString("D2") + "_" + item.ProductId.ToString("D3")+"_"+item.Quantity)" type="text" max="@item.Quantity"/>
-                                      </td>
-                                  </tr>
+            <tbody>
+            @{
+                var groupBy = Model.GroupBy(n => n.ToBranch.BranchName);
+                foreach (IGrouping<string, RequisitionModel> requisitionModels in groupBy)
+                {
+                    <tr>
+                        <td>@requisitionModels.Key
 
-                              }
-                              <tr>
-                                  <td style="margin: 0; padding: 0;">Total:</td>
-                                  <td style="margin: 0; padding: 0;" class="text-right">@requisitionModels.Sum(n => n.Quantity)</td>
-                              </tr>
-                              </tbody>
-                          </table>
+                        </td>
 
-                      </td>
+                        <td>
+                            <table class="table" style="margin: 0; padding: 0;">
+                                <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th class="text-right">Qty</th>
+                                    <th class="text-right">Delivery</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var item in requisitionModels)
+                                {
+                                    <tr>
 
-                  </tr>
+                                        <td style="margin: 0; padding: 0;">@item.ProductName</td>
+                                        <td style="margin: 0; padding: 0;" class="text-right">
+                                            @item.Quantity
+                                        </td>
+                                        <td style="margin: 0; padding: 0;" class="text-right">
+                                            <input name="@("Qty_Of_" + item.ToBranchId.ToString("D2") + "_" + item.ProductId.ToString("D3") + "_" + item.Quantity)" type="text" max="@item.Quantity"/>
+                                        </td>
+                                    </tr>
 
-              }
-          }
+                                }
+                                <tr>
+                                    <td style="margin: 0; padding: 0;">Total:</td>
+                                    <td style="margin: 0; padding: 0;" class="text-right">@requisitionModels.Sum(n => n.Quantity)</td>
+                                </tr>
+                                </tbody>
+                            </table>
 
-          </tbody>
+                        </td>
 
-      </table>
-          <input type="submit" value="Save"/>
-         }
+                    </tr>
+
+                }
+            }
+
+            </tbody>
+
+        </table>
+        <br/>
+        <div class="btn-toolbar">
+            <input type="button" value="Save" class="btn btn-info" onclick="AddRequistionToTripXmlFile(this)"/>
+        </div>
+    }
 </section>
 
 
@@ -79,4 +83,26 @@
     });
 </script>
 
-
+<script>
+    function AddRequistionToTripXmlFile(event) {
+        var $form = $(event).parents('form');
+        $.ajax({
+            type: "POST",
+            url: RootUrl + 'factory/transfer/AddRequistionToTripXmlFile',
+            data: $form.serialize(),
+            error: function (xhr, status, error) {
+                alert(error);
+            },
+            success: function (response) {
+                var result = response.Message;
+                //alert("Saved Successfully");
+                $('#message').html(response).fadeIn('slow');
+                $('#message').html(result).fadeIn('slow'); //also show a success message
+                $('#message').delay(700).fadeOut('slow');
+                loadTempTripProducts();
+                $('#Requisitiondetails').html('');
+               
+            }
+        });
+    }
+</script>

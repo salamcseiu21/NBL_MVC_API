@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace NBL.Models.ViewModels.TransferProducts
 {
    public class ViewTripModel
     {
+
+        public string Id { get; set; } 
         public long RequisitionId { get; set; }
         public string RequisitionRef { get; set; }
-        public int Quantity { get; set; }   
+        public int RequisitionQty { get; set; }
+        public int DeliveryQuantity { get; set; } 
+        public int ToBranchId { get; set; }
+        public int ProuctId { get; set; }
+        public string ProuctName { get; set; }  
     }
 }
