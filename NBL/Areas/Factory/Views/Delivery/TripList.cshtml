@@ -1,0 +1,32 @@
+﻿@model IEnumerable<NBL.Models.ViewModels.TransferProducts.ViewTripModel>
+@{
+    ViewBag.Title = "Trip List";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+}
+
+<section class="content">
+    <h3 class="text-center headingStyle text-green">Trip List</h3>
+    <table class="display" id="tbl_trip_List">
+        <thead>
+        <tr>
+            <th>Trip Ref</th>
+            <th>Quantiy</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TripRef</td>
+                <td>@item.DeliveryQuantity</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</section>
+@section Scripts
+{
+    <script>
+        $("#tbl_trip_List").DataTable();
+    </script>
+}

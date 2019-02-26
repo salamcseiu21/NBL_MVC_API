@@ -135,5 +135,28 @@ namespace NBL.BLL
         {
             return _iInventoryGateway.GetAllProductsBarcode();
         }
+
+        public bool CreateTrip(ViewCreateTripModel model)
+        {
+           var maxSlNo= _iInventoryGateway.GetMaxTripRefNoOfCurrentYear();
+            model.TripRef = GenerateTripReference(maxSlNo);
+            int rowAffected = _iInventoryGateway.CreateTrip(model);
+            return rowAffected > 0;
+        }
+
+      
+        private string GenerateTripReference(long maxRefNo) 
+        {
+
+            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id.Equals(Convert.ToInt32(ReferenceType.Trip))).Code;
+            string temp = (maxRefNo + 1).ToString();
+            string reference = DateTime.Now.Year.ToString().Substring(2, 2) + refCode + temp;
+            return reference;
+        }
+        public IEnumerable<ViewTripModel> GetAllTrip()
+        {
+            return _iInventoryGateway.GetAllTrip();
+        }
+
     }
 }

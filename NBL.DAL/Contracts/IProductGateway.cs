@@ -46,6 +46,7 @@ namespace NBL.DAL.Contracts
         int SaveRequisitionInfo(ViewRequisitionModel aRequisitionModel);
         int GetMaxRequisitionNoOfCurrentYear();
         IEnumerable<ViewRequisitionModel> GetRequsitionsByStatus(int status);
-        List<RequisitionModel> GetRequsitionDetailsById(long requisitionId); 
+        List<RequisitionModel> GetRequsitionDetailsById(long requisitionId);
+        ICollection<ViewRequisitionModel> GetRequsitions();
     }
 }

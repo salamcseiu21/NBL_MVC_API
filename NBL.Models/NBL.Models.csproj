@@ -111,6 +111,7 @@
     <Compile Include="Enums\InvoiceStatus.cs" />
     <Compile Include="Enums\ReferenceType.cs" />
     <Compile Include="Enums\OrderStatus.cs" />
+    <Compile Include="Enums\RequisitionStatus.cs" />
     <Compile Include="ErrorModel.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="EntityModels\Invoices\Invoice.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="ViewModels\Sales\ProductReceiveViewModel.cs" />
     <Compile Include="ViewModels\Sales\ViewBranchStockModel.cs" />
     <Compile Include="ViewModels\TransferProducts\CreateTransferIssueViewModel.cs" />
+    <Compile Include="ViewModels\TransferProducts\ViewCreateTripModel.cs" />
     <Compile Include="ViewModels\TransferProducts\ViewProductTransactionModel.cs" />
     <Compile Include="ViewModels\TransferProducts\ViewTransferIssueDetailsModel.cs" />
     <Compile Include="ViewModels\TransferProducts\ViewTransferIssueModel.cs" />

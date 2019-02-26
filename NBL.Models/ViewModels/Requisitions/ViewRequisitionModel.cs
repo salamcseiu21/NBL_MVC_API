@@ -13,7 +13,10 @@ namespace NBL.Models.ViewModels.Requisitions
         public DateTime RequisitionDate { get; set; }
         public int RequisitionByUserId { get; set; }
         public string RequisitionBy { get; set; }   
-        public int Quantity { get; set; }   
+        public int Quantity { get; set; }
+        public int RequisitionQty { get; set; }
+        public int DeliveryQty { get; set; }
+        public int PendingQty { get; set; } 
         public int ToBranchId { get; set; }
         public int Status { get; set; }
         public char IsCancelled { get; set; }

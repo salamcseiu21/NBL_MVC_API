@@ -33,5 +33,8 @@ namespace NBL.DAL.Contracts
        ICollection<ViewProductTransactionModel> GetAllProductTransactionFromFactory();
        ViewProductLifeCycleModel GetProductLifeCycleByBarcode(string productBarCode);
        IEnumerable<ViewProduct> GetAllProductsBarcode();
+       int CreateTrip(ViewCreateTripModel model);
+       long GetMaxTripRefNoOfCurrentYear();
+       IEnumerable<ViewTripModel> GetAllTrip();
    }
 }

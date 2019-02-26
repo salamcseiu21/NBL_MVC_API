@@ -10,8 +10,7 @@ function DeleteProduct(btnClick) {
 }
 
 function DeleteProductFromTripXmlFile(btnClick) {
-    alert(btnClick.value);
-
+  
     var json = { tempRequisitionId: btnClick.value };
     $.ajax({
         type: "POST",

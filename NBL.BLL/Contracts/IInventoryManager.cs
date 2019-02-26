@@ -31,5 +31,7 @@ namespace NBL.BLL.Contracts
        ICollection<ViewProductTransactionModel> GetAllProductTransactionFromFactory();
        ViewProductLifeCycleModel GetProductLifeCycleByBarcode(string productBarCode);
        IEnumerable<ViewProduct> GetAllProductsBarcode();
+       bool CreateTrip(ViewCreateTripModel model);
+       IEnumerable<ViewTripModel> GetAllTrip(); 
    }
 }

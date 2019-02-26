@@ -224,5 +224,12 @@ namespace NBL.Areas.Factory.Controllers
 
             return Json(products, JsonRequestBehavior.AllowGet);
         }
+
+
+        public ActionResult TripList()
+        {
+            IEnumerable<ViewTripModel> tripModels = _iInventoryManager.GetAllTrip();
+            return View(tripModels);
+        }
     }
 }

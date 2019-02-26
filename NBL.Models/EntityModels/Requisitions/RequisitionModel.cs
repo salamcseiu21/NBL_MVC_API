@@ -12,6 +12,10 @@ namespace NBL.Models.EntityModels.Requisitions
         [Display(Name = "Product Name")]
         public string ProductName { get; set; }
         public int Quantity { get; set; }
+        public int RequisitionQty { get; set; }
+        public int PendingQty { get; set; }
+        public int DeliveryQty { get; set; }
+
         public int ToBranchId { get; set; }
         public Branch ToBranch { get; set; }
         public RequisitionModel()

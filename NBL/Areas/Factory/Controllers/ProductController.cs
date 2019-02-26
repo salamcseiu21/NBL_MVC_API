@@ -367,7 +367,7 @@ namespace NBL.Areas.Factory.Controllers
 
         public ActionResult Requisitions()
         {
-            List<ViewRequisitionModel> requisitions=_iProductManager.GetRequsitionsByStatus(0).ToList();
+            List<ViewRequisitionModel> requisitions=_iProductManager.GetRequsitions().ToList();
             return View(requisitions);
         }
 

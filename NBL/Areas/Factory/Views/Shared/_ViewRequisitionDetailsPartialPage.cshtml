@@ -32,13 +32,13 @@
                                     {
                                         <tr>
                                             <td style="margin: 0; padding: 0;">@item.ProductName</td>
-                                            <td style="margin: 0; padding: 0;" class="text-right">@item.Quantity</td>
+                                            <td style="margin: 0; padding: 0;" class="text-right">@item.PendingQty</td>
                                         </tr>
 
                                     }
                                     <tr>
                                         <td style="margin: 0; padding: 0;">Total:</td>
-                                        <td style="margin: 0; padding: 0;" class="text-right">@requisitionModels.Sum(n => n.Quantity)</td>
+                                        <td style="margin: 0; padding: 0;" class="text-right">@requisitionModels.Sum(n => n.PendingQty)</td>
                                     </tr>
                                 </tbody>
                             </table>

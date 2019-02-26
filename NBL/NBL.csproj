@@ -7919,6 +7919,7 @@
     <Content Include="Areas\Factory\Views\Shared\_ViewRequisitionDetailsByIdPartialPage.cshtml" />
     <Content Include="Areas\Factory\Views\Shared\_ViewTempTripProductsPartialPage.cshtml" />
     <Content Include="Areas\Factory\Views\Transfer\ConfirmTrip.cshtml" />
+    <Content Include="Areas\Factory\Views\Delivery\TripList.cshtml" />
     <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

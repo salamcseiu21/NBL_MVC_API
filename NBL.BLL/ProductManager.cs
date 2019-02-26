@@ -270,5 +270,10 @@ namespace NBL.BLL
         {
             return _iProductGateway.GetRequsitionDetailsById(requisitionId);
         }
+
+        public ICollection<ViewRequisitionModel> GetRequsitions()
+        {
+            return _iProductGateway.GetRequsitions();
+        }
     }
 }

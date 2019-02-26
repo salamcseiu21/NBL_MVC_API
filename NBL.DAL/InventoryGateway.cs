@@ -7,6 +7,7 @@ using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Branches;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
+using NBL.Models.Enums;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.Products;
@@ -940,6 +941,182 @@ namespace NBL.DAL
                 ConnectionObj.Close();
                 CommandObj.Parameters.Clear();
             }
+        }
+        //----------------Save data to Trip,TripItem And Tripdetails ..-------------
+
+        public long GetMaxTripRefNoOfCurrentYear()
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetMaxTripRefNoOfCurrentYear";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                long slNo = 0;
+                if (reader.Read())
+                {
+                    slNo = Convert.ToInt64(reader["MaxSlNo"]);
+                }
+                reader.Close();
+                return slNo;
+
+            }
+            catch (Exception exception)
+            {
+
+                throw new Exception("Unable to collect max trip ref", exception);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public IEnumerable<ViewTripModel> GetAllTrip()
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetAllTrip";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.Clear();
+                List<ViewTripModel> models=new List<ViewTripModel>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    models.Add(new ViewTripModel
+                    {
+                        TripId = Convert.ToInt64(reader["Id"]),
+                        TripRef = reader["TripRef"].ToString(),
+                        DriverPhone = reader["DriverPhone"].ToString(),
+                        DriverName = reader["DriverName"].ToString(),
+                        CreatedByUserId = Convert.ToInt32(reader["CreatedByUserId"]),
+                        TransportationCost = Convert.ToDecimal(reader["TransportationCost"]),
+                        DeliveryQuantity = Convert.ToInt32(reader["Quantity"]),
+                        Transportation = reader["Transportation"].ToString(),
+                        VehicleNo = reader["VehicleNo"].ToString(),
+                        Remarks = reader["Remarks"].ToString()
+                    });
+                }
+                reader.Close();
+                return models;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not Collect trip info",exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public int CreateTrip(ViewCreateTripModel model)
+        {
+            ConnectionObj.Open();
+            SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
+            try
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Transaction = sqlTransaction;
+                int i =0;
+                CommandObj.CommandText = "UDSP_SaveTrip";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@TripRef", model.TripRef);
+                CommandObj.Parameters.AddWithValue("@Remarks", model.Remarks);
+                CommandObj.Parameters.AddWithValue("@DriverName", model.DriverName);
+                CommandObj.Parameters.AddWithValue("@DriverPhone", model.DriverPhone);
+                CommandObj.Parameters.AddWithValue("@Transportation", model.Transportation);
+                CommandObj.Parameters.AddWithValue("@VehicleNo", model.VehicleNo);
+                CommandObj.Parameters.AddWithValue("@TransportationCost", model.TransportationCost);
+                CommandObj.Parameters.AddWithValue("@UserId", model.CreatedByUserId);
+                CommandObj.Parameters.Add("@TripId", SqlDbType.BigInt);
+                CommandObj.Parameters["@TripId"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                var tripId = Convert.ToInt64(CommandObj.Parameters["@TripId"].Value);
+                i = SaveTripItems(model.TripModels, tripId);
+                if (i > 0)
+                {
+                    sqlTransaction.Commit(); 
+                }
+                else
+                {
+                    sqlTransaction.Rollback();
+                }
+                return i;
+            }
+            catch (Exception exception)
+            {
+                sqlTransaction.Rollback();
+                throw new Exception("Unable to create trip", exception);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        private static bool IsRequisitionDeliveredQtyEqual(ICollection<ViewTripModel> modelTripModels, long requisitonId)
+        {
+            return modelTripModels.ToList().FindAll(n => n.RequisitionId == requisitonId)
+                       .Sum(n => n.DeliveryQuantity) == modelTripModels.ToList()
+                       .FindAll(n => n.RequisitionId == requisitonId).Sum(n => n.RequisitionQty);
+        }
+
+        private int SaveTripItems(ICollection<ViewTripModel> modelTripModels, long tripId) 
+        {
+            int i = 0;
+            int n = 0;
+            foreach (ViewTripModel model in modelTripModels)
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.CommandText = "UDSP_SaveTripItems";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@TripId", tripId);
+                CommandObj.Parameters.AddWithValue("@RequisitionId", model.RequisitionId);
+                CommandObj.Parameters.AddWithValue("@ToBranchId", model.ToBranchId);
+                CommandObj.Parameters.AddWithValue("@ProductId", model.ProuctId);
+                CommandObj.Parameters.AddWithValue("@Quantity", model.DeliveryQuantity);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+            }
+            if (i > 0)
+            {
+                n += SaveTripDetails(modelTripModels, tripId);
+            }
+            return n;
+        }
+
+        private int SaveTripDetails(ICollection<ViewTripModel> modelTripModels, long tripId)
+        {
+            int i = 0;
+            foreach (long requisitonId in modelTripModels.Select(n => n.RequisitionId).Distinct())
+            {
+                int requisitionStaus = Convert.ToInt32(RequisitionStatus.PartialDelivery);
+                if (IsRequisitionDeliveredQtyEqual(modelTripModels, requisitonId))
+                {
+                    requisitionStaus = Convert.ToInt32(RequisitionStatus.FullDelivery);
+                }
+                CommandObj.Parameters.Clear();
+                CommandObj.CommandText = "UDSP_SaveTripDetails";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@TripId", tripId);
+                CommandObj.Parameters.AddWithValue("@RequisitionId", requisitonId);
+                CommandObj.Parameters.AddWithValue("@RequisitionStatus", requisitionStaus);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+            }
+            return i;
         }
     }
 }

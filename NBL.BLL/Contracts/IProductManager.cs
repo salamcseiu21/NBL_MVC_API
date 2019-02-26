@@ -39,5 +39,6 @@ namespace NBL.BLL.Contracts
         int SaveRequisitionInfo(ViewRequisitionModel aRequisitionModel);
         IEnumerable<ViewRequisitionModel> GetRequsitionsByStatus(int status);
         List<RequisitionModel> GetRequsitionDetailsById(long requisitionId);
+        ICollection<ViewRequisitionModel> GetRequsitions();
     }
 }

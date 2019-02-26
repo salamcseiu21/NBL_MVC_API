@@ -1092,7 +1092,8 @@ namespace NBL.DAL
                         RequisitionBy = reader["RequisitionBy"].ToString(),
                         RequisitionDate = Convert.ToDateTime(reader["RequisitionDate"]),
                         Quantity = Convert.ToInt32(reader["Quantity"]),
-                        RequisitionRef = reader["RequisitionRef"].ToString()
+                        RequisitionRef = reader["RequisitionRef"].ToString(),
+                        Status = status
                     });
                 }
                 reader.Close();
@@ -1127,7 +1128,9 @@ namespace NBL.DAL
                         RequisitionId=requisitionId,
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         ProductName = reader["ProductName"].ToString(),
-                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        RequisitionQty = Convert.ToInt32(reader["RequisitionQty"]),
+                        DeliveryQty = Convert.ToInt32(reader["DeliveryQty"]),
+                        PendingQty = Convert.ToInt32(reader["PendingQty"]),
                         ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
                         ToBranch = new Branch
                         {
@@ -1149,6 +1152,45 @@ namespace NBL.DAL
             {
                 ConnectionObj.Close();
                 CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public ICollection<ViewRequisitionModel> GetRequsitions()
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetRequisitions";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                List<ViewRequisitionModel> requisitions = new List<ViewRequisitionModel>();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    requisitions.Add(new ViewRequisitionModel
+                    {
+                        RequisitionId = Convert.ToInt64(reader["Id"]),
+                        RequisitionByUserId = Convert.ToInt32(reader["RequisitionByUserId"]),
+                        RequisitionBy = reader["RequisitionBy"].ToString(),
+                        RequisitionDate = Convert.ToDateTime(reader["RequisitionDate"]),
+                        RequisitionQty = Convert.ToInt32(reader["RequisitionQty"]),
+                        DeliveryQty = Convert.ToInt32(reader["DeliveryQty"]),
+                        PendingQty = Convert.ToInt32(reader["PendingQty"]),
+                        RequisitionRef = reader["RequisitionRef"].ToString(),
+                        Status = Convert.ToInt32(reader["Status"])
+                    });
+                }
+                reader.Close();
+                return requisitions;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not get requisition by Status", exception);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                ConnectionObj.Close();
                 CommandObj.Parameters.Clear();
             }
         }

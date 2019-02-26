@@ -28,7 +28,7 @@ namespace NBL.Areas.Admin.Controllers
         // GET: Admin/Requisition
         public ActionResult All()
         {
-            IEnumerable<ViewRequisitionModel> requisitions = _iProductManager.GetRequsitionsByStatus(0);
+            IEnumerable<ViewRequisitionModel> requisitions = _iProductManager.GetRequsitions();
             return View(requisitions);
         }
 

@@ -20,7 +20,7 @@ namespace NBL.Areas.Factory.Controllers
         private readonly IProductManager _iProductManager;
         private readonly IInventoryManager _iInventoryManager;
         private readonly IBranchManager _iBranchManager;
-
+        private static int _count;
         public TransferController(IProductManager iProductManager,IInventoryManager iInventoryManager,IBranchManager iBranchManager)
         {
             _iProductManager = iProductManager;
@@ -191,8 +191,20 @@ namespace NBL.Areas.Factory.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateTrip(FormCollection collection)
+        public ActionResult CreateTrip(ViewCreateTripModel model)
         {
+
+            var user = (ViewUser)Session["user"];
+            model.CreatedByUserId = user.UserId;
+            var filePath = Server.MapPath("~/Files/" + "Create_Trip_File.xml");
+            model.TripModels = GetProductFromXmalFile(filePath).ToList();
+            bool result = _iInventoryManager.CreateTrip(model);
+            if (result)
+            {
+                var xmlData = XDocument.Load(filePath);
+                xmlData.Root?.Elements().Remove();
+                xmlData.Save(filePath);
+            }
             return View();
         }
         public ActionResult ConfirmTrip()
@@ -207,32 +219,41 @@ namespace NBL.Areas.Factory.Controllers
            SuccessErrorModel model=new SuccessErrorModel();
             try
             {
+                 
                 int requisitionId = Convert.ToInt32(collection["RIdNo"]);
                 var collectionKeys = collection.AllKeys.ToList().FindAll(n=>n.StartsWith("Qty_Of_"));
                 foreach (string key in collectionKeys)
                 {
-                    var start = key.LastIndexOf("_", StringComparison.Ordinal)+1;
-                    var productId = Convert.ToInt32(key.Substring(10, 3));
-                    var product = _iProductManager.GetProductByProductId(productId);
-                    var branchId = Convert.ToInt32(key.Substring(7, 2));
-                    var requisitionQty = key.Substring(start);
-                    var deliveryQty = Convert.ToInt32(collection[key]);
-                    var requisition = _iProductManager.GetRequsitionsByStatus(0).ToList().Find(n => n.RequisitionId == requisitionId);
-                    var filePath = Server.MapPath("~/Files/" + "Create_Trip_File.xml");
-                    var xmlDocument = XDocument.Load(filePath);
-                    xmlDocument.Element("Requisitions")?.Add(
-                        new XElement("Requisition", new XAttribute("Id", Guid.NewGuid()),
-                            new XElement("RequisitionId", requisitionId),
-                            new XElement("RequisitionRef", requisition.RequisitionRef),
-                            new XElement("ProuctId",productId),
-                            new XElement("RequisitionQty", requisitionQty),
-                            new XElement("DeliveryQuantity", deliveryQty),
-                            new XElement("ToBranchId", branchId),
-                            new XElement("ProductName", product.ProductName)
-                        ));
-                    model.Message += "Added";
-                    xmlDocument.Save(filePath);
+                    if (collection[key] != "")
+                    {
+                        var start = key.LastIndexOf("_", StringComparison.Ordinal) + 1;
+                        var productId = Convert.ToInt32(key.Substring(10, 3));
+                        var product = _iProductManager.GetProductByProductId(productId);
+                        var branchId = Convert.ToInt32(key.Substring(7, 2));
+                        var requisitionQty = key.Substring(start);
+                        var deliveryQty = Convert.ToInt32(collection[key]);
+                        var requisition = _iProductManager.GetRequsitions().ToList().Find(n => n.RequisitionId == requisitionId);
+                        var filePath = Server.MapPath("~/Files/" + "Create_Trip_File.xml");
+                        var xmlDocument = XDocument.Load(filePath);
+                        xmlDocument.Element("Requisitions")?.Add(
+                            new XElement("Requisition", new XAttribute("Id", Guid.NewGuid()),
+                                new XElement("RequisitionId", requisitionId),
+                                new XElement("RequisitionRef", requisition.RequisitionRef),
+                                new XElement("ProuctId", productId),
+                                new XElement("RequisitionQty", requisitionQty),
+                                new XElement("DeliveryQuantity", deliveryQty),
+                                new XElement("ToBranchId", branchId),
+                                new XElement("ProductName", product.ProductName)
+                            ));
+                        xmlDocument.Save(filePath);
+                        _count++;
+                    }
                 }
+                if (_count > 0)
+                {
+                    model.Message = "<p style='color:green'>Added Successfully</p>";
+                }
+              
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -251,8 +272,7 @@ namespace NBL.Areas.Factory.Controllers
             var xmlData = XDocument.Load(filePath);
             xmlData.Root?.Elements().Where(n => n.Attribute("Id")?.Value == tempRequisitionId).Remove();
             xmlData.Save(filePath);
-            model.Message = "<p style='color:red;'>Removed successfully!</p>";
-
+            model.Message = "<p style='color:red;'>Product Removed From lsit!</p>";
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
@@ -260,8 +280,7 @@ namespace NBL.Areas.Factory.Controllers
         {
 
             var list = ViewPendingRequisitionList();
-            var requisitions = (from c in list
-                                where c.RequisitionRef.ToLower().Contains(prefix.ToLower())
+            var requisitions = (from c in list where c.RequisitionRef.ToLower().Contains(prefix.ToLower())
                 select new
                 {
                     label = c.RequisitionRef,
@@ -282,7 +301,7 @@ namespace NBL.Areas.Factory.Controllers
                 requsitionList.Add(_iProductManager.GetRequsitionsByStatus(0).ToList()
                     .Find(n => n.RequisitionRef.Equals(requisitionRef)));
             }
-            List<ViewRequisitionModel> viewRequisitionModels = _iProductManager.GetRequsitionsByStatus(0).ToList();
+            List<ViewRequisitionModel> viewRequisitionModels = _iProductManager.GetRequsitions().ToList();
             foreach (ViewRequisitionModel model in viewRequisitionModels)
             {
                 ViewRequisitionModel viewRequisitionModel =
@@ -301,7 +320,6 @@ namespace NBL.Areas.Factory.Controllers
             var requisitions = _iProductManager.GetRequsitionDetailsById(requisitionId);
             return PartialView("_ViewRequisitionDetailsByIdPartialPage", requisitions);
         }
-        
 
         public PartialViewResult GetTempTrip()
         {

@@ -5,12 +5,14 @@
 }
 
 <section class="content">
-    <h3 class="text-center">Requisition List</h3>
+    <h3 class="text-center text-green">Requisition List</h3>
     <table class="display table-bordered" id="tbl_requisition_list" style="border: 1px solid">
         <thead>
             <tr>
                 <th class="text-center">Requisition Ref</th>
-                <th class="text-center">Quantity</th>
+                <th class="text-center">Requisition Qty</th>
+                <th class="text-center">Delivered Qty</th>
+                <th class="text-center">Pending Qty</th>
                 <th class="text-center">Requisition By</th>
                 <th class="text-center">Date</th>
                 <th class="text-center">Details</th>
@@ -21,7 +23,9 @@
             {
                 <tr>
                     <td class="text-center">@item.RequisitionRef</td>
-                    <td class="text-right">@item.Quantity</td>
+                    <td class="text-right">@item.RequisitionQty</td>
+                    <td class="text-right">@item.DeliveryQty</td>
+                    <td class="text-right">@item.PendingQty</td>
                     <td class="text-center">@item.RequisitionBy</td>
                     <td class="text-center">@item.RequisitionDate.ToString("F")</td>
                     <td class="text-center">
@@ -34,14 +38,18 @@
         
         <tr>
             <th class="text-right">Total Qty:</th>
-            <th class="text-right">@Model.Sum(n=>n.Quantity)</th>
+            <th class="text-right">@Model.Sum(n=>n.RequisitionQty)</th>
+            <th class="text-right">@Model.Sum(n=>n.DeliveryQty)</th>
+            <th class="text-right">@Model.Sum(n=>n.PendingQty)</th>
             <th class="text-center">-</th>
             <th class="text-center">-</th>
             <th class="text-center">-</th>
         </tr>
         <tr>
             <th class="text-center">Requisition Ref</th>
-            <th class="text-center">Quantity</th>
+            <th class="text-center">Requisition Qty</th>
+            <th class="text-center">Delivered Qty</th>
+            <th class="text-center">Pending Qty</th>
             <th class="text-center">Requisition By</th>
             <th class="text-center">Date</th>
             <th class="text-center">Details</th>

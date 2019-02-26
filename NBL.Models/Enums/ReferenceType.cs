@@ -15,6 +15,7 @@ namespace NBL.Models.Enums
         ChequePaymentVoucher=10,
         ChequeReceiveVoucher=11,
         JournalVoucher=12,
-        Requisition=13
+        Requisition=13,
+        Trip=14
     }
 }
