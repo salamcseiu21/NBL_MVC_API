@@ -124,6 +124,33 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
+        public int GetMaxDispatchRefNoOfCurrentYear()
+        {
+            try
+            {
+                CommandObj.CommandText = "spGetMaxDispatchRefOfCurrentYear";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                int slNo = 0;
+                if (reader.Read())
+                {
+                    slNo = Convert.ToInt32(reader["MaxSlNo"]);
+                }
+                reader.Close();
+                return slNo;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect max dispatch ref of current Year", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
         public IEnumerable<TransactionModel> GetAllReceiveableProductToBranchByDeliveryRef(string deliveryRef)
         {
             try

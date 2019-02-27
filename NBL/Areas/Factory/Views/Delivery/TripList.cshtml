@@ -5,24 +5,29 @@
 }
 
 <section class="content">
-    <h3 class="text-center headingStyle text-green">Trip List</h3>
-    <table class="display" id="tbl_trip_List">
-        <thead>
-        <tr>
-            <th>Trip Ref</th>
-            <th>Quantiy</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model)
-        {
+   
+        <h3 class="text-center headingStyle text-green">Trip List</h3>
+        <table class="display" id="tbl_trip_List" style="border: 1px solid">
+            <thead>
             <tr>
-                <td>@item.TripRef</td>
-                <td>@item.DeliveryQuantity</td>
+                <th>Trip Ref</th>
+                <th>Quantiy</th>
+                <th>Action</th>
             </tr>
-        }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.TripRef</td>
+                    <td>@item.DeliveryQuantity</td>
+                    <td class="text-center">
+                        @Html.ActionLink("Delivery", "Delivery", "Delivery", new {area = "Factory", id = item.TripId}, new {@class = "btn btn-info btn-sm"})
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
 </section>
 @section Scripts
 {

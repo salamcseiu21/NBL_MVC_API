@@ -40,5 +40,6 @@ namespace NBL.BLL.Contracts
         IEnumerable<ViewRequisitionModel> GetRequsitionsByStatus(int status);
         List<RequisitionModel> GetRequsitionDetailsById(long requisitionId);
         ICollection<ViewRequisitionModel> GetRequsitions();
+        ICollection<Product> GetDeliverableProductListByTripId(long tripId);
     }
 }

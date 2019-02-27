@@ -6,7 +6,7 @@ namespace NBL.Models.Enums
         Sales=1,
         Invoice=2,
         Transfer=3,
-        Delivery=4,
+        Dispatch=4,
         Distribution=5,
         AccountReceiveable=6,
         ProductionNote=7,

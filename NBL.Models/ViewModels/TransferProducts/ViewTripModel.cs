@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace NBL.Models.ViewModels.TransferProducts
 {
    public class ViewTripModel
@@ -14,6 +16,8 @@ namespace NBL.Models.ViewModels.TransferProducts
         public int ToBranchId { get; set; }
         public int ProuctId { get; set; }
         public string ProuctName { get; set; }
+        [Display(Name = "Bar Code")]
+        public string ProductCode { get; set; } 
         public string Remarks { get; set; }
         public string Transportation { set; get; }
         public string DriverName { get; set; }

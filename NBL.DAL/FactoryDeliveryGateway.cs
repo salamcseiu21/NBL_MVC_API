@@ -11,7 +11,7 @@ namespace NBL.DAL
 {
     public class FactoryDeliveryGateway : DbGateway,IFactoryDeliveryGateway
     {
-        public int SaveDeliveryInformation(Delivery aDelivery, IEnumerable<ScannedProduct> scannedProducts)
+        public int SaveDispatchInformation(DispatchModel dispatchModel)
         {
             ConnectionObj.Open();
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
@@ -19,28 +19,27 @@ namespace NBL.DAL
             {
                 CommandObj.Parameters.Clear();
                 CommandObj.Transaction = sqlTransaction;
-                CommandObj.CommandText = "spSaveDeliveryInformation";
+                CommandObj.CommandText = "UDSP_SaveDispatchInformation";
                 CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@DeliveryDate", aDelivery.DeliveryDate);
-                CommandObj.Parameters.AddWithValue("@DeliveryRef", aDelivery.DeliveryRef);
-                CommandObj.Parameters.AddWithValue("@TransactionRef", aDelivery.TransactionRef);
-                CommandObj.Parameters.AddWithValue("@DeliveredQuantity", scannedProducts.ToList().Count);
-                CommandObj.Parameters.AddWithValue("@Transportation", aDelivery.Transportation);
-                CommandObj.Parameters.AddWithValue("@DriverName", aDelivery.DriverName);
-                CommandObj.Parameters.AddWithValue("@TransportationCost", aDelivery.TransportationCost);
-                CommandObj.Parameters.AddWithValue("@VehicleNo", aDelivery.VehicleNo);
-                CommandObj.Parameters.AddWithValue("@ToBranchId", aDelivery.ToBranchId);
-                CommandObj.Parameters.AddWithValue("@FromBranchId", aDelivery.FromBranchId);
-                CommandObj.Parameters.AddWithValue("@CompanyId", aDelivery.CompanyId);
-                CommandObj.Parameters.AddWithValue("@DeliveredByUserId", aDelivery.DeliveredByUserId);
-                CommandObj.Parameters.Add("@DeliveryId", SqlDbType.Int);
-                CommandObj.Parameters["@DeliveryId"].Direction = ParameterDirection.Output;
+                CommandObj.Parameters.AddWithValue("@DispatchDate", dispatchModel.DispatchDate);
+                CommandObj.Parameters.AddWithValue("@TripId", dispatchModel.TripModel.TripId);
+                CommandObj.Parameters.AddWithValue("@TransactionRef", dispatchModel.TripModel.TripRef);
+                CommandObj.Parameters.AddWithValue("@Quantity", dispatchModel.ScannedProducts.ToList().Count);
+                CommandObj.Parameters.AddWithValue("@DispatchRef", dispatchModel.DispatchRef);
+                CommandObj.Parameters.AddWithValue("@CompanyId", dispatchModel.CompanyId);
+                CommandObj.Parameters.AddWithValue("@DispatchByUserId", dispatchModel.DispatchByUserId);
+                CommandObj.Parameters.Add("@DispatchId", SqlDbType.Int);
+                CommandObj.Parameters["@DispatchId"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
-                int deliveryId = Convert.ToInt32(CommandObj.Parameters["@DeliveryId"].Value);
-                int rowAffected = SaveDeliveryInformationDetails(scannedProducts, deliveryId);
+                long dispatchId = Convert.ToInt64(CommandObj.Parameters["@DispatchId"].Value);
+                int rowAffected = SaveDispatchInformationDetails(dispatchModel.ScannedProducts, dispatchId);
                 if (rowAffected > 0)
                 {
                     sqlTransaction.Commit();
+                }
+                else
+                {
+                    sqlTransaction.Rollback();
                 }
                 return rowAffected;
 
@@ -48,7 +47,7 @@ namespace NBL.DAL
             catch (Exception exception)
             {
                 sqlTransaction.Rollback();
-                throw new Exception("Could not Save delivery Info", exception);
+                throw new Exception("Could not Save dispatch Info", exception);
             }
             finally
             {
@@ -58,43 +57,49 @@ namespace NBL.DAL
             }
         }
 
-        
-        public int SaveDeliveryInformationDetails(IEnumerable<ScannedProduct> scannedProducts, int deliveryId)
+        private int SaveDispatchInformationDetails(IEnumerable<ScannedProduct> scannedProducts, long dispatchId)
         {
             int i=0;
+            int n = 0;
             foreach (var item in scannedProducts) 
             {
-                CommandObj.CommandText = "spSaveDeliveryInformationDetails";
+                CommandObj.CommandText = "UDSP_SaveDispatchInformationDetails";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.Clear();
                 CommandObj.Parameters.AddWithValue("@ProductId", Convert.ToInt32(item.ProductCode.Substring(0,3)));
-                CommandObj.Parameters.AddWithValue("@DeliveryId", deliveryId);
+                CommandObj.Parameters.AddWithValue("@DispatchId", dispatchId);
                 CommandObj.Parameters.AddWithValue("@ProductBarCode", item.ProductCode);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
                 i +=Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
-                
             }
-            return i;
+            if (i > 0)
+            {
+                n = SaveDispatchItems(scannedProducts,dispatchId);
+            }
+            return n;
         }
 
-        private int SaveDeliveredProductsBarcode(ICollection<ScannedProduct> trBarCodes, int transferIssueId)
+        private int SaveDispatchItems(IEnumerable<ScannedProduct> products, long dispatchId)  
         {
-            int rowAffected = 0;
-            foreach (var product in trBarCodes)
+            int i = 0;
+            var groupBy = products.GroupBy(n => n.ProductId);
+            foreach (IGrouping<int, ScannedProduct> scannedProducts in groupBy)
             {
-                CommandObj.CommandText = "UDSP_SaveProductToFactoryInventory";
+                CommandObj.CommandText = "UDSP_SaveDispatchItems";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.Clear();
-                CommandObj.Parameters.AddWithValue("@ProductCode", product.ProductCode);
-                CommandObj.Parameters.AddWithValue("@IssueId", transferIssueId);
-                CommandObj.Parameters.Add("@RowAffected", SqlDbType.BigInt);
+                CommandObj.Parameters.AddWithValue("@ProductId", scannedProducts.Key);
+                CommandObj.Parameters.AddWithValue("@Quantity", scannedProducts.Count());
+                CommandObj.Parameters.AddWithValue("@DispatchId", dispatchId);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
-                rowAffected += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+
             }
-            return rowAffected;
+            return i;
         }
 
         public int Add(Delivery model)

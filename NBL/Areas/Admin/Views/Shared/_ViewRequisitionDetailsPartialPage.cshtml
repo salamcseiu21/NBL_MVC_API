@@ -31,13 +31,13 @@
                                {
                                    <tr>
                                        <td style="margin: 0; padding: 0;">@item.ProductName</td>
-                                       <td style="margin: 0; padding: 0;">@item.Quantity</td>
+                                       <td style="margin: 0; padding: 0;">@item.RequisitionQty</td>
                                    </tr>
 
                                }
                                <tr>
                                    <td style="margin: 0; padding: 0;">Total:</td>
-                                   <td style="margin: 0; padding: 0;">@requisitionModels.Sum(n=>n.Quantity)</td>
+                                   <td style="margin: 0; padding: 0;">@requisitionModels.Sum(n=>n.RequisitionQty)</td>
                                </tr>
                                </tbody>
                            </table>

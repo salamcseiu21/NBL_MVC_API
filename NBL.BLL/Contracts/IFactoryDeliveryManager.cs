@@ -11,6 +11,6 @@ namespace NBL.BLL.Contracts
 {
     public interface IFactoryDeliveryManager:IManager<Delivery>
     {
-        string SaveDeliveryInformation(Delivery aDelivery, IEnumerable<ScannedProduct> scannedProducts);
+        string SaveDispatchInformation(DispatchModel dispatchModel);
     }
 }

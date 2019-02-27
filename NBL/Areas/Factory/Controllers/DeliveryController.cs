@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
+using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Logs;
 using NBL.Models.Validators;
@@ -48,19 +49,14 @@ namespace NBL.Areas.Factory.Controllers
         }
 
         [HttpGet]
-        public ActionResult Delivery(int id)
+        public ActionResult Delivery(long id)
         {
-
-            var transferIssue = _iProductManager.GetDeliverableTransferIssueById(id);
+             
+            var trip = _iInventoryManager.GetAllTrip().ToList().Find(n=>n.TripId==id);
             var stock=_iInventoryManager.GetStockProductInFactory();
             Session["Factory_Stock"] = stock;
-             var model = new ViewTransferIssueModel
-                {
-                    FromBranch = _iBranchManager.GetById(transferIssue.FromBranchId),
-                    ToBranch = _iBranchManager.GetById(transferIssue.ToBranchId),
-                    TransferIssue = transferIssue
-                };
-            return View(model);
+             
+            return View(trip);
         }
 
         [HttpPost]
@@ -74,8 +70,8 @@ namespace NBL.Areas.Factory.Controllers
                 var products = (List<ViewFactoryStockModel>) Session["Factory_Stock"];
                 string scannedBarCode = collection["ProductCode"];
                 int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
-                var transferIssueId = Convert.ToInt32(collection["TransferIssueId"]);
-                string fileName = "Deliverd_Issued_Product_For_" + transferIssueId;
+                var tripId = Convert.ToInt32(collection["TripId"]); 
+                string fileName = "Deliverable_Product_For_" + tripId;
                 var filePath = Server.MapPath("~/Files/" + fileName);
                 var barcodeList = _iProductManager.ScannedProducts(filePath);
                 if (barcodeList.Count != 0)
@@ -92,7 +88,7 @@ namespace NBL.Areas.Factory.Controllers
 
                 DateTime date = _iCommonManager.GenerateDateFromBarCode(scannedBarCode);
                 var oldestProducts = products.ToList().FindAll(n=>n.ProductionDate<date && n.ProductId==productId).ToList();
-                var issuedProducts = _iProductManager.GetTransferIssueDetailsById(transferIssueId);
+                var issuedProducts = _iProductManager.GetDeliverableProductListByTripId(tripId);
               
                 var isValied = Validator.ValidateProductBarCode(scannedBarCode);
 
@@ -146,46 +142,41 @@ namespace NBL.Areas.Factory.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-
+        [HttpPost]
         public ActionResult SaveDispatchInformation(FormCollection collection) 
         {
-            int transferIssueId = Convert.ToInt32(collection["TransferIssueId"]);
-            var products = _iProductManager.GetIssuedProductListById(transferIssueId);
-            string fileName = "Deliverd_Issued_Product_For_" + transferIssueId;
+            int tripId = Convert.ToInt32(collection["TripId"]);
+            var products = _iProductManager.GetDeliverableProductListByTripId(tripId);
+            string fileName = "Deliverable_Product_For_" + tripId;
             var filePath = Server.MapPath("~/Files/" + fileName);
             var scannedProducts = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
-
-            int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
+            int dispatchByUserId = ((ViewUser)Session["user"]).UserId;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            TransferIssue transferIssue = _iProductManager.GetDeliverableTransferIssueById(transferIssueId);
-            Delivery aDelivery = new Delivery
-            {
-                TransactionRef = transferIssue.TransferIssueRef,
-                DeliveredByUserId = deliverebyUserId,
-                Transportation = collection["Transportation"],
-                DriverName = collection["DriverName"],
-                TransportationCost = Convert.ToDecimal(collection["TransportationCost"]),
-                VehicleNo = collection["VehicleNo"],
-                DeliveryDate = Convert.ToDateTime(collection["DeliveryDate"]).Date,
-                CompanyId = companyId,
-                ToBranchId = transferIssue.ToBranchId,
-                FromBranchId = transferIssue.FromBranchId
-            };
+            var viewTrip=_iInventoryManager.GetAllTrip().ToList().Find(n => n.TripId == tripId);
 
-            if (scannedProducts.Count == products.Sum(n=>n.Quantity))
+            DispatchModel model=new DispatchModel
             {
-                string result = _iFactoryDeliveryManager.SaveDeliveryInformation(aDelivery, scannedProducts);
+                DispatchByUserId = dispatchByUserId,
+                CompanyId = companyId,
+                TripModel = viewTrip,
+                DispatchDate = DateTime.Now,
+                ScannedProducts = scannedProducts
+            };
+            
+
+            if (scannedProducts.Count == products.Sum(n => n.Quantity))
+            {
+                string result = _iFactoryDeliveryManager.SaveDispatchInformation(model);
                 if (result.StartsWith("Sa"))
                 {
                     System.IO.File.Create(filePath).Close();
                     //---------------Send mail to branch before redirect--------------
                     return RedirectToAction("DeliverableTransferIssueList");
                 }
-                return RedirectToAction("Delivery", new { id = transferIssueId });
+                return RedirectToAction("Delivery", new { id = tripId });
             }
-            TempData["QuantityNotSame"]= "Issued Quantity and Scanned Quantity Should be same";
            
-            return RedirectToAction("Delivery",new {id= transferIssueId });
+            return RedirectToAction("Delivery",new {id= tripId });
         }
 
         public PartialViewResult ViewOrderDetails(int transferIssueId) 
@@ -195,35 +186,34 @@ namespace NBL.Areas.Factory.Controllers
             return PartialView("_ViewDeliveryModalPartialPage", model);
         }
 
-
-        public JsonResult LoadDeliverableProduct(int issueId)
+        [HttpPost]
+        public PartialViewResult LoadDeliverableProduct(long tripId)
         {
-            List<ScannedProduct> barcodeList = new List<ScannedProduct>();
-            string fileName = "Deliverd_Issued_Product_For_" + issueId;
+           
+            List<Product> products = _iProductManager.GetDeliverableProductListByTripId(tripId).ToList();
+           
+            return PartialView("_ViewRequiredTripProductsPartialPage",products);
+        }
+
+        [HttpPost]
+        public PartialViewResult LoadScannecdProduct(long tripId) 
+        {
+            List<ScannedProduct> products = new List<ScannedProduct>();
+            string fileName = "Deliverable_Product_For_" + tripId;
             var filePath = Server.MapPath("~/Files/" + fileName);
             if (System.IO.File.Exists(filePath))
             {
                 //if the file is exists read the file
-                barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
+                products = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
             }
             else
             {
                 //if the file does not exists create the file
                 System.IO.File.Create(filePath).Close();
             }
-            var products = _iProductManager.GetIssuedProductListById(issueId);
-            foreach (var product in products)
-            {
-                foreach (var code in barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == product.ProductId))
-                {
-                    product.ScannedProductCodes += code.ProductCode+",";
-                   
-                }
-               
-            }
-
-            return Json(products, JsonRequestBehavior.AllowGet);
+            return PartialView("_ViewScannedProductPartialPage", products);
         }
+
 
 
         public ActionResult TripList()

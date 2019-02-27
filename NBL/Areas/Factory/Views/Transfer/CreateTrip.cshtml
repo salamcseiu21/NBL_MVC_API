@@ -28,7 +28,7 @@
 
                         <div class="col-md-8 col-md-offset-2">
                             <div class="btn-toolbar">
-                                <input type="button" value="Save" class="btn btn-info" onclick="ConfirmTrip(this)"/>
+                                <input type="button" value="Confirm Trip" id="confirmButton" class="btn btn-info" onclick="ConfirmTrip(this)" disabled="disabled"/>
                             </div>
                         </div>
                     </div>
@@ -51,7 +51,8 @@
     </script>
     
     <script>
-        window.onload = function() {
+        
+        window.onload = function () {
             loadTempTripProducts();
         };
     </script>
@@ -87,6 +88,12 @@
                     // $("#RequisitionQty").val(qty);
                     $("#RequisitionRef").val("");
                     $('#TempTripProducts').html(data);
+                    var tQty = parseInt($("#total_requisition_qty").val());
+                    if (tQty >0) {
+                        $("#confirmButton").removeAttr('disabled');
+                    } else {
+                        $("#confirmButton").prop("disabled", true);
+                    }
                 }
             });
         }

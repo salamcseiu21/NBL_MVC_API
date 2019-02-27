@@ -275,5 +275,10 @@ namespace NBL.BLL
         {
             return _iProductGateway.GetRequsitions();
         }
+
+        public ICollection<Product> GetDeliverableProductListByTripId(long tripId)
+        {
+            return _iProductGateway.GetDeliverableProductListByTripId(tripId);
+        }
     }
 }

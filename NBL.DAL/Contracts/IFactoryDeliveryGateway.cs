@@ -7,7 +7,7 @@ namespace NBL.DAL.Contracts
 {
     public interface IFactoryDeliveryGateway:IGateway<Delivery>
     {
-        int SaveDeliveryInformation(Delivery aDelivery, IEnumerable<ScannedProduct> scannedProducts); 
-        int SaveDeliveryInformationDetails(IEnumerable<ScannedProduct> scannedProducts, int deliveryId); 
+        int SaveDispatchInformation(DispatchModel dispatchModel); 
+       
     }
 }

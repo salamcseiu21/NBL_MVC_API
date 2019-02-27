@@ -1194,5 +1194,42 @@ namespace NBL.DAL
                 CommandObj.Parameters.Clear();
             }
         }
+
+        public ICollection<Product> GetDeliverableProductListByTripId(long tripId)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetDeliverableProductListByTripId";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@TripId", tripId);
+                List<Product> products=new List<Product>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    products.Add(new Product
+                    {
+                        ProductName = reader["ProductName"].ToString(),
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                        ProductTypeId = Convert.ToInt32(reader["ProductTypeId"]),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        Quantity = Convert.ToInt32(reader["Quantity"])
+                    });
+                }
+                reader.Close();
+                return products;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not get deliverable products by trip id", exception);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+                CommandObj.Parameters.Clear();
+            }
+        }
     }
 }

@@ -10,7 +10,9 @@
         <th>Product Name</th>
         <th>Requisition Quantity</th>
         <th>Deliverable Quantity</th>
-        <th>Action</th>
+        <th>Action
+        <input type="hidden" id="total_requisition_qty" value="@Model.Sum(n=>n.RequisitionQty)"/>
+        </th>
     </tr>
     </thead>
     <tbody>
@@ -18,6 +20,7 @@
     @if (Model != null)
     {
         var tempList = Model.GroupBy(n => n.RequisitionRef);
+        
         foreach (IGrouping<string, ViewTripModel> requisitionModels in tempList)
         {
             <tr>

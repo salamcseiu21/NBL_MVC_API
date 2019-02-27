@@ -20,28 +20,28 @@ namespace NBL.BLL
         {
             _iFactoryDeliveryGateway = iFactoryDeliveryGateway;
         }
-        public string SaveDeliveryInformation(Delivery aDelivery, IEnumerable<ScannedProduct> scannedProducts)
+        public string SaveDispatchInformation(DispatchModel dispatchModel) 
         {
-            int maxDeliveryNo = _inventoryGateway.GetMaxDeliveryRefNoOfCurrentYear();
-            aDelivery.DeliveryRef = GenerateDeliveryReference(maxDeliveryNo);
-            int rowAffected = _iFactoryDeliveryGateway.SaveDeliveryInformation(aDelivery, scannedProducts);
+            int maxDispatchNo = _inventoryGateway.GetMaxDispatchRefNoOfCurrentYear();
+            dispatchModel.DispatchRef = GenerateDispatchReference(maxDispatchNo); 
+            int rowAffected = _iFactoryDeliveryGateway.SaveDispatchInformation(dispatchModel);
             if (rowAffected > 0)
                 return "Saved Successfully!";
             return "Failed to Save";
         }
         /// <summary>
-        /// id=4 stands from factory......
+        /// id=4 stands dispatch from factory......
         /// </summary>
-        /// <param name="maxDeliveryNo"></param>
+        /// <param name="maxDispatchNo"></param>
         /// <returns></returns>
-        private string GenerateDeliveryReference(int maxDeliveryNo)
+
+        private string GenerateDispatchReference(int maxDispatchNo)
         {
-            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == Convert.ToInt32(ReferenceType.Delivery)).Code;
-            string temp = (maxDeliveryNo + 1).ToString();
+            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == Convert.ToInt32(ReferenceType.Dispatch)).Code;
+            string temp = (maxDispatchNo + 1).ToString();
             string reference = DateTime.Now.Year.ToString().Substring(2, 2) + refCode + temp;
             return reference;
         }
-
         public bool Add(Delivery model)
         {
             throw new NotImplementedException();
