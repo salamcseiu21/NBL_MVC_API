@@ -18,7 +18,7 @@
                     <div class="form-group">
                     <label for="ProductCode" class="control-label col-md-2"></label>
                         <div class="col-md-10">
-                            @Html.HiddenFor(m=>m.DeliveryId)
+                            @Html.HiddenFor(m => m.TripId)
                             <input type="text" id="ProductCode" name="ProductCode" class="form-control"placeholder="Always keep pointer here..!!" autofocus onchange="SaveScannedBarcodeToTextFile(this)"/>
                         </div>
 
@@ -32,36 +32,22 @@
             }
         </div>
     </div>
-    <h3 class="text-center" style="margin-top: 0; text-transform: uppercase; color: green">Product List to Receive</h3>
-        <table id="tbl_receivable_list" class="display table table-bordered table-responsive" style="border:1px solid black">
-            <thead>
-            <tr>
+    <div class="row" style="padding: 15px; border: 1px solid;margin: 10px">
+        <div class="col-md-6">
+            <div id="receivable_list"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="scanned_Products"></div>
+        </div>
+        <hr />
+    </div>
 
-                <th>Product Name</th>
-                <th> Qty </th>
-                <th>Sent Product Codes</th>
-                <th>Scanned Product Codes</th>
-            </tr>
-            </thead>
-            <tbody>
-           
-
-            <tfoot>
-            <tr>
-                <th>Product Name</th>
-                <th> Qty </th>
-                <th>Sent Product Codes</th>
-                <th>Scanned Product Codes</th>
-            </tr>
-            </tfoot>
-        </table>
 
 </section>
 
 @section Scripts
 {
-<script src="~/Areas/Sales/Scripts/ReceiveProduct/loadAllReceivableProducts.js"></script>
-    
+
     <script>
         function SaveScannedBarcodeToTextFile(btnClicked) {
             var $form = $(btnClicked).parents('form');
@@ -85,9 +71,44 @@
         }
     </script>
 
+
     <script>
-        window.onload = function () {
+        $(document).ready(function () {
             loadAllReceivableProducts();
-        };
+            loadScannedProducts();
+        });
+
+        function loadAllReceivableProducts() {
+            var tripId = $("#TripId").val();
+             var json= { tripId: tripId };
+
+            $.ajax({
+                type: 'POST',
+                url: RootUrl + "Sales/Product/LoadReceiveableProduct",
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(json),
+                success: function (data) {
+                    $("#receivable_list").html(data);
+                }
+            });
+        }
+
+
+
+        function loadScannedProducts() {
+            var tripId = $("#TripId").val();
+            var json = { tripId: tripId };
+            $.ajax({
+                type: 'POST',
+                url: RootUrl + "sales/product/LoadScannecdProduct",
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(json),
+                success: function (data) {
+                    $("#scanned_Products").html(data);
+                }
+            });
+        }
+
     </script>
+    
 }

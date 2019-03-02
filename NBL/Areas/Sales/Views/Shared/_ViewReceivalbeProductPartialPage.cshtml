@@ -1,25 +1,33 @@
-﻿
+﻿@model IEnumerable<NBL.Models.ViewModels.Deliveries.ViewDispatchModel>
 <h3 class="text-center" style="margin-top: 0; text-transform: uppercase; color: green">Product List to Receive</h3>
-<table id="tbl_receivable_list" class="display table table-bordered table-responsive" style="border:1px solid black">
+<table id="tbl_receivable_list" class="display" style="border:1px solid black">
     <thead>
     <tr>
 
         <th>Product Name</th>
         <th> Qty </th>
-        <th>Sent Product Codes</th>
-        <th>Scanned Product Codes</th>
+        
     </tr>
     </thead>
     <tbody>
-           
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ProductName</td>
+            <td>@item.Quantity</td>
+        </tr>
+    }
     </tbody>
 
     <tfoot>
     <tr>
         <th>Product Name</th>
         <th> Qty </th>
-        <th>Sent Product Codes</th>
-        <th>Scanned Product Codes</th>
     </tr>
     </tfoot>
 </table>
+<script>
+    $("#tbl_receivable_list").DataTable({
+        lengthMenu: [[10, 30, 50, -1], [15, 30, 50, "All"]]
+    });
+</script>

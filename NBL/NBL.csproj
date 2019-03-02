@@ -7085,6 +7085,7 @@
     <Content Include="Images\Signatures\ed93c2be58.png" />
     <Content Include="Images\Signatures\fdc58ea570.png" />
     <Content Include="Images\User.jpg" />
+    <Content Include="Logs\Error_log_Xml_file.xml" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -7922,6 +7923,7 @@
     <Content Include="Areas\Factory\Views\Delivery\TripList.cshtml" />
     <Content Include="Areas\Factory\Views\Shared\_ViewRequiredTripProductsPartialPage.cshtml" />
     <Content Include="Areas\Factory\Views\Shared\_ViewScannedProductPartialPage.cshtml" />
+    <Content Include="Areas\Sales\Views\Shared\_ViewScannedProductPartialPage.cshtml" />
     <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -8064,7 +8066,6 @@
     <Folder Include="Areas\Sales\Models\" />
     <Folder Include="Assets\css\" />
     <Folder Include="Assets\documentation\build\" />
-    <Folder Include="Logs\" />
     <Folder Include="Views\Common\" />
   </ItemGroup>
   <ItemGroup>

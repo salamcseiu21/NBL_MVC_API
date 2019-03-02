@@ -10,6 +10,7 @@ namespace NBL.Models.ViewModels.TransferProducts
         public long TripId { get; set; }
         public string TripRef { get; set; }
         public long RequisitionId { get; set; }
+        public int Status { get; set; } 
         public string RequisitionRef { get; set; }
         public int RequisitionQty { get; set; }
         public int DeliveryQuantity { get; set; } 

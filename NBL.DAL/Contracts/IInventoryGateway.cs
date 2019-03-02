@@ -2,6 +2,7 @@
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.Products;
 using NBL.Models.ViewModels.Sales;
@@ -15,13 +16,13 @@ namespace NBL.DAL.Contracts
        IEnumerable<ViewProduct> GetStockProductByCompanyId(int companyId);
        int GetMaxDeliveryRefNoOfCurrentYear();
        IEnumerable<TransactionModel> GetAllReceiveableProductToBranchByDeliveryRef(string deliveryRef);
-       IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId, int companyId);
+       ICollection<ReceiveProductViewModel> GetAllReceiveableListByBranchAndCompanyId(int branchId, int companyId);
        int ReceiveProduct(List<ScannedProduct> receiveProductList, TransactionModel model);
        int SaveReceiveProductDetails(List<ScannedProduct> receiveProductList, int inventoryId);
        int GetStockQtyByBranchAndProductId(int branchId, int productId);
        int SaveDeliveredOrder(List<ScannedProduct> scannedProducts, Delivery aDelivery, int invoiceStatus, int orderStatus); 
        int SaveDeliveredOrderDetails(List<ScannedProduct> scannedProducts, int inventoryId, int deliveryId);
-       ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(long id);
+       ICollection<ViewDispatchModel> GetAllReceiveableProductToBranchByTripId(long tripId,int branchId);
        TransactionModel GetTransactionModelById(long id);
        int SaveScannedProduct(List<ScannedProduct> scannedProducts,int userId);
        ScannedProduct IsThisProductSold(string scannedBarCode);

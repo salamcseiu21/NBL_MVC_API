@@ -101,6 +101,11 @@ namespace NBL.Areas.Factory.Controllers
                     return Json(model, JsonRequestBehavior.AllowGet);
                 }
 
+                if (exists)
+                {
+                    model.Message = "<p style='color:red'> Already Scanned.</p>";
+                    return Json(model, JsonRequestBehavior.AllowGet);
+                }
                 if (isScannComplete)
                 {
                     model.Message = "<p style='color:green'> Scan Completed.</p>";
@@ -127,7 +132,7 @@ namespace NBL.Areas.Factory.Controllers
             {
                 log.Heading = exception.GetType().ToString();
                 log.LogMessage = exception.StackTrace;
-                Log.LogWrite(log);
+                Log.WriteErrorLog(log);
                 model.Message = "<p style='color:red'>Invalid Barcode</p>";
               return  Json(model, JsonRequestBehavior.AllowGet);
             }
@@ -135,7 +140,7 @@ namespace NBL.Areas.Factory.Controllers
             {
                 log.Heading = exception.GetType().ToString();
                 log.LogMessage = exception.StackTrace;
-                Log.LogWrite(log);
+                Log.WriteErrorLog(log);
                 model.Message = "<p style='color:red'>" + exception.Message + "</p>";
               return  Json(model, JsonRequestBehavior.AllowGet);
             }
@@ -218,7 +223,7 @@ namespace NBL.Areas.Factory.Controllers
 
         public ActionResult TripList()
         {
-            IEnumerable<ViewTripModel> tripModels = _iInventoryManager.GetAllTrip();
+            IEnumerable<ViewTripModel> tripModels = _iInventoryManager.GetAllTrip().ToList().FindAll(n=>n.Status.Equals(0));
             return View(tripModels);
         }
     }

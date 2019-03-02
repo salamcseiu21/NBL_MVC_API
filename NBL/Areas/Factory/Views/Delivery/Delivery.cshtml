@@ -141,11 +141,10 @@
     </script>
 
     <script>
-        window.onload = function () {
+        $(document).ready(function () {
             loadAllDeliverableProducts();
             loadScannedProducts();
-
-        };
+        });
 
         function loadAllDeliverableProducts() {
             var tripId = $("#TripId").val();
@@ -187,7 +186,7 @@
                 }
             });
         }
-       
+
     </script>
     
 }

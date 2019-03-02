@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Web;
+using System.Xml.Linq;
 using NBL.Models.ViewModels.Logs;
 
 namespace NBL.Models.Logs
@@ -66,6 +67,17 @@ namespace NBL.Models.Logs
             }
         }
 
-
+        public static void WriteErrorLog(ViewWriteLogModel model)
+        {
+            var filePath = HttpContext.Current.Server.MapPath("~/Logs/" + "Error_log_Xml_file.xml");
+            var xmlDocument = XDocument.Load(filePath);
+            xmlDocument.Element("Errors")?.Add(
+                new XElement("Error", new XAttribute("LogId", DateTime.Now.ToString("yy-MMM-dd")+Guid.NewGuid()),
+                    new XElement("Heading", model.Heading),
+                    new XElement("LogMessage", model.LogMessage),
+                    new XElement("LogDateTime", DateTime.Now)
+                ));
+            xmlDocument.Save(filePath);
+        }
     }
 }

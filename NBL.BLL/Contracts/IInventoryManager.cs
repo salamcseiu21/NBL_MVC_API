@@ -2,6 +2,7 @@
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.Products;
 using NBL.Models.ViewModels.Sales;
@@ -13,13 +14,13 @@ namespace NBL.BLL.Contracts
    {
        IEnumerable<ViewProduct> GetStockProductByBranchAndCompanyId(int branchId, int companyId);
        IEnumerable<ViewProduct> GetStockProductByCompanyId(int companyId);
-       IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId, int companyId);
+       ICollection<ReceiveProductViewModel> GetAllReceiveableListByBranchAndCompanyId(int branchId, int companyId);
        int ReceiveProduct(List<ScannedProduct> receiveProductList, TransactionModel model);
        int GetStockQtyByBranchAndProductId(int branchId, int productId);
        string SaveDeliveredOrder(List<ScannedProduct> scannedProducts, Delivery aDelivery, int invoiceStatus, int orderStatus);
        string GenerateDeliveryReference(int maxRefNo);
        IEnumerable<TransactionModel> GetAllReceiveableProductToBranchByDeliveryRef(string deliveryRef);
-       ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(long id);
+       ICollection<ViewDispatchModel> GetAllReceiveableProductToBranchByTripId(long tripId,int branchId);
        TransactionModel GetTransactionModelById(long id);
        int SaveScannedProduct(List<ScannedProduct> scannedProducts,int userId);
        bool IsThisProductSold(string scannedBarCode);

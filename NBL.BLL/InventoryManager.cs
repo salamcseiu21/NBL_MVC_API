@@ -8,6 +8,7 @@ using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Enums;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.Products;
 using NBL.Models.ViewModels.Sales;
@@ -34,7 +35,7 @@ namespace NBL.BLL
             return _iInventoryGateway.GetStockProductByCompanyId(companyId);
         }
 
-        public IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId,int companyId)
+        public ICollection<ReceiveProductViewModel> GetAllReceiveableListByBranchAndCompanyId(int branchId,int companyId)
         {
             return _iInventoryGateway.GetAllReceiveableListByBranchAndCompanyId(branchId,companyId); 
         }
@@ -73,9 +74,9 @@ namespace NBL.BLL
             return reference;
         }
 
-        public ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(long id)
+        public ICollection<ViewDispatchModel> GetAllReceiveableProductToBranchByTripId(long tripId,int branchId)
         {
-            return _iInventoryGateway.GetAllReceiveableProductToBranchByDeliveryId(id);
+            return _iInventoryGateway.GetAllReceiveableProductToBranchByTripId(tripId,branchId);
         }
 
         public TransactionModel GetTransactionModelById(long id)

@@ -9,6 +9,7 @@ using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Enums;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.Products;
 using NBL.Models.ViewModels.Sales;
@@ -198,35 +199,32 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public ICollection<TransactionModel> GetAllReceiveableProductToBranchByDeliveryId(long id)
+        public ICollection<ViewDispatchModel> GetAllReceiveableProductToBranchByTripId(long tripId,int branchId) 
         {
             try
             {
-                CommandObj.CommandText = "spGetReceiveableProductToBranchByDeliveryId";
+                CommandObj.CommandText = "spGetReceiveableProductToBranchByTripId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@DeliveryId", id);
+                CommandObj.Parameters.AddWithValue("@TripId", tripId);
+                CommandObj.Parameters.AddWithValue("@ToBranchId", branchId);
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
-                List<TransactionModel> list = new List<TransactionModel>();
+                List<ViewDispatchModel> list = new List<ViewDispatchModel>();
                 while (reader.Read())
                 {
-                    list.Add(new TransactionModel
+                    list.Add(new ViewDispatchModel
                     {
-                        FromBranchId = Convert.ToInt32(reader["FromBranchId"]),
-                        ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
-                        UserId = Convert.ToInt32(reader["DeliveredByUserId"]),
+                       
+                        ToBranchId = branchId,
+                        DispatchByUserId = Convert.ToInt32(reader["DispatchByUserId"]),
                         ProductId = Convert.ToInt32(reader["ProductId"]),
-                        // Quantity = Convert.ToInt32(reader["Quantity"]),
-                        TransactionDate = Convert.ToDateTime(reader["SysDateTime"]),
+                        DispatchDate = Convert.ToDateTime(reader["DispatchDate"]),
                         ProductName = reader["ProductName"].ToString(),
-                        DeliveryRef = reader["DeliveryRef"].ToString(),
-                        Transportation = reader["Transportation"].ToString(),
-                        TransportationCost = Convert.ToDecimal(reader["TransportationCost"]),
-                        DriverName = reader["DriverName"].ToString(),
-                        VehicleNo = reader["VehicleNo"].ToString(),
-                        DeliveryId = Convert.ToInt32(reader["DeliveryId"]),
+                        DispatchRef = reader["DispatchRef"].ToString(),
+                        Remarks = reader["Remarks"].ToString(),
+                        TripId = tripId,
                         CompanyId = Convert.ToInt32(reader["CompanyId"]),
-                        ProductBarCode = reader["ProductBarCode"].ToString()
+                        ProductBarcode = reader["ProductBarCode"].ToString()
                     });
                 }
 
@@ -622,42 +620,35 @@ namespace NBL.DAL
                 CommandObj.Parameters.Clear();
             }
         }
-        public IEnumerable<TransactionModel> GetAllReceiveableListByBranchAndCompanyId(int branchId,int companyId) 
+        public ICollection<ReceiveProductViewModel> GetAllReceiveableListByBranchAndCompanyId(int branchId,int companyId) 
         {
             try
             {
-                CommandObj.CommandText = "spGetReceiveableListByBranchAndCompanyId";
+                CommandObj.CommandText = "UDSP_GetReceivalbeProductByBranchAndCompanyId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@ToBranchId", branchId);
                 CommandObj.Parameters.AddWithValue("@CompanyId",companyId);
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
-                List<TransactionModel> list = new List<TransactionModel>();
+                List<ReceiveProductViewModel> list = new List<ReceiveProductViewModel>();
                 while (reader.Read())
                 {
-                    list.Add(new TransactionModel
+                    list.Add(new ReceiveProductViewModel
                     {
-                        FromBranchId = Convert.ToInt32(reader["FromBranchId"]),
-                        ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
-                        UserId = Convert.ToInt32(reader["DeliveredByUserId"]),
-                        Quantity = Convert.ToInt32(reader["TotalQuantity"]),
-                        TransactionDate = Convert.ToDateTime(reader["SysDateTime"]),
-                        DeliveryRef = reader["DeliveryRef"].ToString(),
-                        Transportation = reader["Transportation"].ToString(),
-                        TransportationCost = Convert.ToDecimal(reader["TransportationCost"]),
+                       
+                        ToBranchId = branchId,
+                        CreatedByUserId = Convert.ToInt32(reader["CreatedByUserId"]),
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        SystemDateTime = Convert.ToDateTime(reader["SystemDateTime"]),
+                        TripRef = reader["TripRef"].ToString(),
+                        TripId = Convert.ToInt32(reader["TripId"]),
+                        DriverPhone = reader["DriverPhone"].ToString(),
                         DriverName = reader["DriverName"].ToString(),
-                        VehicleNo = reader["VehicleNo"].ToString(),
-                        DeliveryId = Convert.ToInt32(reader["DeliveryId"]),
-                        FromBranch = new Branch
-                        {
-                          BranchName  = reader["FBranchName"].ToString(),
-                          BranchAddress = reader["FBranchAddress"].ToString(),
-                        },
-                        ToBranch = new Branch
-                        {
-                            BranchName = reader["ToBranchName"].ToString(),
-                            BranchAddress = reader["ToBranchAddress"].ToString(),
-                        }
+                        TransportationCost = Convert.ToDecimal(reader["TransportationCost"]),
+                        Transportation = reader["Transportation"].ToString(),
+                        Remarks = reader["Remarks"].ToString(),
+                        VehicleNo = reader["VehicleNo"].ToString()
+                       
                     });
                 }
 
@@ -668,7 +659,7 @@ namespace NBL.DAL
             catch (Exception exception)
             {
 
-                throw new Exception("Could not Get receivable product list", exception);
+                throw new Exception("Could not Get receivable product", exception);
             }
             finally
             {
@@ -1015,7 +1006,7 @@ namespace NBL.DAL
                 {
                     models.Add(new ViewTripModel
                     {
-                        TripId = Convert.ToInt64(reader["Id"]),
+                        TripId = Convert.ToInt64(reader["TripId"]),
                         TripRef = reader["TripRef"].ToString(),
                         DriverPhone = reader["DriverPhone"].ToString(),
                         DriverName = reader["DriverName"].ToString(),
@@ -1024,7 +1015,8 @@ namespace NBL.DAL
                         DeliveryQuantity = Convert.ToInt32(reader["Quantity"]),
                         Transportation = reader["Transportation"].ToString(),
                         VehicleNo = reader["VehicleNo"].ToString(),
-                        Remarks = reader["Remarks"].ToString()
+                        Remarks = reader["Remarks"].ToString(),
+                        Status = Convert.ToInt32(reader["Status"])
                     });
                 }
                 reader.Close();
