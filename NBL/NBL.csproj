@@ -6935,6 +6935,7 @@
     <Content Include="Content\myStyle.css" />
     <Content Include="favicon.ico" />
     <Content Include="Files\Create_Trip_File.xml" />
+    <Content Include="Files\Monthly_Requisition_Products.xml" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -7924,6 +7925,9 @@
     <Content Include="Areas\Factory\Views\Shared\_ViewRequiredTripProductsPartialPage.cshtml" />
     <Content Include="Areas\Factory\Views\Shared\_ViewScannedProductPartialPage.cshtml" />
     <Content Include="Areas\Sales\Views\Shared\_ViewScannedProductPartialPage.cshtml" />
+    <Content Include="Areas\Admin\Views\Requisition\MonthlyRequisition.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_ViewTempManthlyRequisitionProductList.cshtml" />
+    <Content Include="Areas\Factory\Views\Product\MonthlyRequisitions.cshtml" />
     <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

@@ -217,7 +217,7 @@ namespace NBL.Areas.Sales.Controllers
                 var barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
                 //------------Load receiveable product---------
                 var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByTripId(tripId,branchId);
-                var receivesProductCodeList = _iInventoryManager.GetAllReceiveableProductToBranchByTripId(tripId,branchId).Select(n => n.ProductBarcode);
+                var receivesProductCodeList = _iInventoryManager.GetAllReceiveableProductToBranchByTripId(tripId,branchId).Select(n => n.ProductBarcode).ToList();
                 var isvalid = Validator.ValidateProductBarCode(scannedBarCode);
 
                 bool isScannComplete = receivesProductList.ToList().FindAll(n=>n.ProductId==productId).ToList().Count == barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == productId).Count;

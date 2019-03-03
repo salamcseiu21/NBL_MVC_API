@@ -9,6 +9,7 @@ using NBL.Models;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Productions;
+using NBL.Models.EntityModels.Requisitions;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Validators;
 using NBL.Models.ViewModels;
@@ -370,7 +371,11 @@ namespace NBL.Areas.Factory.Controllers
             List<ViewRequisitionModel> requisitions=_iProductManager.GetRequsitions().ToList();
             return View(requisitions);
         }
-
+        public ActionResult MonthlyRequisitions()
+        {
+            List<ViewMonthlyRequisitionModel> requisitions = _iProductManager.GetMonthlyRequsitions().ToList();
+            return View(requisitions);
+        }
         public PartialViewResult ViewRequisitionDetails(long requisitionId)
         {
             var requisitions = _iProductManager.GetRequsitionDetailsById(requisitionId);

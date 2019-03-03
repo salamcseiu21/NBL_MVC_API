@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Xml.Linq;
 using NBL.BLL.Contracts;
 using NBL.Models;
+using NBL.Models.EntityModels.Masters;
+using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.Requisitions;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Requisitions;
@@ -213,6 +215,118 @@ namespace NBL.Areas.Admin.Controllers
                     ));
 
             xmlDocument.Save(@"C:\Demo\Demo\Data.xml");
+        }
+
+        //------------------------For Monthly Requisition---------------------
+        public ActionResult MonthlyRequisition()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult MonthlyRequisition(FormCollection collection)
+        {
+            var filePath = Server.MapPath("~/Files/" + "Monthly_Requisition_Products.xml");
+            var xmlDocument = XDocument.Load(filePath);
+            var products = GetTempMonthlyRequsitionProductListFromXml(filePath);
+            var user = (ViewUser) Session["user"];
+            MonthlyRequisitionModel model = new MonthlyRequisitionModel
+            {
+                Products = products.ToList(),
+                RequisitionByUserId = user.UserId
+            };
+            bool result = _iProductManager.SaveMonthlyRequisitionInfo(model);
+            if (result)
+            {
+                xmlDocument.Root?.Elements().Remove();
+                xmlDocument.Save(filePath);
+                TempData["message"] = "Requisition Create  Successfully!";
+            }
+            else
+            {
+                TempData["message"] = "Failed to create Requisition!";
+            }
+            return View();
+        }
+
+        public JsonResult AddMonthlyRequisitionProductToXmlFile(FormCollection collection)
+        {
+
+            SuccessErrorModel msgSuccessErrorModel = new SuccessErrorModel();
+            try
+            {
+
+                int productId = Convert.ToInt32(collection["ProductId"]);
+                var product = _iProductManager.GetProductByProductId(productId);
+                int quantity = Convert.ToInt32(collection["Quantity"]);
+                var filePath = Server.MapPath("~/Files/" + "Monthly_Requisition_Products.xml");
+                var xmlDocument = XDocument.Load(filePath);
+                xmlDocument.Element("Products")?.Add(
+                    new XElement("Product", new XAttribute("Id", productId),
+                        new XElement("ProductId", product.ProductId),
+                        new XElement("ProductName", product.ProductName),
+                        new XElement("Quantity", quantity),
+                        new XElement("ProductCategory",product.ProductCategory.ProductCategoryName),
+                        new XElement("CategoryId",product.CategoryId)
+                    ));
+                xmlDocument.Save(filePath);
+            }
+            catch (Exception exception)
+            {
+                msgSuccessErrorModel.Message = "<p style='colore:red'>" + exception.Message + "</p>";
+            }
+            return Json(msgSuccessErrorModel, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public PartialViewResult GetTempMonthlyRequsitionProductList() 
+        {
+            var filePath = Server.MapPath("~/Files/" + "Monthly_Requisition_Products.xml");
+
+            if (System.IO.File.Exists(filePath))
+            {
+                //if the file is exists read the file
+                IEnumerable<Product> productList = GetTempMonthlyRequsitionProductListFromXml(filePath);
+                return PartialView("_ViewTempManthlyRequisitionProductList",productList);
+            }
+            //if the file does not exists create the file
+            System.IO.File.Create(filePath).Close();
+            return PartialView("_ViewTempManthlyRequisitionProductList", new List<Product>());
+        }
+
+        private IEnumerable<Product> GetTempMonthlyRequsitionProductListFromXml(string filePath)
+        {
+            List<Product> products = new List<Product>();
+            var xmlData = XDocument.Load(filePath).Element("Products")?.Elements();
+            foreach (XElement element in xmlData)
+            {
+                Product aProduct = new Product();
+                var elementFirstAttribute = element.FirstAttribute.Value;
+                aProduct.ProductId = Convert.ToInt32(elementFirstAttribute);
+                var elementValue = element.Elements();
+                var xElements = elementValue as XElement[] ?? elementValue.ToArray();
+                aProduct.ProductId = Convert.ToInt32(xElements[0].Value);
+                aProduct.ProductName = xElements[1].Value;
+                aProduct.Quantity = Convert.ToInt32(xElements[2].Value);
+                aProduct.ProductCategory = new ProductCategory
+                {
+                    ProductCategoryId = Convert.ToInt32(xElements[4].Value),
+                    ProductCategoryName =xElements[3].Value
+               };
+                aProduct.CategoryId = Convert.ToInt32(xElements[4].Value);
+                products.Add(aProduct);
+            }
+            return products;
+        }
+
+        public JsonResult UpdateMonthlyRequsiton(int productId)
+        {
+            SuccessErrorModel model=new SuccessErrorModel();
+            var filePath = Server.MapPath("~/Files/" + "Monthly_Requisition_Products.xml");
+            var xmlData = XDocument.Load(filePath);
+            xmlData.Root?.Elements().Where(n => n.Attribute("Id")?.Value == productId.ToString()).Remove();
+            xmlData.Save(filePath);
+            model.Message = "<p style='color:red'>Deleted..!</p>";
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
     }
 }

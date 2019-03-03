@@ -280,5 +280,18 @@ namespace NBL.BLL
         {
             return _iProductGateway.GetDeliverableProductListByTripId(tripId);
         }
+
+        public bool SaveMonthlyRequisitionInfo(MonthlyRequisitionModel model)
+        {
+            int maxTrNo = _iProductGateway.GetMaxRequisitionNoOfCurrentYear();
+            model.RequisitionRef = GenerateRequisitionRef(maxTrNo);
+            int rowAffected = _iProductGateway.SaveMonthlyRequisitionInfo(model);
+            return rowAffected > 0;
+        }
+
+        public ICollection<ViewMonthlyRequisitionModel> GetMonthlyRequsitions()
+        {
+            return _iProductGateway.GetMonthlyRequsitions();
+        }
     }
 }

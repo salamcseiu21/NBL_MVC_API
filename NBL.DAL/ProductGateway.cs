@@ -1231,5 +1231,103 @@ namespace NBL.DAL
                 CommandObj.Parameters.Clear();
             }
         }
+
+        public int SaveMonthlyRequisitionInfo(MonthlyRequisitionModel model)
+        {
+            ConnectionObj.Open();
+            SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
+            try
+            {
+                int i = 0;
+                CommandObj.Parameters.Clear();
+                CommandObj.Transaction = sqlTransaction;
+                CommandObj.CommandText = "UDSP_SaveMonthlyRequisitionInfo";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@MonthlyRequisitionRef", model.RequisitionRef);
+                CommandObj.Parameters.AddWithValue("@Quantity", model.Quantity);
+                CommandObj.Parameters.AddWithValue("@RequisitionByUserId", model.RequisitionByUserId);
+                CommandObj.Parameters.Add("@MonthlyRequisitionId", SqlDbType.BigInt);
+                CommandObj.Parameters["@MonthlyRequisitionId"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                var requisionId = Convert.ToInt64(CommandObj.Parameters["@MonthlyRequisitionId"].Value);
+                i = SaveMonthlyRequisitionItems(model, requisionId);
+                if (i > 0)
+                {
+                    sqlTransaction.Commit();
+                }
+                else
+                {
+                    sqlTransaction.Rollback();
+                }
+                return i;
+            }
+            catch (Exception exception)
+            {
+                sqlTransaction.Rollback();
+                throw new Exception("Could not save monthly Requisiton", exception);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+
+        private int SaveMonthlyRequisitionItems(MonthlyRequisitionModel model, long requisionId)
+        {
+            int i = 0;
+            foreach (var product in model.Products)
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.CommandText = "UDSP_SaveMonthlyRequisitionItems";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@ProductId", product.ProductId);
+                CommandObj.Parameters.AddWithValue("@Quantity", product.Quantity);
+                CommandObj.Parameters.AddWithValue("@MonthlyRequisitionId", requisionId);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+            }
+            return i;
+        }
+        public ICollection<ViewMonthlyRequisitionModel> GetMonthlyRequsitions()
+        {
+            try
+            {
+                List<ViewMonthlyRequisitionModel> requisitions=new List<ViewMonthlyRequisitionModel>();
+                CommandObj.CommandText = "UDSP_GetMonthlyRequsitions";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    requisitions.Add(new ViewMonthlyRequisitionModel
+                    {
+                        RequisitionRef = reader["MonthlyRequisitionRef"].ToString(),
+                        RequisitionId = Convert.ToInt64(reader["MonthlyRequisitionId"]),
+                        RequisitionDate = Convert.ToDateTime(reader["SystemDateTime"]),
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        RequisitionByUserId = Convert.ToInt32(reader["RequisitionByUserId"]),
+                        RequisitionBy = reader["RequisitionBy"].ToString()
+                    });
+                }
+                reader.Close();
+                return requisitions;
+            }
+            catch (Exception exception)
+            {
+               
+                throw new Exception("Could not collect monthly Requisiton", exception);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+                CommandObj.Parameters.Clear();
+            }
+        }
     }
 }

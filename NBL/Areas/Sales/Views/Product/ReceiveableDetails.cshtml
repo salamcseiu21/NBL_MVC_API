@@ -64,7 +64,7 @@
                     $('#message').html(response).fadeIn('slow');
                     $('#message').html(result).fadeIn('slow'); //also show a success message
                     $('#message').delay(700).fadeOut('slow');
-                    loadAllReceivableProducts();
+                    loadScannedProducts();
                     $('#scanProductBarcodeForm').trigger("reset");
                 }
             });

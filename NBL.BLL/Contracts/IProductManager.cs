@@ -41,5 +41,7 @@ namespace NBL.BLL.Contracts
         List<RequisitionModel> GetRequsitionDetailsById(long requisitionId);
         ICollection<ViewRequisitionModel> GetRequsitions();
         ICollection<Product> GetDeliverableProductListByTripId(long tripId);
+        bool SaveMonthlyRequisitionInfo(MonthlyRequisitionModel model);
+        ICollection<ViewMonthlyRequisitionModel> GetMonthlyRequsitions();
     }
 }
