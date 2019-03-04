@@ -8,7 +8,6 @@ using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Orders;
-using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Logs;
 using NBL.Models.Validators;
@@ -220,7 +219,11 @@ namespace NBL.Areas.Sales.Controllers
                 var receivesProductCodeList = _iInventoryManager.GetAllReceiveableProductToBranchByTripId(tripId,branchId).Select(n => n.ProductBarcode).ToList();
                 var isvalid = Validator.ValidateProductBarCode(scannedBarCode);
 
-                bool isScannComplete = receivesProductList.ToList().FindAll(n=>n.ProductId==productId).ToList().Count == barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == productId).Count;
+                int requistionQtyByProductId =
+                    receivesProductList.ToList().FindAll(n => n.ProductId == productId).ToList().Count;
+                int scannedQtyByProductId = barcodeList
+                    .FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == productId).Count;
+                bool isScannComplete = requistionQtyByProductId.Equals(scannedQtyByProductId);
 
                 if (isScannComplete)
                 {
@@ -260,13 +263,14 @@ namespace NBL.Areas.Sales.Controllers
         [HttpPost]
         public ActionResult ReceiveProduct(ReceiveProductViewModel model)
         {
-            //var id = Convert.ToInt64(collection["DeliveryId"]);
-            var transactionModel = _iInventoryManager.GetTransactionModelById(model.DeliveryId);
-            string fileName = "Received_Product_For_" + model.DeliveryId;
+
+            ViewDispatchModel dispatchModel = _iInventoryManager.GetDispatchByTripId(model.TripId);     
+            string fileName = "Received_Product_For_" + model.TripId;
             var filePath = Server.MapPath("~/Files/" + fileName);
             var receiveProductList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
-            transactionModel.Quantity = receiveProductList.Count;
-            _iInventoryManager.ReceiveProduct(receiveProductList, transactionModel);
+            dispatchModel.Quantity = receiveProductList.Count;
+            dispatchModel.ToBranchId = Convert.ToInt32(Session["BranchId"]);
+            _iInventoryManager.ReceiveProduct(receiveProductList, dispatchModel);
             return RedirectToAction("Receive");
         }
         public JsonResult GetTempTransaction()

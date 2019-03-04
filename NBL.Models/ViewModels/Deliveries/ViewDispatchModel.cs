@@ -20,6 +20,8 @@ namespace NBL.Models.ViewModels.Deliveries
         public int Quantity { set; get; }
         public string ProductBarcode { get; set; }  
         public string Remarks { get; set; }
-       
+        public int CategoryId { get; set; }
+        public int ProductTypeId { get; set; }
+        public string SubSubSubAccountCode { get; set; }    
     }
 }

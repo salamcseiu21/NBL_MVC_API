@@ -232,6 +232,7 @@ namespace NBL.Areas.Admin.Controllers
             MonthlyRequisitionModel model = new MonthlyRequisitionModel
             {
                 Products = products.ToList(),
+                Quantity = products.Sum(n=>n.Quantity),
                 RequisitionByUserId = user.UserId
             };
             bool result = _iProductManager.SaveMonthlyRequisitionInfo(model);

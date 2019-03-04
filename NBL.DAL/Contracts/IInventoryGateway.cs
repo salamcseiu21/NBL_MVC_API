@@ -17,7 +17,7 @@ namespace NBL.DAL.Contracts
        int GetMaxDeliveryRefNoOfCurrentYear();
        IEnumerable<TransactionModel> GetAllReceiveableProductToBranchByDeliveryRef(string deliveryRef);
        ICollection<ReceiveProductViewModel> GetAllReceiveableListByBranchAndCompanyId(int branchId, int companyId);
-       int ReceiveProduct(List<ScannedProduct> receiveProductList, TransactionModel model);
+       int ReceiveProduct(List<ScannedProduct> receiveProductList, ViewDispatchModel model);
        int SaveReceiveProductDetails(List<ScannedProduct> receiveProductList, int inventoryId);
        int GetStockQtyByBranchAndProductId(int branchId, int productId);
        int SaveDeliveredOrder(List<ScannedProduct> scannedProducts, Delivery aDelivery, int invoiceStatus, int orderStatus); 
@@ -37,5 +37,6 @@ namespace NBL.DAL.Contracts
        int CreateTrip(ViewCreateTripModel model);
        long GetMaxTripRefNoOfCurrentYear();
        IEnumerable<ViewTripModel> GetAllTrip();
+       ViewDispatchModel GetDispatchByTripId(long tripId);
    }
 }

@@ -637,17 +637,20 @@ namespace NBL.DAL
                     {
                        
                         ToBranchId = branchId,
-                        CreatedByUserId = Convert.ToInt32(reader["CreatedByUserId"]),
+                        //CreatedByUserId = Convert.ToInt32(reader["CreatedByUserId"]),
+                        DispatchByUserId=Convert.ToInt32(reader["DispatchByUserId"]),
                         Quantity = Convert.ToInt32(reader["Quantity"]),
+                        DispatchId=Convert.ToInt64(reader["DispatchId"]),
+                        DispatchItemsId=Convert.ToInt64(reader["DispatchItemsId"]),
                         SystemDateTime = Convert.ToDateTime(reader["SystemDateTime"]),
-                        TripRef = reader["TripRef"].ToString(),
+                       // TripRef = reader["TripRef"].ToString(),
                         TripId = Convert.ToInt32(reader["TripId"]),
-                        DriverPhone = reader["DriverPhone"].ToString(),
-                        DriverName = reader["DriverName"].ToString(),
-                        TransportationCost = Convert.ToDecimal(reader["TransportationCost"]),
-                        Transportation = reader["Transportation"].ToString(),
-                        Remarks = reader["Remarks"].ToString(),
-                        VehicleNo = reader["VehicleNo"].ToString()
+                        //DriverPhone = reader["DriverPhone"].ToString(),
+                       // DriverName = reader["DriverName"].ToString(),
+                        //TransportationCost = Convert.ToDecimal(reader["TransportationCost"]),
+                        //Transportation = reader["Transportation"].ToString(),
+                       // Remarks = reader["Remarks"].ToString(),
+                        //VehicleNo = reader["VehicleNo"].ToString()
                        
                     });
                 }
@@ -668,7 +671,7 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public int ReceiveProduct(List<ScannedProduct> receiveProductList,TransactionModel model)
+        public int ReceiveProduct(List<ScannedProduct> receiveProductList,ViewDispatchModel model)
         {
             
             ConnectionObj.Open();
@@ -679,12 +682,12 @@ namespace NBL.DAL
                 CommandObj.Transaction = sqlTransaction;
                 CommandObj.CommandText = "spSaveReceiveProuctToBranch";
                 CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@TransactionDate", model.TransactionDate);
-                CommandObj.Parameters.AddWithValue("@TransactionRef", model.DeliveryRef);
+                CommandObj.Parameters.AddWithValue("@TransactionDate", model.DispatchDate);
+                CommandObj.Parameters.AddWithValue("@TransactionRef", model.DispatchRef);
                 CommandObj.Parameters.AddWithValue("@Quantity", model.Quantity);
                 CommandObj.Parameters.AddWithValue("@ToBranchId", model.ToBranchId);
                 CommandObj.Parameters.AddWithValue("@CompanyId", model.CompanyId);
-                CommandObj.Parameters.AddWithValue("@UserId", model.UserId);
+                CommandObj.Parameters.AddWithValue("@UserId", model.DispatchByUserId);
                 CommandObj.Parameters.Add("@InventoryId", SqlDbType.Int);
                 CommandObj.Parameters["@InventoryId"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
@@ -1034,6 +1037,8 @@ namespace NBL.DAL
             }
         }
 
+       
+
         public int CreateTrip(ViewCreateTripModel model)
         {
             ConnectionObj.Open();
@@ -1136,6 +1141,44 @@ namespace NBL.DAL
                 i += Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
             }
             return i;
+        }
+
+        public ViewDispatchModel GetDispatchByTripId(long tripId)
+        {
+            try
+            {
+                ViewDispatchModel model = null;
+                CommandObj.CommandText = "UDSP_GetDispatchById";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@TripId", tripId);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                if(reader.Read())
+                {
+                    model=new ViewDispatchModel
+                    {
+                        TripId = tripId,
+                        CompanyId = Convert.ToInt32(reader["CompanyId"]),
+                        DispatchRef = reader["DispatchRef"].ToString(),
+                        DispatchByUserId = Convert.ToInt32(reader["DispatchByUserId"]),
+                        DispatchId = Convert.ToInt64(reader["DispatchId"]),
+                        DispatchDate = Convert.ToDateTime(reader["SystemDatetime"]),
+                        TransactionRef = reader["TransactionRef"].ToString()
+                    };
+                }
+                reader.Close();
+                return model;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not get dispatch by trip id",exception);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                ConnectionObj.Close();
+            }
         }
     }
 }

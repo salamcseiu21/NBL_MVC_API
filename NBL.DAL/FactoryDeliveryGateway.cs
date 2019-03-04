@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Deliveries;
+using NBL.Models.ViewModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
 
 namespace NBL.DAL
@@ -32,7 +33,7 @@ namespace NBL.DAL
                 CommandObj.Parameters["@DispatchId"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
                 long dispatchId = Convert.ToInt64(CommandObj.Parameters["@DispatchId"].Value);
-                int rowAffected = SaveDispatchInformationDetails(dispatchModel.ScannedProducts, dispatchId);
+                int rowAffected = SaveDispatchInformationDetails(dispatchModel, dispatchId);
                 if (rowAffected > 0)
                 {
                     sqlTransaction.Commit();
@@ -57,11 +58,11 @@ namespace NBL.DAL
             }
         }
 
-        private int SaveDispatchInformationDetails(IEnumerable<ScannedProduct> scannedProducts, long dispatchId)
+        private int SaveDispatchInformationDetails(DispatchModel model, long dispatchId)
         {
             int i=0;
             int n = 0;
-            foreach (var item in scannedProducts) 
+            foreach (var item in model.ScannedProducts) 
             {
                 CommandObj.CommandText = "UDSP_SaveDispatchInformationDetails";
                 CommandObj.CommandType = CommandType.StoredProcedure;
@@ -76,22 +77,22 @@ namespace NBL.DAL
             }
             if (i > 0)
             {
-                n = SaveDispatchItems(scannedProducts,dispatchId);
+                n = SaveDispatchItems(model.DispatchModels,dispatchId);
             }
             return n;
         }
 
-        private int SaveDispatchItems(IEnumerable<ScannedProduct> products, long dispatchId)  
+        private int SaveDispatchItems(IEnumerable<ViewDispatchModel> products, long dispatchId)  
         {
             int i = 0;
-            var groupBy = products.GroupBy(n => n.ProductId);
-            foreach (IGrouping<int, ScannedProduct> scannedProducts in groupBy)
+            foreach (var item in products)
             {
                 CommandObj.CommandText = "UDSP_SaveDispatchItems";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.Clear();
-                CommandObj.Parameters.AddWithValue("@ProductId", scannedProducts.Key);
-                CommandObj.Parameters.AddWithValue("@Quantity", scannedProducts.Count());
+                CommandObj.Parameters.AddWithValue("@ProductId", item.ProductId);
+                CommandObj.Parameters.AddWithValue("@Quantity", item.Quantity);
+                CommandObj.Parameters.AddWithValue("@ToBranchId", item.ToBranchId);
                 CommandObj.Parameters.AddWithValue("@DispatchId", dispatchId);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;

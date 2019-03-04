@@ -11,6 +11,7 @@ using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Enums;
 using NBL.Models.Validators;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.Requisitions;
 
@@ -113,6 +114,14 @@ namespace NBL.BLL
         {
 
             string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == Convert.ToInt32(ReferenceType.Requisition)).Code;
+            string temp = (maxrNo + 1).ToString();
+            string reference = DateTime.Now.Year.ToString().Substring(2, 2) + refCode + temp;
+            return reference;
+        }
+        private string GenerateMonthlyRequisitionRef(int maxrNo)
+        {
+
+            string refCode = _iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == Convert.ToInt32(ReferenceType.MonthlyRequisition)).Code;
             string temp = (maxrNo + 1).ToString();
             string reference = DateTime.Now.Year.ToString().Substring(2, 2) + refCode + temp;
             return reference;
@@ -276,16 +285,16 @@ namespace NBL.BLL
             return _iProductGateway.GetRequsitions();
         }
 
-        public ICollection<Product> GetDeliverableProductListByTripId(long tripId)
+        public ICollection<ViewDispatchModel> GetDeliverableProductListByTripId(long tripId)
         {
             return _iProductGateway.GetDeliverableProductListByTripId(tripId);
         }
 
         public bool SaveMonthlyRequisitionInfo(MonthlyRequisitionModel model)
         {
-            int maxTrNo = _iProductGateway.GetMaxRequisitionNoOfCurrentYear();
-            model.RequisitionRef = GenerateRequisitionRef(maxTrNo);
-            int rowAffected = _iProductGateway.SaveMonthlyRequisitionInfo(model);
+            int maxTrNo = _iProductGateway.GetMaxMonnthlyRequisitionNoOfCurrentYear();
+            model.RequisitionRef = GenerateMonthlyRequisitionRef(maxTrNo);
+            int rowAffected = _iProductGateway.SaveMonthlyRequisitionInfo(model); 
             return rowAffected > 0;
         }
 

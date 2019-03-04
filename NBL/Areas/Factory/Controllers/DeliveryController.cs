@@ -165,7 +165,8 @@ namespace NBL.Areas.Factory.Controllers
                 CompanyId = companyId,
                 TripModel = viewTrip,
                 DispatchDate = DateTime.Now,
-                ScannedProducts = scannedProducts
+                ScannedProducts = scannedProducts,
+                DispatchModels = products
             };
             
 
@@ -195,7 +196,7 @@ namespace NBL.Areas.Factory.Controllers
         public PartialViewResult LoadDeliverableProduct(long tripId)
         {
            
-            List<Product> products = _iProductManager.GetDeliverableProductListByTripId(tripId).ToList();
+            var products = _iProductManager.GetDeliverableProductListByTripId(tripId).ToList();
            
             return PartialView("_ViewRequiredTripProductsPartialPage",products);
         }

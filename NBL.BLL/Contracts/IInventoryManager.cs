@@ -15,7 +15,7 @@ namespace NBL.BLL.Contracts
        IEnumerable<ViewProduct> GetStockProductByBranchAndCompanyId(int branchId, int companyId);
        IEnumerable<ViewProduct> GetStockProductByCompanyId(int companyId);
        ICollection<ReceiveProductViewModel> GetAllReceiveableListByBranchAndCompanyId(int branchId, int companyId);
-       int ReceiveProduct(List<ScannedProduct> receiveProductList, TransactionModel model);
+       int ReceiveProduct(List<ScannedProduct> receiveProductList, ViewDispatchModel model);
        int GetStockQtyByBranchAndProductId(int branchId, int productId);
        string SaveDeliveredOrder(List<ScannedProduct> scannedProducts, Delivery aDelivery, int invoiceStatus, int orderStatus);
        string GenerateDeliveryReference(int maxRefNo);
@@ -33,6 +33,7 @@ namespace NBL.BLL.Contracts
        ViewProductLifeCycleModel GetProductLifeCycleByBarcode(string productBarCode);
        IEnumerable<ViewProduct> GetAllProductsBarcode();
        bool CreateTrip(ViewCreateTripModel model);
-       IEnumerable<ViewTripModel> GetAllTrip(); 
-   }
+       IEnumerable<ViewTripModel> GetAllTrip();
+        ViewDispatchModel GetDispatchByTripId(long tripId);
+    }
 }

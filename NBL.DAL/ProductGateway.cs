@@ -12,6 +12,7 @@ using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.Requisitions;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
 using NBL.Models.ViewModels.Requisitions;
 
@@ -1195,26 +1196,27 @@ namespace NBL.DAL
             }
         }
 
-        public ICollection<Product> GetDeliverableProductListByTripId(long tripId)
+        public ICollection<ViewDispatchModel> GetDeliverableProductListByTripId(long tripId)
         {
             try
             {
                 CommandObj.CommandText = "UDSP_GetDeliverableProductListByTripId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@TripId", tripId);
-                List<Product> products=new List<Product>();
+                List<ViewDispatchModel> products=new List<ViewDispatchModel>();
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
                 while (reader.Read())
                 {
-                    products.Add(new Product
+                    products.Add(new ViewDispatchModel
                     {
                         ProductName = reader["ProductName"].ToString(),
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         CategoryId = Convert.ToInt32(reader["CategoryId"]),
                         ProductTypeId = Convert.ToInt32(reader["ProductTypeId"]),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
-                        Quantity = Convert.ToInt32(reader["Quantity"])
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        ToBranchId = Convert.ToInt32(reader["ToBranchId"])
                     });
                 }
                 reader.Close();
@@ -1327,6 +1329,34 @@ namespace NBL.DAL
                 CommandObj.Dispose();
                 ConnectionObj.Close();
                 CommandObj.Parameters.Clear();
+            }
+        }
+
+        public int GetMaxMonnthlyRequisitionNoOfCurrentYear()
+        {
+            try
+            {
+                CommandObj.CommandText = "spGetMaxMonnthlyRequisitionNoOfCurrentYear";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                int slNo = 0;
+                if (reader.Read())
+                {
+                    slNo = Convert.ToInt32(reader["MaxSlNo"]);
+                }
+                reader.Close();
+                return slNo;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect max Monthly requisition no of current Year", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
             }
         }
     }
