@@ -157,7 +157,6 @@ namespace NBL.BLL
             Product product = null;
             bool isScannedBefore = false;
             bool isValid = Validator.ValidateProductBarCode(productCode);
-            
             if(isValid)
             {
                 var productId = Convert.ToInt32(productCode.Substring(0, 3));

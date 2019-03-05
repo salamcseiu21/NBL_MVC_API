@@ -844,6 +844,7 @@ namespace NBL.DAL
                     while ((line = sr.ReadLine()) != null)
                     {
                       var product= GetProductByProductId(Convert.ToInt32(line.Substring(0, 3)));
+                        
                         barCodes.Add(
                             new ScannedProduct
                             {
