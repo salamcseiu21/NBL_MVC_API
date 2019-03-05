@@ -64,6 +64,7 @@ namespace NBL.Models.Logs
             }
             catch (Exception ex)
             {
+                throw new Exception();
             }
         }
 

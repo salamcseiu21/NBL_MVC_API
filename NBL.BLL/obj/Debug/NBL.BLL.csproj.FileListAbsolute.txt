@@ -27,6 +27,7 @@ E:\Abdus Salam\NBL\NBL.BLL\bin\Debug\System.Web.WebPages.Razor.xml
 E:\Abdus Salam\NBL\NBL.BLL\obj\Debug\NBL.BLL.csprojResolveAssemblyReference.cache
 E:\Abdus Salam\NBL\NBL.BLL\obj\Debug\NBL.BLL.dll
 E:\Abdus Salam\NBL\NBL.BLL\obj\Debug\NBL.BLL.pdb
+E:\API\NBL\NBL.BLL\obj\Debug\NBL.BLL.csprojResolveAssemblyReference.cache
 E:\API\NBL\NBL.BLL\bin\Debug\NBL.BLL.dll
 E:\API\NBL\NBL.BLL\bin\Debug\NBL.BLL.pdb
 E:\API\NBL\NBL.BLL\bin\Debug\AutoMapper.dll
@@ -51,6 +52,5 @@ E:\API\NBL\NBL.BLL\bin\Debug\System.Web.Razor.xml
 E:\API\NBL\NBL.BLL\bin\Debug\System.Web.WebPages.xml
 E:\API\NBL\NBL.BLL\bin\Debug\System.Web.WebPages.Deployment.xml
 E:\API\NBL\NBL.BLL\bin\Debug\System.Web.WebPages.Razor.xml
-E:\API\NBL\NBL.BLL\obj\Debug\NBL.BLL.csprojResolveAssemblyReference.cache
 E:\API\NBL\NBL.BLL\obj\Debug\NBL.BLL.dll
 E:\API\NBL\NBL.BLL\obj\Debug\NBL.BLL.pdb

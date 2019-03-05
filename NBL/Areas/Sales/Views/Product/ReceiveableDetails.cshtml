@@ -9,27 +9,30 @@
     
     <div class="row">
         <div class="col-md-6 col-md-offset-3" style="border: 1px solid;">
-            @using (Html.BeginForm("ReceiveProduct","Product",FormMethod.Post,new {id="scanProductBarcodeForm"}))
-            {
-                <div class="form-horizontal">
-                    <h2 class="text-center">Scan Product</h2>
-                    <div id="message" style="display:none;font-weight:bold;font-size:20px" class="text-center">
-                    </div>
-                    <div class="form-group">
+            
+            <div class="form-horizontal">
+                <h2 class="text-center">Scan Product</h2>
+                <div id="message" style="display:none;font-weight:bold;font-size:20px" class="text-center">
+                </div>
+                <div class="form-group">
                     <label for="ProductCode" class="control-label col-md-2"></label>
-                        <div class="col-md-10">
-                            @Html.HiddenFor(m => m.TripId)
-                            <input type="text" id="ProductCode" name="ProductCode" class="form-control"placeholder="Always keep pointer here..!!" autofocus onchange="SaveScannedBarcodeToTextFile(this)"/>
-                        </div>
-
+                    <div class="col-md-10">
+                        @Html.HiddenFor(m => m.TripId)
+                        <input type="text" id="ProductCode" name="ProductCode" class="form-control"placeholder="Always keep pointer here..!!" autofocus onchange="SaveScannedBarcodeToTextFile(this)"/>
                     </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Receive" class="btn btn-info"/>
-                        </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                       
+                        <button type="button" class="btn btn-info" onclick="ReceiveProductToBranch(this)">Receive</button>
                     </div>
                 </div>
-            }
+            </div>
+            @*@using (Html.BeginForm("ReceiveProduct", "Product", FormMethod.Post, new {id = "scanProductBarcodeForm"}))
+            {
+
+            }*@
         </div>
     </div>
     <div class="row" style="padding: 15px; border: 1px solid;margin: 10px">
@@ -50,11 +53,13 @@
 
     <script>
         function SaveScannedBarcodeToTextFile(btnClicked) {
-            var $form = $(btnClicked).parents('form');
+           // var $form = $(btnClicked).parents('form');
+            var code = $("#ProductCode").val();
+            var tripId = $("#TripId").val();
             $.ajax({
                 type: "POST",
                 url: RootUrl + 'Sales/Product/SaveScannedBarcodeToTextFile',
-                data: $form.serialize(),
+                data: { barcode: code, tripId: tripId },
                 error: function (xhr, status, error) {
                     alert(error);
                 },
@@ -65,10 +70,33 @@
                     $('#message').html(result).fadeIn('slow'); //also show a success message
                     $('#message').delay(700).fadeOut('slow');
                     loadScannedProducts();
-                    $('#scanProductBarcodeForm').trigger("reset");
+                    $('#ProductCode').val("");
                 }
             });
         }
+
+        function ReceiveProductToBranch(btnClick) {
+            var tripId = $("#TripId").val();
+            if (confirm("Are you sure to Save?")) {
+                //$("#scanProductBarcodeForm").submit();
+                $.ajax({
+                    type: "Post",
+                    url: RootUrl + 'Sales/Product/ReceiveProduct',
+                    data: {tripId: tripId },
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    },
+                    success: function (response) {
+                        loadAllReceivableProducts();
+                        loadScannedProducts();
+                    }
+                });
+
+            } else {
+                return false;// if it's a link to prevent post
+            }
+        }
+
     </script>
 
 

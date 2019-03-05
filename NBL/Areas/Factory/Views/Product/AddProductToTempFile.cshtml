@@ -8,59 +8,51 @@
 
 
     <div class="col-md-6 col-md-offset-3" style="border: 1px solid;">
-        @using (Html.BeginForm("SaveProductToFactoryInventory","Product",FormMethod.Post,new {id= "scanProductBarcodeForm" }))
-        {
-            <div class="form-horizontal">
-                <h3 class="text-center text-green">Scan Product</h3>
-                <div id="message" style="display:none;font-weight:bold;font-size:20px" class="text-center">
+        
+        <div class="form-horizontal">
+            <h3 class="text-center text-green" style="font-weight: bold">Scan Product</h3>
+            <div id="message" style="display:none;font-weight:bold;font-size:20px" class="text-center">
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ProductCode, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control", placeholder = "Always keep pointer here..!!", autofocus = "" , onchange = "SaveScannedBarcodeToTextFile(this)"})
+                    @Html.ValidationMessageFor(m => m.ProductCode, "", new { @class = "text-danger" })
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.ProductCode, new {@class = "control-label col-md-2"})
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control", placeholder = "Alwasy keep pointer here..!!", autofocus = "" , onchange = "SaveScannedBarcodeToTextFile(this)"})
-                        @Html.ValidationMessageFor(m => m.ProductCode, "", new { @class = "text-danger" })
-                    </div>
 
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3">Total Product Scanned</label>
+                <div class="col-md-9">
+                   <label id="TotalScannedQty" class="control-label"></label>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
 
-                        <input type="button" value="Save" class="btn btn-success" onclick="SaveProductToFactoryInventory()"/>
-                    </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+
+                    <input type="button" id="btnSave" value="Save" class="btn btn-success" onclick="SaveProductToFactoryInventory()"/>
+                    <a class="btn btn-danger" href="~/factory">Cancel</a>
+                       
                 </div>
             </div>
-        }
-       
-        <table class="display table-responsive table-bordered table-hover" id="production_list" style="border: 1px solid">
-            <caption class="text-center">
-                Scaned Product List 
-            </caption>
-            <thead>
-           
-            <tr>
-                <th>
-                    Product Barcode
-                </th>
-                <th>
-                    Product Name
-                </th>
-            </tr>
-            </thead>
-
-        </table>
+        </div>
+    </div>
+    
+    <div id="div_scanned_products"> 
     </div>
 </section>
 
 @section scripts{
     
-<script src="~/Areas/Factory/Scripts/loadAllScannedProducts.js"></script>
     <script>
         function SaveScannedBarcodeToTextFile(btnClicked) {
-            var $form = $(btnClicked).parents('form');
+           // var $form = $(btnClicked).parents('form');
+            var code = $("#ProductCode").val();
             $.ajax({
-                type: "POST",
+                type: "Post",
                 url: RootUrl + 'factory/product/AddProductToTempFile',
-                data: $form.serialize(),
+                data: { barcode: code },
                 error: function (xhr, status, error) {
                     alert(error);
                 },
@@ -71,24 +63,56 @@
                     $('#message').html(result).fadeIn('slow'); //also show a success message
                     $('#message').delay(700).fadeOut('slow');
                     loadAllScannedProducts();
-                    $('#scanProductBarcodeForm').trigger("reset");
+                    $('#ProductCode').val("");
                 }
             });
         }
     </script>
     <script>
-        window.onload = function () {
+        $(document).ready(function() {
             loadAllScannedProducts();
-        };
+           
+        });
     </script>
     
     <script>
         function SaveProductToFactoryInventory() {
             if (confirm("Are you sure to Save?")) {
-                $("#scanProductBarcodeForm").submit();
+                //$("#scanProductBarcodeForm").submit();
+                $.ajax({
+                    type: "Post",
+                    url: RootUrl + 'factory/product/SaveProductToFactoryInventory',
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    },
+                    success: function (response) {
+                        loadAllScannedProducts();
+                    }
+                });
+
             } else {
                 return false;// if it's a link to prevent post
             }
+        }
+
+
+        function loadAllScannedProducts() {
+            $.ajax({
+                type: 'GET',
+                url: RootUrl + "factory/product/LoadScannedProducts",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    $("#div_scanned_products").html(data);
+                    var qty = $("#total_Scanned_qty").val();
+                  if (qty > 0) {
+                      $("#btnSave").removeAttr('disabled');
+                      $("#TotalScannedQty").text(qty);
+                  } else {
+                      $("#btnSave").attr('disabled', true);
+                      $("#TotalScannedQty").text(0);
+                  }
+                }
+            });
         }
     </script>
 }

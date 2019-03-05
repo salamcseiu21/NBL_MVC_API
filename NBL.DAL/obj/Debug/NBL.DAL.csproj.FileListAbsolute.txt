@@ -12,6 +12,7 @@ E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\System.ValueTuple.xml
 E:\Abdus Salam\NBL\NBL.DAL\obj\Debug\NBL.DAL.csprojResolveAssemblyReference.cache
 E:\Abdus Salam\NBL\NBL.DAL\obj\Debug\NBL.DAL.dll
 E:\Abdus Salam\NBL\NBL.DAL\obj\Debug\NBL.DAL.pdb
+E:\API\NBL\NBL.DAL\obj\Debug\NBL.DAL.csprojResolveAssemblyReference.cache
 E:\API\NBL\NBL.DAL\bin\Debug\NBL.DAL.dll
 E:\API\NBL\NBL.DAL\bin\Debug\NBL.DAL.pdb
 E:\API\NBL\NBL.DAL\bin\Debug\NBL.Models.dll
@@ -32,6 +33,5 @@ E:\API\NBL\NBL.DAL\bin\Debug\System.Web.WebPages.Razor.xml
 E:\API\NBL\NBL.DAL\bin\Debug\System.Web.WebPages.xml
 E:\API\NBL\NBL.DAL\bin\Debug\System.ValueTuple.xml
 E:\API\NBL\NBL.DAL\bin\Debug\System.Web.WebPages.Deployment.xml
-E:\API\NBL\NBL.DAL\obj\Debug\NBL.DAL.csprojResolveAssemblyReference.cache
 E:\API\NBL\NBL.DAL\obj\Debug\NBL.DAL.dll
 E:\API\NBL\NBL.DAL\obj\Debug\NBL.DAL.pdb

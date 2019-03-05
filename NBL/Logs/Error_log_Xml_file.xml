@@ -30,4 +30,11 @@
    at NBL.Areas.Factory.Controllers.DeliveryController.SaveScannedBarcodeToTextFile(FormCollection collection) in E:\API\NBL\NBL\Areas\Factory\Controllers\DeliveryController.cs:line 72</LogMessage>
     <LogDateTime>2019-03-02T13:02:52.6780374+06:00</LogDateTime>
   </Error>
+  <Error LogId="19-Mar-050095b6da-f97d-47fd-b568-23ed52436e8d">
+    <Heading>System.Exception</Heading>
+    <LogMessage>   at NBL.DAL.InventoryGateway.GetAllReceiveableItemsByTripAndBranchId(Int64 tripId, Int32 branchId) in E:\API\NBL\NBL.DAL\InventoryGateway.cs:line 1214
+   at NBL.BLL.InventoryManager.GetAllReceiveableItemsByTripAndBranchId(Int64 tripId, Int32 branchId) in E:\API\NBL\NBL.BLL\InventoryManager.cs:line 169
+   at NBL.Areas.Sales.Controllers.ProductController.SaveScannedBarcodeToTextFile(String barcode, Int64 tripId) in E:\API\NBL\NBL\Areas\Sales\Controllers\ProductController.cs:line 218</LogMessage>
+    <LogDateTime>2019-03-05T12:27:49.4249572+06:00</LogDateTime>
+  </Error>
 </Errors>

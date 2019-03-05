@@ -11,78 +11,77 @@
 
 
         <div class="col-md-6 col-md-offset-3" style="border: 1px solid;">
-            @using (Html.BeginForm("SaveDispatchInformation", "Delivery", FormMethod.Post, new { id = "saveDispatchInfoForm" }))
-            {
-                <div class="form-horizontal">
-                    <h3 class="text-center">Scan Product</h3>
-                    @if (TempData["QuantityNotSame"] != null)
-                    {
-                        <p class="text-danger">@TempData["QuantityNotSame"]</p>
-                    }
-                    <div id="message" style="display:none;font-weight:bold;font-size:20px" class="text-center">
+            
+            <div class="form-horizontal">
+                <h3 class="text-center">Scan Product</h3>
+                @if (TempData["QuantityNotSame"] != null)
+                {
+                    <p class="text-danger">@TempData["QuantityNotSame"]</p>
+                }
+                <div id="message" style="display:none;font-weight:bold;font-size:20px" class="text-center">
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ProductCode, new { @class = "control-label col-md-2" })
+                    <input type="hidden" id="TripId" name="TripId" value="@Model.TripId" />
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control", placeholder = "Always keep pointer here..!!", autofocus = "", onchange = "SaveScannedBarcodeToTextFile(this)" })
+                        @Html.ValidationMessageFor(m => m.ProductCode, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.ProductCode, new { @class = "control-label col-md-2" })
-                        <input type="hidden" id="TripId" name="TripId" value="@Model.TripId" />
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control", placeholder = "Always keep pointer here..!!", autofocus = "", onchange = "SaveScannedBarcodeToTextFile(this)" })
-                            @Html.ValidationMessageFor(m => m.ProductCode, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <div class="btn-toolbar">
+                            <button type="button" id="btnSaveDispatchInfo" value="@Model.TripId" class="btn btn-success" onclick="SaveDispatchInfo(this)"> Dispatch</button>
+                            <a class="btn btn-danger" href="~/factory">Cancel</a>
                         </div>
 
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <div class="btn-toolbar">
-                                <button type="button" id="btnSaveDispatchInfo" value="@Model.TripId" class="btn btn-success" onclick="SaveDispatchInfo(this)"> Dispatch</button>
-                                
-                            </div>
-                           
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                      
-                            <div class="row" style="padding: 10px">
-                                <div class="col-md-4">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="control-label">Requisition Qty :</label>
-                                         
-                                        </div>
-                                        <div class="col-md-6">
-                                           <label class="control-label" id="lbl_requisition_qty"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                        
-                                            <label class="control-label">Scanned Qty :</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="control-label" id="lbl_scanned_qty"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="row">
-                                        <div class="col-md-6">
-
-                                            <label class="control-label">Scan Status :</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div id="div_status" style="font-weight: bold;padding: 5px">
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                      
                     </div>
                 </div>
-            }
+
+                <div class="form-group">
+
+                    <div class="row" style="padding: 10px">
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="control-label">Requisition Qty :</label>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label" id="lbl_requisition_qty"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                    <label class="control-label">Scanned Qty :</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label" id="lbl_scanned_qty"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                    <label class="control-label">Scan Status :</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="div_status" style="font-weight: bold;padding: 5px">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -101,12 +100,14 @@
 {
 
     <script>
-        function SaveScannedBarcodeToTextFile(btnClicked) {
-            var $form = $(btnClicked).parents('form');
+        function SaveScannedBarcodeToTextFile(event) {
+            // var $form = $(btnClicked).parents('form');
+            var code = $("#ProductCode").val();
+            var tripId = $("#TripId").val();
             $.ajax({
                 type: "POST",
                 url: RootUrl + 'factory/delivery/SaveScannedBarcodeToTextFile',
-                data: $form.serialize(),
+                data: { barcode: code, tripId: tripId },
                 error: function (xhr, status, error) {
                     alert(error);
                 },
@@ -117,7 +118,7 @@
                     $('#message').html(result).fadeIn('slow'); //also show a success message
                     $('#message').delay(700).fadeOut('slow');
                     loadScannedProducts();
-                    $('#scanProductBarcodeForm').trigger("reset");
+                    $('#ProductCode').val("");
                 }
             });
         }
@@ -128,8 +129,19 @@
         function SaveDispatchInfo(id) {
 
             if (confirm("Are you confirm to Dispatch?")) {
-
-                $("#saveDispatchInfoForm").submit();
+                var tripId = $("#TripId").val();
+                $.ajax({
+                    type: "Post",
+                    url: RootUrl + 'factory/delivery/SaveDispatchInformation',
+                    data: { tripId: tripId },
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    },
+                    success: function (response) {
+                        loadAllDeliverableProducts();
+                        loadScannedProducts();
+                    }
+                });
             } else {
                 return false;// if it's a link to prevent post
             }

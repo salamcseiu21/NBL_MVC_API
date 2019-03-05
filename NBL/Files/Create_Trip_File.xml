@@ -1,2 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<Requisitions />
+<Requisitions>
+  <Requisition Id="5b9d5543-3a8e-42e0-8c43-5f8af9e5f64f">
+    <RequisitionId>11</RequisitionId>
+    <RequisitionRef>192039</RequisitionRef>
+    <ProuctId>16</ProuctId>
+    <RequisitionQty>2</RequisitionQty>
+    <DeliveryQuantity>2</DeliveryQuantity>
+    <ToBranchId>2</ToBranchId>
+    <ProductName>NKP 40</ProductName>
+  </Requisition>
+  <Requisition Id="7ac9c8b9-b791-493c-b3b4-cc42eb966bd9">
+    <RequisitionId>11</RequisitionId>
+    <RequisitionRef>192039</RequisitionRef>
+    <ProuctId>18</ProuctId>
+    <RequisitionQty>3</RequisitionQty>
+    <DeliveryQuantity>3</DeliveryQuantity>
+    <ToBranchId>2</ToBranchId>
+    <ProductName>NKP 65</ProductName>
+  </Requisition>
+  <Requisition Id="8c13b136-2b2e-4c22-ac29-cd2c00ae27e5">
+    <RequisitionId>11</RequisitionId>
+    <RequisitionRef>192039</RequisitionRef>
+    <ProuctId>18</ProuctId>
+    <RequisitionQty>3</RequisitionQty>
+    <DeliveryQuantity>3</DeliveryQuantity>
+    <ToBranchId>4</ToBranchId>
+    <ProductName>NKP 65</ProductName>
+  </Requisition>
+</Requisitions>

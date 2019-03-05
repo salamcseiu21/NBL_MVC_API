@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using NBL.Models.ViewModels.Productions;
+
 namespace NBL.Models.ViewModels.Deliveries
 {
     public class ViewDispatchModel
     {
         public long DispatchId { get; set; }
+        public long DispatchItemId { get; set; }
         public long TripId { get; set; }
         public string TripRef { get; set; }
         public string DispatchRef { get; set; }
@@ -22,6 +26,8 @@ namespace NBL.Models.ViewModels.Deliveries
         public string Remarks { get; set; }
         public int CategoryId { get; set; }
         public int ProductTypeId { get; set; }
-        public string SubSubSubAccountCode { get; set; }    
+        public string SubSubSubAccountCode { get; set; }
+        public ICollection<ScannedProduct> ScannedProducts { get; set; }
+        public ICollection<ViewDispatchModel> DispatchModels { get; set; }  
     }
 }

@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Deliveries;
-using NBL.Models.EntityModels.Products;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Logs;
 using NBL.Models.Validators;
@@ -60,7 +59,7 @@ namespace NBL.Areas.Factory.Controllers
         }
 
         [HttpPost]
-        public JsonResult SaveScannedBarcodeToTextFile(FormCollection collection)
+        public void SaveScannedBarcodeToTextFile(string barcode,long tripId)
         {
             SuccessErrorModel model = new SuccessErrorModel();
             ViewWriteLogModel log=new ViewWriteLogModel();
@@ -68,9 +67,8 @@ namespace NBL.Areas.Factory.Controllers
             {
                
                 var products = (List<ViewFactoryStockModel>) Session["Factory_Stock"];
-                string scannedBarCode = collection["ProductCode"];
+                string scannedBarCode = barcode;
                 int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
-                var tripId = Convert.ToInt32(collection["TripId"]); 
                 string fileName = "Deliverable_Product_For_" + tripId;
                 var filePath = Server.MapPath("~/Files/" + fileName);
                 var barcodeList = _iProductManager.ScannedProducts(filePath);
@@ -85,39 +83,42 @@ namespace NBL.Areas.Factory.Controllers
                 }
                 bool exists = barcodeList.Select(n=>n.ProductCode).Contains(scannedBarCode);
                 bool isDeliveredBefore = _iInventoryManager.IsThisProductDispachedFromFactory(scannedBarCode);
-
-                DateTime date = _iCommonManager.GenerateDateFromBarCode(scannedBarCode);
-                var oldestProducts = products.ToList().FindAll(n=>n.ProductionDate<date && n.ProductId==productId).ToList();
+                bool isInfactory = products.ToList().Select(n => n.ProductBarCode).Contains(scannedBarCode);
+               // DateTime date = _iCommonManager.GenerateDateFromBarCode(scannedBarCode);
+               // var oldestProducts = products.ToList().FindAll(n=>n.ProductionDate<date && n.ProductId==productId).ToList();
                 var issuedProducts = _iProductManager.GetDeliverableProductListByTripId(tripId);
               
                 var isValied = Validator.ValidateProductBarCode(scannedBarCode);
 
                 bool isContains = issuedProducts.Select(n => n.ProductId).Contains(productId);
-                bool isScannComplete = issuedProducts.ToList().FindAll(n=>n.ProductId==productId).Sum(n => n.Quantity) == barcodeList.FindAll(n=>Convert.ToInt32(n.ProductCode.Substring(0,3))==productId).Count;
+                int reqQty = issuedProducts.ToList().FindAll(n => n.ProductId == productId).Sum(n => n.Quantity);
+                int scannedQty = barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == productId).Count;
+                bool isScannComplete =reqQty.Equals(scannedQty);
+                bool isComplete = issuedProducts.Sum(n => n.Quantity).Equals(barcodeList.Count);
 
                 if (!isContains)
                 {
                     model.Message = "<p style='color:red'> Invalid Product Scanned.....</p>";
-                    return Json(model, JsonRequestBehavior.AllowGet);
+                    //return Json(model, JsonRequestBehavior.AllowGet);
                 }
 
                 if (exists)
                 {
                     model.Message = "<p style='color:red'> Already Scanned.</p>";
-                    return Json(model, JsonRequestBehavior.AllowGet);
+                   // return Json(model, JsonRequestBehavior.AllowGet);
                 }
                 if (isScannComplete)
                 {
                     model.Message = "<p style='color:green'> Scan Completed.</p>";
-                   return Json(model, JsonRequestBehavior.AllowGet);
+                   //return Json(model, JsonRequestBehavior.AllowGet);
                 }
 
-                if (oldestProducts.Count > 0)
-                {
-                    model.Message = "<p style='color:red'>There are total "+oldestProducts.Count+" Old product of this type .Please deliver those first .. </p>";
-                    return Json(model, JsonRequestBehavior.AllowGet);
-                }
-                if (isValied && !exists && !isDeliveredBefore)
+                //if (oldestProducts.Count > 0)
+                //{
+                //    model.Message = "<p style='color:red'>There are total "+oldestProducts.Count+" Old product of this type .Please deliver those first .. </p>";
+                //    return Json(model, JsonRequestBehavior.AllowGet);
+                //}
+                if (isValied && !isDeliveredBefore && isInfactory && !isComplete)
                 {
                    var result= _iProductManager.AddProductToTextFile(scannedBarCode, filePath);
                     if (result.Contains("Added"))
@@ -134,7 +135,7 @@ namespace NBL.Areas.Factory.Controllers
                 log.LogMessage = exception.StackTrace;
                 Log.WriteErrorLog(log);
                 model.Message = "<p style='color:red'>Invalid Barcode</p>";
-              return  Json(model, JsonRequestBehavior.AllowGet);
+             // return  Json(model, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
@@ -142,15 +143,14 @@ namespace NBL.Areas.Factory.Controllers
                 log.LogMessage = exception.StackTrace;
                 Log.WriteErrorLog(log);
                 model.Message = "<p style='color:red'>" + exception.Message + "</p>";
-              return  Json(model, JsonRequestBehavior.AllowGet);
+              //return  Json(model, JsonRequestBehavior.AllowGet);
             }
-            return Json(model, JsonRequestBehavior.AllowGet);
+            //return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult SaveDispatchInformation(FormCollection collection) 
+        public ActionResult SaveDispatchInformation(long tripId) 
         {
-            int tripId = Convert.ToInt32(collection["TripId"]);
             var products = _iProductManager.GetDeliverableProductListByTripId(tripId);
             string fileName = "Deliverable_Product_For_" + tripId;
             var filePath = Server.MapPath("~/Files/" + fileName);

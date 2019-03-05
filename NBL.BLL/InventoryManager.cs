@@ -40,10 +40,10 @@ namespace NBL.BLL
             return _iInventoryGateway.GetAllReceiveableListByBranchAndCompanyId(branchId,companyId); 
         }
 
-        public int ReceiveProduct(List<ScannedProduct> receiveProductList, ViewDispatchModel model) 
+        public int ReceiveProduct(ViewDispatchModel model) 
         {
             
-            return _iInventoryGateway.ReceiveProduct(receiveProductList, model);
+            return _iInventoryGateway.ReceiveProduct(model);
         }
 
         public IEnumerable<TransactionModel> GetAllReceiveableProductToBranchByDeliveryRef(string deliveryRef)
@@ -162,6 +162,11 @@ namespace NBL.BLL
         public ViewDispatchModel GetDispatchByTripId(long tripId)
         {
             return _iInventoryGateway.GetDispatchByTripId(tripId); 
+        }
+
+        public ICollection<ViewDispatchModel> GetAllReceiveableItemsByTripAndBranchId(long tripId, int branchId)
+        {
+            return _iInventoryGateway.GetAllReceiveableItemsByTripAndBranchId(tripId,branchId);
         }
     }
 }

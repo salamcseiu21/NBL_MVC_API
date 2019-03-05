@@ -9,7 +9,7 @@ namespace NBL.Models.Validators
         {
 
             
-            if (barCode?.Length == 15 && IsFirstThreeCharDigit(barCode) && IsValidDate(barCode.Substring(3,6)))
+            if(IsFirstThreeCharDigit(barCode))
             {
                 return true;
             }

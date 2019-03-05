@@ -217,14 +217,16 @@ namespace NBL.DAL
                        
                         ToBranchId = branchId,
                         DispatchByUserId = Convert.ToInt32(reader["DispatchByUserId"]),
+                        DispatchItemId = Convert.ToInt64(reader["DispatchItemsId"]),
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         DispatchDate = Convert.ToDateTime(reader["DispatchDate"]),
                         ProductName = reader["ProductName"].ToString(),
                         DispatchRef = reader["DispatchRef"].ToString(),
                         Remarks = reader["Remarks"].ToString(),
                         TripId = tripId,
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
                         CompanyId = Convert.ToInt32(reader["CompanyId"]),
-                        ProductBarcode = reader["ProductBarCode"].ToString()
+                       // ProductBarcode = reader["ProductBarCode"].ToString()
                     });
                 }
 
@@ -503,11 +505,11 @@ namespace NBL.DAL
                         ProductTypeName = reader["ProductTypeName"].ToString(),
                         CategoryId = Convert.ToInt32(reader["CategoryId"]),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
-                        ProductionDate = Convert.ToDateTime(reader["ProductionDate"]),
+                       // ProductionDate = Convert.ToDateTime(reader["ProductionDate"]),
                         ComeIntoStore = Convert.ToDateTime(reader["ComeIntoStore"]),
                         CategoryName = reader["ProductCategoryName"].ToString(),
                         CompanyId = Convert.ToInt32(reader["CompanyId"]),
-                        Age = Convert.ToInt32(reader["Age"])
+                       // Age = Convert.ToInt32(reader["Age"])
                     });
                 }
                 reader.Close();
@@ -548,12 +550,12 @@ namespace NBL.DAL
                         ProductTypeName = reader["ProductTypeName"].ToString(),
                         CategoryId = Convert.ToInt32(reader["CategoryId"]),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
-                        ProductionDate = Convert.ToDateTime(reader["ProductionDate"]),
+                        //ProductionDate = Convert.ToDateTime(reader["ProductionDate"]),
                         ComeIntoBranch = Convert.ToDateTime(reader["ComeIntoBranch"]),
                         CategoryName = reader["ProductCategoryName"].ToString(),
                         CompanyId = Convert.ToInt32(reader["CompanyId"]),
-                        Age = Convert.ToInt32(reader["Age"]),
-                        AgeAtBranch = Convert.ToInt32(reader["AgeAtBranch"])
+                        //Age = Convert.ToInt32(reader["Age"]),
+                       // AgeAtBranch = Convert.ToInt32(reader["AgeAtBranch"])
                     });
                 }
                 reader.Close();
@@ -671,7 +673,7 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public int ReceiveProduct(List<ScannedProduct> receiveProductList,ViewDispatchModel model)
+        public int ReceiveProduct(ViewDispatchModel model)
         {
             
             ConnectionObj.Open();
@@ -692,7 +694,7 @@ namespace NBL.DAL
                 CommandObj.Parameters["@InventoryId"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
                 int inventoryId = Convert.ToInt32(CommandObj.Parameters["@InventoryId"].Value);
-                int rowAffected = SaveReceiveProductDetails(receiveProductList, inventoryId);
+                int rowAffected = SaveReceiveProductDetails(model, inventoryId);
                 if (rowAffected > 0)
                 {
                     sqlTransaction.Commit();
@@ -715,11 +717,11 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public int SaveReceiveProductDetails(List<ScannedProduct> receiveProductList, int inventoryId)
+        public int SaveReceiveProductDetails(ViewDispatchModel model, int inventoryId)
         {
             int i = 0;
             int n = 0;
-            foreach (var item in receiveProductList) 
+            foreach (var item in model.ScannedProducts) 
             {
                 CommandObj.CommandText = "spSaveReceiveProduct";
                 CommandObj.CommandType = CommandType.StoredProcedure;
@@ -734,21 +736,21 @@ namespace NBL.DAL
             }
             if (i > 0)
             {
-                n= SaveReceivedItemWithQuantity(receiveProductList, inventoryId);
+                n= SaveReceivedItemWithQuantity(model, inventoryId);
             }
             return n;
         }
-        private int SaveReceivedItemWithQuantity(List<ScannedProduct> receiveProductList, int inventoryId) 
+        private int SaveReceivedItemWithQuantity(ViewDispatchModel model, int inventoryId) 
         {
             int i = 0;
-            var groupBy = receiveProductList.GroupBy(n => n.ProductId);
-            foreach (IGrouping<int, ScannedProduct> scannedProducts in groupBy)
+            foreach (var item in model.DispatchModels)
             {
                 CommandObj.CommandText = "spSaveInventoryItem";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.Clear();
-                CommandObj.Parameters.AddWithValue("@ProductId", scannedProducts.Key);
-                CommandObj.Parameters.AddWithValue("@Quantity", scannedProducts.Count());
+                CommandObj.Parameters.AddWithValue("@DispatchItemId", item.DispatchItemId);
+                CommandObj.Parameters.AddWithValue("@ProductId", item.ProductId);
+                CommandObj.Parameters.AddWithValue("@Quantity", item.Quantity);
                 CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
@@ -879,7 +881,7 @@ namespace NBL.DAL
             var groupBy = deliveredProducts.GroupBy(n => n.ProductId);
             foreach (IGrouping<int, ScannedProduct> scannedProducts in groupBy)
             {
-                CommandObj.CommandText = "spSaveInventoryItem";
+                CommandObj.CommandText = "spSaveDeliveredItemToInventory";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.Clear();
                 CommandObj.Parameters.AddWithValue("@ProductId", scannedProducts.Key);
@@ -1178,6 +1180,44 @@ namespace NBL.DAL
                 CommandObj.Dispose();
                 CommandObj.Parameters.Clear();
                 ConnectionObj.Close();
+            }
+        }
+
+        public ICollection<ViewDispatchModel> GetAllReceiveableItemsByTripAndBranchId(long tripId, int branchId)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetAllReceiveableItemsByTripAndBranchId";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@TripId", tripId);
+                CommandObj.Parameters.AddWithValue("@ToBranchId", branchId);
+                List<ViewDispatchModel> products=new List<ViewDispatchModel>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    products.Add(new ViewDispatchModel
+                    {
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductBarcode = reader["ProductBarcode"].ToString(),
+                        ToBranchId = branchId,
+                        TripId = tripId
+
+                    });
+                }
+                reader.Close();
+                return products;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Coluld not collect receivable product list by trip and product id", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                
             }
         }
     }

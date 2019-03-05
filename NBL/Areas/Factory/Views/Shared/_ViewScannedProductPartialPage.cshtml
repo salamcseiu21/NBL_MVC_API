@@ -5,26 +5,31 @@
 
     <thead>
     <tr>
-        <th>Product Name</th>
+       
         <th>Barcode
-        <input type="hidden" id="total_Scanned_qty" value="@Model.Count()"/>
+            <input type="hidden" id="total_Scanned_qty" value="@Model.Count()"/>
         </th>
+        <th>Product Name</th>
+        <th>Category</th>
     </tr>
     </thead>
     <tbody>
     @foreach (var item in Model)
     {
         <tr>
-            <td>@item.ProductName</td>
+           
             <td>@item.ProductCode</td>
+            <td>@item.ProductName</td>
+            <td>@item.CategoryName</td>
         </tr>
     }
     </tbody>
     <tfoot>
     <tr>
-        <th>Product Name</th>
+        
         <th>Barcode</th>
-
+        <th>Product Name</th>
+        <th>Category</th>
     </tr>
     </tfoot>
 </table>

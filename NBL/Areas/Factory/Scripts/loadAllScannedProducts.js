@@ -10,7 +10,8 @@
                 data: data,
                 columns: [
                     { 'data': 'ProductCode' },
-                    { 'data': 'ProductName' }
+                    { 'data': 'ProductName' },
+                    { 'data': 'CategoryName' }
                
                 ]
             });

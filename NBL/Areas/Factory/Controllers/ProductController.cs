@@ -9,7 +9,6 @@ using NBL.Models;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Productions;
-using NBL.Models.EntityModels.Requisitions;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Validators;
 using NBL.Models.ViewModels;
@@ -263,21 +262,21 @@ namespace NBL.Areas.Factory.Controllers
         }
         [HttpPost]
 
-        public JsonResult AddProductToTempFile(ScanProductViewModel model)
+        public void AddProductToTempFile(string barcode)
       {
             SuccessErrorModel successErrorModel = new SuccessErrorModel();
             try
             {
                 string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
                 string filePath = Server.MapPath("~/Files/" + fileName);
-                bool isValid= Validator.ValidateProductBarCode(model.ProductCode);
+                bool isValid= Validator.ValidateProductBarCode(barcode);
                 if (isValid)
                 {
-                    bool isExists = _iInventoryManager.IsThisProductAlreadyInFactoryInventory(model.ProductCode); 
+                    bool isExists = _iInventoryManager.IsThisProductAlreadyInFactoryInventory(barcode); 
                     //------------If this barcode dose not exits...............
                     if (!isExists)
                     {
-                        var result = _iProductManager.AddProductToTextFile(model.ProductCode, filePath);
+                        var result = _iProductManager.AddProductToTextFile(barcode, filePath);
                         if (!result.Contains("Added"))
                         {
                             successErrorModel.Message = result;
@@ -287,14 +286,14 @@ namespace NBL.Areas.Factory.Controllers
                     else
                     {
                         successErrorModel.Message = "<p style='color:red'>This Product already exists!!</p>";
-                        return Json(successErrorModel, JsonRequestBehavior.AllowGet);
+                       // return Json(successErrorModel, JsonRequestBehavior.AllowGet);
                     }
 
                 }
                 else
                 {
                     successErrorModel.Message = "<p style='color:red'>Invalid Barcode..</p>";
-                    return Json(successErrorModel, JsonRequestBehavior.AllowGet);
+                    //return Json(successErrorModel, JsonRequestBehavior.AllowGet);
                 }
                 
 
@@ -302,15 +301,15 @@ namespace NBL.Areas.Factory.Controllers
             catch (FormatException exception)
             {
                 successErrorModel.Message = "<p style='color:red'>" + exception.GetType() + "</p>";
-                return Json(successErrorModel, JsonRequestBehavior.AllowGet);
+               // return Json(successErrorModel, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
 
                 successErrorModel.Message = "<p style='color:red'>" + exception.Message + "</p>";
-                return Json(successErrorModel, JsonRequestBehavior.AllowGet);
+               // return Json(successErrorModel, JsonRequestBehavior.AllowGet);
             }
-            return Json(successErrorModel, JsonRequestBehavior.AllowGet);
+            //return Json(successErrorModel, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -344,8 +343,29 @@ namespace NBL.Areas.Factory.Controllers
         }
 
 
+        //[HttpGet]
+        //public JsonResult LoadScannedProducts()
+        //{
+        //    ScanProductViewModel model = new ScanProductViewModel();
+        //    string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
+        //    var filePath = Server.MapPath("~/Files/" + fileName);
+        //    if (System.IO.File.Exists(filePath))
+        //    {
+        //        //if the file is exists read the file
+        //        model.BarCodes = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
+        //    }
+
+        //    else
+        //    {
+        //        //if the file does not exists create the file
+        //        System.IO.File.Create(filePath).Close();
+        //    }
+
+        //    return Json(model.BarCodes, JsonRequestBehavior.AllowGet);
+        //}
+
         [HttpGet]
-        public JsonResult LoadScannedProducts()
+        public PartialViewResult LoadScannedProducts()
         {
             ScanProductViewModel model = new ScanProductViewModel();
             string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
@@ -362,7 +382,7 @@ namespace NBL.Areas.Factory.Controllers
                 System.IO.File.Create(filePath).Close();
             }
 
-            return Json(model.BarCodes, JsonRequestBehavior.AllowGet);
+            return PartialView("_ViewScannedProductPartialPage",model.BarCodes);
         }
 
 

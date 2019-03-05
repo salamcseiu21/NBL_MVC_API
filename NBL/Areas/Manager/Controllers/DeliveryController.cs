@@ -104,6 +104,7 @@ namespace NBL.Areas.Manager.Controllers
                     DeliveryDate = Convert.ToDateTime(collection["DeliveryDate"]).Date,
                     CompanyId = invoice.CompanyId,
                     ToBranchId = invoice.BranchId,
+                    InvoiceId = invoiceId,
                     FromBranchId = invoice.BranchId
                 };
                 string result = _iInventoryManager.SaveDeliveredOrder(barcodeList, aDelivery, invoiceStatus,orderStatus);
@@ -123,16 +124,16 @@ namespace NBL.Areas.Manager.Controllers
         }
 
         [HttpPost]
-        public JsonResult SaveScannedBarcodeToTextFile(FormCollection collection)
+        public void SaveScannedBarcodeToTextFile(string barcode,int invoiceId)
         {
             SuccessErrorModel model = new SuccessErrorModel();
             try
             {
 
                 List<ViewBranchStockModel> products = (List<ViewBranchStockModel>) Session["Branch_stock"];
-                var id = Convert.ToInt32(collection["InvoiceId"]);
+                var id = invoiceId;
                 var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(id);
-                string scannedBarCode = collection["ProductCode"];
+                string scannedBarCode = barcode;
                 int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
                 string fileName = "Ordered_Product_List_For_" + id;
                 var filePath = Server.MapPath("~/Files/" + fileName);
@@ -148,8 +149,9 @@ namespace NBL.Areas.Manager.Controllers
                     }
                 }
 
-                DateTime date = _iCommonManager.GenerateDateFromBarCode(scannedBarCode);
-                var oldestProducts = products.ToList().FindAll(n => n.ProductionDate < date && n.ProductId == productId).ToList();
+               // DateTime date = _iCommonManager.GenerateDateFromBarCode(scannedBarCode);
+               // var oldestProducts = products.ToList().FindAll(n => n.ProductionDate < date && n.ProductId == productId).ToList();
+                bool isInInventory = products.Select(n => n.ProductBarCode).Contains(barcode);
                 bool isScannedBefore = _iProductManager.IsScannedBefore(barcodeList, scannedBarCode);
 
                 bool isSold = _iInventoryManager.IsThisProductSold(scannedBarCode);
@@ -171,28 +173,28 @@ namespace NBL.Areas.Manager.Controllers
                 }
                 bool isValied = list.Select(n => n.ProductId).Contains(productId);
                 bool isScannComplete = list.ToList().FindAll(n=>n.ProductId==productId).Sum(n=>n.Quantity) == barcodeList.FindAll(n=>n.ProductId==productId).Count;
-                if (isScannedBefore)
+                 if (isScannedBefore)
                 {
                     model.Message = "<p style='color:red'> Already Scanned</p>";
-                    return Json(model, JsonRequestBehavior.AllowGet);
+                   // return Json(model, JsonRequestBehavior.AllowGet);
                 }
-                if (isScannComplete)
+                else if (isScannComplete)
                 {
                     model.Message = "<p style='color:green'> Scan Completed.</p>";
-                    return Json(model, JsonRequestBehavior.AllowGet);
+                   // return Json(model, JsonRequestBehavior.AllowGet);
                 }
 
-                if (oldestProducts.Count > 0)
-                {
-                    model.Message = "<p style='color:red'>There are total " + oldestProducts.Count + " Old product of this type .Please deliver those first .. </p>";
-                    return Json(model, JsonRequestBehavior.AllowGet);
-                }
-                if (isSold)
+                //else if (oldestProducts.Count > 0)
+                //{
+                //    model.Message = "<p style='color:red'>There are total " + oldestProducts.Count + " Old product of this type .Please deliver those first .. </p>";
+                //   // return Json(model, JsonRequestBehavior.AllowGet);
+                //}
+               else if (isSold)
                 {
                     model.Message = "<p style='color:green'> This product Scanned for one of previous invoice... </p>";
-                    return Json(model, JsonRequestBehavior.AllowGet);
+                    //return Json(model, JsonRequestBehavior.AllowGet);
                 }
-                if (isValied)
+               else if(isValied && isInInventory)
                 {
                     _iProductManager.AddProductToTextFile(scannedBarCode, filePath);
                 }
@@ -200,15 +202,15 @@ namespace NBL.Areas.Manager.Controllers
             catch (FormatException exception)
             {
                 model.Message = "<p style='color:red'>" + exception.GetType() + "</p>";
-                return Json(model, JsonRequestBehavior.AllowGet);
+               // return Json(model, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exception)
             {
 
                 model.Message = "<p style='color:red'>" + exception.Message + "</p>";
-                return Json(model, JsonRequestBehavior.AllowGet);
+                //return Json(model, JsonRequestBehavior.AllowGet);
             }
-            return Json(model, JsonRequestBehavior.AllowGet);
+           // return Json(model, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ViewInvoiceIdOrderDetails(int invoiceId)
         {
@@ -216,26 +218,17 @@ namespace NBL.Areas.Manager.Controllers
             return PartialView("_ModalOrderDeliveryPartialPage",invoice);
         }
 
-        [HttpGet]
-        public JsonResult LoadDeliverableProduct(int invoiceId)
+        [HttpPost]
+        public PartialViewResult LoadDeliverableProduct(int invoiceId)
         {
             var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(invoiceId);
-          
-
-            List<ScannedProduct> barcodeList = new List<ScannedProduct>();
             string fileName = "Ordered_Product_List_For_" + invoiceId;
             var filePath = Server.MapPath("~/Files/" + fileName);
-            if (System.IO.File.Exists(filePath))
-            {
-                //if the file is exists read the file
-                barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
-            }
-            else
+            if (!System.IO.File.Exists(filePath))
             {
                 //if the file does not exists create the file
                 System.IO.File.Create(filePath).Close();
             }
-          
             var invoicedOrders = _iInvoiceManager.GetInvoicedOrderDetailsByInvoiceRef(invoice.InvoiceRef).ToList();
             List<InvoiceDetails> list=new List<InvoiceDetails>();
 
@@ -251,17 +244,28 @@ namespace NBL.Areas.Manager.Controllers
                     list.Add(invoiceDetailse);
                 } 
             }
-            foreach (var item in list)
+
+            return PartialView("_ViewLoadDeliverableProductPartialPage",list);
+        }
+
+
+        [HttpPost]
+        public PartialViewResult LoadScannedProduct(int invoiceId)
+        {
+           // var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(invoiceId);
+            string fileName = "Ordered_Product_List_For_" + invoiceId;
+            var filePath = Server.MapPath("~/Files/" + fileName);
+            List<ScannedProduct> list=new List<ScannedProduct>();
+            if (!System.IO.File.Exists(filePath))
             {
-                foreach (var code in barcodeList.FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == item.ProductId))
-                {
-                    item.ScannedProductCodes += code.ProductCode + ",";
-
-                }
-
+                //if the file does not exists create the file
+                System.IO.File.Create(filePath).Close();
             }
-
-            return Json(list, JsonRequestBehavior.AllowGet);
+            else
+            {
+                list = _iProductManager.ScannedProducts(filePath);
+            }
+            return PartialView("_ViewLoadScannedProductPartialPage", list);
         }
         public ActionResult Calan(int id)
         {
