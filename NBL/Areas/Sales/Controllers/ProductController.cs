@@ -215,6 +215,7 @@ namespace NBL.Areas.Sales.Controllers
                 var barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
                 //------------Load receiveable product---------
                 var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByTripId(tripId,branchId);
+                var temp = _iInventoryManager.GetAllReceiveableItemsByTripAndBranchId(tripId, branchId);
                 var receivesProductCodeList = _iInventoryManager.GetAllReceiveableItemsByTripAndBranchId(tripId,branchId).Select(n => n.ProductBarcode).ToList();
                 var isvalid = Validator.ValidateProductBarCode(scannedBarCode);
 
@@ -272,7 +273,16 @@ namespace NBL.Areas.Sales.Controllers
             dispatchModel.Quantity = receiveProductList.Count;
             dispatchModel.ToBranchId = Convert.ToInt32(Session["BranchId"]);
             dispatchModel.ScannedProducts = receiveProductList;
-            _iInventoryManager.ReceiveProduct(dispatchModel);
+           int result= _iInventoryManager.ReceiveProduct(dispatchModel);
+            if (result > 0)
+            {
+                System.IO.File.Create(filePath).Close();
+                TempData["ReceiveMessage"] = "Received Successfully!";
+            }
+            else
+            {
+                TempData["ReceiveMessage"] = "Failed to Receive";
+            }
             return RedirectToAction("Receive");
         }
         public JsonResult GetTempTransaction()

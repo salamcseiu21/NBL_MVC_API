@@ -177,6 +177,7 @@ namespace NBL.Areas.Factory.Controllers
                 {
                     System.IO.File.Create(filePath).Close();
                     //---------------Send mail to branch before redirect--------------
+                    TempData["Dispatched"] = result;
                     return RedirectToAction("DeliverableTransferIssueList");
                 }
                 return RedirectToAction("Delivery", new { id = tripId });
