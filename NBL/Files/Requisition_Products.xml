@@ -1,2 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<Products />
+<Products>
+  <Product Id="0475">
+    <ProductId>75</ProductId>
+    <ProductName>6 DZM 25</ProductName>
+    <Quantity>1</Quantity>
+    <ToBranchId>4</ToBranchId>
+  </Product>
+</Products>

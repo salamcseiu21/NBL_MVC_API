@@ -8071,6 +8071,7 @@
     <Folder Include="Areas\Nsm\Models\" />
     <Folder Include="Areas\Production\Models\" />
     <Folder Include="Areas\Production\Views\Shared\" />
+    <Folder Include="Areas\Sales\Files\" />
     <Folder Include="Areas\Sales\Models\" />
     <Folder Include="Assets\css\" />
     <Folder Include="Assets\documentation\build\" />
