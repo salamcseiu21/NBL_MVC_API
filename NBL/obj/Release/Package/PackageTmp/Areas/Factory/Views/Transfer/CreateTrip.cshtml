@@ -1,0 +1,157 @@
+﻿
+@{
+    ViewBag.Title = "Create Trip";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+}
+
+<section class="content">
+    
+    <div class="row">
+        
+        <div class="col-md-6 col-md-offset-3" style="border: 1px solid">
+            
+            <h3 class="text-center  text-green">Create Trip</h3>
+            <div id="message" style="display:none;font-weight:bold;font-size:20px" class="text-center">
+            </div>
+            @using (Html.BeginForm())
+            {
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="RequisitionRef" class="control-label col-md-2">Requisition Ref</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="RequisitionRef" name="RequisitionRef" placeholder="Type Requisition Ref"/>
+                            <input type="hidden" name="RequisitionId" id="RequisitionId"/>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="btn-toolbar">
+                                <input type="button" value="Confirm Trip" id="confirmButton" class="btn btn-info" onclick="ConfirmTrip(this)" disabled="disabled"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            }
+            <div id="Requisitiondetails"></div>
+        </div>
+      
+    </div>
+    <div id="TempTripProducts"></div>
+</section>
+
+@section Scripts
+{
+
+    <script>
+        $("#tbl_requisition_list").DataTable();
+    </script>
+    
+    <script>
+        
+        window.onload = function () {
+            loadTempTripProducts();
+        };
+    </script>
+    @*Ajax form Submit*@
+    <script>
+        function AddRequisition(btnClicked) {
+            //alert(str);
+            var $form = $(btnClicked).parents('form');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddRequistionToTripXmlFile")',
+                data: $form.serialize(),
+                error: function (xhr, status, error) {
+                    //do something about the error
+                },
+                success: function (response) {
+                    //alert("Saved Successfully");
+                    $("#RequisitionRef").val("");
+                    $('#RequisitionId').val(0);
+                    $('#RequisitioRequisitionQtynId').val(0);
+                }
+            });
+            return false; // if it's a link to prevent post
+
+        }
+        function loadTempTripProducts() {
+            $.ajax({
+                url: RootUrl + "factory/transfer/GetTempTrip",
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    // var qty = data.Quantity;
+                    // $("#RequisitionQty").val(qty);
+                    $("#RequisitionRef").val("");
+                    $('#TempTripProducts').html(data);
+                    var tQty = parseInt($("#total_requisition_qty").val());
+                    if (tQty >0) {
+                        $("#confirmButton").removeAttr('disabled');
+                    } else {
+                        $("#confirmButton").prop("disabled", true);
+                    }
+                }
+            });
+        }
+
+        function ConfirmTrip(btnClick) {
+            var isConfirm = confirm("Are you Confirm to Crate Trip ?");
+            if (isConfirm) {
+                window.location.href = RootUrl + "factory/transfer/ConfirmTrip";
+            }
+            return false;
+        }
+    </script>
+    
+    <script>
+        $(function () {
+            $("#RequisitionRef").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: RootUrl + 'factory/transfer/GetRequisitionRefeAutoComplete/',
+                        data: "{ 'prefix': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data,
+                                function (item) {
+                                    return item;
+                                }));
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    $("#RequisitionId").val(i.item.val);
+                    var requisitionId = i.item.val;
+                    var json = { requisitionId: requisitionId };
+
+                    $.ajax({
+                        type: "POST",
+                        url: RootUrl + 'factory/transfer/GetRequisitionById',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(json),
+                        success: function (data) {
+                            // var qty = data.Quantity;
+                            // $("#RequisitionQty").val(qty);
+                          
+                            $('#Requisitiondetails').html(data);
+                           
+                        }
+                    });
+                },
+                minLength: 1
+            });
+        });
+    </script>
+}

@@ -2,14 +2,20 @@
 @{
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+    
 }
 <section class="content">
     
+    @if(User.Identity.Name.Contains("nbl_sales"))
+    {
+    <h3>Home</h3>
+    }
+    else{
     <div class="box">
-      
+
         <div class="box-body">
             <a class="btn btn-app" href="@Url.Action("Stock","Home",new {area="Admin"},null)">
-                <span class="badge bg-green" style="font-size: 14px">@Model.Products.Sum(n=>n.StockQuantity)</span>
+                <span class="badge bg-green" style="font-size: 14px">@Model.Products.Sum(n => n.StockQuantity)</span>
                 <i class="fa fa-barcode"></i> Product
             </a>
             <a class="btn btn-app" href="@Url.Action("DelayedOrders","Order",new {area="Admin"},null)">
@@ -18,7 +24,7 @@
             </a>
             <a class="btn btn-app" href="@Url.Action("VerifyingOrders","Home",new {area="Admin"},null)">
                 <span class="badge bg-teal" style="font-size: 14px">@Model.VerifiedOrders.ToList().Count</span>
-                <i class="fa fa-spinner fa-spin"></i> Order Verifing 
+                <i class="fa fa-spinner fa-spin"></i> Order Verifing
             </a>
             <a class="btn btn-app" href="@Url.Action("PendingOrder","Order",new {area="Admin"},null)">
                 <span class="badge bg-yellow" style="font-size: 14px">@Model.PendingOrders.ToList().Count</span>
@@ -26,17 +32,19 @@
             </a>
             <a class="btn btn-app" href="@Url.Action("All","Order",new {area="Admin"},null)">
                 <span class="badge bg-teal" style="font-size: 14px">@Model.InvoicedOrderList.ToList().Count</span>
-               
+
                 <i class="fa fa-shopping-cart"></i> Total Order
             </a>
             <a class="btn btn-app" href="@Url.Action("ViewClient","Home",new {area="Admin"},null)">
                 <span class="badge bg-purple" style="font-size: 14px">@Model.Clients.Count()</span>
                 <i class="fa fa-users"></i> Client
             </a>
-           
+
         </div>
         <!-- /.box-body -->
     </div>
+    }
+    
 </section>
 @section Scripts
 {

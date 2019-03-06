@@ -1,4 +1,7 @@
 ﻿
+
+
+
 var productIdlist = [];
 function AddItemToList(btnClicked) {
     var id = $("#ProductId").val();
@@ -63,8 +66,6 @@ function Update(btnClicked) {
 
 
 }
-
-
 
 
 

@@ -1,10 +1,9 @@
 ﻿function RemoveProduct(btnClicked) {
 
-
     if (confirm("Are you sure to remove this product ??")) {
 
         $("#productIdToRemove").val(btnClicked.id);
-
+        alert(btnClicked.id);
         var $form = $(btnClicked).parents('form');
         $.ajax({
             type: "POST",

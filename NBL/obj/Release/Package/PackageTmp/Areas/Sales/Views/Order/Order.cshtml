@@ -47,15 +47,10 @@
                     <div class="form-group">
 
                         <div class="col-md-9 col-md-offset-3">
-                            <div class="row">
-                                <div class="col-md-6">
-
-                                </div>
-                                <div class="col-md-6">
-
-                                    <input type="button" value="Add Item" onclick="AddItemToList(this)" class="btn btn-primary btn-block" id="addItemButton" disabled="disabled" />
-                                </div>
-                                <br />
+                            <div class="btn-toolbar">
+                                
+                                @*<button class="btn btn-danger" type="button" onclick="RemoveAllProducts()">Remove All</button>*@
+                                <input type="button" value="Add Item" onclick="AddItemToList(this)" class="btn btn-primary" id="addItemButton" disabled="disabled" />
                             </div>
                         </div>
                     </div>
@@ -177,10 +172,15 @@
 @section Scripts
 {
     
+    <script>
+        $(document).ready(function() {
+            ViewTempOrders();
+        });
+    </script>
     <script src="~/Areas/Sales/Scripts/clientNameAutoComplete.js"></script>
      <script src="~/Areas/Sales/Scripts/productNameAutoComplete.js"></script>
     <script src="~/Areas/Sales/Scripts/orders.js"></script>
-    <script src="~/Areas/Sales/Scripts/removeProduct.js"></script>
+   
 <script src="~/Areas/Sales/Scripts/loadTempOrders.js"></script>
     <script>
         $(function () {
@@ -325,6 +325,57 @@
                 }
             });
         });
+
+
+        function RemoveAllProducts() {
+            var result = confirm('Are you sure to remove all Items?');
+            if (result) {
+                $.ajax({
+                    type: "Post",
+                    url: RootUrl + 'sales/Order/RemoveAll',
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    },
+                    success: function (response) {
+                        ViewTempOrders();
+                    }
+                });
+            }
+        }
+
+        function RemoveProduct(btnClicked) {
+
+
+            //alert(btnClicked.id);
+            if (confirm("Are you sure to remove this product ??")) {
+                $("#productIdToRemove").val(btnClicked.id);
+
+                var $form = $(btnClicked).parents('form');
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Update")',
+                    data: $form.serialize(),
+                    error: function (xhr, status, error) {
+                        //do something about the error
+                    },
+                    success: function (response) {
+
+                        for (var i = productIdlist.length - 1; i >= 0; i--) {
+                            if (productIdlist[i] === btnClicked.id) {
+                                productIdlist.splice(i, 1);
+                            }
+                        }
+
+                        ViewTempOrders();
+                    }
+                });
+            } else {
+                return false;// if it's a link to prevent post
+            }
+
+            return false;// if it's a link to prevent post
+
+        }
     </script>
   
 
