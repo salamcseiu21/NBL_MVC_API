@@ -24,8 +24,8 @@ namespace NBL.Areas.Factory.Controllers
             var model=new FactorySummaryModel
             {
                StockQuantity = _iInventoryManager.GetStockProductInFactory().Count,
-                IssuedQuantity = 10,
-                ReturnedQuantity = 1 
+                IssuedQuantity = 0,
+                ReturnedQuantity = 0 
             };
             return View(model);
         }

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NBL.Models.ViewModels.Deliveries.ViewDispatchModel>
+﻿@using NBL.Models.ViewModels.Deliveries
+@model IEnumerable<ViewDispatchModel>
     
 
 <table id="tbl_required_Trip_products" class="display" style="border:1px solid black">
@@ -6,6 +7,7 @@
 
     <thead>
     <tr>
+       
         <th>Product Name</th>
         <th>Quantity
             <input type="hidden" id="total_requisition_qty" value="@Model.Sum(n=>n.Quantity)"/>
@@ -13,19 +15,21 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
+    @foreach (IGrouping<string,ViewDispatchModel> item in Model.GroupBy(n=>n.ProductName))
     {
         <tr>
-            <td>@item.ProductName</td>
-            <td>@item.Quantity</td>
+
+            <td>@item.Key</td>
+            <td>@item.Sum(n=>n.Quantity)</td>
         </tr>
     }
     </tbody>
     <tfoot>
     <tr>
+
         <th>Product Name</th>
         <th>Quantity</th>
-               
+
     </tr>
     </tfoot>
 </table>

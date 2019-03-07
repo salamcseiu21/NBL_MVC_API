@@ -54,7 +54,6 @@ namespace NBL.Areas.Sales.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var user = (ViewUser)Session["user"];
             TempSalseOrderXmlFile(branchId, user.UserId);
-
             return View();
         }
 
@@ -67,8 +66,7 @@ namespace NBL.Areas.Sales.Controllers
                 //---------Get product by product id and client type id ---//
                 var aProduct = _iProductManager.GetProductByProductAndClientTypeId(model.ProductId,model.ClientTypeId); 
                 aProduct.Quantity = model.Quantity;
-
-                 AddProductToTempSalesOrderXmlFile(aProduct,model.ClientTypeId);
+                AddProductToTempSalesOrderXmlFile(aProduct,model.ClientTypeId);
                 
                 return View(model);
             }
@@ -486,14 +484,11 @@ namespace NBL.Areas.Sales.Controllers
         {
             string fileName = "Temp_Sales_Order_By_" + branchId + userId + ".xml";
             var filePath = Server.MapPath("~/Areas/Sales/Files/" + fileName);
-            if (!System.IO.File.Exists(filePath))
-            {
-                XDocument xmlDocument = new XDocument(
-                    new XDeclaration("1.0", "utf-8", "yes"),
-                    new XElement("Products"));
-                xmlDocument.Save(filePath);
-            }
-              
+            XDocument xmlDocument = new XDocument(
+                new XDeclaration("1.0", "utf-8", "yes"),
+                new XElement("Products"));
+            xmlDocument.Save(filePath);
+
         }
 
         private IEnumerable<Product> GetTempMonthlyRequsitionProductListFromXml(string filePath)
@@ -507,7 +502,6 @@ namespace NBL.Areas.Sales.Controllers
                 aProduct.ProductId = Convert.ToInt32(elementFirstAttribute);
                 var elementValue = element.Elements();
                 var xElements = elementValue as XElement[] ?? elementValue.ToArray();
-
                 aProduct.ProductId = Convert.ToInt32(xElements[0].Value);
                 aProduct.ProductName = xElements[1].Value;
                 aProduct.Quantity = Convert.ToInt32(xElements[2].Value);

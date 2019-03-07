@@ -46,8 +46,10 @@
                 <div class="form-group">
                     <label for="ClientName" class="control-label col-md-3"></label>
                     <div class="col-md-9 text-right">
-                        @Html.ActionLink(" Cancel", "ViewClient", "Home", new {area = "Editor"}, new {@class = "btn btn-danger"})
-                        <input type="submit" value="Upload" class="btn btn-info"/>
+                        <div class="btn-toolbar">
+                            @Html.ActionLink(" Cancel", "ViewClient", "Home", new {area = "Editor"}, new {@class = "btn btn-danger"})
+                            <input type="submit" value="Upload" class="btn btn-info"/>
+                        </div>
                     </div>
                 </div>
             </div>

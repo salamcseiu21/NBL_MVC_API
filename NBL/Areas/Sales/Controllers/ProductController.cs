@@ -215,7 +215,6 @@ namespace NBL.Areas.Sales.Controllers
                 var barcodeList = _iProductManager.GetScannedProductListFromTextFile(filePath).ToList();
                 //------------Load receiveable product---------
                 var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByTripId(tripId,branchId);
-                var temp = _iInventoryManager.GetAllReceiveableItemsByTripAndBranchId(tripId, branchId);
                 var receivesProductCodeList = _iInventoryManager.GetAllReceiveableItemsByTripAndBranchId(tripId,branchId).Select(n => n.ProductBarcode).ToList();
                 var isvalid = Validator.ValidateProductBarCode(scannedBarCode);
 
@@ -264,7 +263,9 @@ namespace NBL.Areas.Sales.Controllers
         {
 
             int branchId = Convert.ToInt32(Session["BranchId"]);
+            var user = (ViewUser) Session["user"];
             ViewDispatchModel dispatchModel = _iInventoryManager.GetDispatchByTripId(tripId);
+            dispatchModel.ReceiveByUserId = user.UserId;
             var receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByTripId(tripId, branchId);
             dispatchModel.DispatchModels = receivesProductList;
             string fileName = "Received_Product_For_" + tripId + branchId;

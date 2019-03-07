@@ -689,7 +689,7 @@ namespace NBL.DAL
                 CommandObj.Parameters.AddWithValue("@Quantity", model.Quantity);
                 CommandObj.Parameters.AddWithValue("@ToBranchId", model.ToBranchId);
                 CommandObj.Parameters.AddWithValue("@CompanyId", model.CompanyId);
-                CommandObj.Parameters.AddWithValue("@UserId", model.DispatchByUserId);
+                CommandObj.Parameters.AddWithValue("@UserId", model.ReceiveByUserId);
                 CommandObj.Parameters.Add("@InventoryId", SqlDbType.Int);
                 CommandObj.Parameters["@InventoryId"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
@@ -751,6 +751,7 @@ namespace NBL.DAL
                 CommandObj.Parameters.AddWithValue("@DispatchItemId", item.DispatchItemId);
                 CommandObj.Parameters.AddWithValue("@ProductId", item.ProductId);
                 CommandObj.Parameters.AddWithValue("@Quantity", item.Quantity);
+                CommandObj.Parameters.AddWithValue("@ReceiveByUserId", model.ReceiveByUserId);
                 CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;

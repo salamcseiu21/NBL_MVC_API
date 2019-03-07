@@ -31,7 +31,7 @@
                             <label for="ProductId" class="control-label col-md-3">Product</label>
                             <div class="col-md-9">
                                 
-                                <input type="text" name="ProductName" id="ProductName" class="form-control" placeholder="Type Product Name" required />
+                                <input type="text" name="ProductName" id="ProductName" class="form-control" onkeyup="ResetProductId(this)" placeholder="Type Product Name" required />
                                 <input type="hidden" id="ProductId" name="ProductId" />
 
                             </div>
@@ -76,7 +76,7 @@
                     <div class="col-md-1">
                         <div class="form-group">
                             <div class="col-md-10">
-                                <input type="button" value="Add Item" onclick="AddItemToList(this)" class="btn btn-primary btn-block" />
+                                <input type="button" id="btnAddItem" value="Add Item" onclick="AddItemToList(this)" class="btn btn-primary btn-block" />
                             </div>
                            
                            
@@ -168,6 +168,26 @@
 
 @section Scripts
 {
+    
+    <script>
+        $(document).ready(function() {
+            ToggleAddItemButton();
+        });
+
+        function ToggleAddItemButton() {
+            var qty = parseInt($("#StockQty").val());
+            var pId = parseInt($("#ProductId").val());
+            if (qty > 0 && pId >0) {
+                $("#btnAddItem").removeAttr('disabled');
+            } else {
+                $("#btnAddItem").attr('disabled', true);
+            }
+        }
+
+        function ResetProductId(event) {
+            $("#ProductId").val("0");
+        }
+    </script>
     <script type="text/javascript">
 
         function CalcualteFinalAmount(value, total) {
@@ -265,7 +285,6 @@
                         },
                         success: function (response) {
                             ViewTempOrders();
-
                         }
                     });
 
@@ -424,6 +443,8 @@
                             var qty = data.StockQty;
                             $("#StockQty").val(qty);
                             $("#Quantity").attr("max", qty);
+
+                            ToggleAddItemButton();
                         }
                     });
                 },

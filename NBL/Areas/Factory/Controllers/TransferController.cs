@@ -336,6 +336,13 @@ namespace NBL.Areas.Factory.Controllers
             return PartialView("_ViewTempTripProductsPartialPage",new List<ViewTripModel>());
         }
 
+        public void RemoveAll()
+        {
+            var filePath = Server.MapPath("~/Files/" + "Create_Trip_File.xml");
+            var xmlData = XDocument.Load(filePath);
+            xmlData.Root?.Elements().Remove();
+            xmlData.Save(filePath);
+        }
         private IEnumerable<ViewTripModel> GetProductFromXmalFile(string filePath)
         {
             List<ViewTripModel> tripModels = new List<ViewTripModel>();

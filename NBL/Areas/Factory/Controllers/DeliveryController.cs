@@ -102,12 +102,12 @@ namespace NBL.Areas.Factory.Controllers
                     //return Json(model, JsonRequestBehavior.AllowGet);
                 }
 
-                if (exists)
+               else if (exists)
                 {
                     model.Message = "<p style='color:red'> Already Scanned.</p>";
                    // return Json(model, JsonRequestBehavior.AllowGet);
                 }
-                if (isScannComplete)
+                else if (isScannComplete)
                 {
                     model.Message = "<p style='color:green'> Scan Completed.</p>";
                    //return Json(model, JsonRequestBehavior.AllowGet);
@@ -118,7 +118,7 @@ namespace NBL.Areas.Factory.Controllers
                 //    model.Message = "<p style='color:red'>There are total "+oldestProducts.Count+" Old product of this type .Please deliver those first .. </p>";
                 //    return Json(model, JsonRequestBehavior.AllowGet);
                 //}
-                if (isValied && !isDeliveredBefore && isInfactory && !isComplete)
+                else if (isValied && !isDeliveredBefore && isInfactory && !isComplete)
                 {
                    var result= _iProductManager.AddProductToTextFile(scannedBarCode, filePath);
                     if (result.Contains("Added"))

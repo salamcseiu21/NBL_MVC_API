@@ -13,6 +13,7 @@ namespace NBL.Models.ViewModels.Deliveries
         public string DispatchRef { get; set; }
         public string TransactionRef { get; set; }
         public int DispatchByUserId { get; set; }
+        public int ReceiveByUserId { get; set; }
         public int Status { get; set; }
         public string IsCancelled { get; set; }
         public DateTime DispatchDate { get; set; }
