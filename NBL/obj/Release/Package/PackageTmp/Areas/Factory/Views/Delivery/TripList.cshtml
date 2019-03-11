@@ -18,7 +18,8 @@
             <tr>
                 <th>Trip Ref</th>
                 <th>Quantiy</th>
-                <th>Action</th>
+                <th>Date</th>
+                <th class="text-center" style="width: 50px">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -27,6 +28,8 @@
                 <tr>
                     <td>@item.TripRef</td>
                     <td>@item.DeliveryQuantity</td>
+                    <td>@item.SystemDateTime</td>
+                   
                     <td class="text-center">
                         @Html.ActionLink("Delivery", "Delivery", "Delivery", new {area = "Factory", id = item.TripId}, new {@class = "btn btn-info btn-sm"})
                     </td>

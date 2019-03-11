@@ -75,8 +75,11 @@ namespace NBL.Areas.AccountExecutive.Controllers
                     Paymode = 'B',
                     Remarks = "Active receivable by " + anUser.UserId
                 };
-
-                bool result = _iAccountsManager.ActiveReceivableCheque(chequeDetails, aReceivable, aClient);
+                if (bankCode != "")
+                {
+                    bool result = _iAccountsManager.ActiveReceivableCheque(chequeDetails, aReceivable, aClient);
+                }
+              
                 //if (result)
                 //{
                 //    //---------Send Mail ----------------

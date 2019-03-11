@@ -26,7 +26,9 @@
                 <td>@item.RequisitionDate</td>
                 <td>@item.Quantity</td>
                 <td>@item.RequisitionBy</td>
-                <td class="text-center"><button class="btn btn-info" value="@item.RequisitionId" onclick="ViewDetails(this)"><i class="fa fa-eye"></i> View Details</button></td>
+                <td class="text-center">
+                    <button class="btn btn-info"><i class="fa fa-eye"></i> View Details</button>
+                </td>
             </tr>
         }
         </tbody>
@@ -46,9 +48,5 @@
 {
     <script>
         $("#tbl_Monthly_Requisiton_List").DataTable();
-
-        function ViewDetails(btnClick) {
-            alert(btnClick.value);
-        }
     </script>
 }

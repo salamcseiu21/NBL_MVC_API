@@ -1092,7 +1092,7 @@ namespace NBL.DAL
                 {
                     requisitions.Add(new ViewRequisitionModel
                     {
-                        RequisitionId = Convert.ToInt64(reader["Id"]),
+                        RequisitionId = Convert.ToInt64(reader["RequisitionId"]),
                         RequisitionByUserId = Convert.ToInt32(reader["RequisitionByUserId"]),
                         RequisitionBy = reader["RequisitionBy"].ToString(),
                         RequisitionDate = Convert.ToDateTime(reader["RequisitionDate"]),

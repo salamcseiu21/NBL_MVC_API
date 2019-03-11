@@ -277,27 +277,6 @@
             }
         };
 
-        // -----Prevent to enter max qty more than stock qty------------
-        $(document).ready(function () {
-
-            $('#Quantity').on('keydown keyup', function (e) {
-                var divElement = $('#divQuantityLimitOutput');
-                divElement.text('');
-                var stockQty = parseInt($("#StockQty").val());
-                if ($(this).val() > stockQty
-                        && e.keyCode !== 46 // keycode for delete
-                        && e.keyCode !== 8 // keycode for backspace
-                ) {
-
-                    divElement.text('Quantity Out of Stock!');
-                    divElement.css('color', 'red');
-                    e.preventDefault();
-                    $(this).val(1);
-                }
-            });
-        });
-
-
         function RemoveAllProducts() {
             var result = confirm('Are you sure to remove all Items?');
             if (result) {

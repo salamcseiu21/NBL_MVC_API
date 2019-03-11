@@ -1,10 +1,10 @@
 ﻿@using NBL.Models.EntityModels.Requisitions
-@model IEnumerable<NBL.Models.EntityModels.Requisitions.RequisitionModel>
+@model IEnumerable<RequisitionModel>
 <section class="content">
     <table id="tbl_requisition_details_list" class="table-bordered" style="border: 1px solid">
 
         <thead>
-        
+
         <tr>
             <th rowspan="2">Branch</th>
             <th colspan="2">Products</th>
@@ -12,48 +12,49 @@
         </thead>
 
         <tbody>
-           @{
-               var groupBy = Model.GroupBy(n => n.ToBranch.BranchName);
-               foreach (IGrouping<string, RequisitionModel> requisitionModels in groupBy)
-               {
-                   <tr>
-                       <td style="background-color: palegoldenrod">@requisitionModels.Key</td>
-                       <td>
-                           <table class="table" style="margin: 0; padding: 0;">
-                               <thead>
-                               <tr>
-                                   <th>Product Name</th>
-                                   <th>Qty</th>
-                               </tr>
-                               </thead>
-                               <tbody>
-                               @foreach (var item in requisitionModels)
-                               {
-                                   <tr>
-                                       <td style="margin: 0; padding: 0;">@item.ProductName</td>
-                                       <td style="margin: 0; padding: 0;">@item.RequisitionQty</td>
-                                   </tr>
+        @{
+            var groupBy = Model.GroupBy(n => n.ToBranch.BranchName);
+            foreach (IGrouping<string, RequisitionModel> requisitionModels in groupBy)
+            {
+                <tr>
+                    <td style="background-color: darkseagreen">@requisitionModels.Key</td>
+                    <td>
+                        <table class="table" style="margin: 0; padding: 0">
+                            <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Qty</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var item in requisitionModels)
+                            {
+                                <tr>
+                                    <td style="margin: 0; padding: 0;">@item.ProductName</td>
+                                    <td style="margin: 0; padding: 0;">@item.RequisitionQty</td>
+                                </tr>
 
-                               }
-                               <tr>
-                                   <td style="margin: 0; padding: 0;">Total:</td>
-                                   <td style="margin: 0; padding: 0;">@requisitionModels.Sum(n=>n.RequisitionQty)</td>
-                               </tr>
-                               </tbody>
-                           </table>
-                           
-                       </td>
-                       
-                   </tr>
-               }
-           }
+                            }
+                            <tr>
+                                <td style="margin: 0; padding: 0;">Total:</td>
+                                <td style="margin: 0; padding: 0;">@requisitionModels.Sum(n => n.RequisitionQty)</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </td>
+                   
+                </tr>
+               
+            }
+        }
         </tbody>
         <tfoot>
-            <tr>
-                <th rowspan="2">Branch</th>
-                <th colspan="2">Products</th>
+        <tr>
+            <th rowspan="2">Branch</th>
+            <th colspan="2">Products</th>
 
-            </tr>
+        </tr>
         </tfoot>
     </table>
 </section>

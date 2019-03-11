@@ -175,9 +175,9 @@
         });
 
         function ToggleAddItemButton() {
-            var qty = parseInt($("#StockQty").val());
+
             var pId = parseInt($("#ProductId").val());
-            if (qty > 0 && pId >0) {
+            if (pId >0) {
                 $("#btnAddItem").removeAttr('disabled');
             } else {
                 $("#btnAddItem").attr('disabled', true);
@@ -227,27 +227,22 @@
         if (a<0)
         {
             productIdlist.push(id);
-            var stock = $("#StockQty").val();
-            var qty = $("#Quantity").val();
-            if (stock - qty >= 0) {
-                var $form = $(btnClicked).parents('form');
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("AddNewItemToExistingOrder")',
-                    data: $form.serialize(),
-                    error: function (xhr, status, error) {
-                        //do something about the error
-                    },
-                    success: function (response) {
-                        //alert("Saved Successfully");
-                        ViewTempOrders();
-                    }
-                });
+            var $form = $(btnClicked).parents('form');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddNewItemToExistingOrder")',
+                data: $form.serialize(),
+                error: function (xhr, status, error) {
+                    //do something about the error
+                },
+                success: function (response) {
+                    //alert("Saved Successfully");
+                    ViewTempOrders();
+                }
+            });
 
-                return false; // if it's a link to prevent post
-            } else {
-                alert("Quantity Out of Stock!");
-            }
+            return false; // if it's a link to prevent post
+           
         }
         else
         {
@@ -271,29 +266,19 @@
             data: JSON.stringify(json),
             success: function (data) {
 
-                var qty = data.StockQty;
-                $("#StockQty").val(qty);
-                var q = qty - btnClicked.value;
-                if (q >= 0) {
-                    //alert("OK");
-                    $.ajax({
-                        type: "POST",
-                        url: '@Url.Action("UpdateOrder")',
-                        data: $form.serialize(),
-                        error: function (xhr, status, error) {
-                            //do something about the error
-                        },
-                        success: function (response) {
-                            ViewTempOrders();
-                        }
-                    });
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UpdateOrder")',
+                    data: $form.serialize(),
+                    error: function (xhr, status, error) {
+                        //do something about the error
+                    },
+                    success: function (response) {
+                        ViewTempOrders();
+                    }
+                });
 
-                    return false; // if it's a link to prevent post
-                } else {
-                    alert("Quantity out of stock");
-                    ViewTempOrders();
-                    return $form;
-                }
+                return false; // if it's a link to prevent post
             }
         });
 
@@ -442,8 +427,6 @@
                         success: function (data) {
                             var qty = data.StockQty;
                             $("#StockQty").val(qty);
-                            $("#Quantity").attr("max", qty);
-
                             ToggleAddItemButton();
                         }
                     });
@@ -454,9 +437,9 @@
     </script>
 
     <script>
-        window.onload = function () {
+        $(document).ready(function() {
             ViewTempOrders();
-        };
+        });
     </script>
     
 

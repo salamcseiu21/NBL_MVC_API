@@ -1023,7 +1023,8 @@ namespace NBL.DAL
                         Transportation = reader["Transportation"].ToString(),
                         VehicleNo = reader["VehicleNo"].ToString(),
                         Remarks = reader["Remarks"].ToString(),
-                        Status = Convert.ToInt32(reader["Status"])
+                        Status = Convert.ToInt32(reader["Status"]),
+                        SystemDateTime = Convert.ToDateTime(reader["SystemDateTime"])
                     });
                 }
                 reader.Close();

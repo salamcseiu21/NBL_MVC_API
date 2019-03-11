@@ -6,27 +6,20 @@
 
     if (a < 0) {
         productIdlist.push(id);
-        var stock = $("#StockQty").val();
-        var qty = $("#Quantity").val();
-        if (stock - qty >= 0) {
-            var $form = $(btnClicked).parents('form');
-            $.ajax({
-                type: "POST",
-                url: RootUrl + 'Nsm/Order/AddNewItemToExistingOrder',
-                data: $form.serialize(),
-                error: function (xhr, status, error) {
-                    //do something about the error
-                },
-                success: function (response) {
-                    //alert("Saved Successfully");
-                    ViewTempOrders();
-                }
-            });
-
-            return false; // if it's a link to prevent post
-        } else {
-            alert("Quantity Out of Stock!");
-        }
+        var $form = $(btnClicked).parents('form');
+        $.ajax({
+            type: "POST",
+            url: RootUrl + 'Nsm/Order/AddNewItemToExistingOrder',
+            data: $form.serialize(),
+            error: function (xhr, status, error) {
+                //do something about the error
+            },
+            success: function (response) {
+                //alert("Saved Successfully");
+                ViewTempOrders();
+            }
+        });
+        
     }
     else {
         alert("This Product already exits in the list");
