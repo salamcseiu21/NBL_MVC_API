@@ -7838,7 +7838,6 @@
     <Content Include="Areas\Management\Views\Shared\_MenuPartialPage.cshtml" />
     <Content Include="Areas\Management\Views\Shared\_ViewOrdersPartialPage.cshtml" />
     <Content Include="Areas\Management\Views\web.config" />
-    <Content Include="Areas\Manager\Views\Delivery\Calan.cshtml" />
     <Content Include="Areas\Manager\Views\Delivery\DeleveredOrders.cshtml" />
     <Content Include="Areas\Manager\Views\Delivery\Delivery.cshtml" />
     <Content Include="Areas\Manager\Views\Delivery\OrderList.cshtml" />
@@ -7934,6 +7933,8 @@
     <Content Include="Areas\Factory\Views\Product\MonthlyRequisitions.cshtml" />
     <Content Include="Areas\Manager\Views\Shared\_ViewLoadDeliverableProductPartialPage.cshtml" />
     <Content Include="Areas\Manager\Views\Shared\_ViewLoadScannedProductPartialPage.cshtml" />
+    <Content Include="Areas\Factory\Views\Product\MonthlyRequisitionDetails.cshtml" />
+    <Content Include="Areas\Manager\Views\Delivery\Chalan.cshtml" />
     <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

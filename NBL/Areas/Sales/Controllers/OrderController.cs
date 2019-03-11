@@ -86,7 +86,6 @@ namespace NBL.Areas.Sales.Controllers
             var user = (ViewUser)Session["user"];
             string fileName = "Temp_Sales_Order_By_" + branchId + user.UserId + ".xml";
             var filePath = Server.MapPath("~/Areas/Sales/Files/" + fileName);
-
             var xmlDocument = XDocument.Load(filePath);
 
             xmlDocument.Root?.Elements().Where(n => n.Attribute("Id")?.Value == aProduct.ProductId.ToString()).Remove();
@@ -107,7 +106,6 @@ namespace NBL.Areas.Sales.Controllers
                     new XElement("DiscountId", aProduct.DiscountId),
                     new XElement("SalePrice", aProduct.SalePrice),
                     new XElement("ProductDetailsId", aProduct.ProductDetailsId)
-
                 ));
             xmlDocument.Save(filePath);
 
@@ -149,13 +147,8 @@ namespace NBL.Areas.Sales.Controllers
                             .Where(n => n.Attribute("Id")?.Value == productId.ToString()).FirstOrDefault()
                             ?.SetElementValue("Quantity", qty);
                         xmlData.Save(filePath);
-
-
-
                     }
                 }
-
-             
 
             }
             catch (Exception e)
@@ -217,7 +210,6 @@ namespace NBL.Areas.Sales.Controllers
                     aModel.Message = "<p class='text-danger'>Failed to Submit!!</p>";
 
                 }
-
 
             }
             catch (Exception e)
@@ -467,7 +459,8 @@ namespace NBL.Areas.Sales.Controllers
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+          //  var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var products = _iProductManager.GetAll().ToList();
             var productList = (from c in products
                 where c.ProductName.ToLower().Contains(prefix.ToLower())
                 select new

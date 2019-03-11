@@ -9,6 +9,7 @@ using NBL.Models;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Orders;
 using NBL.Models.EntityModels.Productions;
+using NBL.Models.EntityModels.Requisitions;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Validators;
 using NBL.Models.ViewModels;
@@ -269,15 +270,16 @@ namespace NBL.Areas.Factory.Controllers
             {
                 string fileName = "Production_In_" + DateTime.Now.ToString("ddMMMyyyy");
                 string filePath = Server.MapPath("~/Files/" + fileName);
-                bool isValid= Validator.ValidateProductBarCode(barcode);
+                var scannedBarcode = barcode.ToUpper();
+                bool isValid= Validator.ValidateProductBarCode(scannedBarcode);
                 if (isValid)
                 {
-                    bool isExists = _iInventoryManager.IsThisProductAlreadyInFactoryInventory(barcode); 
+                    bool isExists = _iInventoryManager.IsThisProductAlreadyInFactoryInventory(scannedBarcode); 
                     
                     //------------If this barcode dose not exits...............
                     if (!isExists)
                     {
-                        var result = _iProductManager.AddProductToTextFile(barcode, filePath);
+                        var result = _iProductManager.AddProductToTextFile(scannedBarcode, filePath);
                         if (!result.Contains("Added"))
                         {
                             successErrorModel.Message = result;
@@ -374,6 +376,13 @@ namespace NBL.Areas.Factory.Controllers
         {
             List<ViewMonthlyRequisitionModel> requisitions = _iProductManager.GetMonthlyRequsitions().ToList();
             return View(requisitions);
+        }
+
+        [HttpGet]
+        public ActionResult MonthlyRequisitionDetails(long requisitionId)
+        {
+            List<RequisitionItem> requisitionItems = _iProductManager.GetMonthlyRequsitionItemsById(requisitionId).ToList();
+            return View(requisitionItems);
         }
         public PartialViewResult ViewRequisitionDetails(long requisitionId)
         {

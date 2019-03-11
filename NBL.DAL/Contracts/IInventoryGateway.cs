@@ -21,7 +21,7 @@ namespace NBL.DAL.Contracts
        int SaveReceiveProductDetails(ViewDispatchModel model, int inventoryId);
        int GetStockQtyByBranchAndProductId(int branchId, int productId);
        int SaveDeliveredOrder(List<ScannedProduct> scannedProducts, Delivery aDelivery, int invoiceStatus, int orderStatus); 
-       int SaveDeliveredOrderDetails(List<ScannedProduct> scannedProducts, int inventoryId, int deliveryId);
+       int SaveDeliveredOrderDetails(List<ScannedProduct> scannedProducts,Delivery aDelivery, int inventoryId, int deliveryId);
        ICollection<ViewDispatchModel> GetAllReceiveableProductToBranchByTripId(long tripId,int branchId);
        TransactionModel GetTransactionModelById(long id);
        int SaveScannedProduct(List<ScannedProduct> scannedProducts,int userId);

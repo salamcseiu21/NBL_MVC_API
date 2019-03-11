@@ -67,7 +67,7 @@ namespace NBL.Areas.Factory.Controllers
             {
                
                 var products = (List<ViewFactoryStockModel>) Session["Factory_Stock"];
-                string scannedBarCode = barcode;
+                string scannedBarCode = barcode.ToUpper();
                 int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
                 string fileName = "Deliverable_Product_For_" + tripId;
                 var filePath = Server.MapPath("~/Files/" + fileName);

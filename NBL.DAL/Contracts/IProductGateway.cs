@@ -53,5 +53,6 @@ namespace NBL.DAL.Contracts
         int SaveMonthlyRequisitionInfo(MonthlyRequisitionModel model);
         ICollection<ViewMonthlyRequisitionModel> GetMonthlyRequsitions();
         int GetMaxMonnthlyRequisitionNoOfCurrentYear();
+        ICollection<RequisitionItem> GetMonthlyRequsitionItemsById(long requisitionId); 
     }
 }

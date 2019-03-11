@@ -82,7 +82,7 @@
 {
     <script>
     $('#Password, #ConfirmPassword').on('keyup', function () {
-        if ($('#Password').val() == $('#ConfirmPassword').val()) {
+        if ($('#Password').val() === $('#ConfirmPassword').val()) {
             $('#message').html('Matching').css('color', 'green');
 
 
@@ -97,7 +97,7 @@
         $("#EmployeeName").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '/SuperAdmin/Home/EmployeeAutoComplete/',
+                    url :'@Url.Action("EmployeeAutoComplete","Home",new {area="SuperAdmin"})',
                     data: "{ 'prefix': '" + request.term + "'}",
                     dataType: "json",
                     type: "POST",
@@ -132,7 +132,7 @@
 
                 if (userName.length >= 1) {
                     $.ajax({
-                        url: '/SuperAdmin/Home/UserNameExists',
+                        url: '@Url.Action("UserNameExists","Home",new {area="SuperAdmin"})',
                         method: 'post',
                         data: { userName: userName },
                         dataType: 'json',

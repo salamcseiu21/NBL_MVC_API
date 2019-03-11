@@ -301,5 +301,10 @@ namespace NBL.BLL
         {
             return _iProductGateway.GetMonthlyRequsitions();
         }
+
+        public ICollection<RequisitionItem> GetMonthlyRequsitionItemsById(long requisitionId)
+        {
+            return _iProductGateway.GetMonthlyRequsitionItemsById(requisitionId);
+        }
     }
 }

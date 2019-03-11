@@ -259,7 +259,8 @@ namespace NBL.Areas.Nsm.Controllers
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            //var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var products = _iProductManager.GetAll();
             var productList = (from c in products
                 where c.ProductName.ToLower().Contains(prefix.ToLower())
                 select new

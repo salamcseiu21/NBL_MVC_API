@@ -58,6 +58,7 @@ namespace NBL.Controllers
                 bool result = _userManager.ChangeLoginStatus(anUser, 1);
 
                 Session["user"] = anUser;
+                Session.Timeout = 180;
                 switch (anUser.Roles)
                 {
                     case "Super":

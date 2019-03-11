@@ -77,7 +77,8 @@
             $("#UserName").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '/SuperAdmin/Home/UserAutoComplete/',
+
+                        url:'@Url.Action("UserAutoComplete", "Home", new { area = "SuperAdmin" })',
                         data: "{ 'prefix': '" + request.term + "'}",
                         dataType: "json",
                         type: "POST",

@@ -8,45 +8,10 @@ function AddItemToList(btnClicked) {
     var a = $.inArray(id, productIdlist);
     if (a < 0) {
         productIdlist.push(id);
-        var stock = $("#StockQty").val();
-        var qty = $("#Quantity").val();
-        if (stock - qty >= 0) {
-            var $form = $(btnClicked).parents('form');
-            $.ajax({
-                type: "POST",
-                url: RootUrl + 'Sales/Order/Order',
-                data: $form.serialize(),
-                error: function (xhr, status, error) {
-                    //do something about the error
-                },
-                success: function (response) {
-                    //alert("Saved Successfully");
-                    ViewTempOrders();
-                }
-            });
-
-            return false; // if it's a link to prevent post
-        } else {
-            alert("Quantity Out of Stock!");
-        }
-    }
-    else {
-        alert("This Product already exits in the list");
-    }
-
-}
-function Update(btnClicked) {
-    $("#productIdToRemove").val(0);
-    var $form = $(btnClicked).parents('form');
-    //var quantiy = btnClicked.id;
-    //var oldQty = btnClicked.value;
-    var oq = $("#StockQty").val();
-    var q = oq - btnClicked.value;
-    if (q >= 0) {
-        //alert("OK");
+        var $form = $(btnClicked).parents('form');
         $.ajax({
             type: "POST",
-            url: RootUrl + 'Sales/Order/Update',
+            url: RootUrl + 'Sales/Order/Order',
             data: $form.serialize(),
             error: function (xhr, status, error) {
                 //do something about the error
@@ -56,16 +21,58 @@ function Update(btnClicked) {
                 ViewTempOrders();
             }
         });
-
-        return false; // if it's a link to prevent post
-    } else {
-        alert("Quantity out of stock");
-        ViewTempOrders();
-        return $form;
+    }
+    else {
+        alert("This Product already exits in the list");
     }
 
+}
+function Update(btnClicked) {
+    $("#productIdToRemove").val(0);
+    var $form = $(btnClicked).parents('form');
+    $.ajax({
+        type: "POST",
+        url: RootUrl + 'Sales/Order/Update',
+        data: $form.serialize(),
+        error: function (xhr, status, error) {
+            //do something about the error
+        },
+        success: function (response) {
+            //alert("Saved Successfully");
+            ViewTempOrders();
+        }
+    });
 
 }
 
 
 
+$(function () {
+    $("#Quantity").change(function () {
+        var unitPrice = $("#UnitPrice").val();
+        var price = parseFloat(unitPrice).toFixed(2);
+        $("#TotalAmount").val($(this).val() * price);
+    });
+});
+
+function minmax(value, min, max) {
+    if (parseInt(value) < min || isNaN(parseInt(value)))
+        return 0;
+    else if (parseInt(value) > max)
+        return 0;
+    else return value;
+}
+
+
+function myFunction(value) {
+    //alert(value.id);
+    var qty = value.id;
+    var stock = $("#StockQty").val();
+    var q = stock - qty;
+
+    if (q < 0) {
+        alert("Quantiy out of Stock!");
+        return;
+    }
+
+}

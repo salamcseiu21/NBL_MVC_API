@@ -10,31 +10,20 @@
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(json),
         success: function (data) {
+            $.ajax({
+                type: "POST",
+                url: RootUrl + 'Nsm/Order/Update',
+                data: $form.serialize(),
+                error: function (xhr, status, error) {
+                    //do something about the error
+                },
+                success: function (response) {
+                    //alert("Saved Successfully");
+                    ViewTempOrders();
+                }
+            });
 
-            var qty = data.StockQty;
-            $("#StockQty").val(qty);
-            var q = qty - btnClicked.value;
-            if (q >= 0) {
-                //alert("OK");
-                $.ajax({
-                    type: "POST",
-                    url: RootUrl + 'Nsm/Order/Update',
-                    data: $form.serialize(),
-                    error: function (xhr, status, error) {
-                        //do something about the error
-                    },
-                    success: function (response) {
-                        //alert("Saved Successfully");
-                        ViewTempOrders();
-                    }
-                });
-
-                return false; // if it's a link to prevent post
-            } else {
-                alert("Quantity out of stock");
-                ViewTempOrders();
-                return $form;
-            }
+            return false; // if it's a link to prevent post
         }
     });
 

@@ -52,7 +52,7 @@
         $("#UpazillaName").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '/Common/GetAssignedUpazillaNameAutoComplete/',
+                    url:'@Url.Action("GetAssignedUpazillaNameAutoComplete", "Common",new {area=""})',
                     data: "{ 'prefix': '" + request.term + "'}",
                     dataType: "json",
                     type: "POST",

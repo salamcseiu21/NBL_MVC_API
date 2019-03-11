@@ -50,7 +50,7 @@
                 success: function (data) {
                     var qty = data.StockQty;
                     $("#StockQty").val(qty);
-                    $("#Quantity").attr("max", qty);
+                    //$("#Quantity").attr("max", qty);
                 }
             });
         },

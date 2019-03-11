@@ -660,7 +660,8 @@ namespace NBL.Areas.Admin.DAL
                     {
                         ProductName = reader["ProductName"].ToString(),
                         ProductId = Convert.ToInt32(reader["ProductId"]),
-                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        Quantity = Convert.ToInt32(reader["Quantity"])
                     });
                 }
                 

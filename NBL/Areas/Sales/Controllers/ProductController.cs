@@ -206,7 +206,7 @@ namespace NBL.Areas.Sales.Controllers
             try
             {
                 int branchId = Convert.ToInt32(Session["BranchId"]);
-                var scannedBarCode = barcode;
+                var scannedBarCode = barcode.ToUpper();
                 int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
                 string fileName = "Received_Product_For_" + tripId+branchId;
                 var filePath = Server.MapPath("~/Files/" + fileName);
@@ -218,9 +218,11 @@ namespace NBL.Areas.Sales.Controllers
                 var receivesProductCodeList = _iInventoryManager.GetAllReceiveableItemsByTripAndBranchId(tripId,branchId).Select(n => n.ProductBarcode).ToList();
                 var isvalid = Validator.ValidateProductBarCode(scannedBarCode);
 
-                int requistionQtyByProductId =receivesProductList.ToList().Sum(n => n.Quantity);
+                int requistionQtyByProductId =receivesProductList.ToList().FindAll(n=>n.ProductId==productId).Sum(n => n.Quantity);
+
                 int scannedQtyByProductId = barcodeList
                     .FindAll(n => Convert.ToInt32(n.ProductCode.Substring(0, 3)) == productId).Count;
+
                 bool isScannComplete = requistionQtyByProductId.Equals(scannedQtyByProductId);
 
                 if(isScannComplete)

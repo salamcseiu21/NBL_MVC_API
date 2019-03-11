@@ -1363,5 +1363,43 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
+
+        public ICollection<RequisitionItem> GetMonthlyRequsitionItemsById(long requisitionId)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetMonthlyRequsitionItemsById";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@RequisitionId", requisitionId);
+                List<RequisitionItem> requisitions=new List<RequisitionItem>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    requisitions.Add(new RequisitionItem
+                    {
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductName = reader["ProductName"].ToString(),
+                        ProductCategoryName = reader["ProductCategoryName"].ToString(),
+                        CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
+                        
+                    });
+                }
+                reader.Close();
+                return requisitions;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect monthly requisition items by id", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
     }
 }

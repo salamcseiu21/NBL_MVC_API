@@ -51,7 +51,7 @@
         $("#DistrictName").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '/Common/GetAssignedDistrictNameAutoComplete/',
+                    url: '@Url.Action("GetAssignedDistrictNameAutoComplete", "Common",new {area=""})',
                     data: "{ 'prefix': '" + request.term + "'}",
                     dataType: "json",
                     type: "POST",

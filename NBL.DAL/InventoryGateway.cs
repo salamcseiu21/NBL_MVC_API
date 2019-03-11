@@ -824,7 +824,7 @@ namespace NBL.DAL
                 int inventoryId = Convert.ToInt32(CommandObj.Parameters["@InventoryId"].Value);
                 int deliveryId = Convert.ToInt32(CommandObj.Parameters["@DeliveryId"].Value);
 
-                int rowAffected = SaveDeliveredOrderDetails(scannedProducts, inventoryId, deliveryId);
+                int rowAffected = SaveDeliveredOrderDetails(scannedProducts,aDelivery, inventoryId, deliveryId);
                 if (rowAffected > 0)
                 {
                     sqlTransaction.Commit();
@@ -848,7 +848,7 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public int SaveDeliveredOrderDetails(List<ScannedProduct> scannedProducts, int inventoryId,int deliveryId)
+        public int SaveDeliveredOrderDetails(List<ScannedProduct> scannedProducts, Delivery aDelivery, int inventoryId,int deliveryId)
         {
             int i = 0;
             int n = 0;
@@ -871,12 +871,12 @@ namespace NBL.DAL
 
             if (i > 0)
             {
-                n = SaveDeliveredItemWithQuantity(scannedProducts, inventoryId);
+                n = SaveDeliveredItemWithQuantity(scannedProducts, inventoryId,aDelivery);
             }
             return n;
         }
 
-        private int SaveDeliveredItemWithQuantity(List<ScannedProduct> deliveredProducts, int inventoryId)
+        private int SaveDeliveredItemWithQuantity(List<ScannedProduct> deliveredProducts, int inventoryId,Delivery aDelivery)
         {
             int i = 0;
             var groupBy = deliveredProducts.GroupBy(n => n.ProductId);
@@ -888,6 +888,7 @@ namespace NBL.DAL
                 CommandObj.Parameters.AddWithValue("@ProductId", scannedProducts.Key);
                 CommandObj.Parameters.AddWithValue("@Quantity", scannedProducts.Count());
                 CommandObj.Parameters.AddWithValue("@InventoryId", inventoryId);
+                CommandObj.Parameters.AddWithValue("@InvoiceRef", aDelivery.InvoiceRef);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
@@ -1202,7 +1203,8 @@ namespace NBL.DAL
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         ProductBarcode = reader["ProductBarcode"].ToString(),
                         ToBranchId = branchId,
-                        TripId = tripId
+                        TripId = tripId,
+                        TransactionRef = reader["TransactionRef"].ToString()
 
                     });
                 }

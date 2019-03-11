@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Calan</title>
+    <title>Chalan</title>
     <link rel='icon' href='~/Images/logo.png' type='image/x-icon' />
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -51,7 +51,7 @@
                 <div class="col-md-6 invoice-col">
 
                     <address>
-                      @Html.Raw(Model.ViewClient.GetMailingAddress())
+                        @Html.Raw(Model.ViewClient.GetMailingAddress())
                     </address>
 
                 </div>
@@ -71,9 +71,9 @@
                             <tr>
                                 <th>Sl No</th>
                                 <th>Product Name </th>
-                                <th>Product Codes </th>
+
                                 <th class="text-right">Quantity</th>
-                               
+
                             </tr>
                         </thead>
                         <tbody>
@@ -83,29 +83,21 @@
                             @{
                                 int rowNo = 0;
                                 int totalQty = 0;
-                             
+
                                 foreach (IGrouping<string, DeliveryDetails> orderDetailses in Model.DeliveryDetailses.ToList().GroupBy(n => n.CategoryName))
                                 {
                                     <tr style="border: none">
-                                        <td colspan="6" class="text-center" style="font-weight: bolder">@orderDetailses.Key</td>
+                                        <td colspan="5" class="text-center" style="font-weight: bolder">@orderDetailses.Key</td>
                                     </tr>
                                     foreach (DeliveryDetails item in orderDetailses)
                                     {
-                                        string codes = "";
+
                                         totalQty += item.DeliveredProducts.Count;
                                         <tr>
                                             <td>  @(rowNo += 1)</td>
                                             <td>@item.ProductName</td>
-                                         
-                                            <td>@foreach (var i in item.DeliveredProducts)
-                                                {
-                                                    codes += i.ProductBarCode + ",";
-                                                }
-                                                @codes.TrimEnd(',')
-                                                
-                                            </td>
                                             <td class="text-right">@item.DeliveredProducts.Count</td>
-                                            
+
                                         </tr>
                                     }
 
@@ -117,16 +109,16 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                
+
                                 <th></th>
-                                <th></th>
+                               
                                 <th class="text-right">
                                     Total
                                 </th>
                                 <th class="text-right">
                                     @totalQty
                                 </th>
-                            
+
 
                             </tr>
                         </tfoot>

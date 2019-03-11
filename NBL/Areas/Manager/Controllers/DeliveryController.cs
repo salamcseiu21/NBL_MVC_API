@@ -133,7 +133,7 @@ namespace NBL.Areas.Manager.Controllers
                 List<ViewBranchStockModel> products = (List<ViewBranchStockModel>) Session["Branch_stock"];
                 var id = invoiceId;
                 var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(id);
-                string scannedBarCode = barcode;
+                string scannedBarCode = barcode.ToUpper();
                 int productId = Convert.ToInt32(scannedBarCode.Substring(0, 3));
                 string fileName = "Ordered_Product_List_For_" + id;
                 var filePath = Server.MapPath("~/Files/" + fileName);
@@ -151,7 +151,7 @@ namespace NBL.Areas.Manager.Controllers
 
                // DateTime date = _iCommonManager.GenerateDateFromBarCode(scannedBarCode);
                // var oldestProducts = products.ToList().FindAll(n => n.ProductionDate < date && n.ProductId == productId).ToList();
-                bool isInInventory = products.Select(n => n.ProductBarCode).Contains(barcode);
+                bool isInInventory = products.Select(n => n.ProductBarCode).Contains(scannedBarCode);
                 bool isScannedBefore = _iProductManager.IsScannedBefore(barcodeList, scannedBarCode);
 
                 bool isSold = _iInventoryManager.IsThisProductSold(scannedBarCode);
@@ -237,7 +237,13 @@ namespace NBL.Areas.Manager.Controllers
             foreach (InvoiceDetails invoiceDetailse in invoicedOrders)
             {
                 var invoiceQty = invoiceDetailse.Quantity;
-                var deliveredQty = deliveredProducts.ToList().FindAll(n => n.ProductId == invoiceDetailse.ProductId).Count;
+                var deliveredQty = 0;
+                var viewProduct = deliveredProducts.ToList().Find(n => n.ProductId == invoiceDetailse.ProductId);
+                if (viewProduct != null)
+                {
+                   deliveredQty = deliveredProducts.ToList().FindAll(n => n.ProductId == invoiceDetailse.ProductId).Sum(n=>n.Quantity);
+                }
+                
                 if (invoiceQty != deliveredQty)
                 {
                     invoiceDetailse.Quantity = invoiceQty - deliveredQty;
@@ -268,6 +274,13 @@ namespace NBL.Areas.Manager.Controllers
             return PartialView("_ViewLoadScannedProductPartialPage", list);
         }
         public ActionResult Calan(int id)
+        {
+            var chalan = _iDeliveryManager.GetChalanByDeliveryId(id);
+            return View(chalan);
+
+        }
+
+        public ActionResult Chalan(int id)
         {
             var chalan = _iDeliveryManager.GetChalanByDeliveryId(id);
             return View(chalan);
