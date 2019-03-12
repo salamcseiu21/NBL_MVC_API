@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using NBL.Models.EntityModels.Clients;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Products;
+using NBL.Models.ViewModels.Orders;
 
 namespace NBL.Models.EntityModels.Orders
 {
@@ -51,6 +52,7 @@ namespace NBL.Models.EntityModels.Orders
         public  decimal Vat { get; set; }
         public DateTime CancelDateTime { get; set; }
         public  IEnumerable<Product> Products { get; set; }
+        public IEnumerable<TempOrderedProduct> TempOrderedProducts { get; set; }
         public Client Client { get; set; }
         public User User { get; set; } 
         public Order(List<Product> products,int clientId,DateTime date):this()
@@ -62,6 +64,7 @@ namespace NBL.Models.EntityModels.Orders
         public Order ()
             {
                 Products=new List<Product>();
+              TempOrderedProducts=new List<TempOrderedProduct>();
                 Client=new Client();
                 User=new User();
             }

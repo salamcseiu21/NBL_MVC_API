@@ -142,6 +142,7 @@
     <Compile Include="ViewModels\Logs\ViewWriteLogModel.cs" />
     <Compile Include="EntityModels\Requisitions\MonthlyRequisitionModel.cs" />
     <Compile Include="EntityModels\Requisitions\RequisitionItem.cs" />
+    <Compile Include="ViewModels\Orders\TempOrderedProduct.cs" />
     <Compile Include="ViewModels\Requisitions\ViewMonthlyRequisitionModel.cs" />
     <Compile Include="ViewModels\Requisitions\ViewRequisitionModel.cs" />
     <Compile Include="EntityModels\Requisitions\RequisitionModel.cs" />

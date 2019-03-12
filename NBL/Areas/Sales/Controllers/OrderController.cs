@@ -53,7 +53,7 @@ namespace NBL.Areas.Sales.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var user = (ViewUser)Session["user"];
-            TempSalseOrderXmlFile(branchId, user.UserId);
+            CreateTempSalseOrderXmlFile(branchId, user.UserId);
             return View();
         }
 
@@ -82,12 +82,8 @@ namespace NBL.Areas.Sales.Controllers
         private void AddProductToTempSalesOrderXmlFile(Product aProduct,int clientTypeId)
         {
 
-            int branchId = Convert.ToInt32(Session["BranchId"]);
-            var user = (ViewUser)Session["user"];
-            string fileName = "Temp_Sales_Order_By_" + branchId + user.UserId + ".xml";
-            var filePath = Server.MapPath("~/Areas/Sales/Files/" + fileName);
+            var filePath = GetTempSalesOrderXmlFilePath();
             var xmlDocument = XDocument.Load(filePath);
-
             xmlDocument.Root?.Elements().Where(n => n.Attribute("Id")?.Value == aProduct.ProductId.ToString()).Remove();
             xmlDocument.Save(filePath);
 
@@ -106,49 +102,26 @@ namespace NBL.Areas.Sales.Controllers
                     new XElement("DiscountId", aProduct.DiscountId),
                     new XElement("SalePrice", aProduct.SalePrice),
                     new XElement("ProductDetailsId", aProduct.ProductDetailsId)
+                   
                 ));
             xmlDocument.Save(filePath);
 
         }
 
-        /// <summary>
-        /// update or modify order item before save to databse...
-        /// </summary>
-        /// <param name="collection"></param>
+        
         [HttpPost]
         
-        public void Update(FormCollection collection)
+        public void Update(string id, int quantity)
         {
             try
             {
-                int branchId = Convert.ToInt32(Session["BranchId"]);
-                var user = (ViewUser)Session["user"];
-                string fileName = "Temp_Sales_Order_By_" + branchId + user.UserId + ".xml";
-                var filePath = Server.MapPath("~/Areas/Sales/Files/" + fileName);
+                var filePath = GetTempSalesOrderXmlFilePath();
                 var xmlData = XDocument.Load(filePath);
-                int pid = Convert.ToInt32(collection["productIdToRemove"]);
-
-                if (pid != 0)
-                {
-                    xmlData.Root?.Elements().Where(n => n.Attribute("Id")?.Value == pid.ToString()).Remove();
-                    xmlData.Save(filePath);
-                }
-                else
-                {
-                    var collectionAllKeys = collection.AllKeys.ToList();
-                    var productIdList = collectionAllKeys.FindAll(n => n.Contains("product"));
-                    foreach (var s in productIdList)
-                    {
-                        var value = s.Replace("product_Id_", "");
-                        int productId = Convert.ToInt32(collection["product_Id_" + value]);
-                        int qty = Convert.ToInt32(collection["NewQuantity_" + value]);
-                        xmlData.Element("Products")?
-                            .Elements("Product")?
-                            .Where(n => n.Attribute("Id")?.Value == productId.ToString()).FirstOrDefault()
-                            ?.SetElementValue("Quantity", qty);
-                        xmlData.Save(filePath);
-                    }
-                }
+                xmlData.Element("Products")?
+                    .Elements("Product")?
+                    .Where(n => n.Attribute("Id")?.Value == id).FirstOrDefault()
+                    ?.SetElementValue("Quantity", quantity);
+                xmlData.Save(filePath);
 
             }
             catch (Exception e)
@@ -158,6 +131,28 @@ namespace NBL.Areas.Sales.Controllers
                     string msg = e.InnerException.Message;
                 }
             }
+        }
+
+
+        [HttpPost]
+        public void RemoveProductById(string id)
+        {
+            var filePath = GetTempSalesOrderXmlFilePath();
+            var xmlData = XDocument.Load(filePath);
+            xmlData.Root?.Elements().Where(n => n.Attribute("Id")?.Value == id).Remove();
+            xmlData.Save(filePath);
+
+        }
+
+        public void RemoveAll()
+        {
+            int branchId = Convert.ToInt32(Session["BranchId"]);
+            var user = (ViewUser)Session["user"];
+            string fileName = "Temp_Sales_Order_By_" + branchId + user.UserId + ".xml";
+            var filePath = Server.MapPath("~/Areas/Sales/Files/" + fileName);
+            var xmlData = XDocument.Load(filePath);
+            xmlData.Root?.Elements().Remove();
+            xmlData.Save(filePath);
         }
 
         /// <summary>
@@ -174,15 +169,12 @@ namespace NBL.Areas.Sales.Controllers
             try
             {
                 var user = (ViewUser)Session["user"];
-                string fileName = "Temp_Sales_Order_By_" + branchId + user.UserId + ".xml";
-                var filePath = Server.MapPath("~/Areas/Sales/Files/" + fileName);
-
-              
+                var filePath = GetTempSalesOrderXmlFilePath();
                 int clientId = Convert.ToInt32(collection["ClientId"]);
                 int orderByUserId = user.UserId;
                 decimal amount = Convert.ToDecimal(collection["Total"]);
                 DateTime orderDate = Convert.ToDateTime(collection["OrderDate"]);
-                List<Product> productList = GetTempMonthlyRequsitionProductListFromXml(filePath).ToList();
+                List<TempOrderedProduct> productList = GetTempOrderedProducts(filePath).ToList();
                 var vat = productList.Sum(n => n.Vat * n.Quantity);
                 var order = new Order
                 {
@@ -192,7 +184,7 @@ namespace NBL.Areas.Sales.Controllers
                 OrderDate = orderDate,
                 CompanyId = companyId,
                 Discount = productList.Sum(n => n.Quantity * n.DiscountAmount),
-                Products = productList,
+                TempOrderedProducts = productList,
                 SpecialDiscount = Convert.ToDecimal(collection["SD"]),
                 Vat = vat
               };
@@ -229,13 +221,13 @@ namespace NBL.Areas.Sales.Controllers
             var user = (ViewUser)Session["user"];
             string fileName = "Temp_Sales_Order_By_" + branchId + user.UserId + ".xml";
             var filePath = Server.MapPath("~/Areas/Sales/Files/" + fileName);
-            IEnumerable<Product> products = GetTempMonthlyRequsitionProductListFromXml(filePath);
+            IEnumerable<TempOrderedProduct> products = GetTempOrderedProducts(filePath);
             if (products.Count() != 0)
             {
                 return Json(products, JsonRequestBehavior.AllowGet);
             }
 
-            return Json(new List<Product>(), JsonRequestBehavior.AllowGet);
+            return Json(new List<TempOrderedProduct>(), JsonRequestBehavior.AllowGet);
         }
 
         //--Cancel Order---
@@ -454,43 +446,38 @@ namespace NBL.Areas.Sales.Controllers
 
         }
 
-        [HttpPost]
-        public JsonResult ProductNameAutoComplete(string prefix)
+        private string GetTempSalesOrderXmlFilePath()
         {
-            int companyId = Convert.ToInt32(Session["CompanyId"]);
+            var user = (ViewUser)Session["user"];
             int branchId = Convert.ToInt32(Session["BranchId"]);
-          //  var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
-            var products = _iProductManager.GetAll().ToList();
-            var productList = (from c in products
-                where c.ProductName.ToLower().Contains(prefix.ToLower())
-                select new
-                {
-                    label = c.ProductName,
-                    val = c.ProductId
-                }).ToList();
-
-            return Json(productList);
+            string fileName = "Temp_Sales_Order_By_" + branchId + user.UserId + ".xml";
+            var filePath = Server.MapPath("~/Areas/Sales/Files/" + fileName);
+            return filePath;
         }
 
-
-        private void TempSalseOrderXmlFile(int branchId,int userId)
+        private void CreateTempSalseOrderXmlFile(int branchId,int userId)
         {
             string fileName = "Temp_Sales_Order_By_" + branchId + userId + ".xml";
             var filePath = Server.MapPath("~/Areas/Sales/Files/" + fileName);
-            XDocument xmlDocument = new XDocument(
-                new XDeclaration("1.0", "utf-8", "yes"),
-                new XElement("Products"));
-            xmlDocument.Save(filePath);
+            if (!System.IO.File.Exists(filePath))
+            {
+                XDocument xmlDocument = new XDocument(
+                    new XDeclaration("1.0", "utf-8", "yes"),
+                    new XElement("Products"));
+                xmlDocument.Save(filePath);
+            }
+           
 
         }
 
-        private IEnumerable<Product> GetTempMonthlyRequsitionProductListFromXml(string filePath)
+
+        private IEnumerable<TempOrderedProduct> GetTempOrderedProducts(string filePath)
         {
-            List<Product> products = new List<Product>();
+            List<TempOrderedProduct> products = new List<TempOrderedProduct>();
             var xmlData = XDocument.Load(filePath).Element("Products")?.Elements();
             foreach (XElement element in xmlData)
             {
-                Product aProduct = new Product();
+                TempOrderedProduct aProduct = new TempOrderedProduct();
                 var elementFirstAttribute = element.FirstAttribute.Value;
                 aProduct.ProductId = Convert.ToInt32(elementFirstAttribute);
                 var elementValue = element.Elements();
@@ -512,24 +499,12 @@ namespace NBL.Areas.Sales.Controllers
             return products;
         }
 
-        public void RemoveAll()
+        public JsonResult GetClientById(int clientId)
         {
-            int branchId = Convert.ToInt32(Session["BranchId"]);
-            var user = (ViewUser) Session["user"];
-            string fileName = "Temp_Sales_Order_By_" + branchId + user.UserId + ".xml";
-            var filePath = Server.MapPath("~/Areas/Sales/Files/" + fileName);
-            var xmlData = XDocument.Load(filePath);
-            xmlData.Root?.Elements().Remove();
-            xmlData.Save(filePath);
-        }
-
-        public void RemoveProduct(int productId)
-        {
-            List<Product> productList = (List<Product>)Session["ProductList"];
-            var aProduct = productList.Find(n => n.ProductId == productId);
-            productList.Remove(aProduct);
-            Session["ProductList"] = productList;
-
+           //------------Remove all product added before on client select----
+            RemoveAll();
+            ViewClient client = _iClientManager.GetClientDeailsById(clientId);
+            return Json(client, JsonRequestBehavior.AllowGet);
         }
     }
 }
