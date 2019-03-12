@@ -116,40 +116,18 @@ namespace NBL.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public void Update(FormCollection collection)
+        public void Update(string id,int quantity)
         {
             try
             {
-                
+
                 var filePath = GetBranchWishRequisitionXmlFilePath();
-
                 var xmlData = XDocument.Load(filePath);
-                var branchIdProductId=  collection["productIdToRemove"];
-                if (!branchIdProductId.Equals("0"))
-                {
-                    xmlData.Root?.Elements().Where(n => n.Attribute("Id")?.Value == branchIdProductId.ToString()).Remove();
-                    xmlData.Save(filePath);
-                }
-               
-                else
-                {
-                    var collectionAllKeys = collection.AllKeys.ToList();
-                    var productIdList = collectionAllKeys.FindAll(n => n.Contains("NewQuantity"));
-                    foreach (string s in productIdList)
-                    {
-                        var value = s.Replace("NewQuantity_", "");
-                      
-                        int qty = Convert.ToInt32(collection["NewQuantity_" + value]);
-                       
-
-                        xmlData.Element("Products")?
-                               .Elements("Product")?
-                               .Where(n => n.Attribute("Id")?.Value == value).FirstOrDefault()
-                               ?.SetElementValue("Quantity", qty);
-                        xmlData.Save(filePath);
-
-                    }
-                }
+                xmlData.Element("Products")?
+                    .Elements("Product")?
+                    .Where(n => n.Attribute("Id")?.Value == id).FirstOrDefault()
+                    ?.SetElementValue("Quantity", quantity);
+                xmlData.Save(filePath);
 
 
             }
@@ -160,6 +138,16 @@ namespace NBL.Areas.Admin.Controllers
                     ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException?.Message;
 
             }
+        }
+
+        [HttpPost]
+        public void RemoveProductById(string id)
+        {
+            var filePath = GetBranchWishRequisitionXmlFilePath();
+            var xmlData = XDocument.Load(filePath);
+            xmlData.Root?.Elements().Where(n => n.Attribute("Id")?.Value == id).Remove();
+            xmlData.Save(filePath);
+           
         }
         [HttpGet]
         public void RemoveAll()

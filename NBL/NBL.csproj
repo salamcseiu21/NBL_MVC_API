@@ -376,6 +376,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Admin\Files\Requisition_Products_40.xml" />
     <Content Include="Areas\Admin\Images\editor.jpg" />
     <Content Include="Areas\Admin\Images\Employee\1a19d980b38d4b1fa9f5c210aa3545bb.jpg" />
     <Content Include="Areas\Admin\Images\Employee\369a3fa28d2742dd85310c02412e7913.jpg" />
@@ -8061,7 +8062,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\AccountExecutive\Models\" />
-    <Folder Include="Areas\Admin\Files\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Corporate\Models\" />
     <Folder Include="Areas\Editor\BLL\" />
