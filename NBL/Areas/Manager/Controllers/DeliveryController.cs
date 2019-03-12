@@ -273,12 +273,6 @@ namespace NBL.Areas.Manager.Controllers
             }
             return PartialView("_ViewLoadScannedProductPartialPage", list);
         }
-        public ActionResult Calan(int id)
-        {
-            var chalan = _iDeliveryManager.GetChalanByDeliveryId(id);
-            return View(chalan);
-
-        }
 
         public ActionResult Chalan(int id)
         {

@@ -105,14 +105,13 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6" style="border: none"></div>
+           
            
 
             @using (Html.BeginForm("Edit", "Order", FormMethod.Post, new { area = "Nsm", id = "saveOrderForm" }))
             {
                 var amounts = Model.OrderItems.Sum(n => n.SubTotal) - Model.SpecialDiscount;
              <div class="form-horizontal">
-               
                  <div class="col-md-3" style="border: none">
                      <div class="form-group">
                          <label class="control-label col-md-4">Quantity</label>
@@ -120,6 +119,8 @@
                              <input type="number" name="TotalQuantity" id="TotalQuantity" class="form-control text-right" readonly="readonly" />
                          </div>
                      </div>
+                 </div>
+                 <div class="col-md-3" style="border: none">
                      <div class="form-group">
                          <label class="control-label col-md-4">Amount (&#2547;)</label>
                          <div class="col-md-8">
@@ -127,14 +128,18 @@
                          </div>
                      </div>
                  </div>
-
                  <div class="col-md-3" style="border: none">
+                     
                      <div class="form-group">
                          <label class="control-label col-md-4">Discount (&#2547;)</label>
                          <div class="col-md-8">
                              <input type="number" value="@Model.SpecialDiscount" name="Discount" id="Discount" class="form-control text-right" onkeyup="CalculateNetAmount(this)" />
                          </div>
                      </div>
+                 </div>
+
+                 <div class="col-md-3" style="border: none">
+                     
                      <div class="form-group">
                          <label class="control-label col-md-4">Net (&#2547;)</label>
                          <div class="col-md-8">

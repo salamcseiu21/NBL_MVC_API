@@ -6940,6 +6940,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Files\Create_Trip_File.xml" />
     <Content Include="Files\Monthly_Requisition_Products.xml" />
+    <Content Include="Files\Requisition_Products.xml" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -7936,6 +7937,7 @@
     <Content Include="Areas\Factory\Views\Product\MonthlyRequisitionDetails.cshtml" />
     <Content Include="Areas\Manager\Views\Delivery\Chalan.cshtml" />
     <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
+    <None Include="Properties\PublishProfiles\Publish.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Department\ViewDepartmentList.js" />
@@ -8059,6 +8061,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\AccountExecutive\Models\" />
+    <Folder Include="Areas\Admin\Files\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Corporate\Models\" />
     <Folder Include="Areas\Editor\BLL\" />

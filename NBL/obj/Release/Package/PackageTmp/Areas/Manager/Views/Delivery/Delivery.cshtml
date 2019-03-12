@@ -69,7 +69,8 @@
                         <div class="col-md-3"></div>
                         <div class="col-md-9">
                             <div class="btn toolbar">
-                                <button type="button" value="@Model.Invoice.InvoiceId" class="btn btn-success" onclick="Delivery(this)"> Delivery</button>
+                                <button type="button" id="btnDelivery" value="@Model.Invoice.InvoiceId" class="btn btn-success" onclick="Delivery(this)"> Delivery</button>
+                               @Html.ActionLink("Back","OrderList","Delivery", null,new { @class="btn btn-danger"})
                             </div>
                         </div>
                     </div>
@@ -110,25 +111,6 @@
         }
     </script>
 
-
-    <script type="text/javascript">
-        // -----Prevent to enter max qty more than invoce------------
-        $(document).ready(function () {
-
-            $('.product_delivered_qty').on('keydown keyup', function (e) {
-                var qtyId = "#invoced_qty_" + this.id;
-                var invoiceQty = parseInt($(qtyId).val());
-                if ($(this).val() > invoiceQty
-                        && e.keyCode !== 46 // keycode for delete
-                        && e.keyCode !== 8 // keycode for backspace
-                ) {
-                    e.preventDefault();
-                    $(this).val(invoiceQty);
-                }
-            });
-        });
-    </script>
-    
     <script>
         function SaveScannedBarcodeToTextFile(btnClicked) {
             //var $form = $(btnClicked).parents('form');
@@ -203,6 +185,13 @@
             data: JSON.stringify(json),
             success: function (data) {
                 $("#divScannedProducts").html(data);
+                var qty = $("#total_Scanned_qty").val();
+                if (qty > 0) {
+                    $("#btnDelivery").removeAttr('disabled');
+                } else {
+                    $("#btnDelivery").attr('disabled', true);
+                }
+               
             }
         });
     }

@@ -85,6 +85,64 @@
 
 
 <section class="content" style="margin-top: 0; padding-top: 0;">
+    
+    @using (Html.BeginForm("Confirm", "Order", FormMethod.Post, new { id = "saveOrderForm" }))
+    {
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="Total" class="control-label col-md-5">Total (&#2547;) :</label>
+                        <div class="col-md-7">
+                            <input type="number" id="Total" name="Total" class="form-control text-right" value="0" readonly="readonly" />
+                            <input type="hidden" id="ClientId" name="ClientId" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SD" class="control-label col-md-5">Special Discount (&#2547;) : </label>
+                        <div class="col-md-7">
+
+                            <input type="number" id="SD" name="SD" class="form-control text-right" min="0" value="0" placeholder="Special Discount" onkeyup="CalculateNetAmount(this)" />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="NetAmount" class="control-label col-md-5">Net Amount (&#2547;) :</label>
+                        <div class="col-md-7">
+
+                            <input type="number" id="NetAmount" name="NetAmount" class="form-control text-right" readonly="readonly" />
+
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-3">
+
+                    <div class="form-group">
+                        <label for="OrderDate" class="control-label col-md-5">Date</label>
+                        <div class="col-md-7">
+
+                            <input type="text" id="OrderDate" name="OrderDate" value="@tdate" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-7 col-md-offset-5 text-right">
+                            <div class="btn btn-toolbar">
+                                <input type="button" value="Cancel" class="btn btn-danger" onclick="ReloadPage()" />
+                                <input type="button" value="Submit" onclick="SubmitOrderDetails(this)" class="btn btn-success" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
 
     <p style="font-weight: bolder;font-size: 20px" class="text-center">Product List</p>
     @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "updateQuantiyForm" }))
@@ -109,63 +167,7 @@
             <tbody id="orders"></tbody>
         </table>
     }
-    <hr />
-
-    @using (Html.BeginForm("Confirm", "Order", FormMethod.Post, new { id = "saveOrderForm" }))
-    {
-        <div class="form-horizontal">
-            <div class="row">
-                <div class="col-md-6"></div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="Total" class="control-label col-md-5">Total (&#2547;) :</label>
-                        <div class="col-md-7">
-                            <input type="number" id="Total" name="Total" class="form-control text-right" value="0" readonly="readonly" />
-                            <input type="hidden" id="ClientId" name="ClientId" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="SD" class="control-label col-md-5">Special Discount (&#2547;) : </label>
-                        <div class="col-md-7">
-
-                            <input type="number" id="SD" name="SD" class="form-control text-right" min="0" value="0" placeholder="Special Discount" onkeyup="CalculateNetAmount(this)" />
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-
-
-                    <div class="form-group">
-                        <label for="NetAmount" class="control-label col-md-5">Net Amount (&#2547;) :</label>
-                        <div class="col-md-7">
-
-                            <input type="number" id="NetAmount" name="NetAmount" class="form-control text-right" readonly="readonly" />
-
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="OrderDate" class="control-label col-md-5">Date</label>
-                        <div class="col-md-7">
-
-                            <input type="text" id="OrderDate" name="OrderDate" value="@tdate" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-
-
-                        <div class="col-md-7 col-md-offset-5 text-right">
-                            <div class="btn btn-toolbar">
-                                <input type="button" value="Cancel" class="btn btn-danger" onclick="ReloadPage()" />
-                                <input type="button" value="Submit" onclick="SubmitOrderDetails(this)" class="btn btn-success"/>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    }
+   
 </section>
 
 

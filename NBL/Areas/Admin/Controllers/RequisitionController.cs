@@ -37,21 +37,24 @@ namespace NBL.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            
+            var user=(ViewUser)Session["user"];
+            CreateTempRequisitionXmlFile(user.UserId);
             return View();
         } 
 
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
-            var filePath = Server.MapPath("~/Files/" + "Requisition_Products.xml");
+            ViewUser user =(ViewUser)Session["user"];
+            var filePath = GetBranchWishRequisitionXmlFilePath();
+
             List<RequisitionModel> productList = GetProductFromXmalFile(filePath).ToList();
 
             if (productList.Count != 0)
             {
                 var xmlData = XDocument.Load(filePath);
                 int toBranchId = Convert.ToInt32(collection["ToBranchId"]);
-                var user = (ViewUser)Session["user"];
+
                 ViewRequisitionModel aRequisitionModel = new ViewRequisitionModel 
                 {
                     Products = productList,
@@ -76,6 +79,7 @@ namespace NBL.Areas.Admin.Controllers
             return View();
             
         }
+
         [HttpPost]
         public JsonResult AddRequisitionProductToXmlFile(FormCollection collection)
         {
@@ -84,12 +88,15 @@ namespace NBL.Areas.Admin.Controllers
             try
             {
 
+               
+                var filePath = GetBranchWishRequisitionXmlFilePath();
+
                 int productId = Convert.ToInt32(collection["ProductId"]);
                 int toBranchId = Convert.ToInt32(collection["ToBranchId"]);
                 var id=toBranchId.ToString("D2") + productId;
                 var product = _iProductManager.GetAll().ToList().Find(n => n.ProductId == productId);
                 int quantity = Convert.ToInt32(collection["Quantity"]);
-                var filePath = Server.MapPath("~/Files/" + "Requisition_Products.xml");
+
                 var xmlDocument = XDocument.Load(filePath);
                 xmlDocument.Element("Products")?.Add(
                     new XElement("Product", new XAttribute("Id", id),
@@ -113,7 +120,9 @@ namespace NBL.Areas.Admin.Controllers
         {
             try
             {
-                var filePath = Server.MapPath("~/Files/" + "Requisition_Products.xml");
+                
+                var filePath = GetBranchWishRequisitionXmlFilePath();
+
                 var xmlData = XDocument.Load(filePath);
                 var branchIdProductId=  collection["productIdToRemove"];
                 if (!branchIdProductId.Equals("0"))
@@ -152,22 +161,30 @@ namespace NBL.Areas.Admin.Controllers
 
             }
         }
+        [HttpGet]
+        public void RemoveAll()
+        {
+            var filePath = GetBranchWishRequisitionXmlFilePath();
+            var xmlData = XDocument.Load(filePath);
+            xmlData.Root?.Elements().Remove();
+            xmlData.Save(filePath);
 
+        }
         public JsonResult GetTempToRequsitionList()
         {
-            var filePath = Server.MapPath("~/Files/" + "Requisition_Products.xml");
-
-            if (System.IO.File.Exists(filePath))
-            {
-                //if the file is exists read the file
-                IEnumerable<RequisitionModel> productList = GetProductFromXmalFile(filePath);
-                return Json(productList, JsonRequestBehavior.AllowGet);
-            }
-            //if the file does not exists create the file
-            System.IO.File.Create(filePath).Close();
-            return Json(new List<RequisitionModel>(), JsonRequestBehavior.AllowGet);
+            var filePath = GetBranchWishRequisitionXmlFilePath();
+            IEnumerable<RequisitionModel> productList = GetProductFromXmalFile(filePath);
+            return Json(productList, JsonRequestBehavior.AllowGet);
         }
 
+        //---------------------------Get Requisition file path-------------
+        private string GetBranchWishRequisitionXmlFilePath()
+        {
+            var user = (ViewUser)Session["user"];
+            string fileName = "Requisition_Products_" + user.UserId + ".xml";
+            var filePath = Server.MapPath("~/Areas/Admin/Files/" + fileName);
+            return filePath;
+        }
         private IEnumerable<RequisitionModel> GetProductFromXmalFile(string filePath)
         {
             List<RequisitionModel> products = new List<RequisitionModel>();
@@ -256,6 +273,7 @@ namespace NBL.Areas.Admin.Controllers
             try
             {
 
+
                 int productId = Convert.ToInt32(collection["ProductId"]);
                 var product = _iProductManager.GetProductByProductId(productId);
                 int quantity = Convert.ToInt32(collection["Quantity"]);
@@ -328,6 +346,23 @@ namespace NBL.Areas.Admin.Controllers
             xmlData.Save(filePath);
             model.Message = "<p style='color:red'>Deleted..!</p>";
             return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
+        private void CreateTempRequisitionXmlFile(int userId)
+        {
+            string fileName = "Requisition_Products_" + userId + ".xml";
+            var filePath = Server.MapPath("~/Areas/Admin/Files/" + fileName);
+            if (!System.IO.File.Exists(filePath))
+            {
+                XDocument xmlDocument = new XDocument(
+                    new XDeclaration("1.0", "utf-8", "yes"),
+                    new XElement("Products"));
+                xmlDocument.Save(filePath);
+            }
+
         }
     }
 }
