@@ -75,6 +75,15 @@
                             @Html.ValidationMessageFor(model=>model.RegionId,"",new {@class="text-danger"}) 
                         </div>
                     </div>
+                    
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TerritoryId, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(model => model.TerritoryId, null, "--Select--", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.TerritoryId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.DistrictId, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
@@ -98,25 +107,25 @@
                             @Html.ValidationMessageFor(model=>model.PostOfficeId,"",new {@class="text-danger"}) 
                         </div>
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.NationalIdNo, new { @class = "control-label col-md-3" })
-                        <div class="col-md-9">
-                            @Html.EditorFor(model => model.NationalIdNo, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter client NID"} })
-                            @Html.ValidationMessageFor(model=>model.NationalIdNo,"",new {@class="text-danger"}) 
-
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.TinNo,new { @class = "control-label col-md-3" })
-                        <div class="col-md-9">
-                            @Html.EditorFor(model => model.TinNo, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter client TIN"} })
-                            @Html.ValidationMessageFor(model=>model.TinNo,"",new {@class="text-danger"}) 
-                        </div>
-                    </div>
+                    
 
                 </div>
                 <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NationalIdNo, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.NationalIdNo, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter client NID" } })
+                            @Html.ValidationMessageFor(model => model.NationalIdNo, "", new { @class = "text-danger" })
 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TinNo, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.TinNo, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter client TIN" } })
+                            @Html.ValidationMessageFor(model => model.TinNo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Phone, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
@@ -150,23 +159,30 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.ClientImage, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
-                            @Html.TextBoxFor(model=>model.ClientImage,new {@class="form-control",type="file"})
+                            @Html.TextBoxFor(model=>model.ClientImage,new {@class="form-control",type="file", accept = "image/jpeg, image/png", onchange = "return ValidateClientImage()"})
                             @Html.ValidationMessageFor(model => model.ClientImage, "", new {@class = "text-danger"})
+                           
+                            <div style="padding: 5px 0">
+                                <img src="~/Images/Client/Photos/clent-dummy.jpg" id="showClientImage" height="150" width="130" style="border: 1px solid green">
+                            </div>
                         </div>
 
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.ClientSignature, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
-                            @Html.TextBoxFor(model=>model.ClientSignature, new {@class="form-control",type="file"})
+                            @Html.TextBoxFor(model=>model.ClientSignature, new {@class="form-control",type="file", accept = "image/jpeg, image/png", onchange = "return ValidateClientSignature()" })
                             @Html.ValidationMessageFor(model=>model.ClientSignature,"",new {@class="text-danger"}) 
+                            <div style="padding: 5px 0">
+                                <img src="~/Images/Client/Signatures/1419ba72.png" id="showClientSignature" height="50" width="150" style="border: 1px solid green">
+                            </div>
                         </div>
 
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
-                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "E-mail Address"} })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "E-mail Address"} }) 
                             @Html.ValidationMessageFor(model=>model.Email,"",new {@class="text-danger"}) 
                             <div id="divEmailExitsOutput"></div>
                         </div>
@@ -178,14 +194,6 @@
                             @Html.EditorFor(model => model.CreditLimit, new { htmlAttributes = new { @class = "form-control", placeholder = "Recommended credit limit"} })
                             @Html.ValidationMessageFor(model=>model.CreditLimit,"",new {@class="text-danger"}) 
 
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.TerritoryId, new { @class = "control-label col-md-3" })
-                        <div class="col-md-9">
-                            @Html.DropDownListFor(model=>model.TerritoryId, null,"--Select--",new {@class="form-control"})
-                            @Html.ValidationMessageFor(model=>model.TerritoryId,"",new {@class="text-danger"}) 
                         </div>
                     </div>
 
@@ -446,4 +454,84 @@
     });
     </script>
 
+    
+    <script>
+        function ValidateClientImage() {
+            var imageData = document.getElementById('ClientImage');
+            var fileUploadPath = imageData.value;
+            var size = imageData.files[0].size;
+           // alert(size);
+//To check if user upload any file
+            if (fileUploadPath === '') {
+                alert("Please upload an image");
+
+            } else {
+                var extension = fileUploadPath.substring(
+                    fileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+
+//The file uploaded is an image
+
+                if (extension === "png" || extension === "jpeg" || extension === "jpg") {
+
+// To Display
+                    if (imageData.files && imageData.files[0]) {
+                        var reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            $('#showClientImage').attr('src', e.target.result);
+                        }
+
+                        reader.readAsDataURL(imageData.files[0]);
+                    }
+
+                } 
+
+//The file upload is NOT an image
+                else {
+                    alert("Photo only allows file types of  PNG, JPG, JPEG and BMP. ");
+
+                }
+            }
+        }
+
+
+
+        function ValidateClientSignature() {
+            var imageData = document.getElementById('ClientSignature');
+            var fileUploadPath = imageData.value;
+            var size = imageData.files[0].size;
+            // alert(size);
+            //To check if user upload any file
+            if (fileUploadPath === '') {
+                alert("Please upload an image");
+
+            } else {
+                var extension = fileUploadPath.substring(
+                    fileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+
+                //The file uploaded is an image
+
+                if (extension === "png" || extension === "jpeg" || extension === "jpg") {
+
+                    // To Display
+                    if (imageData.files && imageData.files[0]) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            $('#showClientSignature').attr('src', e.target.result);
+                        }
+
+                        reader.readAsDataURL(imageData.files[0]);
+                    }
+
+                }
+
+                //The file upload is NOT an image
+                else {
+                    alert("Photo only allows file types of  PNG, JPG, JPEG and BMP. ");
+
+                }
+            }
+        }
+    </script>
 }

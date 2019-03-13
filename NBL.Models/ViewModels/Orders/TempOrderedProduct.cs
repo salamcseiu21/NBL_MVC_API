@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NBL.Models.EntityModels.Masters;
-using NBL.Models.EntityModels.VatDiscounts;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace NBL.Models.ViewModels.Orders
 {

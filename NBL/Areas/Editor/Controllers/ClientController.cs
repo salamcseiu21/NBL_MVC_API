@@ -106,17 +106,23 @@ namespace NBL.Areas.Editor.Controllers
                     RegionId = regionId,
                     CompanyId = companyId,
                     Branch = branch
-
                 };
                 if (ClientImage != null)
                 {
-                    var ext = Path.GetExtension(ClientImage.FileName);
-                    string image = Guid.NewGuid().ToString().Replace("-", "").ToLower().Substring(2, 8) + ext;
-                    string path = Path.Combine(
-                        Server.MapPath("~/Images/Client/Photos"), image);
-                    // file is uploaded
-                    ClientImage.SaveAs(path);
-                    client.ClientImage = "Images/Client/Photos/" + image;
+
+                   
+                    var ext = Path.GetExtension(ClientImage.FileName)?.ToLower();
+                    if (ext == ".jpeg" || ext == ".jpg" || ext == ".png")
+                    {
+                        string image = Guid.NewGuid().ToString().Replace("-", "").ToLower().Substring(2, 8) + ext;
+                        
+                        string path = Path.Combine(
+                            Server.MapPath("~/Images/Client/Photos"), image);
+                        // file is uploaded
+                        ClientImage.SaveAs(path);
+                        client.ClientImage = "Images/Client/Photos/" + image;
+                    }
+                   
                 }
                 else
                 {
@@ -124,13 +130,17 @@ namespace NBL.Areas.Editor.Controllers
                 }
                 if (clientSignature != null)
                 {
-                    string ext = Path.GetExtension(clientSignature.FileName);
-                    string sign = Guid.NewGuid().ToString().Replace("-", "").ToLower().Substring(2, 8) + ext;
-                    string path = Path.Combine(
-                        Server.MapPath("~/Images/Client/Signatures"), sign);
-                    // file is uploaded
-                    clientSignature.SaveAs(path);
-                    client.ClientSignature = "Images/Client/Signatures/" + sign;
+                    string ext = Path.GetExtension(clientSignature.FileName)?.ToLower();
+                    if (ext == ".jpeg" || ext == ".jpg" || ext == ".png")
+                    {
+                        string sign = Guid.NewGuid().ToString().Replace("-", "").ToLower().Substring(2, 8) + ext;
+                        string path = Path.Combine(
+                            Server.MapPath("~/Images/Client/Signatures"), sign);
+                        // file is uploaded
+                        clientSignature.SaveAs(path);
+                        client.ClientSignature = "Images/Client/Signatures/" + sign;
+                    }
+                       
                 }
                 else
                 {

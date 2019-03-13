@@ -1414,7 +1414,7 @@ ConnectionObj.Close();
                 CommandObj.Parameters["@OrderId"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();
                 int orderId = Convert.ToInt32(CommandObj.Parameters["@OrderId"].Value);
-                int result = SaveOrderDetails(order.TempOrderedProducts, orderId);
+                int result = SaveOrderDetails(order.Products, orderId);
                 if (result > 0)
                 {
                     sqlTransaction.Commit();
@@ -1440,7 +1440,7 @@ ConnectionObj.Close();
                 ConnectionObj.Close();
             }
         }
-        private int SaveOrderDetails(IEnumerable<TempOrderedProduct> products, int orderId)
+        private int SaveOrderDetails(IEnumerable<Product> products, int orderId)
         {
             int i = 0;
             foreach (var item in products)

@@ -146,10 +146,8 @@ namespace NBL.Areas.Sales.Controllers
 
         public void RemoveAll()
         {
-            int branchId = Convert.ToInt32(Session["BranchId"]);
-            var user = (ViewUser)Session["user"];
-            string fileName = "Temp_Sales_Order_By_" + branchId + user.UserId + ".xml";
-            var filePath = Server.MapPath("~/Areas/Sales/Files/" + fileName);
+          
+            var filePath = GetTempSalesOrderXmlFilePath();
             var xmlData = XDocument.Load(filePath);
             xmlData.Root?.Elements().Remove();
             xmlData.Save(filePath);
@@ -174,7 +172,7 @@ namespace NBL.Areas.Sales.Controllers
                 int orderByUserId = user.UserId;
                 decimal amount = Convert.ToDecimal(collection["Total"]);
                 DateTime orderDate = Convert.ToDateTime(collection["OrderDate"]);
-                List<TempOrderedProduct> productList = GetTempOrderedProducts(filePath).ToList();
+                List<Product> productList = GetTempOrderedProducts(filePath).ToList();
                 var vat = productList.Sum(n => n.Vat * n.Quantity);
                 var order = new Order
                 {
@@ -184,7 +182,7 @@ namespace NBL.Areas.Sales.Controllers
                 OrderDate = orderDate,
                 CompanyId = companyId,
                 Discount = productList.Sum(n => n.Quantity * n.DiscountAmount),
-                TempOrderedProducts = productList,
+                Products = productList,
                 SpecialDiscount = Convert.ToDecimal(collection["SD"]),
                 Vat = vat
               };
@@ -221,7 +219,7 @@ namespace NBL.Areas.Sales.Controllers
             var user = (ViewUser)Session["user"];
             string fileName = "Temp_Sales_Order_By_" + branchId + user.UserId + ".xml";
             var filePath = Server.MapPath("~/Areas/Sales/Files/" + fileName);
-            IEnumerable<TempOrderedProduct> products = GetTempOrderedProducts(filePath);
+            IEnumerable<Product> products = GetTempOrderedProducts(filePath);
             if (products.Count() != 0)
             {
                 return Json(products, JsonRequestBehavior.AllowGet);
@@ -471,13 +469,13 @@ namespace NBL.Areas.Sales.Controllers
         }
 
 
-        private IEnumerable<TempOrderedProduct> GetTempOrderedProducts(string filePath)
+        private IEnumerable<Product> GetTempOrderedProducts(string filePath)
         {
-            List<TempOrderedProduct> products = new List<TempOrderedProduct>();
+            List<Product> products = new List<Product>();
             var xmlData = XDocument.Load(filePath).Element("Products")?.Elements();
             foreach (XElement element in xmlData)
             {
-                TempOrderedProduct aProduct = new TempOrderedProduct();
+                Product aProduct = new Product();
                 var elementFirstAttribute = element.FirstAttribute.Value;
                 aProduct.ProductId = Convert.ToInt32(elementFirstAttribute);
                 var elementValue = element.Elements();

@@ -27,23 +27,7 @@ function AddItemToList(btnClicked) {
     }
 
 }
-function Update(btnClicked) {
-    $("#productIdToRemove").val(0);
-    var $form = $(btnClicked).parents('form');
-    $.ajax({
-        type: "POST",
-        url: RootUrl + 'Sales/Order/Update',
-        data: $form.serialize(),
-        error: function (xhr, status, error) {
-            //do something about the error
-        },
-        success: function (response) {
-            //alert("Saved Successfully");
-            ViewTempOrders();
-        }
-    });
 
-}
 
 
 

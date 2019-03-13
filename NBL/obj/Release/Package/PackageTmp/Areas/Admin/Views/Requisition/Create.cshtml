@@ -61,24 +61,18 @@
     }
  
     <p style="font-weight: bolder;font-size: 20px" class="text-center text-green">Product List</p>
-    @using (Html.BeginForm("Update", "Requisition", FormMethod.Post, new { id = "updateQuantiyForm" }))
-    {
-        <input type="hidden" id="productIdToRemove" name="productIdToRemove" />
+    <table class="table table-bordered" style="margin: 0; padding: 0;">
 
-        <table class="table table-bordered" style="margin: 0; padding: 0;">
-
-            <thead>
-
-            <tr>
-                <th style="border: 1px solid black;" class="text-center">To Branch</th>
-                <th style="border: 1px solid black;" class="text-center">Product Name</th>
-                <th style="border: 1px solid black; width: 10%" class="text-center">Quantity</th>
-                <th style="border: 1px solid black;" class="text-center">Action</th>
-            </tr>
-            </thead>
-            <tbody id="requisitions"></tbody>
-        </table>
-    }
+        <thead>
+        <tr>
+            <th style="border: 1px solid black;" class="text-center">To Branch</th>
+            <th style="border: 1px solid black;" class="text-center">Product Name</th>
+            <th style="border: 1px solid black; width: 10%" class="text-center">Quantity</th>
+            <th style="border: 1px solid black;" class="text-center">Action</th>
+        </tr>
+        </thead>
+        <tbody id="requisitions"></tbody>
+    </table>
     <hr />
     @using (Html.BeginForm("Create", "Requisition", FormMethod.Post, new { id = "saveRequisitionForm" }))
     {
@@ -113,8 +107,8 @@
                             <div class="col-md-3"></div>
                             <div class="col-md-9 col-md-offset-3">
                                 <div class="btn-toolbar">
-                                    <input type="button" value="Cancel" class="btn btn-danger" onclick="ClearInputFields()" />
-                                    <input type="button" value="Save" onclick="PreviewOrderDetails(this)" class="btn btn-success" />
+                                    <a href="~/admin" class="btn btn-danger">Cancel</a>
+                                    <input type="button" value="Save" onclick="ConfirmRequisition(this)" class="btn btn-success" />
                                 </div>
                             </div>
                         </div>
@@ -283,57 +277,44 @@
     <script>
 
         function Update(btnClicked) {
-            $("#productIdToRemove").val(0);
-            var $form = $(btnClicked).parents('form');
+            var id = btnClicked.id;
+            var qty = parseInt(btnClicked.value);
+            var json = { id: id,quantity:qty };
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("Update")',
-                data: $form.serialize(),
-                error: function (xhr, status, error) {
-                    //do something about the error
-                },
-                success: function (response) {
-                    //alert("Saved Successfully");
+                url: '@Url.Action("Update", "Requisition",new {area="Admin"})',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
                     ViewTempRequisitionList();
                 }
             });
-
-            return false; // if it's a link to prevent post
-
-
         }
-        function RemoveProduct(btnClicked) {
+      
+        function RemoveProductById(btnClicked) {
 
-       
             //alert(btnClicked.id);
             if (confirm("Are you sure to remove this product ??")) {
-                $("#productIdToRemove").val(btnClicked.id);
-            
-                var $form = $(btnClicked).parents('form');
+                var id = btnClicked.id;
+                var json = { id: id };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("Update")',
-                    data: $form.serialize(),
-                    error: function (xhr, status, error) {
-                        //do something about the error
-                    },
-                    success: function (response) {
+                    url: '@Url.Action("RemoveProductById", "Requisition",new {area="Admin"})',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
 
                         for (var i = productIdlist.length - 1; i >= 0; i--) {
                             if (productIdlist[i] === btnClicked.id) {
                                 productIdlist.splice(i, 1);
                             }
                         }
-
                         ViewTempRequisitionList();
                     }
                 });
-            } else {
-                return false;// if it's a link to prevent post
             }
 
-            return false;// if it's a link to prevent post
-
+            
         }
 
 
@@ -342,10 +323,11 @@
             if (result) {
                 $.ajax({
                     type: "GET",
-                    url: '@Url.Action("RemoveAll","Requisition")',
+                    url: '@Url.Action("RemoveAll","Requisition",new {area="Admin"})',
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         ViewTempRequisitionList();
+                        productIdlist=[];
                     }
 
                 });
@@ -370,7 +352,7 @@
                         //total =+ value.SubTotal;
                         //alert(key);
                         //$("#orders").append('<option value=' + value.ClientId + '>' + value.ProductId + '</option>');
-                        var row = $("<tr><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ToBranch.BranchName + "</td><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ProductName + "</td><td style='border: 1px solid black; padding: 5px 10px;'>  <input type='number' min='1' value='" + value.Quantity + "' class='form-control text-right' id='" + value.ProductId + "' name='NewQuantity_" + value.Serial + "'  onchange='Update(this)'/>" + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-center'><button id='" + value.Serial + "' type='button' onclick='RemoveProduct(this)' class='btn btn-default btn-sm'><i class='fa fa-times' style='color:red;'></i></button>" + "</td></tr>");
+                        var row = $("<tr><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ToBranch.BranchName + "</td><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ProductName + "</td><td style='border: 1px solid black; padding: 5px 10px;'>  <input type='number' min='1' value='" + value.Quantity + "' class='form-control text-right' id='" + value.Serial + "' name='NewQuantity_" + value.Serial + "'  onchange='Update(this)'/>" + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-center'><button id='" + value.Serial + "' type='button' onclick='RemoveProductById(this)' class='btn btn-default btn-sm'><i class='fa fa-times' style='color:red;'></i></button>" + "</td></tr>");
 
                         $("#requisitions").append(row);
                     });
@@ -382,7 +364,7 @@
     </script>
 
     <script>
-        function PreviewOrderDetails(id) {
+        function ConfirmRequisition(id) {
 
             if (confirm("Are you sure to Save  this requisition?")) {
 

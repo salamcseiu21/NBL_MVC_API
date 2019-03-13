@@ -279,17 +279,34 @@
             }
         };
 
+
+        function Update(btnClicked) {
+            var id = btnClicked.id;
+            var qty = parseInt(btnClicked.value);
+            var json = { id: id, quantity: qty };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Update", "Order",new {area="Sales"})',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (response) {
+                    ViewTempOrders();
+                }
+            });
+
+        }
+
         function RemoveAllProducts() {
             var result = confirm('Are you sure to remove all Items?');
             if (result) {
                 $.ajax({
                     type: "Post",
-                    url: RootUrl + 'sales/Order/RemoveAll',
+                    url: '@Url.Action("RemoveAll","Order",new {area="Sales"})',
                     error: function (xhr, status, error) {
                         alert(error);
                     },
                     success: function (response) {
-                      
+
                         ViewTempOrders();
                         productIdlist = [];
                     }
@@ -297,21 +314,18 @@
             }
         }
 
-        function RemoveProduct(btnClicked) {
+        function RemoveProductById(btnClicked) {
 
 
             //alert(btnClicked.id);
             if (confirm("Are you sure to remove this product ??")) {
-                $("#productIdToRemove").val(btnClicked.id);
-
-                var $form = $(btnClicked).parents('form');
+                var id = btnClicked.id;
+                var json = { id: id };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("Update")',
-                    data: $form.serialize(),
-                    error: function (xhr, status, error) {
-                        //do something about the error
-                    },
+                    url: '@Url.Action("RemoveProductById", "Order",new {area="Sales"})',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
                     success: function (response) {
 
                         for (var i = productIdlist.length - 1; i >= 0; i--) {
@@ -319,17 +333,14 @@
                                 productIdlist.splice(i, 1);
                             }
                         }
-
                         ViewTempOrders();
                     }
                 });
-            } else {
-                return false;// if it's a link to prevent post
             }
 
-            return false;// if it's a link to prevent post
-
         }
+
+
     </script>
   
 
