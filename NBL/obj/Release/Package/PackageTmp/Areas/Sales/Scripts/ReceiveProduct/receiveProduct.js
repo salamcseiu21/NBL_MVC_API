@@ -1,4 +1,7 @@
-﻿
+﻿$(document).ready(function () {
+    loadAllReceivableProducts();
+    loadScannedProducts();
+});
 
 function SaveScannedBarcodeToTextFile(btnClicked) {
     // var $form = $(btnClicked).parents('form');

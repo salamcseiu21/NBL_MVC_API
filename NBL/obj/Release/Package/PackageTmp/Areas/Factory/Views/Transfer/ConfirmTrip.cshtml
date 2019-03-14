@@ -94,7 +94,7 @@
 
     <div class="panel panel-success">
         <div class="panel-heading">
-            Trip Summary
+            <p style="color: black;font-weight: bolder">Trip Summary</p>
         </div>
         <div class="panel-body">
             
@@ -107,8 +107,8 @@
                 foreach (IGrouping<string, ViewTripModel> requisitionModels in tempList)
                 {
 
-                    <div  class="row text-center" style="background-color: darkseagreen;padding: 5px">
-                        @requisitionModels.Key
+                    <div  class="row text-center" style="padding: 5px">
+                        Requisition Ref :   @requisitionModels.Key
                     </div>
 
                     <div class="row">
@@ -118,8 +118,8 @@
                         <div class="col-md-3">Delivery Qty</div>
                     </div>
                     <hr/>
-                    var groupByBranch = requisitionModels.GroupBy(n => n.ToBranchId);
-                    foreach (IGrouping<int, ViewTripModel> models in groupByBranch)
+                    var groupByBranch = requisitionModels.GroupBy(n => n.ToBranch.BranchName);
+                    foreach (IGrouping<string, ViewTripModel> models in groupByBranch)
                     {
 
                         <div class="row">

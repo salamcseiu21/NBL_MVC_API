@@ -23,25 +23,25 @@
         <thead>
         <tr>
             <th>
-                Reference
-            </th>
-            <th>
-                Qty
+              Trip  Reference
             </th>
             <th class="text-center">
+                Quantity
+            </th>
+            <th class="text-center" style="width: 50px">
                 Action
             </th>
         </tr>
         </thead>
         <tbody>
-      @foreach (IGrouping<long,ReceiveProductViewModel> item in Model.GroupBy(n=>n.TripId))
+      @foreach (IGrouping<string,ReceiveProductViewModel> item in Model.GroupBy(n=>n.TripRef))
       {
           <tr>
               
               <td>@item.Key</td>
-              <td>@item.Sum(n=>n.Quantity)</td>
+              <td class="text-center">@item.Sum(n=>n.Quantity)</td>
               <td class="text-center">
-                  @Html.ActionLink("Details","ReceiveableDetails",new {id=item.Key},new {@class="btn btn-info"})
+                  @Html.ActionLink("Details","ReceiveableDetails",new {id=item.First().TripId},new {@class="btn btn-info"})
               </td>
           </tr>
       }
@@ -49,13 +49,13 @@
         
         <tfoot>
         <tr>
-                        <th>
-                Reference
-            </th>
             <th>
-                Qty
+                Trip  Reference
             </th>
             <th class="text-center">
+                Quantity
+            </th>
+            <th class="text-center" style="width: 50px">
                 Action
             </th>
         </tr>

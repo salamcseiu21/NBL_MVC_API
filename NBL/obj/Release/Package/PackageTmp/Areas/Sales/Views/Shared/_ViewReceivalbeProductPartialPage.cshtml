@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NBL.Models.ViewModels.Deliveries.ViewDispatchModel>
+﻿
+@model IEnumerable<NBL.Models.ViewModels.Deliveries.ViewDispatchModel>
 
 <table id="tbl_receivable_list" class="display" style="border: 1px solid black">
     <caption class="text-center text-green" style="font-weight: bolder; font-size: 20px">Product List to Receive</caption>
@@ -6,7 +7,8 @@
     <tr>
 
         <th>Product Name</th>
-        <th> Qty </th>
+        <th>Category</th>
+        <th> Quantity </th>
 
     </tr>
     </thead>
@@ -15,6 +17,7 @@
     {
         <tr>
             <td>@item.ProductName</td>
+            <td>@(item.ProductCategory?.ProductCategoryName?? "N/A")</td>
             <td>@item.Quantity</td>
         </tr>
     }
@@ -22,8 +25,9 @@
 
     <tfoot>
     <tr>
-        <th>Product Name</th>
-        <th> Qty </th>
+ <th>Product Name</th>
+<th>Category</th>
+<th> Quantity </th>
     </tr>
     </tfoot>
 </table>

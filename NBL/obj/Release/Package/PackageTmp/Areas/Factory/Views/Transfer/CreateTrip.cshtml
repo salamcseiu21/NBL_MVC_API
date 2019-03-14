@@ -30,6 +30,7 @@
                             <div class="btn-toolbar">
                                 <input type="button" value="Confirm Trip" id="confirmButton" class="btn btn-info" onclick="ConfirmTrip(this)" disabled="disabled"/>
                                 <button type="button" class="btn btn-danger" onclick="RemoveAll()">Remove All</button>
+                                <button type="button" class="btn btn-success" onclick="ClearFields()">Clear</button>
                             </div>
                         </div>
                     </div>
@@ -46,6 +47,7 @@
 
 @section Scripts
 {
-<script src="~/Areas/Factory/Scripts/createTrip.js"></script>
-  
+
+  <script src="@Url.Content("~/Areas/Factory/Scripts/createTrip.js")"></script>
+   
 }

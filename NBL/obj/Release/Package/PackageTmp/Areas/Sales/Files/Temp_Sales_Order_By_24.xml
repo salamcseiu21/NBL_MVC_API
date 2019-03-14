@@ -1,2 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<Products />
+<Products>
+  <Product Id="89">
+    <ProductId>89</ProductId>
+    <ProductName>MC Racer  NR-12-9-4B</ProductName>
+    <Quantity>1</Quantity>
+    <ClientTypeId>2</ClientTypeId>
+    <UnitPrice>1100.00</UnitPrice>
+    <CategoryId>9</CategoryId>
+    <SubSubSubAccountCode>2201102</SubSubSubAccountCode>
+    <Vat>0.00</Vat>
+    <VatId>16</VatId>
+    <DiscountAmount>66.00</DiscountAmount>
+    <DiscountId>205</DiscountId>
+    <SalePrice>1034.00</SalePrice>
+    <ProductDetailsId>473</ProductDetailsId>
+  </Product>
+</Products>

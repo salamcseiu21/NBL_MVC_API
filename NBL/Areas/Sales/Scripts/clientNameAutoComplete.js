@@ -40,7 +40,7 @@
 
             $.ajax({
                 type: "POST",
-                url: RootUrl + 'sales/Order/GetClientById',
+                url: RootUrl + 'sales/Order/GetClientById/',
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(json),
                 success: function (data) {

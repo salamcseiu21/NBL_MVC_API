@@ -6,6 +6,7 @@
 <section class="content">
 
     <h3 class="text-center text-green" style="font-weight:bold;font-size:20px;margin:0;padding:0;">Prodcut In Stock</h3>
+    <div style="padding: 10px; margin: 10px; font-weight: bolder; height: 50px;border: 1px solid green"> Total Stock Quantity : @Model.Sum(n => n.StockQuantity)</div>
     <table id="table_product_list_in_stock" class="display table table-striped table-bordered" style="border:1px solid black">
 
         <thead>
