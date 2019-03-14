@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NBL.Models.EntityModels.Masters;
 using NBL.Models.ViewModels.Productions;
 
 namespace NBL.Models.ViewModels.Deliveries
@@ -26,6 +27,7 @@ namespace NBL.Models.ViewModels.Deliveries
         public string ProductBarcode { get; set; }  
         public string Remarks { get; set; }
         public int CategoryId { get; set; }
+        public ProductCategory ProductCategory { get; set; }    
         public int ProductTypeId { get; set; }
         public string SubSubSubAccountCode { get; set; }
         public ICollection<ScannedProduct> ScannedProducts { get; set; }

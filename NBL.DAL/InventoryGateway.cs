@@ -6,6 +6,7 @@ using System.Linq;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Branches;
 using NBL.Models.EntityModels.Deliveries;
+using NBL.Models.EntityModels.Masters;
 using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.Enums;
 using NBL.Models.ViewModels;
@@ -221,6 +222,11 @@ namespace NBL.DAL
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         DispatchDate = Convert.ToDateTime(reader["DispatchDate"]),
                         ProductName = reader["ProductName"].ToString(),
+                        ProductCategory = new ProductCategory
+                        {
+                            ProductCategoryId = Convert.ToInt32(reader["CategoryId"]),
+                            ProductCategoryName = reader["ProductCategoryName"].ToString()
+                        },
                         DispatchRef = reader["DispatchRef"].ToString(),
                         Remarks = reader["Remarks"].ToString(),
                         TripId = tripId,
@@ -645,7 +651,8 @@ namespace NBL.DAL
                         DispatchId=Convert.ToInt64(reader["DispatchId"]),
                         DispatchItemsId=Convert.ToInt64(reader["DispatchItemsId"]),
                         SystemDateTime = Convert.ToDateTime(reader["SystemDateTime"]),
-                       // TripRef = reader["TripRef"].ToString(),
+                        DispatchRef = reader["DispatchRef"].ToString(),
+                        TripRef = reader["TripRef"].ToString(),
                         TripId = Convert.ToInt32(reader["TripId"]),
                         //DriverPhone = reader["DriverPhone"].ToString(),
                        // DriverName = reader["DriverName"].ToString(),

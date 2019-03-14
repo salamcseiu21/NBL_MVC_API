@@ -24,15 +24,15 @@
         foreach (IGrouping<string, ViewTripModel> requisitionModels in tempList)
         {
             <tr>
-                <td colspan="5" class="text-center" style="background-color: darkseagreen">
-                    @requisitionModels.Key
+                <td colspan="5" class="text-center" style="background-color: darkcyan; color: white;font-weight: bolder">
+                  Requisition Ref :  @requisitionModels.Key
                 </td>
             </tr>
             foreach (ViewTripModel item in requisitionModels)
             {
                 <tr>
 
-                    <td>@item.ToBranchId</td>
+                    <td>@item.ToBranch.BranchName</td>
                     <td>@item.ProuctName</td>
                     <td>@item.RequisitionQty</td>
                     <td>@item.DeliveryQuantity</td>

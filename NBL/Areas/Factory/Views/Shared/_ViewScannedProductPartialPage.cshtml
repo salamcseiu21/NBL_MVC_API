@@ -6,30 +6,31 @@
     <thead>
     <tr>
        
-        <th>Barcode
+        <th>Product Name
             <input type="hidden" id="total_Scanned_qty" value="@Model.Count()"/>
         </th>
-        <th>Product Name</th>
+       
         <th>Category</th>
+        <th>Quantity</th>
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
+    @foreach (var item in Model.GroupBy(n=>n.ProductName))
     {
         <tr>
            
-            <td>@item.ProductCode</td>
-            <td>@item.ProductName</td>
-            <td>@item.CategoryName</td>
+            <td>@item.Key</td>
+            <td>@item.First().CategoryName</td>
+            <td>@item.Count()</td>
         </tr>
     }
     </tbody>
     <tfoot>
     <tr>
         
-        <th>Barcode</th>
         <th>Product Name</th>
         <th>Category</th>
+        <th>Quantity</th>
     </tr>
     </tfoot>
 </table>

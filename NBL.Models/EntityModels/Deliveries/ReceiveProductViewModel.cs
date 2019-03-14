@@ -28,6 +28,7 @@ namespace NBL.Models.EntityModels.Deliveries
         public int CreatedByUserId { get; set; }
         public int DispatchByUserId { get; set; }
         public long DispatchId { get; set; }
+        public string DispatchRef { get; set; } 
         public long DispatchItemsId { get; set; }
         public DateTime SystemDateTime { get; set; }    
 

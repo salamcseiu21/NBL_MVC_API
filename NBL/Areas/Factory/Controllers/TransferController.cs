@@ -362,7 +362,8 @@ namespace NBL.Areas.Factory.Controllers
                     RequisitionQty = Convert.ToInt32(xElements[3].Value),
                     DeliveryQuantity = Convert.ToInt32(xElements[4].Value),
                     ToBranchId = Convert.ToInt32(xElements[5].Value),
-                    ProuctName = xElements[6].Value
+                    ProuctName = xElements[6].Value,
+                    ToBranch = _iBranchManager.GetById(Convert.ToInt32(xElements[5].Value))
                    
                 };
                 tripModels.Add(model);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using NBL.Models.EntityModels.Branches;
 
 namespace NBL.Models.ViewModels.TransferProducts
 {
@@ -15,6 +16,7 @@ namespace NBL.Models.ViewModels.TransferProducts
         public int RequisitionQty { get; set; }
         public int DeliveryQuantity { get; set; } 
         public int ToBranchId { get; set; }
+        public Branch ToBranch { get; set; }
         public int ProuctId { get; set; }
         public string ProuctName { get; set; }
         [Display(Name = "Bar Code")]

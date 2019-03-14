@@ -1217,6 +1217,11 @@ namespace NBL.DAL
                         ProductName = reader["ProductName"].ToString(),
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                        ProductCategory = new ProductCategory
+                        {
+                            ProductCategoryId = Convert.ToInt32(reader["CategoryId"]),
+                            ProductCategoryName = reader["ProductCategoryName"].ToString()
+                        },
                         ProductTypeId = Convert.ToInt32(reader["ProductTypeId"]),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
                         Quantity = Convert.ToInt32(reader["Quantity"]),

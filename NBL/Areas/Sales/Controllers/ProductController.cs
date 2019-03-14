@@ -337,13 +337,6 @@ namespace NBL.Areas.Sales.Controllers
                 //if the file does not exists create the file
                 System.IO.File.Create(filePath).Close();
             }
-            //foreach (var transactionModel in receivesProductList)
-            //{
-            //    var products = _iInventoryManager.GetAllReceiveableProductToBranchByTripId(tripId, branchId)
-            //        .ToList().FindAll(n => n.ProductId == transactionModel.ProductId);
-            //    transactionModel.Quantity = products.Count;
-            //}
-
             return receivesProductList;
         }
 

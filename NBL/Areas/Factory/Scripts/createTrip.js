@@ -111,3 +111,9 @@ function RemoveAll() {
         });
     }
 }
+
+
+function ClearFields() {
+    $("#Requisitiondetails").html("");
+    $("#RequisitionRef").val('');
+}

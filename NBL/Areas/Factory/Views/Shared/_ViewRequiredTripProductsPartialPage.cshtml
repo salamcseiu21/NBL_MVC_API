@@ -9,6 +9,7 @@
     <tr>
        
         <th>Product Name</th>
+        <th>Category</th>
         <th>Quantity
             <input type="hidden" id="total_requisition_qty" value="@Model.Sum(n=>n.Quantity)"/>
         </th>
@@ -20,6 +21,7 @@
         <tr>
 
             <td>@item.Key</td>
+            <td>@item.First().ProductCategory.ProductCategoryName</td>
             <td>@item.Sum(n=>n.Quantity)</td>
         </tr>
     }
@@ -28,6 +30,7 @@
     <tr>
 
         <th>Product Name</th>
+        <th>Category</th>
         <th>Quantity</th>
 
     </tr>
