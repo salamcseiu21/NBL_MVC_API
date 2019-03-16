@@ -13,7 +13,7 @@ namespace NBL.Models.ViewModels.TransferProducts
         public string VehicleNo { get; set; }
         public int CreatedByUserId { get; set; }
         public int RequisitionStatus { get; set; }
-        public int TripStatus { get; set; } 
+        public int TripStatus { get; set; }
         public ICollection<ViewTripModel> TripModels { get; set; }  
     }
 }

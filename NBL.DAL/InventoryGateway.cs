@@ -1100,6 +1100,12 @@ namespace NBL.DAL
 
         private static bool IsRequisitionDeliveredQtyEqual(ICollection<ViewTripModel> modelTripModels, long requisitonId)
         {
+
+            var dq = modelTripModels.ToList().FindAll(n => n.RequisitionId == requisitonId)
+                .Sum(n => n.DeliveryQuantity);
+            var rq = modelTripModels.ToList()
+                .FindAll(n => n.RequisitionId == requisitonId).Sum(n => n.RequisitionQty);
+
             return modelTripModels.ToList().FindAll(n => n.RequisitionId == requisitonId)
                        .Sum(n => n.DeliveryQuantity) == modelTripModels.ToList()
                        .FindAll(n => n.RequisitionId == requisitonId).Sum(n => n.RequisitionQty);
@@ -1136,17 +1142,17 @@ namespace NBL.DAL
             int i = 0;
             foreach (long requisitonId in modelTripModels.Select(n => n.RequisitionId).Distinct())
             {
-                int requisitionStaus = Convert.ToInt32(RequisitionStatus.PartialDelivery);
-                if (IsRequisitionDeliveredQtyEqual(modelTripModels, requisitonId))
-                {
-                    requisitionStaus = Convert.ToInt32(RequisitionStatus.FullDelivery);
-                }
+                
+                //int requisitionStaus = Convert.ToInt32(RequisitionStatus.PartialDelivery);
+                //if (IsRequisitionDeliveredQtyEqual(modelTripModels, requisitonId))
+                //{
+                //    requisitionStaus = Convert.ToInt32(RequisitionStatus.FullDelivery);
+                //}
                 CommandObj.Parameters.Clear();
                 CommandObj.CommandText = "UDSP_SaveTripDetails";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@TripId", tripId);
                 CommandObj.Parameters.AddWithValue("@RequisitionId", requisitonId);
-                CommandObj.Parameters.AddWithValue("@RequisitionStatus", requisitionStaus);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();

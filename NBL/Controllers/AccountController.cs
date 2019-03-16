@@ -328,7 +328,7 @@ namespace NBL.Controllers
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
-                return RedirectToAction("Login");
+                return RedirectToAction("Login","Login");
             }
 
             // Sign in the user with this external login provider if the user already has a login
