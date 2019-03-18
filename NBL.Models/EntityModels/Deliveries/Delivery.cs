@@ -14,6 +14,7 @@ namespace NBL.Models.EntityModels.Deliveries
         public string TransactionRef { get; set; }
         public string InvoiceRef { get; set; }
         public int InvoiceId { get; set; }
+        public bool? IsOwnTransport { get; set; }
         public string Transportation { set; get; }
         public string DriverName { get; set; }
         public string DriverPhone { get; set; }

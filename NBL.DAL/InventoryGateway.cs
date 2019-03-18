@@ -814,11 +814,12 @@ namespace NBL.DAL
                 CommandObj.Parameters.AddWithValue("@InvoiceId",aDelivery.InvoiceId);
                 CommandObj.Parameters.AddWithValue("@InvoiceStatus", invoiceStatus);
                 CommandObj.Parameters.AddWithValue("@OrderStatus", orderStatus);
-                CommandObj.Parameters.AddWithValue("@Transportation", aDelivery.Transportation);
-                CommandObj.Parameters.AddWithValue("@DriverName", aDelivery.DriverName);
-                CommandObj.Parameters.AddWithValue("@DriverPhone", aDelivery.DriverPhone);
+                CommandObj.Parameters.AddWithValue("@IsOwnTransporatoion", aDelivery.IsOwnTransport);
+                CommandObj.Parameters.AddWithValue("@Transportation", aDelivery.Transportation?? "N/A");
+                CommandObj.Parameters.AddWithValue("@DriverName", aDelivery.DriverName?? "N/A");
+                CommandObj.Parameters.AddWithValue("@DriverPhone", aDelivery.DriverPhone ?? "N/A");
                 CommandObj.Parameters.AddWithValue("@TransportationCost", aDelivery.TransportationCost);
-                CommandObj.Parameters.AddWithValue("@VehicleNo", aDelivery.VehicleNo);
+                CommandObj.Parameters.AddWithValue("@VehicleNo", aDelivery.VehicleNo ?? "N/A");
                 CommandObj.Parameters.AddWithValue("@ToBranchId", aDelivery.ToBranchId);
                 CommandObj.Parameters.AddWithValue("@CompanyId", aDelivery.CompanyId);
                 CommandObj.Parameters.AddWithValue("@UserId", aDelivery.DeliveredByUserId);

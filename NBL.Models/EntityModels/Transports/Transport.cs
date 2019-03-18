@@ -17,7 +17,7 @@ namespace NBL.Models.EntityModels.Transports
 
         public string GetFullInformation()
         {
-            return $"<strong>Transporation:</strong> {Transportation} <br/><strong>Driver Name:</strong> {DriverName} <br/><strong>Driver Phone:</strong> {DriverPhone} <br/><strong>Veichel No:</strong> {VehicleNo} <br/><strong>Cost:</strong> {TransportationCost}";
+            return $"<strong>Transporation:</strong> {Transportation} <br/><strong>Driver Name:</strong> {DriverName} <br/><strong>Driver Phone:</strong> {DriverPhone} <br/><strong>Vehicle No:</strong> {VehicleNo} <br/><strong>Cost:</strong> {TransportationCost}";
         }
     }
 }

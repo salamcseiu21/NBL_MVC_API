@@ -73,6 +73,9 @@ namespace NBL.Areas.Manager.Controllers
         {
             try
             {
+                var date=Convert.ToDateTime(collection["DeliveryDate"]).Date;
+                var transport = collection["ownTransport"];
+                bool isOwnTransport =transport!=null;
                 int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
                 int invoiceId = Convert.ToInt32(collection["InvoiceId"]);
                 var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(invoiceId);
@@ -93,6 +96,7 @@ namespace NBL.Areas.Manager.Controllers
 
                 var aDelivery = new Delivery
                 {
+                    IsOwnTransport =isOwnTransport,
                     TransactionRef = invoice.TransactionRef,
                     InvoiceRef = invoice.InvoiceRef,
                     DeliveredByUserId = deliverebyUserId,
