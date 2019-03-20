@@ -254,6 +254,8 @@ namespace NBL.DAL
         {
             try
             {
+
+               
                 CommandObj.CommandText = "spAddNewEmployee";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@EmployeeTypeId", anEmployee.EmployeeTypeId);
@@ -266,11 +268,11 @@ namespace NBL.DAL
                 CommandObj.Parameters.AddWithValue("@PresentAddress", anEmployee.PresentAddress);
                 CommandObj.Parameters.AddWithValue("@EmailAddress", anEmployee.Email);
                 CommandObj.Parameters.AddWithValue("@Phone", anEmployee.Phone);
-                CommandObj.Parameters.AddWithValue("@AlternatePhone", anEmployee.AlternatePhone?? "Null");
-                CommandObj.Parameters.AddWithValue("@EmployeeImage", anEmployee.EmployeeImage ?? "Null");
-                CommandObj.Parameters.AddWithValue("@EmployeeSignature", anEmployee.EmployeeSignature ?? "Null");
-                CommandObj.Parameters.AddWithValue("@EmployeeNationalIdNo", anEmployee.NationalIdNo ?? "Null");
-                CommandObj.Parameters.AddWithValue("@SubSubSubAccountCode", anEmployee.SubSubSubAccountCode);
+                CommandObj.Parameters.AddWithValue("@AlternatePhone", anEmployee.AlternatePhone ?? (object)DBNull.Value);
+                CommandObj.Parameters.AddWithValue("@EmployeeImage", anEmployee.EmployeeImage ??(object)DBNull.Value);
+                CommandObj.Parameters.AddWithValue("@EmployeeSignature", anEmployee.EmployeeSignature?? (object)DBNull.Value);
+                CommandObj.Parameters.AddWithValue("@EmployeeNationalIdNo", anEmployee.NationalIdNo ?? (object)DBNull.Value);
+                CommandObj.Parameters.AddWithValue("@SubSubSubAccountCode", anEmployee.SubSubSubAccountCode ?? (object)DBNull.Value);
                 CommandObj.Parameters.AddWithValue("@UserId", anEmployee.UserId);
                 CommandObj.Parameters.AddWithValue("@JoiningDate", anEmployee.JoiningDate);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);

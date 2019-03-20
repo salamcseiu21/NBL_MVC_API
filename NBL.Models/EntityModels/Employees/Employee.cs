@@ -30,7 +30,7 @@ namespace NBL.Models.EntityModels.Employees
         public string PermanentAddress { get; set; }
         public string Phone { get; set; }
         [Display(Name = "Alternate Phone")]
-        public string AlternatePhone { get; set; }
+        public string  AlternatePhone { get; set; }
         public string Email { get; set; }
         public DateTime DoB { get; set; }
         [Display(Name = "Joining Date")]
