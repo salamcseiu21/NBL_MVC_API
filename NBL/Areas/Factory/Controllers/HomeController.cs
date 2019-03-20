@@ -23,7 +23,7 @@ namespace NBL.Areas.Factory.Controllers
             Session.Remove("Branch");
             var model=new FactorySummaryModel
             {
-               StockQuantity = _iInventoryManager.GetStockProductInFactory().Count,
+                StockQuantity = 0,
                 IssuedQuantity = 0,
                 ReturnedQuantity = 0 
             };

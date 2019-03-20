@@ -73,7 +73,6 @@ namespace NBL.Areas.Manager.Controllers
         {
             try
             {
-                var date=Convert.ToDateTime(collection["DeliveryDate"]).Date;
                 var transport = collection["ownTransport"];
                 bool isOwnTransport =transport!=null;
                 int deliverebyUserId = ((ViewUser)Session["user"]).UserId;

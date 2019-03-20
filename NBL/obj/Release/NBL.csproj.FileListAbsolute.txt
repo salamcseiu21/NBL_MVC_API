@@ -117,3 +117,5 @@ E:\API\NBL\NBL\bin\WebApiContrib.Formatting.Jsonp.dll
 E:\API\NBL\NBL\bin\WebApiContrib.Formatting.Jsonp.pdb
 E:\API\NBL\NBL\bin\JQDT.dll
 E:\API\NBL\NBL\bin\JQDT.MVC.dll
+E:\API\NBL\NBL\bin\OnBarcode.Barcode.BarcodeScanner.dll
+E:\API\NBL\NBL\bin\ReportViewerForMvc.dll

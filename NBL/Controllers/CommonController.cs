@@ -198,7 +198,7 @@ namespace NBL.Controllers
         public JsonResult ProductNameAutoComplete(string prefix)
         {
 
-            var products = _iProductManager.GetAll().ToList();
+            var products = _iProductManager.GetAllProducts().ToList();
             var productList = (from c in products
                 where c.ProductName.ToLower().Contains(prefix.ToLower())
                 select new
@@ -215,9 +215,9 @@ namespace NBL.Controllers
         public JsonResult BranchAutoComplete(string prefix)
         {
 
-            int corporateBarachIndex = _iBranchManager.GetAllBranches().ToList().FindIndex(n => n.BranchName.Contains("Corporate"));
+           // int corporateBarachIndex = _iBranchManager.GetAllBranches().ToList().FindIndex(n => n.BranchName.Contains("Corporate"));
             var branches = _iBranchManager.GetAllBranches().ToList();
-            branches.RemoveAt(corporateBarachIndex);
+            //branches.RemoveAt(corporateBarachIndex);
             var branchList = (from c in branches.ToList()
                               where c.BranchName.ToLower().Contains(prefix.ToLower())
                               select new

@@ -126,7 +126,7 @@ namespace NBL.Areas.Editor.Controllers
                 }
                 else
                 {
-                    client.ClientImage = "";
+                    client.ClientImage = "Images/Client/Photos/921dce2a.jpg";
                 }
                 if (clientSignature != null)
                 {
@@ -144,13 +144,14 @@ namespace NBL.Areas.Editor.Controllers
                 }
                 else
                 {
-                    client.ClientSignature = "";
+                    client.ClientSignature = "Images/Client/Signatures/3f87d50f.png";
                 }
                 bool result = _iClientManager.Add(client);
                 if (result)
                 {
                     ViewBag.Message = "Saved Successfully!";
                 }
+                
                 ViewBag.RegionId = new SelectList(_iRegionManager.GetAll(), "RegionId", "RegionName");
                 ViewBag.ClientTypeId = new SelectList(_iCommonManager.GetAllClientType(), "ClientTypeId", "ClientTypeName");
                 ViewBag.DistrictId = new SelectList(new List<District>(), "DistrictId", "DistrictName");

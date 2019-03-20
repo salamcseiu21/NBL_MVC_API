@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Products;
+using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Products;
 
 namespace NBL.Areas.Editor.Controllers
 {
@@ -77,6 +79,40 @@ namespace NBL.Areas.Editor.Controllers
                 ViewBag.Types = types;
                 ViewBag.Companies = companies;
                 return View(categories);
+            }
+        }
+
+        public ActionResult AddProductDetails()
+        {
+           
+            ViewBag.ProductId = new SelectList(_iProductManager.GetAllProducts(), "ProductId", "ProductName");
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddProductDetails(ViewCreateProductDetailsModel model)
+        {
+            try
+            {
+                var user = (ViewUser) Session["user"];
+                model.UpdatedByUserId = user.UserId;
+                bool result = _iProductManager.SaveProductDetails(model);
+                if (result)
+                {
+                    TempData["Result"] = "Save Successfully!";
+                    ModelState.Clear();
+                }
+                else
+                {
+                    TempData["Result"] = "Failed to  Save";
+                }
+                ViewBag.ProductId = new SelectList(_iProductManager.GetAllProducts(), "ProductId", "ProductName");
+                return View();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
     }

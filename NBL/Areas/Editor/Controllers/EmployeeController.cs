@@ -34,7 +34,7 @@ namespace NBL.Areas.Editor.Controllers
             ViewBag.EmployeeTypeId = new SelectList(_iEmployeeTypeManager.GetAll(), "EmployeeTypeId", "EmployeeTypeName");
             ViewBag.BranchId=new SelectList(_iBranchManager.GetAllBranches(), "BranchId","BranchName");
             ViewBag.DepartmentId =new SelectList(_iDepartmentManager.GetAll(), "DepartmentId", "DepartmentName");
-            ViewBag.DesignationId = new SelectList(new List<Designation>(), "DesignationId", "DesignationName");
+            ViewBag.DesignationId = new SelectList(_iDesignationManager.GetAll(), "DesignationId", "DesignationName");
             return View();
         }
 
@@ -72,13 +72,17 @@ namespace NBL.Areas.Editor.Controllers
                 {
                     TempData["Message"] = "Saved Successfully!";
                 }
-                TempData["Message"] = "Failed to Save";
+                else
+                {
+                    TempData["Message"] = "Failed to Save";
+                }
+                
 
 
                 ViewBag.EmployeeTypeId = new SelectList(_iEmployeeTypeManager.GetAll(), "EmployeeTypeId", "EmployeeTypeName");
                 ViewBag.BranchId = new SelectList(_iBranchManager.GetAllBranches(), "BranchId", "BranchName");
                 ViewBag.DepartmentId = new SelectList(_iDepartmentManager.GetAll(), "DepartmentId", "DepartmentName");
-                ViewBag.DesignationId = new SelectList(new List<Designation>(), "DesignationId", "DesignationName");
+                ViewBag.DesignationId = new SelectList(_iDesignationManager.GetAll(), "DesignationId", "DesignationName");
                 return View();
             }
             catch (Exception e)
@@ -86,7 +90,7 @@ namespace NBL.Areas.Editor.Controllers
                 ViewBag.EmployeeTypeId = new SelectList(_iEmployeeTypeManager.GetAll(), "EmployeeTypeId", "EmployeeTypeName");
                 ViewBag.BranchId = new SelectList(_iBranchManager.GetAllBranches(), "BranchId", "BranchName");
                 ViewBag.DepartmentId = new SelectList(_iDepartmentManager.GetAll(), "DepartmentId", "DepartmentName");
-                ViewBag.DesignationId = new SelectList(new List<Designation>(), "DesignationId", "DesignationName");
+                ViewBag.DesignationId = new SelectList(_iDesignationManager.GetAll(), "DesignationId", "DesignationName");
                 return View();
               }
         }

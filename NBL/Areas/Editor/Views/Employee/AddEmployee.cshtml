@@ -166,7 +166,7 @@
     </form>
     
 
-    <div style="border: 1px solid;padding: 10px">
+    @*<div style="border: 1px solid;padding: 10px">
         <table id="table_employee_list" class="display" style="border:1px solid black">
             <caption class="text-center text-green" style="font-weight:bold;">Employee List</caption>
             <thead>
@@ -199,7 +199,7 @@
             </tr>
             </tfoot>
         </table>
-    </div>
+    </div>*@
 </section>
 @section Scripts{
     <script>
@@ -210,35 +210,7 @@
         });
     </script>
     @* Cascading dropdons implementations *@
-    <script>
 
-        $("#DepartmentId").change(function () {
-            var deptId = $("#DepartmentId").val();
-            $("#DesignationId").empty();
-
-            $("#DesignationId").append('<option value="">--Select--</option>');
-
-            var json = { departmentId: deptId };
-
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("GetAllDesignationByDepartmentId", "Common", new { area = "" })',
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(json),
-                success: function (data) {
-                    $.each(data, function (key, value) {
-                        //alert(key);
-                        $("#DesignationId").append('<option value=' + value.DesignationId + '>' + value.DesignationName + '</option>');
-
-                    });
-                }
-            });
-
-        });
-
-
-
-    </script>
     @*Jquery Validation*@
     <script>
         $("#addNewEmployeeForm").validate({
@@ -249,11 +221,11 @@
             DepartmentId: "required",
             DesignationId: "required",
             BranchId: "required",
-            EmployeeImage: "required",
-            EmployeeSignature: "required",
+            //EmployeeImage: "required",
+            //EmployeeSignature: "required",
             Phone: "required",
-            AlternatePhone: "required",
-            NationalIdNo: "required",
+            //AlternatePhone: "required",
+            //NationalIdNo: "required",
             Email:{
                        required: true,
                        email: true
@@ -268,11 +240,11 @@
             DepartmentId: "*",
             DesignationId: "*",
             BranchId: "*",
-            EmployeeImage: "*",
-            EmployeeSignature: "*",
+            //EmployeeImage: "*",
+            //EmployeeSignature: "*",
             Phone: "*",
-            AlternatePhone: "*",
-            NationalIdNo: "*",
+            //AlternatePhone: "*",
+            //NationalIdNo: "*",
             Email : {
                 required: "*",
                 email:"Please! Enter a valid Email Address."
