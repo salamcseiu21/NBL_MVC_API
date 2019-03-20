@@ -22246,16 +22246,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/23/2012 15:23:58</publishTime>
     </File>
     <File Include="bin/NBL.BLL.dll">
-      <publishTime>03/20/2019 15:31:40</publishTime>
+      <publishTime>03/20/2019 16:22:42</publishTime>
     </File>
     <File Include="bin/NBL.DAL.dll">
-      <publishTime>03/20/2019 15:31:40</publishTime>
+      <publishTime>03/20/2019 16:22:42</publishTime>
     </File>
     <File Include="bin/NBL.dll">
-      <publishTime>03/20/2019 15:31:47</publishTime>
+      <publishTime>03/20/2019 16:22:49</publishTime>
     </File>
     <File Include="bin/NBL.Models.dll">
-      <publishTime>03/20/2019 15:31:39</publishTime>
+      <publishTime>03/20/2019 16:22:41</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>08/03/2014 20:33:56</publishTime>
@@ -23149,7 +23149,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/13/2019 14:55:43</publishTime>
     </File>
     <File Include="Views/Shared/_UserLayoutPage.cshtml">
-      <publishTime>03/20/2019 14:15:35</publishTime>
+      <publishTime>03/20/2019 16:16:41</publishTime>
     </File>
     <File Include="Views/Shared/_ViewAllSalesPartialPage.cshtml">
       <publishTime>01/13/2019 15:00:47</publishTime>
