@@ -11,6 +11,7 @@ using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Products;
 using NBL.Models.ViewModels.Requisitions;
 
 namespace NBL.DAL.Contracts
@@ -53,6 +54,8 @@ namespace NBL.DAL.Contracts
         int SaveMonthlyRequisitionInfo(MonthlyRequisitionModel model);
         ICollection<ViewMonthlyRequisitionModel> GetMonthlyRequsitions();
         int GetMaxMonnthlyRequisitionNoOfCurrentYear();
-        ICollection<RequisitionItem> GetMonthlyRequsitionItemsById(long requisitionId); 
+        ICollection<RequisitionItem> GetMonthlyRequsitionItemsById(long requisitionId);
+        IEnumerable<Product> GetAllProducts();
+        int SaveProductDetails(ViewCreateProductDetailsModel model);
     }
 }

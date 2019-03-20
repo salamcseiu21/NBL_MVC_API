@@ -16,7 +16,7 @@
             <tr>
                 <th>Designation Code</th>
                 <th>Designation Name</th>
-                <th>Department</th>
+              
                 <th class="text-center">Action</th>
             </tr>
         </thead>
@@ -28,7 +28,7 @@
                 <tr>
                     <td style="font-weight: bold">@item.DesignationCode</td>
                     <td style="font-weight: bold">@item.DesignationName</td>
-                    <td>@Html.Raw(item.Department.GetFullInformation())</td>
+                   
                     <td class="text-center">
                         @Html.ActionLink(" Edit", "Edit", new { id = item.DesignationId }, new { @class = "fa fa-edit" })
                     </td>
@@ -40,7 +40,7 @@
             <tr>
                 <th>Designation Code</th>
                 <th>Designation Name</th>
-                <th>Department</th>
+               
                 <th class="text-center">Action</th>
             </tr>
         </tfoot>

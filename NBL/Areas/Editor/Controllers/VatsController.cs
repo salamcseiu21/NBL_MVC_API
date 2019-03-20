@@ -1,10 +1,12 @@
 ﻿
+using System;
 using System.Web.Mvc;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.VatDiscounts;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Products;
 
 namespace NBL.Areas.Editor.Controllers
 {
@@ -12,15 +14,31 @@ namespace NBL.Areas.Editor.Controllers
     public class VatsController : Controller
     {
         private readonly IVatManager _iVatManager;
+        private readonly IProductManager _iProductManager;
 
-        public VatsController(IVatManager iVatManager)
+        public VatsController(IVatManager iVatManager,IProductManager iProductManager)
         {
             _iVatManager = iVatManager;
+            _iProductManager = iProductManager;
         }
       
         [HttpGet]
         public ActionResult AddVat()
         {
+            var products = _iProductManager.GetAllProducts();
+            foreach (var product in products)
+            {
+                var model = new Vat
+                {
+                    VatAmount = 250,
+                    UpdateByUserId = 6,
+                    UpdateDate = DateTime.Now,
+                    ProductId = product.ProductId
+                };
+                _iVatManager.Add(model);
+
+            }
+
             return View();
         }
         [HttpPost]

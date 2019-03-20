@@ -20,12 +20,14 @@ namespace NBL.Controllers
         private readonly ICompanyManager _iCompanyManager;
         private readonly ICommonManager _iCommonManager;
         private readonly IBranchManager _iBranchManager;
+        private readonly IEmployeeManager _iEmployeeManager;
 
-        public LoginController(IBranchManager iBranchManager,ICompanyManager iCompanyManager,ICommonManager iCommonManager)
+        public LoginController(IBranchManager iBranchManager,ICompanyManager iCompanyManager,ICommonManager iCommonManager,IEmployeeManager iEmployeeManager)
         {
             _iBranchManager = iBranchManager;
             _iCompanyManager = iCompanyManager;
             _iCommonManager = iCommonManager;
+            _iEmployeeManager = iEmployeeManager;
         }
         // GET: LogIn
         public ActionResult LogIn()
@@ -51,6 +53,19 @@ namespace NBL.Controllers
                 Session["Company"] = company;
                 FormsAuthentication.SetAuthCookie(user.UserName, false);
                 var anUser = _userManager.GetUserByUserNameAndPassword(user.UserName, user.Password);
+                var employee = _iEmployeeManager.GetEmployeeById(anUser.EmployeeId);
+                if (employee.EmployeeName!= null)
+                {
+                    anUser.EmployeeImage = employee.EmployeeImage;
+                    anUser.DesignationName = employee.DesignationName;
+                    anUser.EmployeeName = employee.EmployeeName;
+                }
+                else
+                {
+                    anUser.EmployeeImage = "Images/login_image.png";
+                    anUser.DesignationName = "";
+                    anUser.EmployeeName = userName;
+                }
                 //anUser.IpAddress = GetLocalIPAddress();
                 //anUser.MacAddress = GetMacAddress().ToString();
                 anUser.LogInDateTime = DateTime.Now;

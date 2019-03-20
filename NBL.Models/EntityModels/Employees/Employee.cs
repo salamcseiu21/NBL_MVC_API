@@ -44,7 +44,7 @@ namespace NBL.Models.EntityModels.Employees
         public string EmployeeSignature { get; set; } 
         public string Notes { get; set; }
         [Display(Name = "NID")]
-        [Required]
+       
         public string NationalIdNo { get; set; }
         public int UserId { get; set; }
         public Department Department { get; set; }

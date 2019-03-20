@@ -21,7 +21,7 @@ namespace NBL.Models.EntityModels.Clients
         [Required(ErrorMessage = "Client Name is required")]
         [Display(Name = "Client Name")]
         public string ClientName { get; set; }
-        [Required(ErrorMessage = "Client Address is required")]
+     
         [Display(Name = "NID")]
         public string NationalIdNo { get; set; }
         [Display(Name = "TIN")]
@@ -31,10 +31,10 @@ namespace NBL.Models.EntityModels.Clients
         public string Address { get; set; }
         [Required(ErrorMessage = "Client Phone is required")]
         public string Phone { get; set; }
-        [Required(ErrorMessage = "Client Alternate Phone is required")]
+    
         [Display(Name ="Alternate Phone")]
         public string AlternatePhone { get; set; }
-        [Required]
+        
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public string Fax { get; set; }
@@ -49,10 +49,10 @@ namespace NBL.Models.EntityModels.Clients
         [Required]
         public string Gender { get; set; }
         [Display(Name = "Image")]
-        [Required]
+      
         public string ClientImage { get; set; }
         [Display(Name = "Signature")]
-        [Required]
+       
         public string ClientSignature { get; set; }
 
         [Display(Name = "Document")]
@@ -84,8 +84,6 @@ namespace NBL.Models.EntityModels.Clients
         public int BranchId { get; set; }
         public int CompanyId { get; set; }
         public string Active { get; set; }
-        [Display(Name = "Credit Limit")]
-        [Required]
         public decimal CreditLimit { get; set; }
         public decimal RemainingCredit { get; set; } 
         public int MaxCreditDay { get; set; }

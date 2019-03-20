@@ -34,5 +34,6 @@ namespace NBL.DAL.Contracts
        IEnumerable<ViewReferenceAccountModel> GetAllSubReferenceAccounts();
        IEnumerable<Status> GetAllStatus();
        DateTime GenerateDateFromBarCode(string scannedBarCode);
+       ICollection<string> GetAllTestBarcode();
    }
 }

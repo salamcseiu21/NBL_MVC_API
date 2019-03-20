@@ -6,6 +6,7 @@ using System.Linq;
 using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Banks;
+using NBL.Models.EntityModels.BarCodes;
 using NBL.Models.EntityModels.Branches;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Masters;
@@ -735,6 +736,43 @@ CommandObj.Parameters.Clear();
                 CommandObj.Dispose();
                 CommandObj.Parameters.Clear();
             }
+        }
+
+        public ICollection<string> GetAllTestBarcode()
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetAllTestBarcode";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                List<string> barcodeList = new List<string>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    barcodeList.Add(reader["BarCode"].ToString());
+                }
+                reader.Close();
+                return barcodeList;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect barcodes", exception.InnerException);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                ConnectionObj.Close();
+
+            }
+
+        }
+
+        public ICollection<ProductionDateCode> GetAllProductionDateCode()
+        {
+
+            return null;
         }
     }
 }

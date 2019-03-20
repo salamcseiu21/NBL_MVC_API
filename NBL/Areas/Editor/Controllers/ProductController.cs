@@ -5,7 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.Models;
+using NBL.Models.EntityModels.MobileBankings;
 using NBL.Models.EntityModels.Products;
+using NBL.Models.EntityModels.VatDiscounts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Products;
 
@@ -18,6 +20,7 @@ namespace NBL.Areas.Editor.Controllers
         private readonly ICommonManager _iCommonManager;
         private readonly ICompanyManager _iCompanyManager;
         private readonly IProductManager _iProductManager;
+
 
         public ProductController(ICompanyManager iCompanyManager,ICommonManager iCommonManager,IProductManager iProductManager)
         {
@@ -84,7 +87,8 @@ namespace NBL.Areas.Editor.Controllers
 
         public ActionResult AddProductDetails()
         {
-           
+            
+
             ViewBag.ProductId = new SelectList(_iProductManager.GetAllProducts(), "ProductId", "ProductName");
             return View();
         }

@@ -26,12 +26,6 @@ namespace NBL.DAL
                     DesignationId = Convert.ToInt32(reader["DesignationId"]),
                     DesignationName = reader["DesignationName"].ToString(),
                     DesignationCode = reader["DesignationCode"].ToString(),
-                    DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
-                    Department = new Department
-                    {
-                        DepartmentCode = reader["DepartmentCode"].ToString(),
-                        DepartmentName = reader["DepartmentName"].ToString()
-                    }
                 });
             }
             reader.Close();
@@ -64,12 +58,8 @@ CommandObj.Parameters.Clear();
 
                     aDesignation.DesignationId = Convert.ToInt32(reader["DesignationId"]);
                     aDesignation.DesignationCode = reader["DesignationCode"].ToString();
-                    aDesignation.DepartmentId = Convert.ToInt32(reader["DepartmentId"]);
-                    aDesignation.Department = new Department
-                    {
-                        DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
-                        DepartmentName = reader["DesignationName"].ToString()
-                    };
+                    aDesignation.DesignationName = reader["DesignationName"].ToString();
+                    
 
                 }
                 reader.Close();
@@ -105,13 +95,6 @@ CommandObj.Parameters.Clear();
                         DesignationId = Convert.ToInt32(reader["DesignationId"]),
                         DesignationCode = reader["DesignationCode"].ToString(),
                         DesignationName = reader["DesignationName"].ToString(),
-                        DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
-                        Department = new Department
-                        {
-                            DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
-                            DepartmentName = reader["DesignationName"].ToString()
-                        }
-
 
                    }; 
                 }
@@ -137,7 +120,6 @@ CommandObj.Parameters.Clear();
             {
                 CommandObj.CommandText = "UDSP_UpdateDesignationInformation";
                 CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@DepartmentId", aDesignation.DepartmentId);
                 CommandObj.Parameters.AddWithValue("@DesignationCode", aDesignation.DesignationCode);
                 CommandObj.Parameters.AddWithValue("@DesignationName", aDesignation.DesignationName);
                 CommandObj.Parameters.AddWithValue("@DesignationId", aDesignation.DesignationId);
@@ -166,7 +148,6 @@ CommandObj.Parameters.Clear();
             {
                 CommandObj.CommandText = "spAddNewDesignation";
                 CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@DepartmentId", aDesignation.DepartmentId);
                 CommandObj.Parameters.AddWithValue("@DesignationCode", aDesignation.DesignationCode);
                 CommandObj.Parameters.AddWithValue("@DesignationName", aDesignation.DesignationName);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);

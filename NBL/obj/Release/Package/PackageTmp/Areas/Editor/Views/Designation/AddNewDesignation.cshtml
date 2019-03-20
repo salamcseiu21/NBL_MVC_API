@@ -24,14 +24,6 @@
               </div>
               <hr />
               <div class="form-group">
-                  @Html.LabelFor(model=>model.DepartmentId,new {@class="control-label col-md-2"})
-                  <div class="col-md-10">
-                      @Html.DropDownListFor(model=>model.DepartmentId,null,"--Select--",new {@class="form-control"})
-                     @Html.ValidationMessageFor(model=>model.DepartmentId,"",new {@class="text-danger"})
-
-                  </div>
-              </div>
-              <div class="form-group">
                   @Html.LabelFor(model=>model.DesignationCode,new { @class = "control-label col-md-2" })
                   <div class="col-md-10">
                       @Html.TextBoxFor(model=>model.DesignationCode,new { placeholder = "Enter designation code" ,@class="form-control", onblur = "clearFileds()" })

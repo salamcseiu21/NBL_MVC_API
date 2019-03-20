@@ -22,7 +22,7 @@ namespace NBL.Areas.Editor.Controllers
 
         public ActionResult AddNewDesignation() 
         {
-            ViewBag.DepartmentId = new SelectList(_iDepartmentManager.GetAll(), "DepartmentId", "DepartmentName");
+           
             return View();
         }
         [HttpPost]
@@ -45,7 +45,7 @@ namespace NBL.Areas.Editor.Controllers
         public ActionResult Edit(int id)
         {
           
-            ViewBag.DepartmentId = new SelectList(_iDepartmentManager.GetAll(), "DepartmentId", "DepartmentName");
+           
             Designation aDesignation = _iDesignationManager.GetById(id);
             return View(aDesignation);
         }
@@ -56,7 +56,6 @@ namespace NBL.Areas.Editor.Controllers
             if (ModelState.IsValid)
             {
                 Designation aDesignation = _iDesignationManager.GetById(id);
-                aDesignation.DepartmentId = model.DepartmentId;
                 aDesignation.DesignationName = model.DesignationName;
                 aDesignation.DesignationCode = model.DesignationCode;
                 if (_iDesignationManager.Update(aDesignation))

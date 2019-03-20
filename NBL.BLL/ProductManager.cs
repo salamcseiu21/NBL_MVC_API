@@ -13,6 +13,7 @@ using NBL.Models.Validators;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Products;
 using NBL.Models.ViewModels.Requisitions;
 
 namespace NBL.BLL
@@ -33,6 +34,12 @@ namespace NBL.BLL
            return _iProductGateway.GetAll().ToList();
 
         }
+
+        public IEnumerable<Product> GetAllProducts()
+        {
+            return _iProductGateway.GetAllProducts();
+        }
+
         public IEnumerable<ViewProduct> GetAllProductByBranchAndCompanyId(int branchId, int companyId)
         {
           return  _iProductGateway.GetAllProductByBranchAndCompanyId(branchId,companyId);
@@ -305,6 +312,12 @@ namespace NBL.BLL
         public ICollection<RequisitionItem> GetMonthlyRequsitionItemsById(long requisitionId)
         {
             return _iProductGateway.GetMonthlyRequsitionItemsById(requisitionId);
+        }
+
+        public bool SaveProductDetails(ViewCreateProductDetailsModel model)
+        {
+            int rowAffected = _iProductGateway.SaveProductDetails(model);
+            return rowAffected > 0;
         }
     }
 }

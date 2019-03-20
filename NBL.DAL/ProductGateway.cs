@@ -14,6 +14,7 @@ using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Products;
 using NBL.Models.ViewModels.Requisitions;
 
 namespace NBL.DAL
@@ -1404,6 +1405,72 @@ namespace NBL.DAL
                 CommandObj.Parameters.Clear();
                 CommandObj.Dispose();
                 ConnectionObj.Close();
+            }
+        }
+
+        public IEnumerable<Product> GetAllProducts()
+        {
+            try
+            {
+                CommandObj.CommandText = "spGetAllProductList";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<Product> products = new List<Product>();
+                while (reader.Read())
+                {
+                    products.Add(new Product
+                    {
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductName = reader["ProductName"].ToString(),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                        CompanyId = Convert.ToInt32(reader["CompanyId"])
+                    });
+                }
+
+                reader.Close();
+                return products;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Colud not collect product list", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public int SaveProductDetails(ViewCreateProductDetailsModel model)
+        {
+            try
+            {
+                CommandObj.CommandText = "spSaveProductDetails";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                CommandObj.Parameters.AddWithValue("@ProductId", model.ProductId);
+                CommandObj.Parameters.AddWithValue("@UnitPrice", model.UnitPrice);
+                CommandObj.Parameters.AddWithValue("@UserId", model.UpdatedByUserId);
+                CommandObj.Parameters.AddWithValue("@UpdatedAt", model.UpdatedDate);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                var i = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                return i;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Colud not save product details", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
             }
         }
     }

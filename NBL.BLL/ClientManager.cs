@@ -23,26 +23,34 @@ namespace NBL.BLL
         public bool Add(Client client)
         {
 
-            bool isEmailValid = CheckEmail(client.Email);
-            if (!isEmailValid) return false;
-            bool isUnique = IsEmailAddressUnique(client.Email);
-            if (!isUnique) return false;
-            string acountPrefix = "33050";
-            switch (client.ClientTypeId)
+            if (client.Email != "")
             {
-                case 1:
-                    acountPrefix += "4";
-                    break;
-                case 2:
-                    acountPrefix += "5";
-                    break;
-                case 3: acountPrefix += "3";
-                    break;
+                bool isEmailValid = CheckEmail(client.Email);
+                if (!isEmailValid) return false;
+                bool isUnique = IsEmailAddressUnique(client.Email);
+                if (!isUnique) return false;
+               
             }
-            var lastClientNo = _iClientGateway.GetMaxSerialNoOfClientByAccountPrefix(acountPrefix);
-            var accountCode = Generator.GenerateAccountCode(acountPrefix, lastClientNo);
-            client.SubSubAccountCode = acountPrefix;
-            client.SubSubSubAccountCode = accountCode;
+            else
+            {
+                string acountPrefix = "33050";
+                switch (client.ClientTypeId)
+                {
+                    case 1:
+                        acountPrefix += "4";
+                        break;
+                    case 2:
+                        acountPrefix += "5";
+                        break;
+                    case 3:
+                        acountPrefix += "3";
+                        break;
+                }
+                var lastClientNo = _iClientGateway.GetMaxSerialNoOfClientByAccountPrefix(acountPrefix);
+                var accountCode = Generator.GenerateAccountCode(acountPrefix, lastClientNo);
+                client.SubSubAccountCode = acountPrefix;
+                client.SubSubSubAccountCode = accountCode;
+            }
             return _iClientGateway.Add(client)>0;
             
         }

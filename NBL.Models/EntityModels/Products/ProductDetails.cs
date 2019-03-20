@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace NBL.Models.EntityModels.Products
@@ -18,5 +19,6 @@ namespace NBL.Models.EntityModels.Products
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal DealerPrice { get; set; }
+        public ICollection<Product> Products { get; set; }  
     }
 }

@@ -83,6 +83,7 @@
     <Compile Include="AutoMapper\DomainProfile.cs" />
     <Compile Include="EntityModels\Banks\Bank.cs" />
     <Compile Include="EntityModels\Banks\BankBranch.cs" />
+    <Compile Include="EntityModels\BarCodes\ProductionDateCode.cs" />
     <Compile Include="EntityModels\Branches\Branch.cs" />
     <Compile Include="Calculator.cs" />
     <Compile Include="ChartModel.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="EntityModels\Requisitions\MonthlyRequisitionModel.cs" />
     <Compile Include="EntityModels\Requisitions\RequisitionItem.cs" />
     <Compile Include="ViewModels\Orders\TempOrderedProduct.cs" />
+    <Compile Include="ViewModels\Products\ViewCreateProductDetailsModel.cs" />
     <Compile Include="ViewModels\Requisitions\ViewMonthlyRequisitionModel.cs" />
     <Compile Include="ViewModels\Requisitions\ViewRequisitionModel.cs" />
     <Compile Include="EntityModels\Requisitions\RequisitionModel.cs" />

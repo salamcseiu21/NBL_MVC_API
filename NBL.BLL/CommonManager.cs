@@ -116,5 +116,10 @@ namespace NBL.BLL
        {
            return _iCommonGateway.GenerateDateFromBarCode(scannedBarCode);
        }
+
+       public ICollection<string> GetAllTestBarcode()
+       {
+           return _iCommonGateway.GetAllTestBarcode();
+       }
    }
 }

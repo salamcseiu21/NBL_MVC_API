@@ -6,6 +6,7 @@ using NBL.Models.EntityModels.TransferProducts;
 using NBL.Models.ViewModels;
 using NBL.Models.ViewModels.Deliveries;
 using NBL.Models.ViewModels.Productions;
+using NBL.Models.ViewModels.Products;
 using NBL.Models.ViewModels.Requisitions;
 
 namespace NBL.BLL.Contracts
@@ -13,6 +14,7 @@ namespace NBL.BLL.Contracts
     public interface IProductManager
     {
         IEnumerable<Product> GetAll();
+        IEnumerable<Product> GetAllProducts(); 
         IEnumerable<ViewProduct> GetAllProductByBranchAndCompanyId(int branchId, int companyId);
         int GetProductMaxSerialNo();
         IEnumerable<TransferIssue> GetDeliverableTransferIssueList();
@@ -45,5 +47,6 @@ namespace NBL.BLL.Contracts
         bool SaveMonthlyRequisitionInfo(MonthlyRequisitionModel model);
         ICollection<ViewMonthlyRequisitionModel> GetMonthlyRequsitions();
         ICollection<RequisitionItem> GetMonthlyRequsitionItemsById(long requisitionId);
+        bool SaveProductDetails(ViewCreateProductDetailsModel model);
     }
 }

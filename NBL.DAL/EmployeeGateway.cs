@@ -266,10 +266,10 @@ namespace NBL.DAL
                 CommandObj.Parameters.AddWithValue("@PresentAddress", anEmployee.PresentAddress);
                 CommandObj.Parameters.AddWithValue("@EmailAddress", anEmployee.Email);
                 CommandObj.Parameters.AddWithValue("@Phone", anEmployee.Phone);
-                CommandObj.Parameters.AddWithValue("@AlternatePhone", anEmployee.AlternatePhone);
-                CommandObj.Parameters.AddWithValue("@EmployeeImage", anEmployee.EmployeeImage);
-                CommandObj.Parameters.AddWithValue("@EmployeeSignature", anEmployee.EmployeeSignature);
-                CommandObj.Parameters.AddWithValue("@EmployeeNationalIdNo", anEmployee.NationalIdNo);
+                CommandObj.Parameters.AddWithValue("@AlternatePhone", anEmployee.AlternatePhone?? "Null");
+                CommandObj.Parameters.AddWithValue("@EmployeeImage", anEmployee.EmployeeImage ?? "Null");
+                CommandObj.Parameters.AddWithValue("@EmployeeSignature", anEmployee.EmployeeSignature ?? "Null");
+                CommandObj.Parameters.AddWithValue("@EmployeeNationalIdNo", anEmployee.NationalIdNo ?? "Null");
                 CommandObj.Parameters.AddWithValue("@SubSubSubAccountCode", anEmployee.SubSubSubAccountCode);
                 CommandObj.Parameters.AddWithValue("@UserId", anEmployee.UserId);
                 CommandObj.Parameters.AddWithValue("@JoiningDate", anEmployee.JoiningDate);

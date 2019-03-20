@@ -12,16 +12,17 @@
 
 
         <thead>
-            <tr>
-                <th>Employee Name</th>
-                <th>Address</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>User Name</th>
-                <th>Password</th>
-                <th>Role</th>
-                <th class="text-center">Action</th>
-            </tr>
+        <tr>
+            <th>User Name</th>
+            <th>Password</th>
+            <th>Role</th>
+              
+            <th>Employee Name</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th class="text-center">Action</th> 
+        </tr>
         </thead>
 
         <tbody>
@@ -29,14 +30,15 @@
             @foreach (var item in Model)
             {
                 <tr>
-
+                    
+                    <td>@item.UserName</td>
+                    <td>@item.Password</td>
+                    <td>@item.Roles</td>
+                  
                     <td>@item.EmployeeName</td>
                     <td>@item.PresentAddress</td>
                     <td>@item.Phone</td>
                     <td>@item.Email</td>
-                    <td>@item.UserName</td>
-                    <td>@item.Password</td>
-                    <td>@item.Roles</td>
                     <td class="text-center">
                         @Html.ActionLink("Details", "ViewUserDetails", "Home", new { userId = item.UserId }, null)
                     </td>
@@ -47,13 +49,14 @@
         </tbody>
         <tfoot>
             <tr>
+                <th>User Name</th>
+                <th>Password</th>
+                <th>Role</th>
+              
                 <th>Employee Name</th>
                 <th>Address</th>
                 <th>Phone</th>
                 <th>Email</th>
-                <th>User Name</th>
-                <th>Password</th>
-                <th>Role</th>
                 <th class="text-center">Action</th>
             </tr>
         </tfoot>
