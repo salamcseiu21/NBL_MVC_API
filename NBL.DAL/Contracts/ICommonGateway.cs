@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using NBL.Models;
 using NBL.Models.EntityModels.Banks;
+using NBL.Models.EntityModels.BarCodes;
 using NBL.Models.EntityModels.Branches;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Masters;
@@ -35,5 +36,8 @@ namespace NBL.DAL.Contracts
        IEnumerable<Status> GetAllStatus();
        DateTime GenerateDateFromBarCode(string scannedBarCode);
        ICollection<string> GetAllTestBarcode();
+       ICollection<ProductionDateCode> GetAllProductionDateCode();
+       ICollection<ProductionLine> GetAllProductionLines();
+       ICollection<ProductionDateCode> GetProductionDateCodeByMonthYear(string monthYear);
    }
 }

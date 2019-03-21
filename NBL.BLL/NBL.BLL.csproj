@@ -77,11 +77,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BarCodeManager.cs" />
     <Compile Include="BranchManager.cs" />
     <Compile Include="ClientManager.cs" />
     <Compile Include="CommonManager.cs" />
     <Compile Include="CompanyManager.cs" />
     <Compile Include="Contracts\DeliveryManager.cs" />
+    <Compile Include="Contracts\IBarCodeManager.cs" />
     <Compile Include="Contracts\IBranchManager.cs" />
     <Compile Include="Contracts\IClientManager.cs" />
     <Compile Include="Contracts\ICommonManager.cs" />

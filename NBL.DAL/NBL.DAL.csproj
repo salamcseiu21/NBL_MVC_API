@@ -42,10 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BarCodeGateway.cs" />
     <Compile Include="BranchGateway.cs" />
     <Compile Include="ClientGateway.cs" />
     <Compile Include="CommonGateway.cs" />
     <Compile Include="CompanyGateway.cs" />
+    <Compile Include="Contracts\IBarCodeGateway.cs" />
     <Compile Include="Contracts\IBranchGateway.cs" />
     <Compile Include="Contracts\IClientGateway.cs" />
     <Compile Include="Contracts\ICommonGateway.cs" />

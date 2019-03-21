@@ -30,16 +30,16 @@ namespace NBL.DAL
                         {
                             UserId = Convert.ToInt32(reader["UserId"]),
                             ActiveStaus = Convert.ToInt32(reader["ActiveStatus"]),
-                            EmployeeId = Convert.ToInt32(reader["EmployeeId"]),
+                            EmployeeId = DBNull.Value.Equals(reader["EmployeeId"])? 0:Convert.ToInt32(reader["EmployeeId"]),
                             UserName = reader["UserName"].ToString(),
                             BlockStatus = Convert.ToInt32(reader["BlockStatus"]),
                             Roles = reader["RoleName"].ToString(),
                             Password = reader["UserPassword"].ToString(),
-                            EmployeeName = reader["EmployeeName"].ToString(),
-                            Phone = reader["Phone"].ToString(),
-                            Email = reader["EmailAddress"].ToString(),
+                            EmployeeName = DBNull.Value.Equals(reader["EmployeeName"])? null: reader["EmployeeName"].ToString(),
+                            Phone = DBNull.Value.Equals(reader["Phone"])? null: reader["Phone"].ToString(),
+                            Email = DBNull.Value.Equals(reader["EmailAddress"])?null: reader["EmailAddress"].ToString(),
                             UserRoleId = Convert.ToInt32(reader["RoleId"]),
-                            PresentAddress = reader["PresentAddress"].ToString(),
+                            PresentAddress = DBNull.Value.Equals(reader["PresentAddress"])? null: reader["PresentAddress"].ToString(),
                             JoiningDate = Convert.ToDateTime(reader["UserJoiningDate"])
                         });
                     }

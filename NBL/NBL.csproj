@@ -217,6 +217,14 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="zxing, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.presentation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -7947,9 +7955,9 @@
     <Content Include="Areas\Manager\Views\Shared\_ViewLoadScannedProductPartialPage.cshtml" />
     <Content Include="Areas\Factory\Views\Product\MonthlyRequisitionDetails.cshtml" />
     <Content Include="Areas\Manager\Views\Delivery\Chalan.cshtml" />
-    <Content Include="Areas\Factory\Views\BarCodeGenerator\GenerateBarCode.cshtml" />
     <Content Include="Areas\Factory\Views\BarCodeGenerator\BarCodeRead.cshtml" />
     <Content Include="Areas\Editor\Views\Product\AddProductDetails.cshtml" />
+    <Content Include="Areas\Factory\Views\BarCodeGenerator\PrintBarCode.cshtml" />
     <None Include="Properties\PublishProfiles\Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />

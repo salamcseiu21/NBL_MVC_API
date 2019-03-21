@@ -56,18 +56,17 @@ namespace NBL.Controllers
                 var employee = _iEmployeeManager.GetEmployeeById(anUser.EmployeeId);
                 if (employee.EmployeeName!= null)
                 {
-                    anUser.EmployeeImage = employee.EmployeeImage==""? null:employee.EmployeeImage;
+                    anUser.EmployeeImage = employee.EmployeeImage;
                     anUser.DesignationName = employee.DesignationName;
                     anUser.EmployeeName = employee.EmployeeName;
                 }
                 else
                 {
                     anUser.EmployeeImage = "Images/login_image.png";
-                    anUser.DesignationName = "";
                     anUser.EmployeeName = userName;
                 }
-                //anUser.IpAddress = GetLocalIPAddress();
-                //anUser.MacAddress = GetMacAddress().ToString();
+                anUser.IpAddress = GetLocalIPAddress();
+                anUser.MacAddress = GetMacAddress().ToString();
                 anUser.LogInDateTime = DateTime.Now;
 
                 bool result = _userManager.ChangeLoginStatus(anUser, 1);

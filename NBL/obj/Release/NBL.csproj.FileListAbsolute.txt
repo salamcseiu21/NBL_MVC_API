@@ -119,3 +119,9 @@ E:\API\NBL\NBL\bin\JQDT.dll
 E:\API\NBL\NBL\bin\JQDT.MVC.dll
 E:\API\NBL\NBL\bin\OnBarcode.Barcode.BarcodeScanner.dll
 E:\API\NBL\NBL\bin\ReportViewerForMvc.dll
+E:\API\NBL\NBL\bin\zxing.dll
+E:\API\NBL\NBL\bin\zxing.presentation.dll
+E:\API\NBL\NBL\bin\zxing.pdb
+E:\API\NBL\NBL\bin\zxing.xml
+E:\API\NBL\NBL\bin\zxing.presentation.pdb
+E:\API\NBL\NBL\bin\zxing.presentation.xml

@@ -5,6 +5,7 @@ using NBL.BLL.Contracts;
 using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.EntityModels.Banks;
+using NBL.Models.EntityModels.BarCodes;
 using NBL.Models.EntityModels.Branches;
 using NBL.Models.EntityModels.Identities;
 using NBL.Models.EntityModels.Masters;
@@ -120,6 +121,21 @@ namespace NBL.BLL
        public ICollection<string> GetAllTestBarcode()
        {
            return _iCommonGateway.GetAllTestBarcode();
+       }
+
+       public ICollection<ProductionDateCode> GetAllProductionDateCode()
+       {
+           return _iCommonGateway.GetAllProductionDateCode();
+       }
+
+       public ICollection<ProductionLine> GetAllProductionLines()
+       {
+           return _iCommonGateway.GetAllProductionLines();
+       }
+
+       public ICollection<ProductionDateCode> GetProductionDateCodeByMonthYear(string monthYear)
+       {
+           return _iCommonGateway.GetProductionDateCodeByMonthYear(monthYear);
        }
    }
 }

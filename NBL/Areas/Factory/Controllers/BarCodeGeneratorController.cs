@@ -4,67 +4,95 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
+using NBL.Models.EntityModels.BarCodes;
 using OnBarcode.Barcode.BarcodeScanner;
+using ZXing;
 
 namespace NBL.Areas.Factory.Controllers
 {
     [Authorize(Roles = "Factory")]
     public class BarCodeGeneratorController : Controller
     {
-        private ICommonManager _iCommonManager;
-
-        public BarCodeGeneratorController(ICommonManager iCommonManager)
+        private readonly ICommonManager _iCommonManager;
+        private readonly IProductManager _iProductManager;
+        private readonly IBarCodeManager _iBarCodeManager;
+        public BarCodeGeneratorController(ICommonManager iCommonManager,IProductManager iProductManager,IBarCodeManager iBarCodeManager)
         {
             _iCommonManager = iCommonManager;
+            _iProductManager = iProductManager;
+            _iBarCodeManager = iBarCodeManager;
         }
-        // GET: BarCodeDemo
-        public ActionResult GenerateBarCode()
+
+
+        public ActionResult PrintBarCode()
         {
 
-           
-            
+
+            //var barcodeList = _iCommonManager.GetAllTestBarcode();
+            //foreach (string s in barcodeList.Take(Convert.ToInt32(barcode)))
+            //{
+            //    GenerateBarCodeFromaGivenString(Regex.Replace(s, @"\t|\n|\r", ""));
+            //}
+            var monthYear = DateTime.Now.Month.ToString("D2") +
+                            Convert.ToInt32(DateTime.Now.Year.ToString().Substring(2, 2)).ToString("D2");
+            var productionDateCodes = _iCommonManager.GetProductionDateCodeByMonthYear(monthYear).ToList();
+            var productionLines = _iCommonManager.GetAllProductionLines().ToList();
+            ViewBag.ProductionDateCodeId = new SelectList(productionDateCodes, "ProductionDateCodeId", "Code", productionDateCodes.First().ProductionDateCodeId);
+            ViewBag.ProductionLineId = new SelectList(productionLines, "ProductionLineId", "LineNumber");
             return View();
         }
-
         [HttpPost]
-        public ActionResult GenerateBarCode(string barcode)
+        public ActionResult PrintBarCode(ViewCreateBarCodeModel model)
         {
+            var monthYear = DateTime.Now.Month.ToString("D2") +
+                            Convert.ToInt32(DateTime.Now.Year.ToString().Substring(2, 2)).ToString("D2");
+            var productionDateCodes = _iCommonManager.GetProductionDateCodeByMonthYear(monthYear).ToList();
+            var productionLines = _iCommonManager.GetAllProductionLines().ToList();
 
-            var barcodeList = _iCommonManager.GetAllTestBarcode();
-            foreach (string s in barcodeList.Take(Convert.ToInt32(barcode)))
+            
+            for (int i = 1; i <= model.Total; i++)
             {
-                GenerateBarCodeFromaGivenString(Regex.Replace(s, @"\t|\n|\r", ""));
+                var barcode = model.ProductId.ToString("D3") +
+                              productionDateCodes.Find(n => n.ProductionDateCodeId.Equals(3))
+                                  .Code + DateTime.Now.Day + model.ProductionLineId + i.ToString("D5");
+                GenerateBarCodeFromaGivenString(barcode);
             }
+
+            var result=_iBarCodeManager.GenerateBarCode(model);
+            ViewBag.ProductionDateCodeId = new SelectList(productionDateCodes, "ProductionDateCodeId", "Code", productionDateCodes.First().ProductionDateCodeId);
+            ViewBag.ProductionLineId = new SelectList(productionLines, "ProductionLineId", "LineNumber");
             return View();
         }
+
 
         private void GenerateBarCodeFromaGivenString(string barcode)
         {
-            using (MemoryStream memoryStream = new MemoryStream())
+
+            Image img = null;
+            using (var ms = new MemoryStream())
             {
-                using (Bitmap bitMap = new Bitmap(barcode.Length * 40, 80))
+                var writer = new ZXing.BarcodeWriter
                 {
-                    using (Graphics graphics = Graphics.FromImage(bitMap))
+                    Format = BarcodeFormat.CODE_128,
+                    Options =
                     {
-                        Font oFont = new Font("IDAutomationHC39M", 16);
-                        PointF point = new PointF(2f, 2f);
-                        SolidBrush whiteBrush = new SolidBrush(Color.White);
-                        graphics.FillRectangle(whiteBrush, 0, 0, bitMap.Width, bitMap.Height);
-                        SolidBrush blackBrush = new SolidBrush(Color.Black);
-                        graphics.DrawString("*" + barcode + "*", oFont, blackBrush, point);
+                        Height = 80,
+                        Width = 280,
+                        PureBarcode = false,
+                        Margin = 1
                     }
+                };
 
-                    bitMap.Save(memoryStream, ImageFormat.Jpeg);
+                img = writer.Write(barcode);
+                img.Save(ms, ImageFormat.Jpeg);
+                ViewBag.BarcodeImage = "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
+                var filePath = Server.MapPath("~/Areas/Factory/Images/BarCodes/" + barcode + ".jpg");
+                img.Save(filePath, ImageFormat.Jpeg);
+                //return View();
 
-                    ViewBag.BarcodeImage = "data:image/png;base64," + Convert.ToBase64String(memoryStream.ToArray());
-                    var filePath = Server.MapPath("~/Areas/Factory/Images/BarCodes/" + barcode + ".jpg");
-                    Image img = System.Drawing.Image.FromStream(memoryStream);
-                    img.Save(filePath, ImageFormat.Jpeg);
-                }
             }
         }
 
@@ -128,5 +156,8 @@ namespace NBL.Areas.Factory.Controllers
             String[] barcodes = BarcodeScanner.Scan(_Filepath, BarcodeType.Code39);
             return barcodes[0];
         }
+
+
+      
     }
 }

@@ -35,10 +35,10 @@
                     <td>@item.Password</td>
                     <td>@item.Roles</td>
                   
-                    <td>@item.EmployeeName</td>
-                    <td>@item.PresentAddress</td>
-                    <td>@item.Phone</td>
-                    <td>@item.Email</td>
+                    <td>@(item.EmployeeName?? "N/A")</td>
+                    <td>@(item.PresentAddress?? "N/A")</td>
+                    <td>@(item.Phone??"N/A")</td>
+                    <td>@(item.Email?? "N/A")</td>
                     <td class="text-center">
                         @Html.ActionLink("Details", "ViewUserDetails", "Home", new { userId = item.UserId }, null)
                     </td>

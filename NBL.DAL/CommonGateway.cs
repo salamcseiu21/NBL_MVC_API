@@ -772,7 +772,114 @@ CommandObj.Parameters.Clear();
         public ICollection<ProductionDateCode> GetAllProductionDateCode()
         {
 
-            return null;
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetAllProductionDateCode";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                List<ProductionDateCode> codeList = new List<ProductionDateCode>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    codeList.Add(new ProductionDateCode
+                    {
+                        ProductionDateCodeId = Convert.ToInt32(reader["ProductionDateCodeId"]),
+                        Code =DBNull.Value.Equals(reader["Code"])? null:reader["Code"].ToString(),
+                        Month = DBNull.Value.Equals(reader["Month"]) ? null : reader["Month"].ToString(),
+                        MonthYear = DBNull.Value.Equals(reader["MonthYear"]) ? null : reader["MonthYear"].ToString(),
+                        Year = DBNull.Value.Equals(reader["Year"]) ? null : reader["Year"].ToString()
+                    });
+                }
+                reader.Close();
+                return codeList;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect production date codes", exception.InnerException);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                ConnectionObj.Close();
+
+            }
+        }
+
+        public ICollection<ProductionLine> GetAllProductionLines()
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetAllProductionLines";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                List<ProductionLine> lines = new List<ProductionLine>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    lines.Add(new ProductionLine
+                    {
+                        ProductionLineId = Convert.ToInt32(reader["ProductionLineId"]),
+                        LineNumber = DBNull.Value.Equals(reader["LineNumber"]) ? null : reader["LineNumber"].ToString(),
+                    });
+                }
+                reader.Close();
+                return lines;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect production Lines", exception.InnerException);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                ConnectionObj.Close();
+
+            }
+        }
+
+        public ICollection<ProductionDateCode> GetProductionDateCodeByMonthYear(string monthYear)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetProductionDateCodeByMonthYear";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@MonthYear", monthYear);
+                List<ProductionDateCode> codeList = new List<ProductionDateCode>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    codeList.Add(new ProductionDateCode
+                    {
+                        ProductionDateCodeId = Convert.ToInt32(reader["ProductionDateCodeId"]),
+                        Code = DBNull.Value.Equals(reader["Code"]) ? null : reader["Code"].ToString(),
+                        Month = DBNull.Value.Equals(reader["Month"]) ? null : reader["Month"].ToString(),
+                        MonthYear = DBNull.Value.Equals(reader["MonthYear"]) ? null : reader["MonthYear"].ToString(),
+                        Year = DBNull.Value.Equals(reader["Year"]) ? null : reader["Year"].ToString()
+                    });
+                }
+                reader.Close();
+                return codeList;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect production date codes by monthyear", exception.InnerException);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                ConnectionObj.Close();
+
+            }
         }
     }
 }

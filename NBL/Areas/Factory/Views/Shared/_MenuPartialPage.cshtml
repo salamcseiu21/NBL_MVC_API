@@ -6,14 +6,14 @@
     <li class="treeview">
         <a href="#">
             <i class="fa fa-product-hunt"></i>
-            <span>BarCode Generation</span>
+            <span>Print BarCode</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
             </span>
         </a>
         <ul class="treeview-menu">
-            <li>@Html.ActionLink(" Generate Barcode", "GenerateBarCode", "BarCodeGenerator", new { area = "Factory" }, new { @class = "fa fa-list" })</li>
-            <li>@Html.ActionLink(" Read Barcode", "BarCodeRead", "BarCodeGenerator", new { area = "Factory" }, new { @class = "fa fa-list" })</li>
+            <li>@Html.ActionLink(" Print Barcode", "PrintBarCode", "BarCodeGenerator", new { area = "Factory" }, new { @class = "fa fa-list" })</li>
+            @*<li>@Html.ActionLink(" Read Barcode", "BarCodeRead", "BarCodeGenerator", new { area = "Factory" }, new { @class = "fa fa-list" })</li>*@
            
         </ul>
     </li>
