@@ -12,6 +12,9 @@ namespace NBL.Models.EntityModels.Locations
         [Display(Name = "Region Name")]
         public string RegionName { get; set; }
         [Required]
+        public string Description { get; set; }
+
+        public string Alias { get; set; }   
         [Display(Name = "Division")]
         public int DivisionId { get; set; }
         public string IsAssigned { get; set; }

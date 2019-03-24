@@ -25,13 +25,13 @@ namespace NBL.Areas.Editor.Controllers
         }
         public ActionResult AddNewRegion()
         {
-            ViewBag.DivisionId = new SelectList(_iDivisionGateway.GetAll(), "DivisionId", "DivisionName");
+          // ViewBag.DivisionId = new SelectList(_iDivisionGateway.GetAll(), "DivisionId", "DivisionName");
             return View();
         }
         [HttpPost]
         public ActionResult AddNewRegion(Region model)
         {
-            ViewBag.DivisionId = new SelectList(_iDivisionGateway.GetAll(), "DivisionId", "DivisionName");
+           // ViewBag.DivisionId = new SelectList(_iDivisionGateway.GetAll(), "DivisionId", "DivisionName");
 
             try
             {

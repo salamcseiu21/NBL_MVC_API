@@ -347,7 +347,8 @@ namespace NBL.DAL
             {
                 CommandObj.CommandText = "spAddNewRegion";
                 CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@DivisionId", aRegion.DivisionId);
+                CommandObj.Parameters.AddWithValue("@Description", aRegion.Description ?? (object)DBNull.Value);
+                CommandObj.Parameters.AddWithValue("@Alias", aRegion.Alias ?? (object)DBNull.Value);
                 CommandObj.Parameters.AddWithValue("@RegionName", aRegion.RegionName);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
@@ -400,12 +401,6 @@ namespace NBL.DAL
                         RegionName = reader["RegionName"].ToString(),
                         IsAssigned = reader["IsAssigned"].ToString(),
                         IsCurrent = reader["IsCurrent"].ToString(),
-                        DivisionId = Convert.ToInt32(reader["DivisionId"]),
-                        Division = new Division
-                        {
-                            DivisionId = Convert.ToInt32(reader["DivisionId"]),
-                            DivisionName = reader["DivisionName"].ToString()
-                        },
                         Territories = _territoryGateway.GetTerritoryListByRegionId(Convert.ToInt32(reader["RegionId"])).ToList()
 
                     });

@@ -162,6 +162,8 @@ namespace NBL.DAL
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@RegionId", aTerritory.RegionId);
                 CommandObj.Parameters.AddWithValue("@TerittoryName", aTerritory.TerritoryName);
+                CommandObj.Parameters.AddWithValue("@Description", aTerritory.Description?? (object)DBNull.Value);
+                CommandObj.Parameters.AddWithValue("@Alias", aTerritory.TerritoryName ?? (object)DBNull.Value);
                 CommandObj.Parameters.AddWithValue("@AddedByUserId", aTerritory.AddedByUserId);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
