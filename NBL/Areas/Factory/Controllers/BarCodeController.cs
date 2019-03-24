@@ -7,7 +7,6 @@ using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.Models.EntityModels.BarCodes;
-using NBL.Models.EntityModels.Products;
 using NBL.Models.ViewModels;
 using ZXing;
 
@@ -132,14 +131,15 @@ namespace NBL.Areas.Factory.Controllers
                         Margin = 1
                     }
                 };
+                 img = writer.Write(barcode);
+                 //img.Save(ms, ImageFormat.Jpeg);
 
-                img = writer.Write(barcode);
-                img.Save(ms, ImageFormat.Jpeg);
                 var filePath = Server.MapPath("~/Areas/Factory/Images/BarCodes/" + barcode + ".jpg");
                 img.Save(filePath, ImageFormat.Jpeg);
-                //return View();
+               
 
             }
+            
         }
 
 

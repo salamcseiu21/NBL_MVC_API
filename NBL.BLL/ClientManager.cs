@@ -23,7 +23,7 @@ namespace NBL.BLL
         public bool Add(Client client)
         {
 
-            if (client.Email != "")
+            if (client.Email !=null)
             {
                 bool isEmailValid = CheckEmail(client.Email);
                 if (!isEmailValid) return false;

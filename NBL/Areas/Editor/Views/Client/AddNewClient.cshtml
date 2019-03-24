@@ -1,5 +1,5 @@
 ﻿
-@model NBL.Models.EntityModels.Clients.Client
+@model NBL.Models.ViewModels.Clients.ViewCreateClientModel
 
 @{
     ViewBag.Title = "Add New Client";
@@ -68,6 +68,23 @@
                         </div>
                     </div>
                
+                    
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ContactPerson,  new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Contact person Name"} })
+                            @Html.ValidationMessageFor(model=>model.ContactPerson, "",new {@class="text-danger"})
+                        </div>
+                    </div>
+                   
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ContactPersonPhone,  new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.ContactPersonPhone, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Contact person phone"} })
+                            @Html.ValidationMessageFor(model=>model.ContactPersonPhone, "",new {@class="text-danger"})
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         @Html.LabelFor(model => model.RegionId,  new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
@@ -88,7 +105,7 @@
                         @Html.LabelFor(model => model.DistrictId, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
                             @Html.DropDownListFor(model=>model.DistrictId,null,"--Select--",new {@class="form-control"})
-                            @Html.ValidationMessageFor(model=>model.DistrictId,"",new {@class="text-danger"}) 
+                           
                         </div>
                     </div>
 
@@ -96,7 +113,7 @@
                         @Html.LabelFor(model => model.UpazillaId,  new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
                             @Html.DropDownListFor(model=>model.UpazillaId, null,"--Select--",new {@class="form-control"})
-                            @Html.ValidationMessageFor(model=>model.UpazillaId,"",new {@class="text-danger"}) 
+                           
                         </div>
                     </div>
 
@@ -104,7 +121,7 @@
                         @Html.LabelFor(model => model.PostOfficeId, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
                             @Html.DropDownListFor(model=>model.PostOfficeId, null,"--Select--",new {@class="form-control"})
-                            @Html.ValidationMessageFor(model=>model.PostOfficeId,"",new {@class="text-danger"}) 
+                          
                         </div>
                     </div>
                     
@@ -115,7 +132,6 @@
                         @Html.LabelFor(model => model.NationalIdNo, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
                             @Html.EditorFor(model => model.NationalIdNo, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter client NID" } })
-                            @Html.ValidationMessageFor(model => model.NationalIdNo, "", new { @class = "text-danger" })
 
                         </div>
                     </div>
@@ -140,6 +156,14 @@
                         <div class="col-md-9">
                             @Html.EditorFor(model => model.AlternatePhone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter client Alternate phone"} })
                             @Html.ValidationMessageFor(model=>model.AlternatePhone,"",new {@class="text-danger"}) 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "E-mail Address"} }) 
+                            @Html.ValidationMessageFor(model=>model.Email,"",new {@class="text-danger"}) 
+                            <div id="divEmailExitsOutput"></div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -179,14 +203,7 @@
                         </div>
 
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-3" })
-                        <div class="col-md-9">
-                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "E-mail Address"} }) 
-                            @Html.ValidationMessageFor(model=>model.Email,"",new {@class="text-danger"}) 
-                            <div id="divEmailExitsOutput"></div>
-                        </div>
-                    </div>
+                   
                     
                     @*<div class="form-group">
                         @Html.LabelFor(model => model.CreditLimit, new { @class = "control-label col-md-3" })
@@ -326,53 +343,7 @@
     });
 
     </script>
-    @*Jquery Validation*@
-    <script>
-    $("#addNewClientForm1").validate({
-        rules: {
-            ClientName: "required",
-            CommercialName: "required",
-            //CreditLimit: {
-            //    //required: true,
-            //    number: true
-            //},
-            DivisionId: "required",
-            Address: "required",
-            DistrictId: "required",
-            UpzillaId: "required",
-            PostOfficeId: "required",
-            TypeId: "required",
-            Phone: "required",
-            //AlternatePhone: "required",
-            Email: {
-                //required: true,
-                email: true
-            }
-
-
-        },
-        messages: {
-            ClientName: "*",
-            CommercialName: "*",
-            DivisionId: "*",
-            Address: "*",
-            DistrictId: "*",
-            UpzillaId: "*",
-            PostOfficeId: "*",
-            TypeId: "*",
-            Phone: "*",
-            //AlternatePhone: "*",
-            Email: {
-                //required: "*",
-                email: "Please! Enter a valid Email Address."
-            },
-            //CreditLimit: {
-            //    //required: "*",
-            //    number: "Credit limit should be a numeric figure!"
-            //}
-        }
-    });
-    </script>
+  
     @*Ajax form Submit*@
     <script>
 
@@ -430,7 +401,7 @@
 
             if (email.length >= 1) {
                 $.ajax({
-                    url: '/Editor/Client/ClientEmailExists',
+                    url: RootUrl+'Editor/Client/ClientEmailExists',
                     method: 'post',
                     data: { email: email },
                     dataType: 'json',

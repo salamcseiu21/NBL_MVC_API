@@ -26,6 +26,7 @@ namespace NBL.Models.EntityModels.Clients
         public string NationalIdNo { get; set; }
         [Display(Name = "TIN")]
         public string TinNo { get; set; }
+
         [Required]
 
         public string Address { get; set; }
@@ -34,7 +35,14 @@ namespace NBL.Models.EntityModels.Clients
     
         [Display(Name ="Alternate Phone")]
         public string AlternatePhone { get; set; }
-        
+
+        [Display(Name = "Contact Person")]
+        [Required]
+        public string ContactPerson { get; set; }
+        [Display(Name = "Contact Person Phone ")]
+        [Required]
+        public string ContactPersonPhone { get; set; }  
+
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public string Fax { get; set; }
@@ -68,18 +76,18 @@ namespace NBL.Models.EntityModels.Clients
         [Required]
         [Display(Name = "Region")]
         public int RegionId { get; set; }
-        [Required]
+       
         [Display(Name = "Division")]
         public int DivisionId { get; set; }
-        [Required]
+     
         [Display(Name = "District")]
         public int DistrictId { get; set; }
-        [Required]
+      
         [Display(Name = "Upazilla")]
         public int UpazillaId { get; set; }
-        [Required]
+    
         [Display(Name = "Post Office")]
-        public int PostOfficeId { get; set; }
+        public int? PostOfficeId { get; set; }
         public int UserId { get; set; }
         public int BranchId { get; set; }
         public int CompanyId { get; set; }

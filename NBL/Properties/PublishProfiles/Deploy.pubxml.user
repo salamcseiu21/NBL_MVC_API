@@ -117,6 +117,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Areas/Accounts/Views/web.config">
       <publishTime>09/27/2018 12:48:02</publishTime>
     </File>
+    <File Include="Areas/AccountsAndFinance/Views/Home/Home.cshtml">
+      <publishTime>03/24/2019 12:16:43</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/web.config">
+      <publishTime>03/24/2019 12:15:23</publishTime>
+    </File>
     <File Include="Areas/Admin/Files/Requisition_Products_40.xml">
       <publishTime>03/18/2019 09:44:02</publishTime>
     </File>
@@ -318,6 +324,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Areas/Admin/Views/web.config">
       <publishTime>09/26/2018 12:13:06</publishTime>
     </File>
+    <File Include="Areas/Administrative/Views/Home/Home.cshtml">
+      <publishTime>03/24/2019 12:37:04</publishTime>
+    </File>
+    <File Include="Areas/Administrative/Views/web.config">
+      <publishTime>03/24/2019 12:35:53</publishTime>
+    </File>
     <File Include="Areas/Corporate/Views/Home/BusinessArea.cshtml">
       <publishTime>01/01/2019 09:51:24</publishTime>
     </File>
@@ -356,6 +368,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Areas/Corporate/Views/_ViewStart.cshtml">
       <publishTime>01/10/2019 14:46:32</publishTime>
+    </File>
+    <File Include="Areas/CRM/Views/Home/Home.cshtml">
+      <publishTime>03/24/2019 12:37:48</publishTime>
+    </File>
+    <File Include="Areas/CRM/Views/web.config">
+      <publishTime>03/24/2019 12:34:57</publishTime>
     </File>
     <File Include="Areas/Editor/Images/editor.jpg">
       <publishTime>09/27/2018 12:46:26</publishTime>
@@ -714,6 +732,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Areas/Factory/Views/web.config">
       <publishTime>09/27/2018 12:48:04</publishTime>
     </File>
+    <File Include="Areas/HR/Views/Home/Home.cshtml">
+      <publishTime>03/24/2019 12:14:56</publishTime>
+    </File>
+    <File Include="Areas/HR/Views/web.config">
+      <publishTime>03/24/2019 12:13:21</publishTime>
+    </File>
     <File Include="Areas/Management/Views/Home/BusinessArea.cshtml">
       <publishTime>01/13/2019 14:56:52</publishTime>
     </File>
@@ -815,6 +839,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Areas/Production/Views/web.config">
       <publishTime>12/12/2018 12:26:20</publishTime>
+    </File>
+    <File Include="Areas/Purchases/Views/Home/Home.cshtml">
+      <publishTime>03/24/2019 12:33:54</publishTime>
+    </File>
+    <File Include="Areas/Purchases/Views/web.config">
+      <publishTime>03/24/2019 12:32:41</publishTime>
     </File>
     <File Include="Areas/Sales/Files/Temp_Sales_Order_By_24.xml">
       <publishTime>03/18/2019 11:48:30</publishTime>
@@ -929,6 +959,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Areas/Sales/Views/web.config">
       <publishTime>09/27/2018 10:52:24</publishTime>
+    </File>
+    <File Include="Areas/SCM/Views/Home/Home.cshtml">
+      <publishTime>03/24/2019 12:18:15</publishTime>
+    </File>
+    <File Include="Areas/SCM/Views/web.config">
+      <publishTime>03/24/2019 12:17:01</publishTime>
     </File>
     <File Include="Areas/SuperAdmin/Reports/ViewReport.aspx">
       <publishTime>10/04/2018 13:56:10</publishTime>
@@ -22267,7 +22303,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/24/2019 12:07:43</publishTime>
     </File>
     <File Include="bin/NBL.dll">
-      <publishTime>03/24/2019 12:07:50</publishTime>
+      <publishTime>03/24/2019 12:51:16</publishTime>
     </File>
     <File Include="bin/NBL.Models.dll">
       <publishTime>03/24/2019 12:07:43</publishTime>

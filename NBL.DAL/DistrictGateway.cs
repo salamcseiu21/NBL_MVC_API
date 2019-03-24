@@ -142,7 +142,38 @@ namespace NBL.DAL
 
         public ICollection<District> GetAll()
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                List<District> districts = new List<District>();
+                ConnectionObj.Open();
+                CommandObj.CommandText = "spGetAllDistrict";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    districts.Add(new District
+                    {
+                        DistrictId = Convert.ToInt32(reader["DistrictId"]),
+                        DistrictName = reader["DistrictName"].ToString(),
+                        DivisionId = Convert.ToInt32(reader["DivisionId"])
+
+                    });
+                }
+                reader.Close();
+                return districts;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Unable to collect districts", e);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+
+            }
         }
     }
 }

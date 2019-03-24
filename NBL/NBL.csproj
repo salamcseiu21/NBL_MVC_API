@@ -290,6 +290,8 @@
     <Compile Include="Areas\AccountExecutive\AccountExecutiveAreaRegistration.cs" />
     <Compile Include="Areas\AccountExecutive\Controllers\AccountController.cs" />
     <Compile Include="Areas\AccountExecutive\Controllers\HomeController.cs" />
+    <Compile Include="Areas\AccountsAndFinance\AccountsAndFinanceAreaRegistration.cs" />
+    <Compile Include="Areas\AccountsAndFinance\Controllers\HomeController.cs" />
     <Compile Include="Areas\Accounts\AccountsAreaRegistration.cs" />
     <Compile Include="Areas\Accounts\BLL\AccountsManager.cs" />
     <Compile Include="Areas\Accounts\BLL\Contracts\IAccountsManager.cs" />
@@ -305,6 +307,8 @@
     <Compile Include="Areas\Accounts\Models\ViewModels\ViewVoucherModel.cs" />
     <Compile Include="Areas\Accounts\Models\Voucher.cs" />
     <Compile Include="Areas\Accounts\Models\VoucherDetails.cs" />
+    <Compile Include="Areas\Administrative\AdministrativeAreaRegistration.cs" />
+    <Compile Include="Areas\Administrative\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\BLL\Contracts\IInvoiceManager.cs" />
     <Compile Include="Areas\Admin\BLL\InvoiceManager.cs" />
@@ -318,6 +322,8 @@
     <Compile Include="Areas\Admin\DAL\InvoiceGateway.cs" />
     <Compile Include="Areas\Corporate\Controllers\HomeController.cs" />
     <Compile Include="Areas\Corporate\CorporateAreaRegistration.cs" />
+    <Compile Include="Areas\CRM\Controllers\HomeController.cs" />
+    <Compile Include="Areas\CRM\CRMAreaRegistration.cs" />
     <Compile Include="Areas\Editor\Controllers\BranchController.cs" />
     <Compile Include="Areas\Editor\Controllers\ClientController.cs" />
     <Compile Include="Areas\Editor\Controllers\DepartmentController.cs" />
@@ -341,6 +347,8 @@
     <Compile Include="Areas\Factory\Controllers\ProductController.cs" />
     <Compile Include="Areas\Factory\Controllers\TransferController.cs" />
     <Compile Include="Areas\Factory\FactoryAreaRegistration.cs" />
+    <Compile Include="Areas\HR\Controllers\HomeController.cs" />
+    <Compile Include="Areas\HR\HRAreaRegistration.cs" />
     <Compile Include="Areas\Management\Controllers\HomeController.cs" />
     <Compile Include="Areas\Management\ManagementAreaRegistration.cs" />
     <Compile Include="Areas\Manager\Controllers\DeliveryController.cs" />
@@ -352,11 +360,15 @@
     <Compile Include="Areas\Nsm\NsmAreaRegistration.cs" />
     <Compile Include="Areas\Production\Controllers\HomeController.cs" />
     <Compile Include="Areas\Production\ProductionAreaRegistration.cs" />
+    <Compile Include="Areas\Purchases\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Purchases\PurchasesAreaRegistration.cs" />
     <Compile Include="Areas\Sales\Controllers\ClientController.cs" />
     <Compile Include="Areas\Sales\Controllers\HomeController.cs" />
     <Compile Include="Areas\Sales\Controllers\OrderController.cs" />
     <Compile Include="Areas\Sales\Controllers\ProductController.cs" />
     <Compile Include="Areas\Sales\SalesAreaRegistration.cs" />
+    <Compile Include="Areas\SCM\Controllers\HomeController.cs" />
+    <Compile Include="Areas\SCM\SCMAreaRegistration.cs" />
     <Compile Include="Areas\SuperAdmin\BLL\SuperAdminUserManager.cs" />
     <Compile Include="Areas\SuperAdmin\Controllers\ApproveController.cs" />
     <Compile Include="Areas\SuperAdmin\Controllers\AssignController.cs" />
@@ -7964,6 +7976,18 @@
     <Content Include="Areas\Factory\Views\Shared\_ViewPrintBarCodePartialPage.cshtml" />
     <Content Include="Areas\Factory\Views\BarCode\Generate.cshtml" />
     <Content Include="Areas\Factory\Views\BarCode\PrintBarCode.cshtml" />
+    <Content Include="Areas\HR\Views\web.config" />
+    <Content Include="Areas\HR\Views\Home\Home.cshtml" />
+    <Content Include="Areas\AccountsAndFinance\Views\web.config" />
+    <Content Include="Areas\AccountsAndFinance\Views\Home\Home.cshtml" />
+    <Content Include="Areas\SCM\Views\web.config" />
+    <Content Include="Areas\SCM\Views\Home\Home.cshtml" />
+    <Content Include="Areas\Purchases\Views\web.config" />
+    <Content Include="Areas\Purchases\Views\Home\Home.cshtml" />
+    <Content Include="Areas\CRM\Views\web.config" />
+    <Content Include="Areas\Administrative\Views\web.config" />
+    <Content Include="Areas\Administrative\Views\Home\Home.cshtml" />
+    <Content Include="Areas\CRM\Views\Home\Home.cshtml" />
     <None Include="Properties\PublishProfiles\Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
@@ -8090,8 +8114,14 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\AccountExecutive\Models\" />
+    <Folder Include="Areas\AccountsAndFinance\Models\" />
+    <Folder Include="Areas\AccountsAndFinance\Views\Shared\" />
+    <Folder Include="Areas\Administrative\Models\" />
+    <Folder Include="Areas\Administrative\Views\Shared\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Corporate\Models\" />
+    <Folder Include="Areas\CRM\Models\" />
+    <Folder Include="Areas\CRM\Views\Shared\" />
     <Folder Include="Areas\Editor\BLL\" />
     <Folder Include="Areas\Editor\DAL\" />
     <Folder Include="Areas\Editor\Models\" />
@@ -8099,6 +8129,8 @@
     <Folder Include="Areas\Factory\DAL\" />
     <Folder Include="Areas\Factory\Images\BarCodes\" />
     <Folder Include="Areas\Factory\Models\" />
+    <Folder Include="Areas\HR\Models\" />
+    <Folder Include="Areas\HR\Views\Shared\" />
     <Folder Include="Areas\Management\Models\" />
     <Folder Include="Areas\Manager\BLL\" />
     <Folder Include="Areas\Manager\DAL\" />
@@ -8106,7 +8138,11 @@
     <Folder Include="Areas\Nsm\Models\" />
     <Folder Include="Areas\Production\Models\" />
     <Folder Include="Areas\Production\Views\Shared\" />
+    <Folder Include="Areas\Purchases\Models\" />
+    <Folder Include="Areas\Purchases\Views\Shared\" />
     <Folder Include="Areas\Sales\Models\" />
+    <Folder Include="Areas\SCM\Models\" />
+    <Folder Include="Areas\SCM\Views\Shared\" />
     <Folder Include="Assets\css\" />
     <Folder Include="Assets\documentation\build\" />
     <Folder Include="Views\Common\" />

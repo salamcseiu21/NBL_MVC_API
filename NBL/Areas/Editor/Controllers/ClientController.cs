@@ -4,12 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
+using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
 using NBL.BLL.Contracts;
 using NBL.DAL.Contracts;
 using NBL.Models.EntityModels.Branches;
 using NBL.Models.EntityModels.Clients;
 using NBL.Models.EntityModels.Locations;
 using NBL.Models.ViewModels;
+using NBL.Models.ViewModels.Clients;
 
 namespace NBL.Areas.Editor.Controllers
 {
@@ -64,7 +67,7 @@ namespace NBL.Areas.Editor.Controllers
         {
             ViewBag.RegionId= new SelectList(_iRegionManager.GetAll(), "RegionId", "RegionName");
             ViewBag.ClientTypeId=new SelectList(_iCommonManager.GetAllClientType(), "ClientTypeId", "ClientTypeName");
-            ViewBag.DistrictId = new SelectList(new List<District>(), "DistrictId", "DistrictName");
+            ViewBag.DistrictId = new SelectList(_iDistrictManager.GetAll().ToList(), "DistrictId", "DistrictName");
             ViewBag.UpazillaId = new SelectList(new List<Upazilla>(), "UpazillaId", "UpzillaName");
             ViewBag.PostOfficeId = new SelectList(new List<PostOffice>(), "PostOfficeId", "PostOfficeName");
             ViewBag.TerritoryId = new SelectList(new List<Territory>(), "TerritoryId", "TerritoryName");
@@ -74,39 +77,15 @@ namespace NBL.Areas.Editor.Controllers
 
         // POST: Sales/Client/AddNewClient
         [HttpPost]
-        public ActionResult AddNewClient(FormCollection collection, HttpPostedFileBase ClientImage, HttpPostedFileBase clientSignature)
+        public ActionResult AddNewClient(ViewCreateClientModel model, HttpPostedFileBase ClientImage, HttpPostedFileBase clientSignature)
         {
-            int branchId = Convert.ToInt32(Session["BranchId"]);
-            int companyId = Convert.ToInt32(Session["CompanyId"]);
-            int regionId=Convert.ToInt32(collection["RegionId"]);
-            var branch = _iRegionManager.GetBranchInformationByRegionId(regionId);
+            var branch = _iRegionManager.GetBranchInformationByRegionId(Convert.ToInt32(model.RegionId));
             try
             {
-
                 var user = (ViewUser)Session["user"];
-                var client = new Client
-                {
-                    ClientName = collection["ClientName"],
-                    CommercialName = collection["CommercialName"],
-                    Address = collection["Address"],
-                    PostOfficeId = Convert.ToInt32(collection["PostOfficeId"]),
-                    ClientTypeId = Convert.ToInt32(collection["ClientTypeId"]),
-                    Phone = collection["phone"],
-                    AlternatePhone = collection["AlternatePhone"],
-                    Gender = collection["Gender"],
-                    //Fax = collection["Fax"],
-                    //Website = collection["Website"],
-                    Email = collection["Email"],
-                    CreditLimit = Convert.ToDecimal(collection["CreditLimit"]),
-                    UserId = user.UserId,
-                    BranchId = branchId,
-                    NationalIdNo = collection["NationalIdNo"],
-                    TinNo = collection["TinNo"],
-                    TerritoryId = Convert.ToInt32(collection["TerritoryId"]),
-                    RegionId = regionId,
-                    CompanyId = companyId,
-                    Branch = branch
-                };
+                var client = Mapper.Map<ViewCreateClientModel, Client>(model);
+                client.UserId = user.UserId;
+                client.BranchId = branch.BranchId;
                 if (ClientImage != null)
                 {
 
@@ -124,10 +103,7 @@ namespace NBL.Areas.Editor.Controllers
                     }
                    
                 }
-                else
-                {
-                    client.ClientImage = "Images/Client/Photos/921dce2a.jpg";
-                }
+                
                 if (clientSignature != null)
                 {
                     string ext = Path.GetExtension(clientSignature.FileName)?.ToLower();
@@ -142,10 +118,6 @@ namespace NBL.Areas.Editor.Controllers
                     }
                        
                 }
-                else
-                {
-                    client.ClientSignature = "Images/Client/Signatures/3f87d50f.png";
-                }
                 bool result = _iClientManager.Add(client);
                 if (result)
                 {
@@ -154,7 +126,7 @@ namespace NBL.Areas.Editor.Controllers
                 
                 ViewBag.RegionId = new SelectList(_iRegionManager.GetAll(), "RegionId", "RegionName");
                 ViewBag.ClientTypeId = new SelectList(_iCommonManager.GetAllClientType(), "ClientTypeId", "ClientTypeName");
-                ViewBag.DistrictId = new SelectList(new List<District>(), "DistrictId", "DistrictName");
+                ViewBag.DistrictId = new SelectList(_iDistrictManager.GetAll(), "DistrictId", "DistrictName");
                 ViewBag.UpazillaId = new SelectList(new List<Upazilla>(), "UpazillaId", "UpzillaName");
                 ViewBag.PostOfficeId = new SelectList(new List<PostOffice>(), "PostOfficeId", "PostOfficeName");
                 ViewBag.TerritoryId = new SelectList(new List<Territory>(), "TerritoryId", "TerritoryName");

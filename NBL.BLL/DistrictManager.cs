@@ -36,7 +36,7 @@ namespace NBL.BLL
 
         public ICollection<District> GetAll()
         {
-            throw new NotImplementedException();
+            return _iDistrictGateway.GetAll();
         }
 
         public IEnumerable<District> GetAllDistrictByDivistionId(int divisionId)
