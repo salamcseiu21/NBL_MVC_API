@@ -45,5 +45,6 @@ namespace NBL.Areas.Factory.Controllers
             return View(branches);
 
         }
+
     }
 }

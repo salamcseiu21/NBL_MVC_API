@@ -27,6 +27,8 @@ namespace NBL.Areas.Factory.Controllers
         }
 
 
+
+        [HttpGet]
         public ActionResult PrintBarCode()
         {
 
@@ -58,10 +60,12 @@ namespace NBL.Areas.Factory.Controllers
                 var barcode = model.ProductId.ToString("D3") +
                               productionDateCodes.Find(n => n.ProductionDateCodeId.Equals(3))
                                   .Code + DateTime.Now.Day + model.ProductionLineId + i.ToString("D5");
+
+               
                 GenerateBarCodeFromaGivenString(barcode);
             }
 
-            var result=_iBarCodeManager.GenerateBarCode(model);
+            
             ViewBag.ProductionDateCodeId = new SelectList(productionDateCodes, "ProductionDateCodeId", "Code", productionDateCodes.First().ProductionDateCodeId);
             ViewBag.ProductionLineId = new SelectList(productionLines, "ProductionLineId", "LineNumber");
             return View();
@@ -157,7 +161,7 @@ namespace NBL.Areas.Factory.Controllers
             return barcodes[0];
         }
 
-
+        
       
     }
 }

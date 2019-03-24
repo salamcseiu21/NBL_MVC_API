@@ -83,6 +83,8 @@
     <Compile Include="AutoMapper\DomainProfile.cs" />
     <Compile Include="EntityModels\Banks\Bank.cs" />
     <Compile Include="EntityModels\Banks\BankBranch.cs" />
+    <Compile Include="EntityModels\BarCodes\BarCodeModel.cs" />
+    <Compile Include="EntityModels\BarCodes\PrintBarCodeModel.cs" />
     <Compile Include="EntityModels\BarCodes\ProductionDateCode.cs" />
     <Compile Include="EntityModels\BarCodes\ProductionLine.cs" />
     <Compile Include="EntityModels\BarCodes\ViewCreateBarCodeModel.cs" />

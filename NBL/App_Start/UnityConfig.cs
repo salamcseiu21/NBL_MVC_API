@@ -81,7 +81,8 @@ namespace NBL
             container.RegisterType<IAccountGateway, AccountsGateway>();
             container.RegisterType<IInvoiceManager, InvoiceManager>();
             container.RegisterType<IInvoiceGateway, InvoiceGateway>();
-
+            container.RegisterType<IBarCodeManager, BarCodeManager>();
+            container.RegisterType<IBarCodeGateway, BarCodeGateway>();
 
             container.RegisterType<IDeliveryManager, DeliveryManager>();
             container.RegisterType<IDeliveryGateway, DeliveryGateway>();

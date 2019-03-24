@@ -333,6 +333,7 @@
     <Compile Include="Areas\Editor\Controllers\VatsController.cs" />
     <Compile Include="Areas\Editor\EditorAreaRegistration.cs" />
     <Compile Include="Areas\Factory\Controllers\ApproveController.cs" />
+    <Compile Include="Areas\Factory\Controllers\BarCodeController.cs" />
     <Compile Include="Areas\Factory\Controllers\BarCodeGeneratorController.cs" />
     <Compile Include="Areas\Factory\Controllers\BranchController.cs" />
     <Compile Include="Areas\Factory\Controllers\DeliveryController.cs" />
@@ -7085,6 +7086,7 @@
     <Content Include="Images\logo.png" />
     <Content Include="Images\money.jpg" />
     <Content Include="Images\n_battery_logo.png" />
+    <Content Include="Images\processing.gif" />
     <Content Include="Images\Signatures\1463d40822.png" />
     <Content Include="Images\Signatures\20bf39266f.png" />
     <Content Include="Images\Signatures\2adc112cb2.png" />
@@ -7958,6 +7960,10 @@
     <Content Include="Areas\Factory\Views\BarCodeGenerator\BarCodeRead.cshtml" />
     <Content Include="Areas\Editor\Views\Product\AddProductDetails.cshtml" />
     <Content Include="Areas\Factory\Views\BarCodeGenerator\PrintBarCode.cshtml" />
+    <Content Include="Areas\Factory\Views\BarCode\Print.cshtml" />
+    <Content Include="Areas\Factory\Views\Shared\_ViewPrintBarCodePartialPage.cshtml" />
+    <Content Include="Areas\Factory\Views\BarCode\Generate.cshtml" />
+    <Content Include="Areas\Factory\Views\BarCode\PrintBarCode.cshtml" />
     <None Include="Properties\PublishProfiles\Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />

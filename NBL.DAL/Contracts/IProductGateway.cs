@@ -57,5 +57,7 @@ namespace NBL.DAL.Contracts
         ICollection<RequisitionItem> GetMonthlyRequsitionItemsById(long requisitionId);
         IEnumerable<Product> GetAllProducts();
         int SaveProductDetails(ViewCreateProductDetailsModel model);
+        List<Product> GetAllProductionAbleProductByDateCode(string productionDateCode);
+       
     }
 }

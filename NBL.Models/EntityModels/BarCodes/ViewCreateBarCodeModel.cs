@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace NBL.Models.EntityModels.BarCodes
 {
@@ -18,5 +19,13 @@ namespace NBL.Models.EntityModels.BarCodes
         [Display(Name = "Product Name")]
         [Required]
         public string ProductName { get; set; }
+
+        public int GenerateByUserId { get; set; }   
+        public ICollection<BarCodeModel> BarCodes { set; get; }
+
+        public ViewCreateBarCodeModel()
+        {
+            BarCodes=new List<BarCodeModel>();
+        }
     }
 }

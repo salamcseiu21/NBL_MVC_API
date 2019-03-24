@@ -18,37 +18,62 @@ namespace NBL.BLL
             _iBarCodeGateway = iBarCodeGateway;
         }
 
-        public bool Add(ViewCreateBarCodeModel model)
+        public bool Add(BarCodeModel model)
+        {
+           int rowAffected= _iBarCodeGateway.Add(model);
+            return rowAffected > 0;
+        }
+
+        public bool Update(BarCodeModel model)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(ViewCreateBarCodeModel model)
+        public bool Delete(BarCodeModel model)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(ViewCreateBarCodeModel model)
+        public BarCodeModel GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public ViewCreateBarCodeModel GetById(int id)
+        public ICollection<BarCodeModel> GetAll()
         {
-            throw new NotImplementedException();
+            return _iBarCodeGateway.GetAll();
         }
 
-        public ICollection<ViewCreateBarCodeModel> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool GenerateBarCode(ViewCreateBarCodeModel model)
+        public bool GenerateBarCode(BarCodeModel model)
         {
 
             return _iBarCodeGateway.GenerateBarCode(model) > 0;
         }
 
+        public int GetMaxBarCodeSlByPrefix(string prefix)
+        {
+            return _iBarCodeGateway.GetMaxBarCodeSlByPrefix(prefix);
+        }
 
+       public ICollection<BarCodeModel> GetAllByProducitonDateCode(string dateCode)
+        {
+            return _iBarCodeGateway.GetAllByProducitonDateCode(dateCode);
+        }
+
+        public ICollection<BarCodeModel> GetBarCodesBySearchCriteria(PrintBarCodeModel model)
+        {
+            return _iBarCodeGateway.GetBarCodesBySearchCriteria(model);
+        }
+
+        public bool SaveBarCodes(ViewCreateBarCodeModel model)
+        {
+            int rowAffected = _iBarCodeGateway.SaveBarCodes(model);
+            return rowAffected > 0;
+        }
+
+        public List<PrintBarCodeModel> GetTodaysProductionProductList()
+        {
+            return _iBarCodeGateway.GetTodaysProductionProductList();
+        }
     }
 }

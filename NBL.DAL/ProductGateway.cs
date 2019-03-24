@@ -1473,5 +1473,44 @@ namespace NBL.DAL
                 CommandObj.Parameters.Clear();
             }
         }
+
+        public List<Product> GetAllProductionAbleProductByDateCode(string productionDateCode)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetAllProductionAbleProduct";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@DateCode", productionDateCode);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<Product> products = new List<Product>();
+                while (reader.Read())
+                {
+                    products.Add(new Product
+                    {
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductName = reader["ProductName"].ToString(),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                        CompanyId = Convert.ToInt32(reader["CompanyId"])
+                    });
+                }
+
+                reader.Close();
+                return products;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Colud not collect product list", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        
     }
 }

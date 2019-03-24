@@ -3,20 +3,20 @@
 <ul class="sidebar-menu" data-widget="tree">
     
     
-    @*<li class="treeview">
+    <li class="treeview">
         <a href="#">
             <i class="fa fa-product-hunt"></i>
-            <span>BarCode Generation</span>
+            <span>BarCode</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
             </span>
         </a>
         <ul class="treeview-menu">
-            <li>@Html.ActionLink(" Generate Barcode", "GenerateBarCode", "BarCodeGenerator", new { area = "Factory" }, new { @class = "fa fa-list" })</li>
-            <li>@Html.ActionLink(" Read Barcode", "BarCodeRead", "BarCodeGenerator", new { area = "Factory" }, new { @class = "fa fa-list" })</li>
+            <li>@Html.ActionLink(" Generate", "Generate", "BarCode", new { area = "Factory" }, new { @class = "fa fa-list" })</li>
+            <li>@Html.ActionLink(" Print", "Print", "BarCode", new { area = "Factory" }, new { @class = "fa fa-list" })</li>
            
         </ul>
-    </li>*@
+    </li>
 
     <li class="treeview">
         <a href="#">
@@ -29,6 +29,7 @@
         <ul class="treeview-menu">
             @*<li>@Html.ActionLink(" Production Note", "ProductionNote", "Product", new { area = "Factory" }, new { @class = "fa fa-plus" })</li>
             <li>@Html.ActionLink(" Pending Production Note", "ViewPendingProductionNote", "Product", new { area = "Factory" }, new { @class = "fa fa-plus" })</li>*@
+           
             <li>@Html.ActionLink(" Scan Product", "AddProductToTempFile", "Product", new {area = "Factory"}, new {@class = "fa fa-plus"})</li>
         </ul>
     </li>

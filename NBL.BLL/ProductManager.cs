@@ -319,5 +319,12 @@ namespace NBL.BLL
             int rowAffected = _iProductGateway.SaveProductDetails(model);
             return rowAffected > 0;
         }
+
+        public List<Product> GetAllProductionAbleProductByDateCode(string productionDateCode)
+        {
+            return _iProductGateway.GetAllProductionAbleProductByDateCode(productionDateCode);
+        }
+
+        
     }
 }
