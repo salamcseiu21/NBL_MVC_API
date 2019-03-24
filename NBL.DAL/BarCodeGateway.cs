@@ -179,6 +179,7 @@ namespace NBL.DAL
                 CommandObj.CommandText = "UDSP_AddBarCodeMaster";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@ProductId", model.ProductId);
+                CommandObj.Parameters.AddWithValue("@LineNumber", model.ProductionLineId.ToString("D2"));
                 CommandObj.Parameters.AddWithValue("@Quantity", model.BarCodes.Count);
                 CommandObj.Parameters.AddWithValue("@GenerateByUserId", model.GenerateByUserId);
                 CommandObj.Parameters.Add("@BarCodeMasterId", SqlDbType.BigInt);

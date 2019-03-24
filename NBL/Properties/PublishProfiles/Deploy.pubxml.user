@@ -502,7 +502,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/23/2018 10:41:16</publishTime>
     </File>
     <File Include="Areas/Editor/Views/Client/AddNewClient.cshtml">
-      <publishTime>03/20/2019 12:08:20</publishTime>
+      <publishTime>03/24/2019 14:53:01</publishTime>
     </File>
     <File Include="Areas/Editor/Views/Client/All.cshtml">
       <publishTime>01/13/2019 14:53:10</publishTime>
@@ -22297,16 +22297,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/23/2012 15:23:58</publishTime>
     </File>
     <File Include="bin/NBL.BLL.dll">
-      <publishTime>03/24/2019 12:07:44</publishTime>
+      <publishTime>03/24/2019 15:49:28</publishTime>
     </File>
     <File Include="bin/NBL.DAL.dll">
-      <publishTime>03/24/2019 12:07:43</publishTime>
+      <publishTime>03/24/2019 15:49:28</publishTime>
     </File>
     <File Include="bin/NBL.dll">
-      <publishTime>03/24/2019 12:51:16</publishTime>
+      <publishTime>03/24/2019 15:49:35</publishTime>
     </File>
     <File Include="bin/NBL.Models.dll">
-      <publishTime>03/24/2019 12:07:43</publishTime>
+      <publishTime>03/24/2019 15:49:27</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>08/03/2014 20:33:56</publishTime>

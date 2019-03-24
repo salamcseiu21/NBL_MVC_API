@@ -95,7 +95,7 @@ namespace NBL.Areas.Factory.Controllers
         [HttpPost]
         public ActionResult Print(PrintBarCodeModel model)
         {
-            
+
             var productionLines = _iCommonManager.GetAllProductionLines().ToList();
             List<BarCodeModel> printableBarcodes = _iBarCodeManager.GetBarCodesBySearchCriteria(model).ToList();
             var products = _iBarCodeManager.GetTodaysProductionProductList();

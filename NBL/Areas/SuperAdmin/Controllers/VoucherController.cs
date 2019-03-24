@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.Areas.Accounts.BLL.Contracts;
+using NBL.Areas.AccountsAndFinance.BLL.Contracts;
 
 namespace NBL.Areas.SuperAdmin.Controllers
 {
