@@ -42,7 +42,7 @@
     else if(User.IsInRole("Factory"))
     {
         roleName = "Factory";
-        areas = "factory";
+        areas = "production";
     }
     else if (User.IsInRole("Accounts"))
     {
@@ -228,7 +228,7 @@
                         Html.RenderPartial("~/Areas/Manager/Views/Shared/_MenuPartialPage.cshtml");
                         break;
                     case "Factory":
-                        Html.RenderPartial("~/Areas/Factory/Views/Shared/_MenuPartialPage.cshtml");
+                        Html.RenderPartial("~/Areas/Production/Views/Shared/_MenuPartialPage.cshtml");
                         break;
                     case "Accounts":
                         Html.RenderPartial("~/Areas/AccountsAndFinance/Views/Shared/_MenuPartialPage.cshtml");

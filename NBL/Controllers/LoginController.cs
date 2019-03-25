@@ -80,7 +80,7 @@ namespace NBL.Controllers
                     case "SalesAdmin":
                         return RedirectToAction("Home", "Home", new { area = "Admin" });
                     case "Factory":
-                        return RedirectToAction("Home", "Home", new { area = "Factory" });
+                        return RedirectToAction("Home", "Home", new { area = "Production" });
                     case "Editor":
                         return RedirectToAction("Home", "Home", new { area = "Editor" });
                     case "Corporate":
