@@ -7992,6 +7992,7 @@
     <Content Include="Areas\ResearchAndDevelopment\Views\Home\Home.cshtml" />
     <Content Include="Areas\Services\Views\web.config" />
     <Content Include="Areas\Services\Views\Home\Home.cshtml" />
+    <Content Include="Areas\Sales\Views\Order\RetailSale.cshtml" />
     <None Include="Properties\PublishProfiles\Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />

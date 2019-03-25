@@ -50,5 +50,6 @@ namespace NBL.DAL.Contracts
        IEnumerable<ViewVerifiedOrderModel> GetVerifiedOrdersByBranchAndCompanyId(int branchId, int companyId);
 
        IEnumerable<ViewOrder> GetOrder(SearchCriteriaModel searchCriteria);
+       int SaveSoldProductBarCode(RetailSale retail);
    }
 }

@@ -46,8 +46,8 @@
     }
     else if (User.IsInRole("Accounts"))
     {
-        roleName = "Accounts";
-        areas = "accounts";
+        roleName = "A & F";
+        areas = "accountsandfinance";
     }
     else if (User.IsInRole("AccountExecutive"))
     {
@@ -231,7 +231,7 @@
                         Html.RenderPartial("~/Areas/Factory/Views/Shared/_MenuPartialPage.cshtml");
                         break;
                     case "Accounts":
-                        Html.RenderPartial("~/Areas/Accounts/Views/Shared/_MenuPartialPage.cshtml");
+                        Html.RenderPartial("~/Areas/AccountsAndFinance/Views/Shared/_MenuPartialPage.cshtml");
                         break;
                     case "AccountExecutive":
                         Html.RenderPartial("~/Areas/AccountExecutive/Views/Shared/_MenuPartialPage.cshtml");

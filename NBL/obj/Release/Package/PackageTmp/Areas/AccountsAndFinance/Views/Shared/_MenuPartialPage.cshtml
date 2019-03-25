@@ -10,12 +10,12 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li>@Html.ActionLink(" Receivable", "Receivable", "Account", new { area = "Accounts" }, new { @class = "fa fa-file",style = "font-weight: bolder;" })</li>
-            <li>@Html.ActionLink(" Credit/Receive Voucher", "CreditVoucher", "Voucher", new { area = "Accounts" }, new { @class = "fa fa-file", style = "font-weight: bolder;" })</li>
-            <li>@Html.ActionLink(" Debit/Payment Voucher", "DebitVoucher", "Voucher", new { area = "Accounts" }, new { @class = "fa fa-file", style = "font-weight: bolder;" })</li>
-            <li>@Html.ActionLink(" Cheque Payment Voucher", "ChequePaymentVoucher", "Voucher", new { area = "Accounts" }, new { @class = "fa fa-file", style = "font-weight: bolder;" })</li>
-            <li>@Html.ActionLink(" Cheque Receive Voucher", "ChequeReceiveVoucher", "Voucher", new { area = "Accounts" }, new { @class = "fa fa-file", style = "font-weight: bolder;" })</li>
-            <li>@Html.ActionLink(" Journal Voucher", "JournalVoucher", "Voucher", new { area = "Accounts" }, new { @class = "fa fa-file", style = "font-weight: bolder;" })</li>
+            <li>@Html.ActionLink(" Receivable", "Receivable", "Account", new { area = "AccountsAndFinance" }, new { @class = "fa fa-file",style = "font-weight: bolder;" })</li>
+            <li>@Html.ActionLink(" Credit/Receive Voucher", "CreditVoucher", "Voucher", new { area = "AccountsAndFinance" }, new { @class = "fa fa-file", style = "font-weight: bolder;" })</li>
+            <li>@Html.ActionLink(" Debit/Payment Voucher", "DebitVoucher", "Voucher", new { area = "AccountsAndFinance" }, new { @class = "fa fa-file", style = "font-weight: bolder;" })</li>
+            <li>@Html.ActionLink(" Cheque Payment Voucher", "ChequePaymentVoucher", "Voucher", new { area = "AccountsAndFinance" }, new { @class = "fa fa-file", style = "font-weight: bolder;" })</li>
+            <li>@Html.ActionLink(" Cheque Receive Voucher", "ChequeReceiveVoucher", "Voucher", new { area = "AccountsAndFinance" }, new { @class = "fa fa-file", style = "font-weight: bolder;" })</li>
+            <li>@Html.ActionLink(" Journal Voucher", "JournalVoucher", "Voucher", new { area = "AccountsAndFinance" }, new { @class = "fa fa-file", style = "font-weight: bolder;" })</li>
             @*<li>@Html.ActionLink(" Payable", "Payable", "Account", new { area = "Accounts" }, new { @class = "fa fa-file", style = "font-weight: bolder;" })</li>*@
         </ul>
     </li>
@@ -88,13 +88,12 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li>@Html.ActionLink("  Employees", "ViewEmployee", "Home", new { area = "Accounts" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
-            <li>@Html.ActionLink(" Clients", "ViewClient", "Home", new { area = "Accounts" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
-            <li>@Html.ActionLink(" Products", "ViewProduct", "Home", new { area = "Accounts" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
-            <li>@Html.ActionLink(" Branch List", "ViewBranch", "Home", new { area = "Accounts" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
-            <li>@Html.ActionLink(" Journals", "ViewJournal", "Voucher", new { area = "Accounts" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
-            <li>@Html.ActionLink(" All Vouchers", "Vouchers", "Voucher", new { area = "Accounts" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
-            <li>@Html.ActionLink(" Pending Vouchers", "PendingVouchers", "Voucher", new { area = "Accounts" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
+            <li>@Html.ActionLink("  Employees", "ViewEmployee", "Home", new { area = "AccountsAndFinance" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
+            <li>@Html.ActionLink(" Clients", "ViewClient", "Home", new { area = "AccountsAndFinance" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
+            <li>@Html.ActionLink(" Branch List", "ViewBranch", "Home", new { area = "AccountsAndFinance" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
+            <li>@Html.ActionLink(" Journals", "ViewJournal", "Voucher", new { area = "AccountsAndFinance" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
+            <li>@Html.ActionLink(" All Vouchers", "Vouchers", "Voucher", new { area = "AccountsAndFinance" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
+            <li>@Html.ActionLink(" Pending Vouchers", "PendingVouchers", "Voucher", new { area = "AccountsAndFinance" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
             @*<li>@Html.ActionLink(" Credit Vouchers", "ViewCreditVoucher", "Voucher", new { area = "Accounts" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
             <li>@Html.ActionLink(" Debit Vouchers", "ViewDebitVoucher", "Voucher", new { area = "Accounts" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>
             <li>@Html.ActionLink(" Cheque Payment Vouchers", "ViewChequePaymentVoucher", "Voucher", new { area = "Accounts" }, new { @class = "fa fa-list", style = "font-weight: bolder;" })</li>

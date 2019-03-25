@@ -23,6 +23,8 @@ namespace NBL.Models.AutoMapper
             CreateMap<ProductionNote, ViewCreateProductionNoteModel>();
             CreateMap<ViewCreateClientModel, Client>();
             CreateMap<Client, ViewCreateClientModel>();
+            CreateMap<ViewCreateRetailSaleModel, RetailSale>();
+            CreateMap<RetailSale, ViewCreateRetailSaleModel>();
         }
     }
 }

@@ -2220,5 +2220,52 @@ ConnectionObj.Close();
                 ConnectionObj.Close();
             }
         }
+
+        public int SaveSoldProductBarCode(RetailSale retail)
+        {
+            ConnectionObj.Open();
+            SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
+            try
+            {
+               
+                CommandObj.Transaction = sqlTransaction;
+                CommandObj.CommandText = "UDSP_SaveSoldProductBarCode";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@BarCode", retail.BarCode);
+                CommandObj.Parameters.AddWithValue("@UserId", retail.UserId);
+                CommandObj.Parameters.AddWithValue("@BranchId", retail.BranchId);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                CommandObj.ExecuteNonQuery();
+                int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                if (rowAffected > 0)
+                {
+                    sqlTransaction.Commit();
+                }
+                else
+                {
+                    sqlTransaction.Rollback();
+                }
+                return rowAffected;
+            }
+            catch (SqlException sqlException)
+            {
+                sqlTransaction.Rollback();
+                throw new Exception("Could not save due to Sql Exception", sqlException);
+            }
+            catch (Exception exception)
+            {
+                sqlTransaction.Rollback();
+                throw new Exception("Could not save status", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
+     
     }
 }

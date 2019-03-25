@@ -3,7 +3,8 @@
 @using NBL.BLL
 @using NBL.DAL
 @using NBL.Areas.Accounts.Models
-@model Voucher
+@using NBL.Areas.AccountsAndFinance.Models
+@model NBL.Areas.AccountsAndFinance.Models.Voucher
 @{
     var voucherDetails = (IEnumerable<VoucherDetails>)ViewBag.VoucherDetails;
     CommonGateway commonGateway = new CommonGateway();

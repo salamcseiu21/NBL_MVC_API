@@ -311,6 +311,12 @@ namespace NBL.BLL
         {
             return _iOrderGateway.GetOrder(searchCriteria);
         }
+
+        public bool SaveSoldProductBarCode(RetailSale retail)
+        {
+            int rowAffected = _iOrderGateway.SaveSoldProductBarCode(retail); 
+            return rowAffected > 0;
+        }
     }
 
 

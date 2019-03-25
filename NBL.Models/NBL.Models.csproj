@@ -107,6 +107,7 @@
     <Compile Include="EntityModels\Deliveries\DeliveryModel.cs" />
     <Compile Include="EntityModels\Departments\Department.cs" />
     <Compile Include="EntityModels\Designations\Designation.cs" />
+    <Compile Include="EntityModels\Orders\RetailSale.cs" />
     <Compile Include="EntityModels\TransferProducts\Trip.cs" />
     <Compile Include="EntityModels\TransferProducts\TripDetails.cs" />
     <Compile Include="EntityModels\VatDiscounts\Discount.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="EntityModels\Requisitions\MonthlyRequisitionModel.cs" />
     <Compile Include="EntityModels\Requisitions\RequisitionItem.cs" />
     <Compile Include="ViewModels\Orders\TempOrderedProduct.cs" />
+    <Compile Include="ViewModels\Orders\ViewCreateRetailSaleModel.cs" />
     <Compile Include="ViewModels\Products\ViewCreateProductDetailsModel.cs" />
     <Compile Include="ViewModels\Requisitions\ViewMonthlyRequisitionModel.cs" />
     <Compile Include="ViewModels\Requisitions\ViewRequisitionModel.cs" />

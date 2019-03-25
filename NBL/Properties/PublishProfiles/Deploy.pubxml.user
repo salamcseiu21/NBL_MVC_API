@@ -16,7 +16,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/13/2019 15:03:10</publishTime>
     </File>
     <File Include="Areas/AccountExecutive/Views/Account/JournalDetails.cshtml">
-      <publishTime>12/23/2018 12:17:06</publishTime>
+      <publishTime>03/24/2019 16:46:56</publishTime>
     </File>
     <File Include="Areas/AccountExecutive/Views/Account/ReceivableDetails.cshtml">
       <publishTime>03/11/2019 17:02:22</publishTime>
@@ -25,7 +25,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/13/2019 15:03:30</publishTime>
     </File>
     <File Include="Areas/AccountExecutive/Views/Account/ViewJournal.cshtml">
-      <publishTime>12/02/2018 11:40:20</publishTime>
+      <publishTime>03/24/2019 16:49:47</publishTime>
     </File>
     <File Include="Areas/AccountExecutive/Views/Account/VoucherDetails.cshtml">
       <publishTime>01/13/2019 10:52:28</publishTime>
@@ -43,7 +43,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/13/2019 10:52:28</publishTime>
     </File>
     <File Include="Areas/AccountExecutive/Views/Shared/_VoucherPartialPage.cshtml">
-      <publishTime>11/11/2018 14:19:38</publishTime>
+      <publishTime>03/24/2019 16:49:47</publishTime>
     </File>
     <File Include="Areas/AccountExecutive/Views/web.config">
       <publishTime>09/27/2018 12:48:04</publishTime>
@@ -117,8 +117,71 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Areas/Accounts/Views/web.config">
       <publishTime>09/27/2018 12:48:02</publishTime>
     </File>
+    <File Include="Areas/AccountsAndFinance/Views/Account/Payable.cshtml">
+      <publishTime>01/13/2019 14:59:56</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Account/Receivable.cshtml">
+      <publishTime>02/17/2019 10:28:16</publishTime>
+    </File>
     <File Include="Areas/AccountsAndFinance/Views/Home/Home.cshtml">
-      <publishTime>03/24/2019 12:16:43</publishTime>
+      <publishTime>02/18/2019 09:46:02</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Shared/_MenuPartialPage.cshtml">
+      <publishTime>03/24/2019 17:00:07</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Shared/_VoucherDetailsPartialPage.cshtml">
+      <publishTime>01/01/2019 15:06:36</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Shared/_VoucherPartialPage.cshtml">
+      <publishTime>03/24/2019 16:50:37</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/ChequePaymentVoucher.cshtml">
+      <publishTime>12/22/2018 14:06:36</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/ChequeReceiveVoucher.cshtml">
+      <publishTime>12/22/2018 14:10:24</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/CreditVoucher.cshtml">
+      <publishTime>01/13/2019 10:52:28</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/DebitVoucher.cshtml">
+      <publishTime>12/22/2018 13:35:50</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/EditJournalVoucher.cshtml">
+      <publishTime>03/24/2019 16:46:56</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/EditVoucher.cshtml">
+      <publishTime>03/24/2019 16:49:47</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/JournalDetails.cshtml">
+      <publishTime>03/24/2019 16:46:56</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/JournalPreview.cshtml">
+      <publishTime>03/24/2019 16:46:56</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/JournalVoucher.cshtml">
+      <publishTime>12/22/2018 14:11:10</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/ViewChequePaymentVoucher.cshtml">
+      <publishTime>03/24/2019 16:49:47</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/ViewChequeReceiveVoucher.cshtml">
+      <publishTime>03/24/2019 16:49:47</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/ViewCreditVoucher.cshtml">
+      <publishTime>03/24/2019 16:49:47</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/ViewDebitVoucher.cshtml">
+      <publishTime>03/24/2019 16:49:47</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/ViewJournal.cshtml">
+      <publishTime>03/24/2019 16:49:47</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/VoucherDetails.cshtml">
+      <publishTime>01/01/2019 15:04:42</publishTime>
+    </File>
+    <File Include="Areas/AccountsAndFinance/Views/Voucher/VoucherPreview.cshtml">
+      <publishTime>03/24/2019 16:49:47</publishTime>
     </File>
     <File Include="Areas/AccountsAndFinance/Views/web.config">
       <publishTime>03/24/2019 12:15:23</publishTime>
@@ -355,7 +418,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/13/2019 14:54:42</publishTime>
     </File>
     <File Include="Areas/Corporate/Views/Home/VoucherPreview.cshtml">
-      <publishTime>12/02/2018 11:41:04</publishTime>
+      <publishTime>03/24/2019 16:49:47</publishTime>
     </File>
     <File Include="Areas/Corporate/Views/Shared/_Layout.cshtml">
       <publishTime>01/10/2019 14:46:34</publishTime>
@@ -577,7 +640,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/20/2019 10:44:58</publishTime>
     </File>
     <File Include="Areas/Editor/Views/Region/AddNewRegion.cshtml">
-      <publishTime>01/13/2019 14:56:52</publishTime>
+      <publishTime>03/24/2019 17:15:14</publishTime>
     </File>
     <File Include="Areas/Editor/Views/Region/All.cshtml">
       <publishTime>01/13/2019 14:56:52</publishTime>
@@ -589,7 +652,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/20/2019 13:04:02</publishTime>
     </File>
     <File Include="Areas/Editor/Views/Territory/AddNewTerritory.cshtml">
-      <publishTime>01/13/2019 14:57:08</publishTime>
+      <publishTime>03/24/2019 17:23:17</publishTime>
     </File>
     <File Include="Areas/Editor/Views/Territory/All.cshtml">
       <publishTime>01/13/2019 14:57:08</publishTime>
@@ -634,7 +697,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/23/2019 16:46:20</publishTime>
     </File>
     <File Include="Areas/Factory/Views/BarCode/Print.cshtml">
-      <publishTime>03/24/2019 12:02:55</publishTime>
+      <publishTime>03/24/2019 16:37:34</publishTime>
     </File>
     <File Include="Areas/Factory/Views/BarCode/PrintBarCode.cshtml">
       <publishTime>03/24/2019 11:58:06</publishTime>
@@ -760,7 +823,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/17/2019 17:07:50</publishTime>
     </File>
     <File Include="Areas/Management/Views/Home/VoucherPreview.cshtml">
-      <publishTime>11/08/2018 16:56:10</publishTime>
+      <publishTime>03/24/2019 16:49:47</publishTime>
     </File>
     <File Include="Areas/Management/Views/Shared/_MenuPartialPage.cshtml">
       <publishTime>02/13/2019 15:15:22</publishTime>
@@ -845,6 +908,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Areas/Purchases/Views/web.config">
       <publishTime>03/24/2019 12:32:41</publishTime>
+    </File>
+    <File Include="Areas/ResearchAndDevelopment/Views/Home/Home.cshtml">
+      <publishTime>03/24/2019 15:53:07</publishTime>
+    </File>
+    <File Include="Areas/ResearchAndDevelopment/Views/web.config">
+      <publishTime>03/24/2019 15:51:55</publishTime>
     </File>
     <File Include="Areas/Sales/Files/Temp_Sales_Order_By_24.xml">
       <publishTime>03/18/2019 11:48:30</publishTime>
@@ -966,6 +1035,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Areas/SCM/Views/web.config">
       <publishTime>03/24/2019 12:17:01</publishTime>
     </File>
+    <File Include="Areas/Services/Views/Home/Home.cshtml">
+      <publishTime>03/24/2019 15:55:04</publishTime>
+    </File>
+    <File Include="Areas/Services/Views/web.config">
+      <publishTime>03/24/2019 15:53:52</publishTime>
+    </File>
     <File Include="Areas/SuperAdmin/Reports/ViewReport.aspx">
       <publishTime>10/04/2018 13:56:10</publishTime>
     </File>
@@ -1021,7 +1096,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/13/2019 14:55:30</publishTime>
     </File>
     <File Include="Areas/SuperAdmin/Views/Home/VoucherPreview.cshtml">
-      <publishTime>11/25/2018 12:42:56</publishTime>
+      <publishTime>03/24/2019 16:49:47</publishTime>
     </File>
     <File Include="Areas/SuperAdmin/Views/Shared/_MenuPartialPage.cshtml">
       <publishTime>12/12/2018 10:16:06</publishTime>
@@ -1030,7 +1105,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/13/2019 15:00:48</publishTime>
     </File>
     <File Include="Areas/SuperAdmin/Views/Voucher/ViewJournal.cshtml">
-      <publishTime>11/20/2018 12:26:42</publishTime>
+      <publishTime>03/24/2019 16:49:47</publishTime>
     </File>
     <File Include="Areas/SuperAdmin/Views/web.config">
       <publishTime>09/27/2018 13:33:16</publishTime>
@@ -22297,16 +22372,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/23/2012 15:23:58</publishTime>
     </File>
     <File Include="bin/NBL.BLL.dll">
-      <publishTime>03/24/2019 15:49:28</publishTime>
+      <publishTime>03/24/2019 17:31:47</publishTime>
     </File>
     <File Include="bin/NBL.DAL.dll">
-      <publishTime>03/24/2019 15:49:28</publishTime>
+      <publishTime>03/24/2019 17:31:47</publishTime>
     </File>
     <File Include="bin/NBL.dll">
-      <publishTime>03/24/2019 15:49:35</publishTime>
+      <publishTime>03/24/2019 17:31:53</publishTime>
     </File>
     <File Include="bin/NBL.Models.dll">
-      <publishTime>03/24/2019 15:49:27</publishTime>
+      <publishTime>03/24/2019 17:31:46</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>08/03/2014 20:33:56</publishTime>
@@ -23209,7 +23284,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/13/2019 14:55:44</publishTime>
     </File>
     <File Include="Views/Shared/_UserLayoutPage.cshtml">
-      <publishTime>03/20/2019 16:16:42</publishTime>
+      <publishTime>03/24/2019 17:01:26</publishTime>
     </File>
     <File Include="Views/Shared/_ViewAllSalesPartialPage.cshtml">
       <publishTime>01/13/2019 15:00:48</publishTime>
@@ -23245,7 +23320,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/23/2018 10:42:08</publishTime>
     </File>
     <File Include="Views/Shared/_ViewJournalPartialPage.cshtml">
-      <publishTime>12/08/2018 13:56:06</publishTime>
+      <publishTime>03/24/2019 16:49:47</publishTime>
     </File>
     <File Include="Views/Shared/_ViewOrderDetailsModalPartialPage.cshtml">
       <publishTime>01/17/2019 11:00:18</publishTime>
@@ -23263,7 +23338,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/19/2019 12:13:44</publishTime>
     </File>
     <File Include="Views/Shared/_ViewProductPartialPage.cshtml">
-      <publishTime>02/19/2019 10:38:18</publishTime>
+      <publishTime>03/24/2019 16:59:33</publishTime>
     </File>
     <File Include="Views/Shared/_ViewProductWishVatPartialPage.cshtml">
       <publishTime>01/13/2019 15:03:30</publishTime>
@@ -23290,10 +23365,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/17/2019 11:01:06</publishTime>
     </File>
     <File Include="Views/Shared/_ViewVouchersPartialPage.cshtml">
-      <publishTime>11/12/2018 15:32:10</publishTime>
+      <publishTime>03/24/2019 16:49:47</publishTime>
     </File>
     <File Include="Views/Shared/_VoucherPreviewPartialPage.cshtml">
-      <publishTime>12/23/2018 12:17:06</publishTime>
+      <publishTime>03/24/2019 16:49:47</publishTime>
     </File>
     <File Include="Views/Show/EmployeeProfile.cshtml">
       <publishTime>12/23/2018 10:42:08</publishTime>
