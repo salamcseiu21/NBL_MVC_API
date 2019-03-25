@@ -77,16 +77,16 @@ namespace NBL.Models.ViewModels
         public int RegionId { get; set; }
         [Required]
         [Display(Name = "Division")]
-        public int DivisionId { get; set; }
+        public int? DivisionId { get; set; }
         [Required]
         [Display(Name = "District")]
-        public int DistrictId { get; set; }
+        public int? DistrictId { get; set; }
         [Required]
         [Display(Name = "Upazilla")]
-        public int UpazillaId { get; set; }
+        public int? UpazillaId { get; set; }
         [Required]
         [Display(Name = "Post Office")]
-        public int PostOfficeId { get; set; }
+        public int? PostOfficeId { get; set; }
         public int UserId { get; set; }
         public int BranchId { get; set; }
         public int CompanyId { get; set; }
@@ -95,7 +95,7 @@ namespace NBL.Models.ViewModels
         public decimal CreditLimit { get; set; }
         public decimal RemainingCredit { get; set; }
         public int MaxCreditDay { get; set; }
-        public decimal Outstanding { set; get; }
+        public decimal? Outstanding { set; get; }
         [Display(Name = "Territory")]
         public int TerritoryId { get; set; }
         public List<Order> Orders { get; set; }

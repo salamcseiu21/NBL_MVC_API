@@ -48,6 +48,13 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        @Html.LabelFor(model => model.TerritoryId,new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(model=>model.TerritoryId,null,"--Select--",new {@class="form-control"})
+                            @Html.ValidationMessageFor(model => model.TerritoryId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
                         @Html.LabelFor(model => model.DistrictId, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
                             @Html.DropDownListFor(model=>model.DistrictId,null,"--Select--",new {@class="form-control"})
@@ -150,13 +157,6 @@
                         <div class="col-md-9">
                             @Html.EditorFor(model => model.CreditLimit, new { htmlAttributes = new { @class = "form-control", @placeholder = "Recommended Credit Limit", id = "CreditLimit" } })
                             @Html.ValidationMessageFor(model => model.CreditLimit, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.TerritoryId,new { @class = "control-label col-md-3" })
-                        <div class="col-md-9">
-                            @Html.DropDownListFor(model=>model.TerritoryId,null,"--Select--",new {@class="form-control"})
-                            @Html.ValidationMessageFor(model => model.TerritoryId, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -288,37 +288,7 @@
             });
 
     </script>
-    @*Jquery Validation*@
-    <script>
-    $("#updateClientForm").validate({
-        rules: {
-            ClientName: "required",
-            DivisionId: "required",
-            Address: "required",
-            DistrictId: "required",
-            UpzillaId: "required",
-            PostOfficeId: "required",
-            TypeId: "required",
-            Phone: "required",
-            AlternatePhone: "required",
-            Email: "required",
-
-        },
-        messages: {
-            ClientName: "*",
-            DivisionId: "*",
-            Address: "*",
-            DistrictId: "*",
-            UpzillaId: "*",
-            PostOfficeId: "*",
-            TypeId: "*",
-            Phone: "*",
-            AlternatePhone: "*",
-            Email : "*"
-        }
-    });
-    </script>
-
+ 
     <script>
 
 

@@ -2,7 +2,7 @@
     var tripId = $("#TripId").val();
     $.ajax({
         type: 'GET',
-        url: RootUrl + "factory/Delivery/LoadDeliverableProduct",
+        url: RootUrl + "production/Delivery/LoadDeliverableProduct",
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         data: { tripId: tripId },

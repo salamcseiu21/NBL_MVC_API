@@ -1,7 +1,7 @@
 ﻿function loadAllScannedProducts() {
     $.ajax({
         type: 'GET',
-        url: RootUrl + "factory/product/LoadScannedProducts",
+        url: RootUrl + "production/product/LoadScannedProducts",
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (data) {

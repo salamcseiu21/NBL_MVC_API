@@ -13,9 +13,9 @@
             <!-- Profile Image -->
             <div class="box box-primary">
                 <div class="box-body box-profile" style="margin-bottom:0;padding-bottom:0;">
-                    <img class="profile-user-img img-responsive img-circle" src="~/@Model.ClientImage" alt="Client Image" title="@Model.ClientName">
+                    <img class="profile-user-img img-responsive img-circle" src="~/@(Model.ClientImage?? "Images/User.jpg")" alt="Client Image" title="@Model.ClientName">
                     <br />
-                    <img class="profile-user-img img-responsive" src="~/@Model.ClientSignature" alt="Client Signature ">
+                    <img class="profile-user-img img-responsive" src="~/@(Model.ClientSignature?? "Images/sign.png")" alt="Client Signature ">
                     <p class="text-center">@Html.Raw(Model.GetBasicInformation())</p>
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">

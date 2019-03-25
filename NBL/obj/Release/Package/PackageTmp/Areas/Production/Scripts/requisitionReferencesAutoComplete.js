@@ -2,7 +2,7 @@
     $("#RequisitionRef").autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: RootUrl + 'factory/transfer/GetRequisitionRefeAutoComplete/',
+                url: RootUrl + 'production/transfer/GetRequisitionRefeAutoComplete/',
                 data: "{ 'prefix': '" + request.term + "'}",
                 dataType: "json",
                 type: "POST",
@@ -28,7 +28,7 @@
 
             $.ajax({
                 type: "POST",
-                url: RootUrl + 'factory/transfer/GetRequisitionById',
+                url: RootUrl + 'production/transfer/GetRequisitionById',
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(json),
                 success: function (data) {

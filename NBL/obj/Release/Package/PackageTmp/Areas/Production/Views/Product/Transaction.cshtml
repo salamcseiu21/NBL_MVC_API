@@ -206,7 +206,7 @@
         $("#ProductName").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '/Factory/Product/AutoComplete/',
+                    url: RootUrl + 'production/Product/AutoComplete/',
                     data: "{ 'prefix': '" + request.term + "'}",
                     dataType: "json",
                     type: "POST",
@@ -252,7 +252,7 @@
         $("#ToBranchName").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '/Factory/Branch/BranchAutoComplete/',
+                    url:RootUrl+ 'production/Branch/BranchAutoComplete/',
                     data: "{ 'prefix': '" + request.term + "'}",
                     dataType: "json",
                     type: "POST",

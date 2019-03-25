@@ -87,7 +87,7 @@
         var $form = $(event).parents('form');
         $.ajax({
             type: "POST",
-            url: RootUrl + 'factory/transfer/AddRequistionToTripXmlFile',
+            url: RootUrl + 'production/transfer/AddRequistionToTripXmlFile',
             data: $form.serialize(),
             error: function (xhr, status, error) {
                 alert(error);

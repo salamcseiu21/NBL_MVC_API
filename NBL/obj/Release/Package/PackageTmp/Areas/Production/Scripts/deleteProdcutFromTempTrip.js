@@ -14,7 +14,7 @@ function DeleteProductFromTripXmlFile(btnClick) {
     var json = { tempRequisitionId: btnClick.value };
     $.ajax({
         type: "POST",
-        url: RootUrl + 'factory/transfer/DeleteProductFromTempRequisition',
+        url: RootUrl + 'production/transfer/DeleteProductFromTempRequisition',
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(json),
         error: function (xhr, status, error) {

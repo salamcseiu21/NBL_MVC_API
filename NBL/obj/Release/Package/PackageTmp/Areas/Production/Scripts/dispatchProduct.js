@@ -9,7 +9,7 @@ function SaveScannedBarcodeToTextFile(event) {
     var tripId = $("#TripId").val();
     $.ajax({
         type: "POST",
-        url: RootUrl + 'factory/delivery/SaveScannedBarcodeToTextFile',
+        url: RootUrl + 'production/delivery/SaveScannedBarcodeToTextFile',
         data: { barcode: code, tripId: tripId },
         error: function (xhr, status, error) {
             alert(error);
@@ -32,7 +32,7 @@ function SaveDispatchInfo(id) {
         var tripId = $("#TripId").val();
         $.ajax({
             type: "Post",
-            url: RootUrl + 'factory/delivery/SaveDispatchInformation',
+            url: RootUrl + 'production/delivery/SaveDispatchInformation',
             data: { tripId: tripId },
             error: function (xhr, status, error) {
                 alert(error);
@@ -40,7 +40,7 @@ function SaveDispatchInfo(id) {
             success: function (response) {
                 loadAllDeliverableProducts();
                 loadScannedProducts();
-                window.location.href = RootUrl + "factory/delivery/triplist";
+                window.location.href = RootUrl + "production/delivery/triplist";
             }
         });
     } else {
@@ -61,7 +61,7 @@ function loadAllDeliverableProducts() {
 
     $.ajax({
         type: 'POST',
-        url: RootUrl + "factory/Delivery/LoadDeliverableProduct",
+        url: RootUrl + "production/Delivery/LoadDeliverableProduct",
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(json),
         success: function (data) {
@@ -76,7 +76,7 @@ function loadScannedProducts() {
     var json = { tripId: tripId };
     $.ajax({
         type: 'POST',
-        url: RootUrl + "factory/Delivery/LoadScannecdProduct",
+        url: RootUrl + "production/Delivery/LoadScannecdProduct",
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(json),
         success: function (data) {

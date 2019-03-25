@@ -67,9 +67,9 @@ namespace NBL.Areas.SuperAdmin.Controllers
 
                 Client client = _iClientManager.GetById(id);
                 ViewBag.TerritoryId = new SelectList(_iTerritoryManager.GetAll().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
-                ViewBag.DistrictId = new SelectList(_districtGateway.GetAllDistrictByDivistionId(client.DivisionId), "DistrictId", "DistrictName");
-                ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
-                ViewBag.PostOfficeId = new SelectList(_postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId), "PostOfficeId", "PostOfficeName");
+                ViewBag.DistrictId = new SelectList(_districtGateway.GetAll(), "DistrictId", "DistrictName");
+                ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId??default(int)), "UpazillaId", "UpazillaName");
+                ViewBag.PostOfficeId = new SelectList(_postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId??default(int)), "PostOfficeId", "PostOfficeName");
                 ViewBag.RegionId = new SelectList(_iRegionManager.GetAll(), "RegionId", "RegionName");
                 ViewBag.ClientTypeId = new SelectList(_iCommonManager.GetAllClientType(), "ClientTypeId", "ClientTypeName");
                 return View(client);
@@ -84,29 +84,30 @@ namespace NBL.Areas.SuperAdmin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection, HttpPostedFileBase file, HttpPostedFileBase ClientSignature)
+        public ActionResult Edit(int id, Client model, HttpPostedFileBase file, HttpPostedFileBase ClientSignature)
         {
             try
             {
                 var user = (ViewUser)Session["user"];
-                Client client = _iClientManager.GetById(id);
-                client.ClientName = collection["ClientName"];
-                client.Address = collection["Address"];
-                client.PostOfficeId = Convert.ToInt32(collection["PostOfficeId"]);
-                client.ClientTypeId = Convert.ToInt32(collection["ClientTypeId"]);
-                client.Phone = collection["phone"];
-                client.AlternatePhone = collection["AlternatePhone"];
-                client.Gender = collection["Gender"];
-                //client.Fax = collection["Fax"];
-                //client.Website = collection["Website"];
-                client.Email = collection["Email"];
-                client.CreditLimit = Convert.ToDecimal(collection["CreditLimit"]);
+                var  client = _iClientManager.GetById(id);
+                client.ClientName = model.ClientName;
+                client.Address = model.Address;
+                client.PostOfficeId = model.PostOfficeId;
+                client.ClientTypeId = model.ClientTypeId;
+                client.Phone = model.Phone;
+                client.AlternatePhone = model.AlternatePhone;
+                client.Gender = model.Gender;
+                client.Fax = model.Fax;
+                client.Website = model.Website;
+                client.Email = model.Email;
+                client.CreditLimit = Convert.ToDecimal(model.CreditLimit);
                 client.UserId = user.UserId;
-                client.NationalIdNo = collection["NationalIdNo"];
-                client.TinNo = collection["TinNo"];
-                client.TerritoryId = Convert.ToInt32(collection["TerritoryId"]);
-                client.RegionId = Convert.ToInt32(collection["RegionId"]);
+                client.NationalIdNo = model.NationalIdNo;
+                client.TinNo = model.TinNo;
+                client.TerritoryId = Convert.ToInt32(model.TerritoryId);
+                client.RegionId = Convert.ToInt32(model.RegionId);
                 client.Active = "Y";
+                client.ClientId = id;
 
                 if (file != null)
                 {
@@ -128,7 +129,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
                     ClientSignature.SaveAs(path);
                     client.ClientSignature = "Images/Client/Signatures/" + sign;
                 }
-                client.ClientId = id;
+              
                 bool result = _iClientManager.Update(client);
                 return RedirectToAction("ApproveClient");
             }

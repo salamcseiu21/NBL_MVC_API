@@ -32,7 +32,7 @@
                 <div class="col-md-offset-2 col-md-10">
 
                     <input type="button" id="btnSave" value="Save" class="btn btn-success" onclick="SaveProductToFactoryInventory()"/>
-                    <a class="btn btn-danger" href="~/factory">Cancel</a>
+                    <a class="btn btn-danger" href="~/production">Cancel</a>
                        
                 </div>
             </div>
@@ -51,7 +51,7 @@
             var code = $("#ProductCode").val();
             $.ajax({
                 type: "Post",
-                url: RootUrl + 'factory/product/AddProductToTempFile',
+                url: RootUrl + 'production/product/AddProductToTempFile',
                 data: { barcode: code },
                 error: function (xhr, status, error) {
                     alert(error);
@@ -81,7 +81,7 @@
                 //$("#scanProductBarcodeForm").submit();
                 $.ajax({
                     type: "Post",
-                    url: RootUrl + 'factory/product/SaveProductToFactoryInventory',
+                    url: RootUrl + 'production/product/SaveProductToFactoryInventory',
                     error: function (xhr, status, error) {
                         alert(error);
                     },
@@ -99,7 +99,7 @@
         function loadAllScannedProducts() {
             $.ajax({
                 type: 'GET',
-                url: RootUrl + "factory/product/LoadScannedProducts",
+                url: RootUrl + "production/product/LoadScannedProducts",
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     $("#div_scanned_products").html(data);

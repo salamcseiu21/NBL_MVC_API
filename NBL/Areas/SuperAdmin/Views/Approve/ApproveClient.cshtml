@@ -19,7 +19,7 @@
                 <th class="text-center">Alt Phone</th>
                 <th class="text-center">E-Mail</th>
                 <th class="text-center">Address</th>
-                <th class="text-center">Credit Limit</th>
+              
                 <th class="text-center">Action</th>
             </tr>
         </thead>
@@ -30,10 +30,10 @@
                     <td>@item.SerialNo</td>
                     <td>@item.ClientName</td>
                     <td>@item.Phone</td>
-                    <td>@item.AlternatePhone</td>
-                    <td>@item.Email</td>
+                    <td>@(item.AlternatePhone?? "N/A")</td>
+                    <td>@(item.Email?? "N/A")</td>
                     <td>@item.Address</td>
-                    <td>@item.CreditLimit</td>
+                   
                     <td class="text-center">
                         @using (Html.BeginForm("ApproveClient", "Approve", FormMethod.Post, new { id = item.ClientId }))
                         {
@@ -53,7 +53,7 @@
                 <th class="text-center">Alt Phone</th>
                 <th class="text-center">E-Mail</th>
                 <th class="text-center">Address</th>
-                <th class="text-center">Credit Limit</th>
+              
                 <th class="text-center">Action</th>
             </tr>
         </tfoot>

@@ -75,7 +75,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("ViewRequisitionDetails", "Product", new { area = "Factory" })",
+                url: "@Url.Action("ViewRequisitionDetails", "Product", new { area = "Production" })",
                 data: { requisitionId: requisitionId.value },
                 success: function (response) {
                     $('#modalBody').html(response);

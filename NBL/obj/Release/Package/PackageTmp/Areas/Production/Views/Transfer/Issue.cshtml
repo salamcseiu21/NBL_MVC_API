@@ -156,7 +156,7 @@
         $("#ProductName").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: RootUrl+'Factory/Transfer/ProductNameAutoComplete/',
+                    url: RootUrl + 'production/Transfer/ProductNameAutoComplete/',
                     data: "{ 'prefix': '" + request.term + "'}",
                     dataType: "json",
                     type: "POST",
@@ -182,7 +182,7 @@
                 var json = { productId: pId };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("GetProductQuantityInStockById", "Transfer",new {area="Factory"})',
+                    url: '@Url.Action("GetProductQuantityInStockById", "Transfer",new {area="Production"})',
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(json),
                     success: function (data) {
@@ -202,7 +202,7 @@
         $("#ToBranchName").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: RootUrl + 'Factory/Branch/BranchAutoComplete/',
+                    url: RootUrl + 'production/Branch/BranchAutoComplete/',
                     data: "{ 'prefix': '" + request.term + "'}",
                     dataType: "json",
                     type: "POST",

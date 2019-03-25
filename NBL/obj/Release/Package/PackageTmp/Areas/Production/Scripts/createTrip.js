@@ -26,7 +26,7 @@ function AddRequisition(btnClicked) {
 }
 function loadTempTripProducts() {
     $.ajax({
-        url: RootUrl + "factory/transfer/GetTempTrip",
+        url: RootUrl + "production/transfer/GetTempTrip",
         type: "Get",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
@@ -47,7 +47,7 @@ function loadTempTripProducts() {
 function ConfirmTrip(btnClick) {
     var isConfirm = confirm("Are you Confirm to Crate Trip ?");
     if (isConfirm) {
-        window.location.href = RootUrl + "factory/transfer/ConfirmTrip";
+        window.location.href = RootUrl + "production/transfer/ConfirmTrip";
     }
     return false;
 }
@@ -56,7 +56,7 @@ $(function () {
     $("#RequisitionRef").autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: RootUrl + 'factory/transfer/GetRequisitionRefeAutoComplete/',
+                url: RootUrl + 'production/transfer/GetRequisitionRefeAutoComplete/',
                 data: "{ 'prefix': '" + request.term + "'}",
                 dataType: "json",
                 type: "POST",
@@ -82,7 +82,7 @@ $(function () {
 
             $.ajax({
                 type: "POST",
-                url: RootUrl + 'factory/transfer/GetRequisitionById',
+                url: RootUrl + 'production/transfer/GetRequisitionById',
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(json),
                 success: function (data) {
@@ -104,7 +104,7 @@ function RemoveAll() {
 
         $.ajax({
             type: 'POST',
-            url: RootUrl + 'factory/transfer/RemoveAll',
+            url: RootUrl + 'production/transfer/RemoveAll',
             success: function (data) {
                 loadTempTripProducts();
             }

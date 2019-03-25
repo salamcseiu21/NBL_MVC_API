@@ -143,9 +143,9 @@ namespace NBL.Areas.Sales.Controllers
 
                 Client client = _iClientManager.GetById(id);
                 ViewBag.Territories = _iTerritoryGateway.GetAll().ToList().FindAll(n => n.RegionId == client.RegionId).ToList();
-                ViewBag.Districts = _districtGateway.GetAllDistrictByDivistionId(client.DivisionId);
-                ViewBag.Upazillas = _upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId);
-                ViewBag.PostOffices = _postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId);
+                ViewBag.Districts = _districtGateway.GetAllDistrictByDivistionId(client.DivisionId??default(int));
+                ViewBag.Upazillas = _upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId??default(int));
+                ViewBag.PostOffices = _postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId??default(int));
                 ViewBag.Regions = _iRegionManager.GetAll().ToList();
                 ViewBag.ClientTypes = _iCommonManager.GetAllClientType().ToList();
                 return View(client);

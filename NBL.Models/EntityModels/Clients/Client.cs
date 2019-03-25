@@ -78,13 +78,13 @@ namespace NBL.Models.EntityModels.Clients
         public int RegionId { get; set; }
        
         [Display(Name = "Division")]
-        public int DivisionId { get; set; }
+        public int? DivisionId { get; set; }
      
         [Display(Name = "District")]
-        public int DistrictId { get; set; }
+        public int? DistrictId { get; set; }
       
         [Display(Name = "Upazilla")]
-        public int UpazillaId { get; set; }
+        public int? UpazillaId { get; set; }
     
         [Display(Name = "Post Office")]
         public int? PostOfficeId { get; set; }

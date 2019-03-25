@@ -110,8 +110,8 @@ namespace NBL.DAL
                         AlternatePhone = reader["AlternatePhone"].ToString(),
                         Notes = reader["Notes"].ToString(),
                         NationalIdNo = reader["EmployeeNationalIdNo"].ToString(),
-                        EmployeeImage = reader["EmployeeImage"].ToString(),
-                        EmployeeSignature = reader["EmployeeSignature"].ToString(),
+                        EmployeeImage = DBNull.Value.Equals(reader["EmployeeImage"]) ? null : reader["EmployeeImage"].ToString(),
+                        EmployeeSignature = DBNull.Value.Equals(reader["EmployeeSignature"]) ? null : reader["EmployeeSignature"].ToString(),
                         JoiningDate = Convert.ToDateTime(reader["JoiningDate"]),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
                         EmployeeNo = reader["EmployeeNo"].ToString()
